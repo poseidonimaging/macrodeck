@@ -87,37 +87,43 @@ provided using instance variables (@variables).
 
 The following instance variables are used to define this information:
 
-<tt>@serviceID</tt>
-  Example: com.macrodeck.TestService
-  Basically, just provide a Java-style name for your service. If
-  your domain name is "coolestsiteever.com", your Java-style name
-  would be "com.collestsiteever.YourService" (or if you want you
-  can add more crap between your domain name and YourService).
-<tt>@serviceName</tt>
-  Example: TestService
-  This should be a string matching the name of your class. Not
-  much else to say.
-<tt>@serviceVersionMajor</tt>
-  Example: 1
-  This should be an integer representing A in a version number of A.B.C.
-<tt>@serviceVersionMinor</tt>
-  Example: 0
-  This should be an integer representing B in a version number of A.B.C.
-<tt>@serviceVersionRevision</tt>
-  Example: 20060622
-  This should be an integer representing C in a version number of
-  A.B.C. It should also be in a YYYYMMDD (year-month-day) format,
-  as seen in the example.
-<tt>@serviceUUID</tt>
-  Example: 9de63d03-9a05-4514-9e8e-c829b090263c
-  *NOTE* DO NOT USE THIS UUID! *NOTE*
-  Every service should have a unique UUID. On Linux/Unix, you can
-  generate a UUID by using the console program "uuidgen" (it's
-  provided by e2fsprogs, I think). On Windows, look for a program
-  included with the Windows Platform SDK called "GuidGen". In
-  GuidGen, make sure you pick "Registry Format" or "Plain Format"
-  (if you have curly braces [i.e { and }] around the UUID, take
-  them out).
+[@serviceID]              Example: com.macrodeck.TestService
+
+                          Basically, just provide a Java-style name for your service. If
+                          your domain name is "coolestsiteever.com", your Java-style name
+                          would be "com.coolestsiteever.YourService" (or if you want you
+                          can add more crap between your domain name and YourService).
+						  
+[@serviceName]            Example: TestService
+
+                          This should be a string matching the name of your class. Not
+                          much else to say.
+						  
+[@serviceVersionMajor]    Example: 1
+
+                          This should be an integer representing A in a version number of A.B.C.
+						  
+[@serviceVersionMinor]    Example: 0
+
+                          This should be an integer representing B in a version number of A.B.C.
+						  
+[@serviceVersionRevision] Example: 20060622
+
+                          This should be an integer representing C in a version number of
+                          A.B.C. It should also be in a YYYYMMDD (year-month-day) format,
+                          as seen in the example.
+						  
+[@serviceUUID]            Example: 9de63d03-9a05-4514-9e8e-c829b090263c
+
+                          *NOTE* DO NOT USE THIS UUID! *NOTE*
+						  
+                          Every service should have a unique UUID. On Linux/Unix, you can
+                          generate a UUID by using the console program "uuidgen" (it's
+                          provided by e2fsprogs, I think). On Windows, look for a program
+                          included with the Windows Platform SDK called "GuidGen". In
+                          GuidGen, make sure you pick "Registry Format" or "Plain Format"
+                          (if you have curly braces [i.e { and }] around the UUID, take
+                          them out).
 	   
 And that's it! BaseService provides all of the functions for accessing
 these values. I'd also like to note that while you CAN change the values
