@@ -1,2 +1,7 @@
-Use this README file to introduce your application and point to useful places in the API for learning more.
-Run "rake appdoc" to generate API documentation for your models and controllers.
+== MacroDeck Internal Documentation
+
+*WARNING* -- This documentation is proprietary and MUST NOT BE SHARED with ANYONE.
+And by anyone, I mean Jesus Christ Himself too.
+
+That said, check out README_SERVICES for a public description on how Services
+work.

@@ -1,18 +1,17 @@
+# This class contains the core of the Services framework. It has no instance methods and should be
+# accessed using its class methods only. See the comments below each function for information on how
+# they work.
+#
+# You will probably be interested in Services and BaseService.
+
 require "base_service"
 
-class Services
-	# MacroDeck Services
-	# 
-	# This class contains the core of the Services framework. It has no instance methods and should be
-	# accessed using its class methods only. See the comments below each function for information on how
-	# they work.
-	
+class Services	
 	@@loadedServices = Array.new
 	
+	# Starts a service from fileName.
+	# Returns true if successful, false if service could not be loaded, and nil if some other error occured.
 	def Services.startService(fileName)
-		# Usage:   Loads a service from fileName.
-		# Returns: true if successful, false if service could not be loaded, nil if some other error occured
-		
 		begin
 			require fileName
 			return true
@@ -24,10 +23,8 @@ class Services
 		
 	end
 	
+	# Used by the services themselves to register themselves with Services.
 	def Services.registerService(serviceObj)
-		# Usage:   Used by the services themselves to register themselves with Services.
-		# Returns: nil.
-		
 		name = serviceObj.serviceName
 		versionMajor = serviceObj.serviceVersionMajor
 		versionMinor = serviceObj.serviceVersionMinor
@@ -39,11 +36,9 @@ class Services
 		@@loadedServices = @@loadedServices << servicehash
 		return nil
 	end
-	
+
+	# Prints out the loaded services in a human-readable format. *NOTE*: will likely be replaced in the future!
 	def Services.printLoadedServices()
-		# Usage:   Prints out the loaded services in a human-readable format. NOTE: will likely be replaced in the future!
-		# Returns: nil.
-		
 		print "MacroDeck Services\n"
 		print "==================\n"
 		print "\n"

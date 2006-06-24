@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>File: README_SERVICES</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+    
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+  
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+  <div id="fileHeader">
+    <h1>README_SERVICES</h1>
+    <table class="header-table">
+    <tr class="top-aligned-row">
+      <td><strong>Path:</strong></td>
+      <td>doc/README_SERVICES
+      </td>
+    </tr>
+    <tr class="top-aligned-row">
+      <td><strong>Last Update:</strong></td>
+      <td>Sat Jun 24 00:56:47 Central Daylight Time 2006</td>
+    </tr>
+    </table>
+  </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+    <div id="description">
+      <h2>MacroDeck <a href="../../classes/Services.html">Services</a></h2>
+<p>
+<a href="../../classes/Services.html">Services</a> provide wrappers around
+Ruby libraries, or other functions, for MacroDeck. A service might provide
+access to data, or it might provide a method for communicating with outside
+services. The possibility for services is endless, but keep in mind a few
+goals:
+</p>
+<ol>
+<li><a href="../../classes/Services.html">Services</a> must be written in Ruby.
+They may depend on Rails, and you may require other libraries as needed.
+The most important thing is that they must be written in Ruby.
+
+</li>
+<li><a href="../../classes/Services.html">Services</a> should provide
+meaningful wrappers and functions. If Rails supports it already, please do
+not reinvent the wheel!
+
+</li>
+<li><a href="../../classes/Services.html">Services</a> need to be easy to work
+with and code for, since they&#8217;ll be accessed further up the code tree
+by other languages (probably).
+
+</li>
+</ol>
+<p>
+Now that&#8217;s out of the way, allow me to explain what you need to know
+about <a href="../../classes/Services.html">Services</a>.
+</p>
+<h2>Basic Information</h2>
+<p>
+Every service can be identified by four things: its name, its UUID, its
+identifier, and its version number. Each service will have these. Every
+service also will inherit from <a
+href="../../classes/BaseService.html">BaseService</a>, which is a
+meaningless service that provides the barebones default functions that will
+be available to every service. Additionally, every service is a Ruby Class.
+</p>
+<p>
+<a href="../../classes/Services.html">Services</a> should not have any
+instance methods, in order to make things simple. That is to say, every
+method will be a class method (so it&#8217;s not really object-oriented
+other than the fact that we can inherit and stuff). Here&#8217;s a really
+simple explaination of why we&#8217;re committing this heresy:
+</p>
+<p>
+Using instance methods:
+</p>
+<pre>
+   localService = MyService.new
+   localService.downloadPorn(:quickly)
+</pre>
+<p>
+Using class methods:
+</p>
+<pre>
+   MyService.downloadPorn(:quickly)
+</pre>
+<p>
+It&#8217;s cleaner, doesn&#8217;t pollute memory (or the local namespace),
+and it&#8217;s a lot simpler to provide complete objects to higher level
+languages if we ever do this.
+</p>
+<p>
+Feel free to complain about my terminology, but I grew up from other,
+crappier languages. For my sake, I&#8217;m calling a method you have to
+access from an instance of a class an instance method and any method you
+access from a class a class method.
+</p>
+<h2>How <a href="../../classes/Services.html">Services</a> Work</h2>
+<p>
+First, when our Rails app starts, it loads services.rb. This then loads
+base_service.rb, which provides the <a
+href="../../classes/BaseService.html">BaseService</a> object. Next, we
+start services individually. In the future, we will allow services to be
+turned on and off from an administration panel of some kind. And then,
+well, we call upon functions those services provide. Easy peasy.
+</p>
+<p>
+Well. What happens when we actually do the starting? That&#8217;s a good
+question. Allow me to explain.
+</p>
+<p>
+The code executes <a
+href="../../classes/Services.html#M000001">Services.startService</a>(&quot;whatever_service&quot;).
+The <a href="../../classes/Services.html">Services</a> class then requires
+that file. When loading, Ruby executes any code that isn&#8217;t in a
+module, class, or other object. There should be code there at the very end
+that executes <a
+href="../../classes/Services.html#M000002">Services.registerService</a>(WhateverService).
+Here, you provide the object of your service. This tells <a
+href="../../classes/Services.html">Services</a> that you loaded OK and that
+you should be included in the list of loaded services. If you do not
+register your service using this method, your service will not appear to be
+started!
+</p>
+<p>
+Here&#8217;s what we mean, for extra clarification:
+</p>
+<pre>
+   class WhateverService &lt; BaseService
+   # ...
+   end
+
+   Services.registerService(WhateverService)
+</pre>
+<p>
+Make sense? Hopefully. <a href="../../classes/Services.html">Services</a>
+must also provide version information, a UUID, an ID, and a name, as
+previously mentioned. All of these are provided using instance variables
+(@variables).
+</p>
+<p>
+The following instance variables are used to define this information:
+</p>
+<p>
+<tt>@serviceID</tt>
+</p>
+<pre>
+  Example: com.macrodeck.TestService
+  Basically, just provide a Java-style name for your service. If
+  your domain name is &quot;coolestsiteever.com&quot;, your Java-style name
+  would be &quot;com.collestsiteever.YourService&quot; (or if you want you
+  can add more crap between your domain name and YourService).
+</pre>
+<p>
+<tt>@serviceName</tt>
+</p>
+<pre>
+  Example: TestService
+  This should be a string matching the name of your class. Not
+  much else to say.
+</pre>
+<p>
+<tt>@serviceVersionMajor</tt>
+</p>
+<pre>
+  Example: 1
+  This should be an integer representing A in a version number of A.B.C.
+</pre>
+<p>
+<tt>@serviceVersionMinor</tt>
+</p>
+<pre>
+  Example: 0
+  This should be an integer representing B in a version number of A.B.C.
+</pre>
+<p>
+<tt>@serviceVersionRevision</tt>
+</p>
+<pre>
+  Example: 20060622
+  This should be an integer representing C in a version number of
+  A.B.C. It should also be in a YYYYMMDD (year-month-day) format,
+  as seen in the example.
+</pre>
+<p>
+<tt>@serviceUUID</tt>
+</p>
+<pre>
+  Example: 9de63d03-9a05-4514-9e8e-c829b090263c
+  *NOTE* DO NOT USE THIS UUID! *NOTE*
+  Every service should have a unique UUID. On Linux/Unix, you can
+  generate a UUID by using the console program &quot;uuidgen&quot; (it's
+  provided by e2fsprogs, I think). On Windows, look for a program
+  included with the Windows Platform SDK called &quot;GuidGen&quot;. In
+  GuidGen, make sure you pick &quot;Registry Format&quot; or &quot;Plain Format&quot;
+  (if you have curly braces [i.e { and }] around the UUID, take
+  them out).
+</pre>
+<p>
+And that&#8217;s it! <a
+href="../../classes/BaseService.html">BaseService</a> provides all of the
+functions for accessing these values. I&#8217;d also like to note that
+while you CAN change the values of these at runtime, the system will
+probably freak out on you. The most important part is that the system will
+not recognize you changed anything.
+</p>
+<p>
+Other than what was previously discussed in this readme file, you will
+probably have a much simpler time understanding the Ruby code located in
+lib. Functions and such are well documented there.
+</p>
+
+    </div>
+
+
+   </div>
+
+
+  </div>
+
+
+    <!-- if includes -->
+
+    <div id="section">
+
+
+
+
+
+      
+
+
+    <!-- if method_list -->
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>
