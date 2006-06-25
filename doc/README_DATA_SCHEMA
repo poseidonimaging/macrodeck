@@ -100,9 +100,17 @@ to store things.
 	If we need to store complex data, such as hashes, structures, and so
 	on, we will store them here in YAML format.
 	
-[permissions (string)]
-	A UUID that defines what set of permissions to apply to this item. If
-	not set, it will default to owner-readable only.
+[read_permissions (string)]
+	A UUID that defines what set of read permissions to apply to this item.
+	If this is NULL, it will default to denying everybody, but since the
+	user is always allowed to view their data, it will become owner-read
+	only.
+	
+[write_permissions (string)]
+	A UUID that defines what set of write permissions to apply to this item.
+	If this is NULL, it will default to denying everybody, but since the
+	user is always allowed to edit their data, it will become owner-write
+	only.
 	
 == Permissions Table
 
@@ -112,3 +120,73 @@ data items will have the same permissions, so that's allowed.
 
 [id (primary key)]
 	An ID for each item in the table. Indexed by MySQL.
+
+[creator (string)]
+	A UUID that indicates the user/group that made the permission. If this
+	is set to MacroDeck's creator UUID (see below), this permission will
+	show up for everyone.
+	
+[permissionid (string)]
+	A UUID, assigned to a set of permissions (those that should be applied
+	at the same time)
+	
+[order (integer)]
+	A number indicating the order the permissions should be tested in. The
+	order is on a per-set basis. Permissions are ordered ascending, so a
+	permission item with an order of 0 will execute first.
+
+[action (enum: "allow" or "deny")]
+	Sets whether or not this permission will be granting someone access or
+	denying someone access.
+	
+[applyto (string)]
+	A UUID that indicates what user/group will be affected by this allow/deny.
+	There are of course going to be default groups.
+	
+[en_title (string)]
+	A human readable title. So users which actually do make custom permissions
+	know what they're for. Since we're planning for multilingual capabilities,
+	we're prefixing this column with en_. In the future, there might be a
+	de_title, es_title, fr_title, and so on. The main purpose for the language
+	distinction is that the global (anyone can set) permissions will need to
+	be multilingual in the future. I should also note that the first permission
+	will be the one that defines the title for the entire set, so if somehow
+	the titles get out of sync in a set, you won't notice.
+	
+== Default UUIDs
+
+I figured that, since our data depends heavily on UUIDs, that I'd define a bunch
+of default UUIDs for all of the different things that may need them. So, here
+they are:
+
+[MacroDeck Creator ID]
+	7b7e7c62-0a56-4785-93d5-6e689c9793c9
+	
+	This ID is used to signify things that MacroDeck itself creates. It can be
+	used anywhere a user is expected. Permissions with this Creator ID will show
+	up to everyone.
+	
+[Registered Users Group]
+	6df561e7-3653-441b-af1d-69a64022724b
+	
+	You should use this Group ID when you want to create a permission or something
+	that applies to all registered users. It does not apply to guests.
+
+[Guests Group]
+	5c872308-4ab4-4e8b-ac50-1d7408b9f32c
+	
+	This ID applies ONLY to guests, that is, people who are not logged in. You'd use
+	it in permissions and stuff where you want something to be visible (or not) to
+	guests.
+
+[Everyone Group]
+	e09709cb-515b-4723-9119-8af627ac3608
+	
+	This ID should be used when you want to create a permission or something that
+	applies to everybody, registered users and guests included.
+	
+== Permission Notes
+
+The one thing that I did not make clear in any text above is how permissions apply
+to you. The main thing is that you should *always* be able to view your own data.
+Also, read and write permissions will be stored in the same table. 
