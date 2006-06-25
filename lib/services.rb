@@ -37,6 +37,52 @@ class Services
 		return nil
 	end
 
+	# Returns true if the service specified is started. Otherwise, returns false.
+	# Expects a UUID or a hash. If you specify a hash, it should look like this:
+	#
+	# :id => "com.macrodeck.WhateverService"
+	# 
+	# But the symbol can be either :id, :uuid, or :name.
+	def Services.serviceStarted?(serviceId)
+		if serviceId.class == Hash
+			# figure out what to look for
+			if serviceId[:uuid] != nil
+				search = serviceId[:uuid]
+				searchType = :uuid
+			elsif serviceId[:id] != nil
+				search = serviceId[:id]
+				searchType = :id
+			elsif serviceId[:name] != nil
+				search = serviceId[:name]
+				searchType = :name
+			end
+		else
+			# UUID specified (we hope?)
+			search = serviceId
+			searchType = :uuid
+		end
+		# Now iterate!
+		foundService = false
+		@@loadedServices.each do |service|
+			if searchType == :uuid
+				# lowercase the UUID, since we may have uppercase
+				# UUIDs for some reason.
+				if service[:uuid].downcase == search.downcase
+					foundService = true
+				end
+			elsif searchType == :id
+				if service[:id] == search
+					foundService = true
+				end
+			elsif searchType == :name
+				if service[:name] == search
+					foundService = true
+				end
+			end
+		end
+		return foundService
+	end
+	
 	# Prints out the loaded services in a human-readable format. *NOTE*: will likely be replaced in the future!
 	def Services.printLoadedServices()
 		print "MacroDeck Services\n"
