@@ -1,0 +1,114 @@
+== DataService Schema
+
+The MacroDeck Services framework will feature one prominent service: DataService.
+This service will provide all of the data abstraction stuff for widgets,
+other services, and so on. It therefore must be flexible.
+
+This document describes the local data source storage format, or database
+schema as some people call it. DataService should be capable of communicating
+with remote sites and understanding that data; this feature won't be covered
+here. The only thing we're going to explain here is how we store data locally.
+
+== Introduction
+
+The database will store data in any number of formats. We need to anticipate
+this, as well as offer some kind of support for unknown formats. But, we
+also need to be able to store standard values. The schema must satisfy that.
+It'd also be pretty nice if it supported tagging, categorization, and so on.
+
+So, anyway. Here's what I'm thinking of:
+
+== Data Table
+
+This is the real meat and potatoes. It stores data for everything that needs
+to store things.
+
+[id (primary key)]           
+	An ID for each entry in the table. Indexed by MySQL.
+
+[datatype (string)]
+	A UUID representing the type of data stored in the table.
+	We will provide a list of default data types. Custom data
+	types will need to be registered with us somehow, so we
+	have a tab on who created what data types and such.
+
+[datacreator (string)]
+	A UUID that identifies the widget that created this piece
+	of data. Using the DataService, a widget could ask for
+	something along the lines of "all events created by this
+	widget"
+
+[dataid (string)]
+	A UUID that is unique for every piece of data. This should
+	be filled in automatically by DataService.
+
+[grouping (string)]
+	A UUID that identifies a set or grouping of data. This is
+	meant for data that makes sense grouped. For example,
+	all events belonging to a particular calendar might have the
+	same grouping. For items that are not grouped, this may be
+	be NULL.
+
+[owner (string)]
+	A UUID that identifies the person or group that owns this
+	data object. This may be the creator (and probably is in
+	most cases).
+
+[creator (string)]
+	A UUID that identifies the person or group that created this
+	data object. This will never change, even if its ownership
+	is transferred to another user/group. Ownership is in the
+	sense of data ownership. For example, if I post a message
+	somewhere, I own that. Let's say, for example, that an
+	administrator wants to post my message on the front page.
+	They generate a copy, and become the owner of that copy,
+	though I am the creator. In 95% of cases, the owner and
+	creator are the same person. The 5% of the time that a
+	distinction is needed makes things extremely annoying when
+	systems don't understand that.
+
+[creation (integer)]
+	A UNIX timestamp set when the data item is created. A UNIX
+	timestamp is the number of seconds elapsed since Janurary 1st,
+	1970, 12:00AM. This seems the most logical way to store a time,
+	since it's extremely portable. It can be converted to a readable
+	date in almost every programming language.
+
+[tags (string)]
+	A list of textual tags used for searching/indexing this data.
+	These tags are seperated with commas. If you need to use a comma
+	in a tag, then you are insane and are attempting to use tags for
+	some reason we didn't intend.
+
+[title (string)]
+	The title of the data. It may or may not be set, since some data
+	can't have a title. But it should be set whenever possible, for
+	searching and indexing purposes.
+
+[description (string)]
+	The description of the data. Again, this may not be set for
+	data that can't have a description.
+	
+[stringdata (string)]
+	If we're storing string data, the string data will be kept here.
+
+[integerdata (integer)]
+	If we're storing integer data (numbers), the string data will be kept
+	here.
+	
+[objectdata (string)]
+	If we need to store complex data, such as hashes, structures, and so
+	on, we will store them here in YAML format.
+	
+[permissions (string)]
+	A UUID that defines what set of permissions to apply to this item. If
+	not set, it will default to owner-readable only.
+	
+== Permissions Table
+
+This table contains a bunch of allow/deny definitions that might be applied
+to data items. There will be defaults. It's also possible that a bunch of
+data items will have the same permissions, so that's allowed.
+
+[id (primary key)]
+	An ID for each item in the table. Indexed by MySQL.
