@@ -153,6 +153,130 @@ data items will have the same permissions, so that's allowed.
 	will be the one that defines the title for the entire set, so if somehow
 	the titles get out of sync in a set, you won't notice.
 	
+== Users Table
+
+Every user on MacroDeck will belong in this table. Their passwords will be hashed
+using the latest hashing techniques (if we can get away with SHA-256 or RMD-160,
+we will use it).
+
+[id (primary key)]
+	An ID for each item in the table. Indexed by MySQL.
+
+[uuid (string)]
+	The user's UUID. Each user's UUID will be unique and different.
+
+[username (string)]
+	The user's username. Used for logging in. Must be lowercase and unique. Must
+	also only contain alphanumeric (A-Z, a-z, 0-9) characters, underscore (_) and
+	dash (-).
+	
+[password (string)]
+	A hash of the user's password. We will use the most powerful hashing algorithm
+	available to Ruby along with salting techniques to help against fraud and misuse.
+	
+[passwordhint (string)]
+	An optional hint the user might set to help them remember their password if they
+	forget it.
+	
+[secretquestion (string)]
+	A secret question to ask the user if they forget their password. The user would
+	be able to create his/her own or pick one from a list.
+	
+[secretanswer (string)]
+	The answer to the previous secret question. It must be exactly the same, although
+	case is unimportant (i.e. "Bob" and "bob" are the same).
+	
+[name (string)]
+	The user's real name. Will be used in greeting the user if this name is set.
+	Of course, we will only show their first name when there are two words in
+	the sentence.
+	
+[displayname (string)]
+	This is the name that will display on all content they create. This should always
+	be set, and it can be changed when registering. By default, it will be the
+	formatted version of a nickname. For example, when I register, I might type in
+	"Ziggy the Hamster" as my nickname, and it might say "That name is illegal, but
+	the following are not: ziggy_the_hamster, ziggythehamster", and when I get to the
+	part where I can pick a display name, "Ziggy the Hamster" will be entered. In
+	cases where this cannot be detected, it will default to the nickname they did
+	enter.
+
+[creation (integer)]
+	The UNIX time this user was created.
+	
+[birthdate (date)]
+	The user's birthdate. We may require this for the purposes of verifying the user's
+	secret question/answer.
+	
+== Groups Table
+
+The groups table will be simpler than the user table simply because of the fact that
+there's no identity items kept. Members and their level of participation in the group
+(user, moderator, administrator) are kept in a seperate table, group members.
+
+[id (primary key)]
+	An ID for each item in the table. Indexed by MySQL.
+
+[groupid (string)]
+	A UUID that is unique to the group.
+
+[groupname (string)]
+	A simple, alphanumeric (plus _ and -) name for the group. For example, a group
+	for MacroDeck developers might be called "macrodeck" in this field.
+
+[displayname (string)]
+	A long name for the group. Carrying on the previous example, this might be
+	"MacroDeck Developers"
+	
+[creation (integer)]
+	The UNIX time this user was created.
+	
+== Group Members Table
+
+This table will assign users to groups and set their level within the group. In
+order to be simple here, there will be three levels of participation within a
+group. User, moderator, and administrator. In the context of an ecosystem, which
+will contain any number of groups, there might be a "group administrator" and
+"ecosystem administrator", but we'll have to wait until ecosystems are being
+developed to correctly figure that out. This table is simple. It's supposed to be.
+
+[id (primary key)]
+	Again, this is because MySQL needs it to make things speedy, and because
+	Rails doesn't love us unless we have a primary key.
+	
+[groupid (string)]
+	The UUID of the group that will have the member listed in this column.
+	
+[userid (string)]
+	The UUID of the user that will be a member of the group specified.
+	
+[level (enum: "user", "moderator", or "administrator")]
+	The level of the user.
+	
+[isbanned (boolean)]
+	Whether or not the user is banned from the group. Banning is different from
+	deletion, because they are not able to rejoin the group if they are banned.
+	Their level will remain the same as it was when they were banned, in case
+	a hack occurs.
+	
+== Profiles Table
+
+This table is not going to be completely defined yet, but I will go ahead and
+define the idea. Different pieces of data will be associated with a user or
+group. The user or group will be picked in one column. The profile item will
+be picked in another column, and the data will be specified in another. This
+is not the fastest way to do it, but if we ever define other profile fields,
+we don't have to alter the table layout. Also, users or widgets or ecosystems
+could define their own profile fields and store them here. It also makes data
+abstraction an easy job. For example, the following code is simple, and would
+be possible with the current idea:
+
+   UserService.getProfileItem("ziggythehamster", authCode, "location")
+
+Specifying all of the fields does not give us this kind of versitility. It may
+also be slower in the long run depending on the kind of performance we get from
+MySQL and the filesystem.
+	
 == Default UUIDs
 
 I figured that, since our data depends heavily on UUIDs, that I'd define a bunch
@@ -190,3 +314,71 @@ they are:
 The one thing that I did not make clear in any text above is how permissions apply
 to you. The main thing is that you should *always* be able to view your own data.
 Also, read and write permissions will be stored in the same table. 
+
+== User Sessions
+
+Sessions are very important. A session ID prevents us from having to send the user's
+password or a password token over a connection. All of the user data-grabbing
+functions will require a valid session ID (or authCode). There are a lot of factors
+we need to take in account when picking what criteria to base a session ID off of.
+First of all, the annoyance factor. We shouldn't pick criteria that will cause the
+user to have to re-enter his password every few minutes. Then again, we shouldn't
+allow him to close the browser and come back a week later. So, here's how I propose
+we should compose session IDs, assuming that there isn't a default Rails one that
+takes all of this information into account already:
+
+* Username.
+* First 24 bits of their IP address (i.e. if my IP is 1.2.3.4, we should make the
+  session valid for 1.2.3.anything).
+* A hash of their password.
+* A code that represents the week and month the session was created (so after a
+  week, the session would expire; only bad side is for people who create their sessions
+  Sunday night).
+* A server-specific salt that is different from the password salt (to be changed
+  only if there's a massive server attack involving logged in users, as changing the
+  salt will cause everybody to log out).
+* Browser. As specific as Mozilla/5.0 or Opera/9.0 or Mozilla/4.0 (IE).
+   
+All of those things combined, put into a unique hash together, should be able to
+satisfactorily identify a user securely without divulging their password. An
+attacker on the same subnet using the same browser could take their session ID,
+if it's fresh enough, and get access, but the probability that will happen is
+very low.
+
+I think Rails has a built in session handler, and if this is the case, I will
+use it instead, and possibly just store a security key in the user table using
+a few of these data items (so the Rails session handler will store sessions
+using its own secure ways, and we'll do our own verification on that data, as
+an extra step).
+
+If Rails doesn't have a suitable session handler, the user sessions will be
+stored in a session table that will be periodically cleaned out of old sessions
+(so, it's possible that we may not need the datecode) using cron jobs.
+
+All API functions will require a valid session ID. We will *not* allow passwords
+to be transferred over the Internet. Instead, some sort of token-based security
+protocol will be used to generate remote session IDs/auth codes. Basically,
+the functions carried out would look something like this (I'm going to use
+some Ruby conventions here):
+
+   # This function gets a value that both sides will know.
+   UserService.getAuthToken("ziggythehamster")
+   => "97b1a3632912a05a9bdc8a564d5b1c57"
+   # This value is the MD5 sum of "5f4dcc3b5aa765d61d8327deb882cf99:97b1a3632912a05a9bdc8a564d5b1c57",
+   # or, MD5(MD5("password") + ":" + "97b1a3632912a05a9bdc8a564d5b1c57"). Of course, the
+   # password will need to be hashed using the same format we use, and the remote site
+   # will also need to know our salt, so it may make sense to not have a salt in this case.
+   # Basically, the server would do this math on its site:
+   # MD5(password-stored-in-database-hashed + ":" + auth-token) and if it matches
+   # what the other side sent, the other side knows the password, and the user
+   # should be allowed remote access via an API.
+   UserService.getAuthCode("ziggythehamster", "73ca1fa9fccf37663e3b670bb294b055")
+   => some valid session ID
+   
+Keep in mind though, that this stuff would be accessed via remote via SOAP or
+XML-RPC and not Ruby, though internally the functions would be handled as
+Ruby.
+
+If that made any sense to you, great. Otherwise, well, it's hard to explain
+security any simpler than that. If I had to, I'd just have to say that it'll
+be secure, and it'll work. And hopefully not be annoying.
