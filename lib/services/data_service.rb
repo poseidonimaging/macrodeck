@@ -104,4 +104,20 @@ class DataService < BaseService
 		end
 		return blogcomments
 	end
+	
+	# Creates a new blog. This should be done when a user registers.
+	# *NOTE!* This method should NOT be used to create blog posts! This
+	# is for creating actual _blogs_.
+	def self.createBlog(title, description, creator, owner)
+		group = DataGroup.new
+		group.groupingtype = DGROUP_BLOG
+		group.creator = creator
+		group.groupingid = UUIDService.generateUUID # a fresh UUID, please :)
+		group.owner = owner
+		group.tags = nil
+		group.parent = nil
+		group.title = title
+		group.description = description
+		group.save
+	end
 end
