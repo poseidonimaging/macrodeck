@@ -11,10 +11,12 @@ require "yaml"
 # Constants for data types
 DTYPE_POST		= "13569fca-5b8c-4ec3-8738-350165a37592"
 DTYPE_EVENT		= "1a5527bb-515b-4f69-807e-facf578e0f2d"
+DTYPE_COMMENT	= "9a232c1d-55f7-4edd-8b60-e942eca82ea2"
 
 # Types of groupings
 DGROUP_BLOG		= "f7ae8ebd-c49a-4c9c-8f8c-425d32e64d88"
 DGROUP_CALENDAR	= "ae32a6aa-bfb2-4126-87a1-7041da0ce6e5"
+DGROUP_COMMENTS	= "841d7152-1a50-43c5-b53f-75437faad6a2"
 
 class DataService < BaseService
 	@serviceID = "com.macrodeck.DataService"
@@ -86,8 +88,20 @@ class DataService < BaseService
 			# just in case.
 			posts = DataItem.findDataByGrouping(grouping.groupingid, DTYPE_POST)
 			# Append the posts found to blogposts.
-			blogposts = blogposts << posts
+			blogposts = blogposts + posts
 		end
 		return blogposts
+	end
+	
+	# Returns all of the comments for blog post specified in postID.
+	# The postID is retrieved from a particular post's dataid.
+	def self.getBlogComments(postID)
+		blogcomments = Array.new
+		groupings = DataGroup.findGroupingsByParent(DGROUP_COMMENTS, postID)
+		groupings.each do |grouping|
+			comments = DataItem.findDataByGrouping(grouping.groupingid, DTYPE_COMMENT)
+			blogcomments = blogcomments + comments
+		end
+		return blogcomments
 	end
 end

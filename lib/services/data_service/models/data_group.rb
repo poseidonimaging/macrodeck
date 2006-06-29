@@ -13,4 +13,9 @@ class DataGroup < ActiveRecord::Base
 			return self.find(:all, :conditions => ["groupingtype = ?", dataType])
 		end
 	end
+	
+	# Finds groupings by their type and parent
+	def self.findGroupingsByParent(dataType, parent)
+		return self.find(:all, :conditions => ["groupingtype = ? AND parent = ?", dataType, parent])
+	end
 end

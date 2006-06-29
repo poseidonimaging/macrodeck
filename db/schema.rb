@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 2) do
+ActiveRecord::Schema.define(:version => 3) do
 
   create_table "data_groups", :force => true do |t|
     t.column "groupingtype", :string
@@ -10,6 +10,7 @@ ActiveRecord::Schema.define(:version => 2) do
     t.column "groupingid", :string
     t.column "owner", :string
     t.column "tags", :text
+    t.column "parent", :string
   end
 
   create_table "data_items", :force => true do |t|
