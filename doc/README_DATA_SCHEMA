@@ -74,7 +74,7 @@ to store things.
 	since it's extremely portable. It can be converted to a readable
 	date in almost every programming language.
 
-[tags (string)]
+[tags (text)]
 	A list of textual tags used for searching/indexing this data.
 	These tags are seperated with commas. If you need to use a comma
 	in a tag, then you are insane and are attempting to use tags for
@@ -85,18 +85,18 @@ to store things.
 	can't have a title. But it should be set whenever possible, for
 	searching and indexing purposes.
 
-[description (string)]
+[description (text)]
 	The description of the data. Again, this may not be set for
 	data that can't have a description.
 	
-[stringdata (string)]
+[stringdata (text)]
 	If we're storing string data, the string data will be kept here.
 
 [integerdata (integer)]
 	If we're storing integer data (numbers), the string data will be kept
 	here.
 	
-[objectdata (string)]
+[objectdata (text)]
 	If we need to store complex data, such as hashes, structures, and so
 	on, we will store them here in YAML format.
 	

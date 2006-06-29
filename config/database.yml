@@ -12,10 +12,10 @@
 #   http://dev.mysql.com/doc/refman/5.0/en/old-client.html
 development:
   adapter: mysql
-  database: macrodeck_development
-  username: root
-  password:
-  host: localhost
+  database: macrodeck
+  username: macrodeck
+  password: iRKm$9wu
+  host: mysql.macrodeck.com
 
 # Warning: The database defined as 'test' will be erased and
 # re-generated from your development database when you run 'rake'.
@@ -23,13 +23,13 @@ development:
 test:
   adapter: mysql
   database: macrodeck_test
-  username: root
-  password:
-  host: localhost
+  username: macrodeck
+  password: iRKm$9wu
+  host: mysql.macrodeck.com
 
 production:
   adapter: mysql
-  database: macrodeck_production
-  username: root
-  password: 
-  host: localhost
+  database: macrodeck
+  username: macrodeck
+  password: iRKm$9wu
+  host: mysql.macrodeck.com

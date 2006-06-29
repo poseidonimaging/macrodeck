@@ -4,7 +4,7 @@
 #
 # You will probably be interested in Services and BaseService.
 
-require "base_service"
+require "services/base_service"
 
 class Services	
 	@@loadedServices = Array.new
@@ -13,7 +13,7 @@ class Services
 	# Returns true if successful, false if service could not be loaded, and nil if some other error occured.
 	def Services.startService(fileName)
 		begin
-			require fileName
+			require "services/" + fileName
 			return true
 		rescue LoadError
 			return false

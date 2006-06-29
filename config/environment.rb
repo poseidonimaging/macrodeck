@@ -52,4 +52,8 @@ end
 # end
 
 # Include your application configuration below
-include "services/services"
+require "services/services"
+
+# Start services we need
+Services.startService "uuid_service"
+Services.startService "test_service"
