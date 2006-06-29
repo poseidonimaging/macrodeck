@@ -4,14 +4,19 @@
 # similar to DataItem.
 
 class DataGroup < ActiveRecord::Base
-	# Finds groupings by type, and optionally
-	# by their creator.
-	def self.findGroupings(dataType, creator = nil)
-		if creator != nil
-			return self.find(:all, :conditions => ["groupingtype = ? AND creator = ?", dataType, creator])
-		else
-			return self.find(:all, :conditions => ["groupingtype = ?", dataType])
-		end
+	# Finds groupings by their type
+	def self.findGroupings(dataType)
+		return self.find(:all, :conditions => ["groupingtype = ?", dataType])
+	end
+	
+	# Finds groupings by type and their creator.
+	def self.findGroupingsByCreator(dataType, creator)
+		return self.find(:all, :conditions => ["groupingtype = ? AND creator = ?", dataType, creator])
+	end
+	
+	# Finds groupings by type and owner.
+	def self.findGroupingsByOwner(dataType, owner)
+		return self.find(:all, :conditions => ["groupingtype = ? AND owner = ?", dataType, owner])
 	end
 	
 	# Finds groupings by their type and parent

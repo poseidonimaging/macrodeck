@@ -77,10 +77,15 @@ class DataService < BaseService
 	end
 	
 	# Returns all of the blog posts for user/group specified in
-	# creatorID
-	def self.getBlogPosts(creatorID)
+	# owner. The concept of ownership is as follows. Generally,
+	# MacroDeck would be the creator of every blog, but we could
+	# in theory have one made by an administrator. But, the user
+	# who uses the blog will always own it. Previously, this
+	# function looked for it by the creator, which would be
+	# incorrect.
+	def self.getBlogPosts(owner)
 		blogposts = Array.new
-		groupings = DataGroup.findGroupings(DGROUP_BLOG, creatorID)
+		groupings = DataGroup.findGroupingsByOwner(DGROUP_BLOG, owner)
 		groupings.each do |grouping|
 			# There really should only be one grouping per user with
 			# a DGROUP_BLOG datatype, since more than one would imply
