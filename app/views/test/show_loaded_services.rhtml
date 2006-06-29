@@ -1,0 +1,15 @@
+<h2>Loaded Services</h2>
+<table id="services">
+	<tr>
+		<th>Name</th>
+		<th>UUID</th>
+		<th>Version</th>
+	</tr>
+<% @services.each do |service| %>
+	<tr>
+		<td><span class="name"><%= service[:name] %></span><br /><span class="serviceid"><%= service[:id] %></span></td>
+		<td><span class="uuid"><%= service[:uuid] %></span></td>
+		<td><span class="version"><%= service[:version][:major] %>.<%= service[:version][:minor] %>.<%= service[:version][:revision] %></span></td>
+	</tr>
+<% end %>
+</table>	

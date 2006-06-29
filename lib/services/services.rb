@@ -83,6 +83,14 @@ class Services
 		return foundService
 	end
 	
+	# Returns an array containing the name, UUID,
+	# ID, and version of each service that is currently
+	# loaded (basically, we're passing on @@loadedServices)
+	def Services.getLoadedServices()
+		value = @@loadedServices
+		return value
+	end
+	
 	# Prints out the loaded services in a human-readable format. *NOTE*: will likely be replaced in the future!
 	def Services.printLoadedServices()
 		print "MacroDeck Services\n"
