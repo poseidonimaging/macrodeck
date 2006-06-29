@@ -73,4 +73,21 @@ class DataService < BaseService
 			return nil
 		end
 	end
+	
+	# Returns all of the blog posts for user/group specified in
+	# creatorID
+	def self.getBlogPosts(creatorID)
+		blogposts = Array.new
+		groupings = DataGroup.findGroupings(DGROUP_BLOG, creatorID)
+		groupings.each do |grouping|
+			# There really should only be one grouping per user with
+			# a DGROUP_BLOG datatype, since more than one would imply
+			# a user has more than one blog. But this handles that
+			# just in case.
+			posts = DataItem.findDataByGrouping(grouping.groupingid, DTYPE_POST)
+			# Append the posts found to blogposts.
+			blogposts = blogposts << posts
+		end
+		return blogposts
+	end
 end
