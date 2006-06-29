@@ -7,8 +7,19 @@
 # Rails. At least not without some hack.
 
 class DataItem < ActiveRecord::Base
-	# Finds a group of data based on the
-	# grouping UUID specified.
-	def self.findDataGroup(groupID)
+	# Finds a group of data based on the grouping
+	# UUID specified. Can limit to a certain data
+	# type if desired.
+	def self.findDataByGrouping(groupID, dataType = nil)
+		if dataType != nil
+			return self.find(:all, :conditions => ["grouping = ? AND datatype = ?", groupID, dataType], :order => "creation ASC")
+		else
+			return self.find(:all, :conditions => ["grouping = ?", groupID], :order => "creation ASC")
+		end
+	end
+	
+	# Finds a specific data item based on its ID
+	def self.findDataItem(dataID)
+		return self.find(:first, :conditions => ["dataid = ?", dataID])
 	end
 end
