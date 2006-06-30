@@ -17,8 +17,6 @@ class Services
 			return true
 		rescue LoadError
 			return false
-		rescue StandardError
-			return nil # Return nil if there was some other error
 		end
 		
 	end
@@ -31,8 +29,9 @@ class Services
 		versionRevision = serviceObj.serviceVersionRevision
 		uuid = serviceObj.serviceUUID
 		id = serviceObj.serviceID
+		author = serviceObj.serviceAuthor
 		servicehash = Hash.new
-		servicehash = { :name => name, :version => { :major => versionMajor, :minor => versionMinor, :revision => versionRevision }, :uuid => uuid, :id => id, :class => serviceObj }
+		servicehash = { :name => name, :version => { :major => versionMajor, :minor => versionMinor, :revision => versionRevision }, :uuid => uuid, :id => id, :class => serviceObj, :author => author }
 		@@loadedServices = @@loadedServices << servicehash
 		return nil
 	end
@@ -98,6 +97,7 @@ class Services
 		print "\n"
 		@@loadedServices.each do |service|
 			print "Name: " + service[:name] + "\n"
+			print "Athr: " + service[:author] + "\n"
 			print "UUID: " + service[:uuid] + "\n"
 			print "ID  : " + service[:id] + "\n"
 			print "Ver : " + service[:version][:major].to_s + "." + service[:version][:minor].to_s + "." + service[:version][:revision].to_s +  "\n"

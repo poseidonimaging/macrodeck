@@ -3,6 +3,7 @@
 # is working like it should.
 
 class TestService < BaseService
+	@serviceAuthor = "Keith Gable <ziggy@ignition-project.com>"
 	@serviceID = "com.macrodeck.TestService"
 	@serviceName = "TestService"	
 	@serviceVersionMajor = 1

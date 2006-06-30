@@ -3,7 +3,7 @@
 # Services framework loads.
 
 class BaseService
-	
+	@serviceAuthor = "Keith Gable <ziggy@ignition-project.com>"	
 	@serviceID = "com.macrodeck.BaseService"	
 	@serviceName = "BaseService"	
 	@serviceVersionMajor = 0
@@ -11,6 +11,11 @@ class BaseService
 	@serviceVersionRevision = 0
 	@serviceUUID = "78d71960-3387-4ea6-84ca-399d2f880469"
 
+	# Returns the author(s) of this service.
+	def self.serviceAuthor
+		@serviceAuthor
+	end
+	
 	# Returns the (Java-style) identifier of this service.
 	def self.serviceID
 		@serviceID

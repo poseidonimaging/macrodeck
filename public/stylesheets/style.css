@@ -30,3 +30,11 @@ td {
 td .name {
 	font-weight: bold;
 }
+td .uuid {
+	font-family: 'Bitstream Vera Sans Mono', 'Lucida Console', 'Courier New', monospace;
+	font-size: 9pt;
+}
+td p {
+	margin: 0;
+	padding: 0;
+}

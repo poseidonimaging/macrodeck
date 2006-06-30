@@ -4,12 +4,21 @@
 		<th>Name</th>
 		<th>UUID</th>
 		<th>Version</th>
+		<th>Author</th>
 	</tr>
 <% @services.each do |service| %>
 	<tr>
 		<td><span class="name"><%= service[:name] %></span><br /><span class="serviceid"><%= service[:id] %></span></td>
 		<td><span class="uuid"><%= service[:uuid] %></span></td>
 		<td><span class="version"><%= service[:version][:major] %>.<%= service[:version][:minor] %>.<%= service[:version][:revision] %></span></td>
+		<td><span class="author"><%= simple_format(h(service[:author])) %></span></td>
 	</tr>
 <% end %>
-</table>	
+</table>
+<br />
+<%= form_tag({ :controller => "test", :action => "start_service" }) %>
+<fieldset>
+	<legend>Start a Service</legend>
+	<p><%= text_field_tag :service %> <%= submit_tag "Start" %></p>
+</fieldset>
+<%= end_form_tag %>

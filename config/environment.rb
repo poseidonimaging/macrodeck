@@ -56,4 +56,5 @@ require "services/services"
 
 # Start services we need
 Services.startService "uuid_service"
-Services.startService "test_service"
+Services.startService "data_service"
+Services.startService "blog_service"

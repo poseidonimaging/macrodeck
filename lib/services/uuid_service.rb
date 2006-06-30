@@ -4,6 +4,7 @@
 require_gem "uuidtools", ">= 1.0.0"
 
 class UUIDService < BaseService
+	@serviceAuthor = "Keith Gable <ziggy@ignition-project.com>"
 	@serviceID = "com.macrodeck.UUIDService"
 	@serviceName = "UUIDService"	
 	@serviceVersionMajor = 1
