@@ -16,6 +16,17 @@ class UUIDService < BaseService
 	def self.generateUUID()
 		return UUID.random_create.to_s
 	end
+	
+	# *NOTICE* This function is temporary only!
+	def self.lookupUUID(id)
+		case id
+			when DataService.serviceUUID then		return DataService.serviceName
+			when BlogService.serviceUUID then		return BlogService.serviceName
+			when UUIDService.serviceUUID then		return UUIDService.serviceName
+			when USER_CSAKON then					return "csakon"
+			when USER_ZIGGYTHEHAMSTER then			return "ziggythehamster"
+		end
+	end
 end
 
 # Register this service with Services.

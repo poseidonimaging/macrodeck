@@ -1,24 +1,28 @@
 <h2>Loaded Services</h2>
-<table id="services">
-	<tr>
-		<th>Name</th>
-		<th>UUID</th>
-		<th>Version</th>
-		<th>Author</th>
-	</tr>
-<% @services.each do |service| %>
-	<tr>
-		<td><span class="name"><%= service[:name] %></span><br /><span class="serviceid"><%= service[:id] %></span></td>
-		<td><span class="uuid"><%= service[:uuid] %></span></td>
-		<td><span class="version"><%= service[:version][:major] %>.<%= service[:version][:minor] %>.<%= service[:version][:revision] %></span></td>
-		<td><span class="author"><%= simple_format(h(service[:author])) %></span></td>
-	</tr>
-<% end %>
-</table>
-<br />
 <%= form_tag({ :controller => "test", :action => "start_service" }) %>
 <fieldset>
+	<legend>Loaded Services</legend>
+	<table id="services">
+		<tr>
+			<th>Name</th>
+			<th>UUID</th>
+			<th>Version</th>
+			<th>Author</th>
+		</tr>
+	<% @services.each do |service| %>
+		<tr>
+			<td><span class="name"><%= service[:name] %></span><br /><span class="serviceid"><%= service[:id] %></span></td>
+			<td><span class="uuid"><%= service[:uuid] %></span></td>
+			<td><span class="version"><%= service[:version][:major] %>.<%= service[:version][:minor] %>.<%= service[:version][:revision] %></span></td>
+			<td><span class="author"><%= simple_format(h(service[:author])) %></span></td>
+		</tr>
+	<% end %>
+	</table>
+</fieldset>
+<br />
+<fieldset>
 	<legend>Start a Service</legend>
-	<p><%= text_field_tag :service %> <%= submit_tag "Start" %></p>
+	<%= text_field_tag :service %> <%= submit_tag "Start" %>
 </fieldset>
 <%= end_form_tag %>
+<p><%= link_to "&laquo; Back", { :controller => "test", :action => "index" } %></p>

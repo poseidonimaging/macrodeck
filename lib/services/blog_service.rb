@@ -37,7 +37,8 @@ class BlogService < BaseService
 	# The postID is retrieved from a particular post's dataid.
 	def self.getBlogComments(postID)
 		blogcomments = Array.new
-		groupings = DataGroup.findGroupingsByParent(DGROUP_COMMENTS, postID)
+		groupings = DataService.findDataGrouping(DGROUP_COMMENTS, :parent,
+		postID)
 		groupings.each do |grouping|
 			comments = DataItem.findDataByGrouping(grouping.groupingid, DTYPE_COMMENT)
 			blogcomments = blogcomments + comments
@@ -46,24 +47,27 @@ class BlogService < BaseService
 	end
 	
 	# Creates a new blog. This should be done when a user registers.
-	# *NOTE!* This method should NOT be used to create blog posts! This
+	# *NOTE*! This method should NOT be used to create blog posts! This
 	# is for creating actual _blogs_.
 	def self.createBlog(title, description, creator, owner)
-		group = DataGroup.new
-		group.groupingtype = DGROUP_BLOG
-		group.creator = creator
-		group.groupingid = UUIDService.generateUUID # a fresh UUID, please :)
-		group.owner = owner
-		group.tags = nil
-		group.parent = nil
-		group.title = title
-		group.description = description
-		group.save
+		DataService.createDataGroup(DGROUP_BLOG, nil, title, description, nil, creator, owner, nil)
 	end
 	
 	# Creates a new blog post within the blog specified. Blogs are specified
 	# by their GroupingID.
-	def self.createBlogPost(blog, postTitle, postDescription, postContent, readPermissions = nil, writePermissions = nil)
+	def self.createBlogPost(blogID, creator, postTitle, postDescription, postContent, readPermissions, writePermissions)
+		# The owner is retrieved from the blog itself.
+		owner = DataService.getDataGroupOwner(blogID)
+		postID = DataService.createDataString(DTYPE_POST, @serviceUUID, blogID, creator, owner, nil, postTitle, postDescription, postContent, readPermissions, writePermissions)
+		# now create comments group
+		DataService.createDataGroup(DGROUP_COMMENTS, nil, postTitle, postDescription, nil, creator, owner, postID)
+	end
+	
+	# Creates a new comment on a blog post
+	def self.createBlogComment(postID, creator, commentTitle, commentContent, readPermissions, writePermissions)
+		commentsGrouping = DataService.findDataGrouping(DGROUP_COMMENTS, :parent, postID)
+		owner = DataService.getDataGroupOwner(commentsGrouping)
+		DataService.createDataString(DTYPE_COMMENT, @serviceUUID, commentsGrouping, creator, owner, nil, commentTitle, nil, commentContent, readPermissions, writePermissions)
 	end
 end
 

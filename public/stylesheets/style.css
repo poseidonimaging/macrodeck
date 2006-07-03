@@ -1,7 +1,60 @@
 body {
 	font-family: 'Lucida Grande', 'Lucida Sans Unicode', 'Tahoma', 'Verdana', 'Arial', sans-serif;
 	font-size: 9pt;
+	margin: 0;
+	padding: 0;
 }
+
+/* Headers */
+h1 span {
+	display: none;
+}
+
+/* Top of Page */
+#top {
+	background-color: #000000;
+}
+#logo h1 {
+	display: block;
+	height: 100px;
+	width: 400px;
+	background-image: url(/images/toplogo.png);
+	background-repeat: no-repeat;
+	margin: 0;
+	padding: 0;
+}
+#logo {
+	margin: 0;
+	padding: 0;
+	height: 100px;
+	border-bottom: 1px solid #6F6E6E;
+}
+#menu {
+	background-image: url(/images/brushedmetal.png);
+	border-bottom: 1px solid #6F6E6E;
+	border-top: 1px solid #D0D0D0;
+	font-size: 8pt;
+	font-weight: bold;
+	padding: 3px;
+	margin: 0;
+}
+#menu a {
+	text-decoration: none;
+	color: #000;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+#menu a:hover {
+	text-decoration: underline;
+}
+
+/* Content Stuff */
+#content-container {
+	margin: 0;
+	padding: 10px;
+}
+
+/* Tables */
 td, th {
 	/* IE Workaround */
 	font-family: 'Lucida Grande', 'Lucida Sans Unicode', 'Tahoma', 'Verdana', 'Arial', sans-serif;

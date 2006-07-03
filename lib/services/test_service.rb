@@ -13,7 +13,7 @@ class TestService < BaseService
 	
 	# A simple function that returns a message letting the user know everything is A-OK :)
 	def self.test()
-		return "TestService.test() successful."
+		return true
 	end
 end
 
