@@ -60,9 +60,6 @@ GROUP_MACRODECK			= "253d41a1-8b62-4ca8-9f8d-99bb42bc0dd8"
 BLOG_MACRODECK			= "9a9fc352-89d4-4b92-a94b-45a8cac106bb"
 CREATOR_MACRODECK		= "7b7e7c62-0a56-4785-93d5-6e689c9793c9"
 
-# Load Services framework
-require "services/services"
-
 # Start services we need
 Services.startService "uuid_service"
 Services.startService "data_service"
