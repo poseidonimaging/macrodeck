@@ -1,4 +1,136 @@
-Services
-========
+== MacroDeck Services
 
-Description goes here
+Services provide wrappers around Ruby libraries, or other
+functions, for MacroDeck. A service might provide access to
+data, or it might provide a method for communicating with
+outside services. The possibility for services is endless,
+but keep in mind a few goals:
+
+1. Services must be written in Ruby. They may depend on
+   Rails, and you may require other libraries as needed.
+   The most important thing is that they must be written
+   in Ruby.
+2. Services should provide meaningful wrappers and functions.
+   If Rails supports it already, please do not reinvent the
+   wheel!
+3. Services need to be easy to work with and code for, since
+   they'll be accessed further up the code tree by other
+   languages (probably).
+
+Now that's out of the way, allow me to explain what you need
+to know about Services.
+
+== Basic Information
+
+Every service can be identified by four things: its name, its
+UUID, its identifier, and its version number. Each service will
+have these. Every service also will inherit from BaseService,
+which is a meaningless service that provides the barebones default
+functions that will be available to every service. Additionally,
+every service is a Ruby Class.
+
+Services should not have any instance methods, in order to make
+things simple. That is to say, every method will be a class
+method (so it's not really object-oriented other than the fact
+that we can inherit and stuff). Here's a really simple explaination
+of why we're committing this heresy:
+
+Using instance methods:
+   localService = MyService.new
+   localService.downloadPorn(:quickly)
+
+Using class methods:
+   MyService.downloadPorn(:quickly)
+   
+It's cleaner, doesn't pollute memory (or the local namespace), and
+it's a lot simpler to provide complete objects to higher level
+languages if we ever do this.
+
+Feel free to complain about my terminology, but I grew up from other,
+crappier languages. For my sake, I'm calling a method you have to
+access from an instance of a class an instance method and any method
+you access from a class a class method.
+
+== How Services Work
+
+First, when our Rails app starts, it loads services.rb. This then
+loads base_service.rb, which provides the BaseService object. Next,
+we start services individually. In the future, we will allow
+services to be turned on and off from an administration panel of
+some kind. And then, well, we call upon functions those services
+provide. Easy peasy.
+
+Well. What happens when we actually do the starting? That's a
+good question. Allow me to explain.
+
+The code executes Services.startService("whatever_service"). The
+Services class then requires that file. When loading, Ruby executes
+any code that isn't in a module, class, or other object. There
+should be code there at the very end that executes
+Services.registerService(WhateverService). Here, you provide the
+object of your service. This tells Services that you loaded OK and
+that you should be included in the list of loaded services. If you
+do not register your service using this method, your service will
+not appear to be started!
+
+Here's what we mean, for extra clarification:
+
+   class WhateverService < BaseService
+   # ...
+   end
+   
+   Services.registerService(WhateverService)
+   
+Make sense? Hopefully. Services must also provide version information,
+a UUID, an ID, and a name, as previously mentioned. All of these are
+provided using instance variables (@variables).
+
+The following instance variables are used to define this information:
+
+[@serviceID]              Example: com.macrodeck.TestService
+
+                          Basically, just provide a Java-style name for your service. If
+                          your domain name is "coolestsiteever.com", your Java-style name
+                          would be "com.coolestsiteever.YourService" (or if you want you
+                          can add more crap between your domain name and YourService).
+						  
+[@serviceName]            Example: TestService
+
+                          This should be a string matching the name of your class. Not
+                          much else to say.
+						  
+[@serviceVersionMajor]    Example: 1
+
+                          This should be an integer representing A in a version number of A.B.C.
+						  
+[@serviceVersionMinor]    Example: 0
+
+                          This should be an integer representing B in a version number of A.B.C.
+						  
+[@serviceVersionRevision] Example: 20060622
+
+                          This should be an integer representing C in a version number of
+                          A.B.C. It should also be in a YYYYMMDD (year-month-day) format,
+                          as seen in the example.
+						  
+[@serviceUUID]            Example: 9de63d03-9a05-4514-9e8e-c829b090263c
+
+                          *NOTE* DO NOT USE THIS UUID! *NOTE*
+						  
+                          Every service should have a unique UUID. On Linux/Unix, you can
+                          generate a UUID by using the console program "uuidgen" (it's
+                          provided by e2fsprogs, I think). On Windows, look for a program
+                          included with the Windows Platform SDK called "GuidGen". In
+                          GuidGen, make sure you pick "Registry Format" or "Plain Format"
+                          (if you have curly braces [i.e { and }] around the UUID, take
+                          them out).
+	   
+And that's it! BaseService provides all of the functions for accessing
+these values. I'd also like to note that while you CAN change the values
+of these at runtime, the system will probably freak out on you. The
+most important part is that the system will not recognize you changed
+anything.
+
+Other than what was previously discussed in this readme file, you will
+probably have a much simpler time understanding the Ruby code located in
+lib. Functions and such are well documented there.

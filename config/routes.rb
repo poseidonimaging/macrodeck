@@ -17,6 +17,9 @@ ActionController::Routing::Routes.draw do |map|
   # instead of a file named 'wsdl'
   map.connect ':controller/service.wsdl', :action => 'wsdl'
 
+  # Route for /group/macrodeck/blog
+  map.connect 'group/macrodeck/blog', :controller => 'dev_blog', :action => 'index'
+  
   # Install the default route as the lowest priority.
   map.connect ':controller/:action/:id'
 end
