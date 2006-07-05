@@ -1,7 +1,9 @@
 # This service provides user support across MacroDeck.
 # This service requires UUIDService to work correctly.
 # It also depends on the existance of Rails, or at
-# least ActiveRecord.
+# least ActiveRecord. It also requires digest/sha2.
+
+require 'digest/sha2'
 
 class UserService < BaseService
 	@serviceAuthor = "Keith Gable <ziggy@ignition-project.com>"
@@ -19,7 +21,11 @@ class UserService < BaseService
 			user = User.new
 			user.uuid = UUIDService.generateUUID
 			user.username = userName.downcase
-			user.password = password
+			if defined?(PASSWORD_SALT)
+				user.password = "sha512:" + Digest::SHA512::hexdigest(PASSWORD_SALT + ":" + password)
+			else
+				user.password = "sha512:" + Digest::SHA512::hexdigest(password)
+			end
 			user.passwordhint = passHint
 			user.secretquestion = secretQuestion
 			user.secretanswer = secretAnswer
@@ -43,6 +49,10 @@ class UserService < BaseService
 		else
 			return true
 		end
+	end
+	
+	# Returns an authentication code and creates a session
+	def self.authenticate(userName, password)
 	end
 end
 

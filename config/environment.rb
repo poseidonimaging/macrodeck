@@ -26,7 +26,7 @@ Rails::Initializer.run do |config|
 
   # Use the database for sessions instead of the file system
   # (create the session table with 'rake db:sessions:create')
-  # config.action_controller.session_store = :active_record_store
+  config.action_controller.session_store = :active_record_store
 
   # Use SQL instead of Active Record's schema dumper when creating the test database.
   # This is necessary if your schema can't be completely dumped by the schema dumper, 
@@ -59,6 +59,9 @@ USER_ZIGGYTHEHAMSTER	= "c4a038aa-372a-4f5c-81b7-351660f7049b"
 GROUP_MACRODECK			= "253d41a1-8b62-4ca8-9f8d-99bb42bc0dd8"
 BLOG_MACRODECK			= "9a9fc352-89d4-4b92-a94b-45a8cac106bb"
 CREATOR_MACRODECK		= "7b7e7c62-0a56-4785-93d5-6e689c9793c9"
+
+# User Password Salt
+PASSWORD_SALT			= "giomullyoxonoind" # Random character generator
 
 # Start services we need
 Services.startService "uuid_service"
