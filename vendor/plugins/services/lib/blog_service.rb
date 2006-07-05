@@ -26,7 +26,7 @@ class BlogService < BaseService
 			# a DGROUP_BLOG datatype, since more than one would imply
 			# a user has more than one blog. But this handles that
 			# just in case.
-			posts = DataItem::findDataByGrouping(grouping.groupingid, DTYPE_POST)
+			posts = DataItem.findDataByGrouping(grouping.groupingid, DTYPE_POST)
 			# Append the posts found to blogposts.
 			blogposts = blogposts + posts
 		end

@@ -27,7 +27,7 @@ class DataService < BaseService
 	@serviceName = "DataService"	
 	@serviceVersionMajor = 1
 	@serviceVersionMinor = 0	
-	@serviceVersionRevision = 20060628
+	@serviceVersionRevision = 20060704
 	@serviceUUID = "ae52b2a9-0872-4651-b159-c37715a53704"
 	
 	# Returns a string value from the dataID requested or nil
@@ -220,20 +220,21 @@ class DataService < BaseService
 	# owner you wish to look for. If you're looking by
 	# type only, query should be nil.
 	def self.findDataGrouping(type, searchBy, query)
-		if searchBy == "parent" || searchBy == :parent then
-			data = DataGroup::findGroupingsByParent(type, query)
-			return data
-		elsif searchBy == "creator" || searchBy == :creator then
-			data = DataGroup::findGroupingsByCreator(type, query)
-			return data
-		elsif searchBy == "owner" || searchBy == :owner then
-			data = DataGroup::findGroupingsByOwner(type, query)
-			return data
-		elsif searchBy == "type" || searchBy == :type then
-			data = DataGroup::findGroupings(type)
-			return data
-		else
-			return nil
+		case searchBy
+			when :parent, "parent"
+				data = DataGroup.findGroupingsByParent(type, query)
+				return data
+			when :creator, "creator"
+				data = DataGroup.findGroupingsByCreator(type, query)
+				return data
+			when :owner, "owner"
+				data = DataGroup.findGroupingsByOwner(type, query)
+				return data
+			when :type, "type"
+				data = DataGroup.findGroupings(type)
+				return data
+			else
+				return nil
 		end
 	end
 end
