@@ -217,10 +217,10 @@ there's no identity items kept. Members and their level of participation in the 
 [id (primary key)]
 	An ID for each item in the table. Indexed by MySQL.
 
-[groupid (string)]
+[uuid (string)]
 	A UUID that is unique to the group.
 
-[groupname (string)]
+[name (string)]
 	A simple, alphanumeric (plus _ and -) name for the group. For example, a group
 	for MacroDeck developers might be called "macrodeck" in this field.
 
