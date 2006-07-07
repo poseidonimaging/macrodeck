@@ -144,6 +144,14 @@ class UserService < BaseService
 		end
 	end
 	
+	# Removes a user from a group.
+	def self.removeUserFromGroup(groupID, userID)
+		groupmember = GroupMember.find(:first, :conditions => ["groupid = ? AND userid = ?", groupID, userID])
+		if groupmember != nil
+			groupmember.destroy
+		end
+	end
+	
 	# Sets a particular user in a group as banned
 	def self.banGroupMember(groupID, userID)
 		groupmember = GroupMember.find(:first, :conditions => ["groupid = ? AND userid = ?", groupID, userID])
@@ -210,6 +218,31 @@ class UserService < BaseService
 		ipaddr = @request.env['REMOTE_ADDR']
 		ipaddr_arr = ipaddr.split(".")
 		return Digest::SHA512::hexdigest(userName + ":" + passHash + ":" + @request.env['HTTP_USER_AGENT'] + ":" + ipaddr_arr[0] + ":" + ipaddr_arr[1] + ":" + ipaddr_arr[2] + ":" + Time.now.mon)
+	end
+	
+	# Returns an array (that contains hashes) of the users
+	# that are members of a group. The hashes returned are
+	# in the following format:
+	#
+	#  { :uuid => "User's UUID", :level => :administrator, :isbanned => true }
+	#
+	# Keeping in mind that :level may be any possible in
+	# addUserToGroup. And :isbanned can be false.
+	def self.getGroupMembers(groupID)
+		groupmembers = GroupMember.find(:all, :conditions => ["groupid = ?", groupID])
+		members = Array.new
+		groupmembers.each do |member|
+			case member.level
+				when "administrator"
+					h = { :uuid => member.userid, :level => :administrator, :isbanned => member.isbanned }
+				when "moderator"
+					h = { :uuid => member.userid, :level => :moderator, :isbanned => member.isbanned }
+				when "user"
+					h = { :uuid => member.userid, :level => :user, :isbanned => member.isbanned }
+			end
+			members << h
+		end
+		return members
 	end
 end
 
