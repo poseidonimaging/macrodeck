@@ -121,6 +121,77 @@ class UserService < BaseService
 		end
 	end
 	
+	# Adds a user to a group. Level may be
+	# :administrator, :moderator, or :user.
+	def self.addUserToGroup(groupID, userID, level)
+		if self.doesGroupMemberExist?(groupID, userID) == false
+			# only add if the user doesn't already exist
+			groupmember = GroupMember.new
+			groupmember.groupid = groupID
+			groupmember.userid = userID
+			case level
+				when :administrator, "administrator"
+					groupmember.level = "administrator"
+				when :moderator, "moderator"
+					groupmember.level = "moderator"
+				when :user, "user"
+					groupmember.level = "user"
+				else
+					raise ArgumentError, "Valid group level not specified", caller
+			end
+			groupmember.isbanned = false
+			groupmember.save!
+		end
+	end
+	
+	# Sets a particular user in a group as banned
+	def self.banGroupMember(groupID, userID)
+		groupmember = GroupMember.find(:first, :conditions => ["groupid = ? AND userid = ?", groupID, userID])
+		if groupmember != nil
+			groupmember.isbanned = true
+			groupmember.save!
+		end
+	end
+	
+	# Unsets a particular user in a group as banned
+	def self.unbanGroupMember(groupID, userID)
+		groupmember = GroupMember.find(:first, :conditions => ["groupid = ? AND userid = ?", groupID, userID])
+		if groupmember != nil
+			groupmember.isbanned = false
+			groupmember.save!
+		end
+	end
+	
+	# Changes a user's level within a group. See addUserToGroup for
+	# a list of valid levels.
+	def self.changeGroupMemberLevel(groupID, userID, newLevel)
+		if self.doesGroupMemberExist?(groupID, userID)
+			groupmember = GroupMember.find(:first, :conditions => ["groupid = ? AND userid = ?", groupID, userID])
+			case newLevel
+				when :administrator, "administrator"
+					groupmember.level = "administrator"
+				when :moderator, "moderator"
+					groupmember.level = "moderator"
+				when :user, "user"
+					groupmember.level = "user"
+				else
+					raise ArgumentError, "Valid group level not specified", caller
+			end
+			groupmember.save!
+		end
+	end
+	
+	# Returns true if a group member exists, false
+	# if one does not.
+	def self.doesGroupMemberExist?(groupID, userID)
+		groupmember = GroupMember.find(:first, :conditions => ["groupid = ? AND userid = ?", groupID, userID])
+		if groupmember == nil
+			return false
+		else
+			return true
+		end
+	end
+	
 	# Returns true if a group exists, false if one
 	# does not.
 	def self.doesGroupExist?(groupName)
