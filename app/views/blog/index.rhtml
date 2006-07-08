@@ -1,4 +1,5 @@
-<h2><%= @blogmetadata[:title] %></h2>
+<% @menu_content = '<a href="/">Home</a>' %>
+<% @summary = build_summary(@blogmetadata[:description], @blogmetadata[:title]) %>
 <% @posts.each do |post| %>
 <h3 class="postname"><%= post.title %></h3>
 <h4 class="postinfo">Posted by <%= UUIDService.lookupUUID(post.creator) %> on <%= Time.at(post.creation).strftime("%B %d, %Y at %I:%M %p") %></h4>

@@ -46,6 +46,29 @@ h1 span {
 #menu a:hover {
 	text-decoration: underline;
 }
+#summary {
+	background-image: url(/images/pinstripe.png);
+	font-size: 8pt;
+	font-weight: normal;
+	padding: 5px;
+	border-bottom: 1px solid #E0E0E0;
+	/* border-bottom: 1px solid #8B8B8B; -- bottom of titlebar */
+}
+#summary h2 {
+	margin: 0;
+	padding: 0;
+	display: inline;
+	font-size: 8pt;
+	font-weight: bold;
+	padding-right: 5px;
+}
+#summary p {
+	margin: 0;
+	padding: 0;
+	display: inline;
+	font-size: 8pt;
+	padding-right: 5px;
+}
 
 /* Content Stuff */
 #content-container {
