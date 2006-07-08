@@ -23,6 +23,9 @@ ActionController::Routing::Routes.draw do |map|
   # Route user/:username/blog
   map.connect 'user/:username/blog', :controller => 'blog', :action => 'index'
   
+  # Route / to the MacroDeck blog until pages are created.
+  map.connect '', :controller => 'blog', :action => 'index', :groupname => 'macrodeck'
+  
   # Install the default route as the lowest priority.
   map.connect ':controller/:action/:id'
 end
