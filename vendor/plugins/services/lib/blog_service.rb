@@ -68,6 +68,24 @@ class BlogService < BaseService
 		owner = DataService.getDataGroupOwner(commentsGrouping)
 		DataService.createDataString(DTYPE_COMMENT, @serviceUUID, commentsGrouping, creator, owner, nil, commentTitle, nil, commentContent, readPermissions, writePermissions)
 	end
+	
+	# Returns a hash of the blog's metadata; see DataService.getGroupMetadata.
+	# +blogID+ is the groupingID of the blog
+	def self.getBlogMetadata(blogID)
+		return DataService.getGroupMetadata(blogID)
+	end
+	
+	# Returns the UUID of the blog of a user/group. If for some reason a user
+	# has more than one blog, it'll return the last blog in the database. This
+	# should not happen, and therefore we don't care.
+	def self.getBlogUUID(userOrGroupUUID)
+		blogid = nil
+		groupings = DataService.findDataGrouping(DGROUP_BLOG, "owner", userOrGroupUUID)
+		groupings.each do |grouping|
+			blogid = grouping.groupingid
+		end
+		return blogid
+	end
 end
 
 Services.registerService(BlogService)

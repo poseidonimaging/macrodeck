@@ -16,9 +16,12 @@ ActionController::Routing::Routes.draw do |map|
   # Allow downloading Web Service WSDL as a file with an extension
   # instead of a file named 'wsdl'
   map.connect ':controller/service.wsdl', :action => 'wsdl'
-
-  # Route for /group/macrodeck/blog
-  map.connect 'group/macrodeck/blog', :controller => 'dev_blog', :action => 'index'
+  
+  # Route group/:groupname/blog
+  map.connect 'group/:groupname/blog', :controller => 'blog', :action => 'index'
+  
+  # Route user/:username/blog
+  map.connect 'user/:username/blog', :controller => 'blog', :action => 'index'
   
   # Install the default route as the lowest priority.
   map.connect ':controller/:action/:id'

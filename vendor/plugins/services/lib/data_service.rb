@@ -237,6 +237,25 @@ class DataService < BaseService
 				return nil
 		end
 	end
+	
+	# Gets the metadata associated with a particular data
+	# grouping, in a hash. The data that is returned should
+	# look like this:
+	#
+	#  { :type => "UUID", :creator => "UUID", :owner => "UUID", :tags => "geek, tech blog, programmer", :title => "Ziggy's Blog!", :description => "Bloggity Blog." }
+	#
+	# Functions will be provided in the future to lookup UUIDs
+	# so types, creators, and owners can be converted into
+	# English.
+	def self.getGroupMetadata(groupingID)
+		dgroup = DataGroup.find(:first, :conditions => ["groupingid = ?", groupingID])
+		if dgroup != nil
+			h = { :type => dgroup.groupingtype, :creator => dgroup.creator, :owner => dgroup.owner, :tags => dgroup.tags, :title => dgroup.title, :description => dgroup.description }
+			return h
+		else
+			return nil
+		end
+	end
 end
 
 Services.registerService(DataService)

@@ -244,6 +244,26 @@ class UserService < BaseService
 		end
 		return members
 	end
+	
+	# Returns the UUID of the group name specified.
+	def self.lookupGroupName(groupName)
+		group = Group.find(:first, :conditions => ["name = ?", groupName.downcase])
+		if group != nil
+			return group.uuid
+		else
+			return nil
+		end
+	end
+	
+	# Returns the UUID of the user name specified
+	def self.lookupUserName(userName)
+		user = User.find(:first, :conditions => ["username = ?", userName.downcase])
+		if user != nil
+			return user.uuid
+		else
+			return nil
+		end
+	end
 end
 
 Services.registerService(UserService)
