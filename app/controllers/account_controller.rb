@@ -17,8 +17,7 @@ class AccountController < ApplicationController
 			render :template => "account/register1"
 		elsif @params[:step] == "1"
 			# validate username
-			@username = @params[:username].downcase.gsub(/\W/, "") # should remove all non-word characters
-			@username = @username.gsub(" ", "") # remove spaces in case \W didn't catch them
+			@username = @params[:username].downcase.gsub(/\W/, "").gsub(" ", "") # should remove all non-word characters and remove spaces in case \W didn't catch them
 			if @username.length > 0
 				if UserService.doesUserExist?(@username) == false
 					@origusername = @params[:username]

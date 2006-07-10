@@ -2,7 +2,7 @@
 <% @summary = build_summary("Step 2 of 3 - Choose a password and secret question", "Create an Account") %>
 <%= form_tag({ :action => "register" }) %>
 <%= hidden_field_tag("step", "2") %>
-<%= hidden_field_tag("origusername", h(@origusername)) %>
+<%= hidden_field_tag("origusername", @origusername) %>
 <%= hidden_field_tag("username", @username) %>
 	<p>Welcome to MacroDeck! Thank you for your interest in registering on MacroDeck. This process is easy and
 	should only take a moment. In order to register on this site, you will need to pick a username, enter a
@@ -25,7 +25,7 @@
 	was born?</em>, <em>What kind of car was my first car?</em>, or <em>What's my wife's middle name?</em>. You're not limited to
 	those questions; in fact, be creative! Most importantly, however, remember that anyone who knows the answer to your secret
 	question can reset your password.</p>
-	<p class="steptext">Secret Question: <%= text_field_tag "secretquestion", h(@secretquestion), { :size => 40, :class => "offset" } %></p>
-	<p class="steptext">Secret Answer: <%= text_field_tag "secretanswer", h(@secretanswer), { :size => 40, :class => "offset" } %></p>
+	<p class="steptext">Secret Question: <%= text_field_tag "secretquestion", @secretquestion, { :size => 40, :class => "offset" } %></p>
+	<p class="steptext">Secret Answer: <%= text_field_tag "secretanswer", @secretanswer, { :size => 40, :class => "offset" } %></p>
 	<p class="steptext"><%= submit_tag "Continue" %></p>
 <%= end_form_tag %>
