@@ -1,0 +1,17 @@
+<% @menu_content = '<a href="/">Home</a>' %>
+<% @summary = build_summary("Step 1 of 3 - Choose a user name", "Create an Account") %>
+<%= form_tag({ :action => "register" }) %>
+<%= hidden_field_tag("step", "1") %>
+	<p>Welcome to MacroDeck! Thank you for your interest in registering on MacroDeck. This process is easy and
+	should only take a moment. In order to register on this site, you will need to pick a username, enter a
+	password, provide some information so you can recover a lost password, and verify you own your e-mail
+	address. Your personal information is safe with us; we hate spam as much as you do. Please remember to
+	pick a good secret question/answer -- your password is encrypted so heavily in our database that even
+	we cannot retrieve your password. If there are any problems during the registration process, you will
+	be told so and given an opportunity to fix it.</p>
+	<% if @error != nil %>
+	<p class="error"><%= @error %></p>
+	<% end %>
+	<p class="stepname">1. Desired Username:</p>
+	<p class="steptext"><%= text_field_tag "username", @username %> <%= submit_tag "Choose Username" %></p>
+<%= end_form_tag %>

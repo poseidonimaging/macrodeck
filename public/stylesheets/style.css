@@ -134,3 +134,21 @@ div.postcontent {
 	margin-left: 10px;
 	font-size: 9pt;
 }
+
+/* registration */
+p.stepname {
+	font-weight: bold;
+}
+p.steptext {
+	font-weight: normal;
+	padding-left: 15px;
+}
+p.error {
+	padding: 5px;
+	border: 1px solid #660000;
+	background-color: #FF9999;
+}
+input.offset {
+	position: absolute;
+	left: 140px;
+}

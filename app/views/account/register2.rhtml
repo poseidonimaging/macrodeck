@@ -1,0 +1,31 @@
+<% @menu_content = '<a href="/">Home</a>' %>
+<% @summary = build_summary("Step 2 of 3 - Choose a password and secret question", "Create an Account") %>
+<%= form_tag({ :action => "register" }) %>
+<%= hidden_field_tag("step", "2") %>
+<%= hidden_field_tag("origusername", h(@origusername)) %>
+<%= hidden_field_tag("username", @username) %>
+	<p>Welcome to MacroDeck! Thank you for your interest in registering on MacroDeck. This process is easy and
+	should only take a moment. In order to register on this site, you will need to pick a username, enter a
+	password, provide some information so you can recover a lost password, and verify you own your e-mail
+	address. Your personal information is safe with us; we hate spam as much as you do. Please remember to
+	pick a good secret question/answer -- your password is encrypted so heavily in our database that even
+	we cannot retrieve your password. If there are any problems during the registration process, you will
+	be told so and given an opportunity to fix it.</p>
+	<% if @error != nil %>
+	<p class="error"><%= @error %></p>
+	<% end %>
+	<p class="stepname">1. Desired Username:</p>
+	<p class="steptext"><%= text_field_tag "username_ui", @username, :disabled => true %> <a href="/account/register?username=<%= @username %>">Change</a></p>
+	<p class="stepname">2. Desired Password:</p>
+	<p class="steptext"><%= password_field_tag "password1" %><br /><%= password_field_tag "password2" %> (enter again to verify)</p>
+	<p class="stepname">3. Secret Question:</p>
+	<p class="steptext">Please enter a secret question below. If you (or someone else) attempts to reset your account's password,
+	you (or they) will be asked this question. Make sure only you know the answer to your secret question, and choose a good
+	question. A few sample questions you might ask: <em>What's my mother's maiden name?</em>, <em>How much did I weigh when I
+	was born?</em>, <em>What kind of car was my first car?</em>, or <em>What's my wife's middle name?</em>. You're not limited to
+	those questions; in fact, be creative! Most importantly, however, remember that anyone who knows the answer to your secret
+	question can reset your password.</p>
+	<p class="steptext">Secret Question: <%= text_field_tag "secretquestion", h(@secretquestion), { :size => 40, :class => "offset" } %></p>
+	<p class="steptext">Secret Answer: <%= text_field_tag "secretanswer", h(@secretanswer), { :size => 40, :class => "offset" } %></p>
+	<p class="steptext"><%= submit_tag "Continue" %></p>
+<%= end_form_tag %>
