@@ -4,12 +4,10 @@
 	<legend>Create User</legend>
 	<p>User Name: <%= text_field_tag "username", nil, :size => 40 %></p>
 	<p>Password: <%= text_field_tag "password", nil, :size => 40 %></p>
-	<p>Password Hint: <%= text_field_tag "passhint", nil, :size => 40 %></p>
 	<p>Secret Question: <%= text_field_tag "secretquestion", nil, :size => 60 %></p>
 	<p>Secret Answer: <%= text_field_tag "secretanswer", nil, :size => 60 %></p>
 	<p>Name: <%= text_field_tag "name", nil, :size => 40 %></p>
 	<p>Display Name: <%= text_field_tag "displayname", nil, :size => 40 %></p>
-	<p>Date of Birth: <%= date_select "user", "dob", :start_year => 1900, :end_year => Time.now.year %></p>
 	<p><%= submit_tag "Add User" %></p>
 </fieldset>
 <%= end_form_tag %>

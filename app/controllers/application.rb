@@ -10,4 +10,13 @@ class ApplicationController < ActionController::Base
 		end
 		return true
 	end
+	
+	# Is the e-mail address specified a valid address?
+	def email_valid?(email)
+		if email =~ EMAIL_VALIDATION
+			return true
+		else
+			return false
+		end
+	end
 end

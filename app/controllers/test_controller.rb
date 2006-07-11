@@ -24,9 +24,7 @@ class TestController < ApplicationController
 	#   createUser(userName, password, passHint, secretQuestion, secretAnswer, name, displayName, dob)   
 	def create_user
 		if request.method == :post
-			# Create a user!
-			d = Date.civil(@params[:user]["dob(1i)"].to_i, @params[:user]["dob(2i)"].to_i, @params[:user]["dob(3i)"].to_i)
-			UserService.createUser(@params[:username], @params[:password], @params[:passhint], @params[:secretquestion], @params[:secretanswer], @params[:name], @params[:displayname], d)
+			UserService.createUser(@params[:username], @params[:password], @params[:secretquestion], @params[:secretanswer], @params[:name], @params[:displayname])
 			redirect_to :action => "index"
 		end
 	end

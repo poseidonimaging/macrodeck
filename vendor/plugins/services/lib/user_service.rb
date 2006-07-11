@@ -19,7 +19,7 @@ class UserService < BaseService
 	
 	# Creates a new user in the database, first checking to see if the user exists or not.
 	# Returns the new user's UUID.
-	def self.createUser(userName, password, passHint, secretQuestion, secretAnswer, name, displayName, dob)
+	def self.createUser(userName, password, secretQuestion, secretAnswer, name, displayName)
 		if self.doesUserExist?(userName) == false
 			user = User.new
 			user.uuid = UUIDService.generateUUID
@@ -29,13 +29,13 @@ class UserService < BaseService
 			else
 				user.password = "sha512:" + Digest::SHA512::hexdigest(password)
 			end
-			user.passwordhint = passHint
+			# removed 10-July-2006 by Ziggy #user.passwordhint = passHint
 			user.secretquestion = secretQuestion
 			user.secretanswer = secretAnswer
 			user.name = name
 			user.displayname = displayName
 			user.creation = Time.now.to_i
-			user.dob = dob
+			# removed 10-July-2006 by Ziggy #user.dob = dob
 			user.save!
 			return user.uuid
 		else

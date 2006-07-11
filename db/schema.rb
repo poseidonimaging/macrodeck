@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 9) do
+ActiveRecord::Schema.define(:version => 12) do
 
   create_table "data_groups", :force => true do |t|
     t.column "groupingtype", :string
@@ -59,14 +59,13 @@ ActiveRecord::Schema.define(:version => 9) do
     t.column "uuid", :string
     t.column "username", :string
     t.column "password", :string
-    t.column "passwordhint", :string
     t.column "secretquestion", :string
     t.column "secretanswer", :string
     t.column "name", :string
     t.column "displayname", :string
     t.column "creation", :integer
-    t.column "dob", :date
     t.column "authcode", :string
+    t.column "verified_email", :boolean
   end
 
 end
