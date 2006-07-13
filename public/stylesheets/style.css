@@ -155,3 +155,14 @@ input.offset {
 input.password {
 	font-style: italic;
 }
+
+/* generic */
+div.center {
+	padding: 5px;
+	margin-left: auto;
+	margin-right: auto;
+	border: 1px solid #8B8B8B;
+	background-color: #efefef;
+	text-align: center;
+	width: 150px;
+}

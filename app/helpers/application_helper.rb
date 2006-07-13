@@ -1,6 +1,6 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
-	
+
 	# Builds a summary with an optional title
 	def build_summary(text, title = nil)
 		if title != nil

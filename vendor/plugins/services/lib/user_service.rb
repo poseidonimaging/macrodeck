@@ -54,24 +54,38 @@ class UserService < BaseService
 		end
 	end
 	
-	# Returns an authentication code and creates a session.
+	# Returns an authentication code, does NOT create a session.
 	# AuthCodes can be used to perform actions on behalf
 	# of this user (i.e. from remote sites).
-	def self.authenticate(userName, password)
+	def self.authenticate(userName, password, ipAddress)
 		if self.doesUserExist?(userName)
 			user = User.find(:first, :conditions => ["username = ?", userName.downcase])
 			if defined?(PASSWORD_SALT)
 				if user.password == "sha512:" + Digest::SHA512::hexdigest(PASSWORD_SALT + ":" + password)
 					# create an authcode.
-					authcode = createAuthCode(userName, user.password)
+					authcode = createAuthCode(userName, user.password, ipAddress)
 					# set the authcode
 					user.authcode = authcode
-					reset_session
-					session[:authcode] = authcode
-					session[:uuid] = user.uuid
+					user.save!
+					return { :authcode => authcode, :uuid => user.uuid }
+				else
+					return nil
 				end
 			else
+				if user.password == "sha512:" + Digest::SHA512::hexdigest(password)
+					# create an authcode.
+					authcode = createAuthCode(userName, user.password, ipAddress)
+					# set the authcode
+					user.authcode = authcode
+					user.save!
+					return { :authcode => authcode, :uuid => user.uuid }
+				else
+					return nil
+				end
 			end
+		else
+			# User doesn't exist.
+			return nil
 		end
 	end
 	
@@ -214,10 +228,9 @@ class UserService < BaseService
 	# Creates an authentication code based on information
 	# that can be retrieved in the function and a username
 	# and password hash that are specified.
-	def self.createAuthCode(userName, passHash)
-		ipaddr = @request.env['REMOTE_ADDR']
-		ipaddr_arr = ipaddr.split(".")
-		return Digest::SHA512::hexdigest(userName + ":" + passHash + ":" + @request.env['HTTP_USER_AGENT'] + ":" + ipaddr_arr[0] + ":" + ipaddr_arr[1] + ":" + ipaddr_arr[2] + ":" + Time.now.mon)
+	def self.createAuthCode(userName, passHash, ipAddress)
+		ipaddr_arr = ipAddress.split(".")
+		return Digest::SHA512::hexdigest(userName + ":" + passHash + ":" + ipaddr_arr[0].to_s + ":" + ipaddr_arr[1].to_s + ":" + ipaddr_arr[2].to_s + ":" + Time.now.mon.to_s)
 	end
 	
 	# Returns an array (that contains hashes) of the users

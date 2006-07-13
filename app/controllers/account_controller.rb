@@ -130,5 +130,20 @@ class AccountController < ApplicationController
 		end
 	end
 	def login
+		if request.method == :post
+			# The form was POSTed. We're going to do a login.
+			@authcode = UserService.authenticate(@params[:username].downcase.gsub(/\W/, "").gsub(" ", ""), @params[:password], request.remote_ip)
+			if @authcode == nil
+				# Error authenticating
+				@error = "Invalid username or password."
+				render :template => "account/login"
+			else
+				render :template => "account/loginsuccess"
+			end
+		elsif request.method == :get
+			# TODO: if logged in already, let the user know that they're already logged in
+		else
+			raise "Unsupported HTTP Method!"
+		end
 	end
 end
