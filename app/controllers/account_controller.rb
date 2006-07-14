@@ -138,7 +138,13 @@ class AccountController < ApplicationController
 				@error = "Invalid username or password."
 				render :template => "account/login"
 			else
-				render :template => "account/loginsuccess"
+				verified_email = UserService.getUserProperty(@authcode[:uuid], @authcode[:authcode], :verified_email)
+				if verified_email == true
+					render :template => "account/loginsuccess"
+				else
+					@error = "Your account's e-mail address has not yet been verified. Please check your e-mail for instructions on how to verify your e-mail address. You may need to check your spam filter."
+					render :template => "account/login"
+				end
 			end
 		elsif request.method == :get
 			# TODO: if logged in already, let the user know that they're already logged in

@@ -91,8 +91,8 @@ class UserService < BaseService
 	
 	# Gets the requested user property of the user specified.
 	# Users are specified by UUID and authCode. Valid properties:
-	# :username, :passwordhint, :secretquestion, :secretanswer
-	# :name, :displayname, :creation, and :dob.
+	# :username, :secretquestion, :secretanswer
+	# :name, :displayname, :creation, and :verified_email
 	def self.getUserProperty(uuid, authCode, property)
 		user = User.find(:first, :conditions => ["uuid = ? AND authcode = ?", uuid, authCode])
 		if user != nil
@@ -100,8 +100,6 @@ class UserService < BaseService
 			case property
 				when :username, "username"
 					return user.username
-				when :passwordhint, "passwordhint"
-					return user.passwordhint
 				when :secretquestion, "secretquestion"
 					return user.secretquestion
 				when :secretanswer, "secretanswer"
@@ -112,8 +110,8 @@ class UserService < BaseService
 					return user.displayname
 				when :creation, "creation"
 					return user.creation
-				when :dob, "dob"
-					return user.dob
+				when :verified_email, "verified_email"
+					return user.verified_email
 				else
 					return nil
 			end
