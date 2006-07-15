@@ -151,6 +151,12 @@ class AccountController < ApplicationController
 			end
 		elsif request.method == :get
 			# TODO: if logged in already, let the user know that they're already logged in
+			if session != nil
+				if session[:authcode] != nil && session[:uuid] != nil
+					# assume logged in already.
+					render :template => "errors/already_logged_in"
+				end
+			end
 		else
 			raise "Unsupported HTTP Method!"
 		end
