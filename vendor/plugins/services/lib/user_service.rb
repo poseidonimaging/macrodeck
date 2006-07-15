@@ -275,6 +275,17 @@ class UserService < BaseService
 			return nil
 		end
 	end
+	
+	# Validates an authcode specified with one in the database. If it matches, it returns
+	# true. Otherwise, it returns false.
+	def self.verifyAuthCode(uuid, authCode)
+		user = User.find(:first, :conditions => ["uuid = ? AND authcode = ?", uuid, authCode])
+		if user != nil
+			return true
+		else
+			return false
+		end
+	end
 end
 
 Services.registerService(UserService)

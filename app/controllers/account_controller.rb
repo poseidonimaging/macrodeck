@@ -140,6 +140,9 @@ class AccountController < ApplicationController
 			else
 				verified_email = UserService.getUserProperty(@authcode[:uuid], @authcode[:authcode], :verified_email)
 				if verified_email == true
+					reset_session
+					session[:authcode] = @authcode[:authcode]
+					session[:uuid] = @authcode[:uuid]
 					render :template => "account/loginsuccess"
 				else
 					@error = "Your account's e-mail address has not yet been verified. Please check your e-mail for instructions on how to verify your e-mail address. You may need to check your spam filter."
