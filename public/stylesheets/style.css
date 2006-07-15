@@ -143,11 +143,6 @@ p.steptext {
 	font-weight: normal;
 	padding-left: 15px;
 }
-p.error {
-	padding: 5px;
-	border: 1px solid #660000;
-	background-color: #FF9999;
-}
 input.offset {
 	position: absolute;
 	left: 140px;
@@ -165,6 +160,16 @@ div.center {
 	background-color: #efefef;
 	text-align: center;
 	width: 150px;
+}
+p.error {
+	padding: 5px;
+	border: 1px solid #660000;
+	background-color: #FF9999;
+}
+p.info {
+	padding: 5px;
+	border: 1px solid #8b8b8b;
+	background-color: #efefef;
 }
 
 /* login */

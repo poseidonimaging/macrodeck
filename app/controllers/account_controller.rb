@@ -133,6 +133,7 @@ class AccountController < ApplicationController
 		if request.method == :post
 			# The form was POSTed. We're going to do a login.
 			@authcode = UserService.authenticate(@params[:username].downcase.gsub(/\W/, "").gsub(" ", ""), @params[:password], request.remote_ip)
+			@username = @params[:username].downcase.gsub(/\W/, "").gsub(" ", "")
 			if @authcode == nil
 				# Error authenticating
 				@error = "Invalid username or password."
@@ -143,7 +144,7 @@ class AccountController < ApplicationController
 					reset_session
 					session[:authcode] = @authcode[:authcode]
 					session[:uuid] = @authcode[:uuid]
-					render :template => "account/loginsuccess"
+					redirect_to "/user/#{@username}/home/"
 				else
 					@error = "Your account's e-mail address has not yet been verified. Please check your e-mail for instructions on how to verify your e-mail address. You may need to check your spam filter."
 					render :template => "account/login"
@@ -159,6 +160,31 @@ class AccountController < ApplicationController
 			end
 		else
 			raise "Unsupported HTTP Method!"
+		end
+	end
+	def home
+		if @params[:username] != nil
+			uuid = UserService.lookupUserName(@params[:username].downcase)
+			if uuid == nil
+				render :template => "errors/invalid_user_or_group"
+			else
+				if session != nil
+					if session[:authcode] != nil && session[:uuid] != nil
+						verify_authcode = UserService.verifyAuthCode(@session[:uuid], @session[:authcode])
+						if verify_authcode == true
+							# there's no real data put on the homepage yet.
+						else
+							render :template => "errors/access_denied"
+						end
+					else
+						render :template => "errors/access_denied"
+					end
+				else
+					render :template => "errors/access_denied"
+				end
+			end
+		else
+			render :template => "errors/invalid_user_or_group"
 		end
 	end
 end
