@@ -108,8 +108,7 @@ class AccountController < ApplicationController
 										render :template => "account/register3"
 									else
 										# it checks out, boss!
-										# UserService.createUser(userName, password, secretQuestion, secretAnswer, name, displayName)
-										uuid = UserService.createUser(@username, @password, @secretquestion, @secretanswer, @name, @displayname)
+										uuid = UserService.createUser(@username, @password, @secretquestion, @secretanswer, @name, @displayname, @email)
 										if uuid != nil
 											render :template => "account/registerdone"
 										else
@@ -185,6 +184,123 @@ class AccountController < ApplicationController
 			end
 		else
 			render :template => "errors/invalid_user_or_group"
+		end
+	end
+	def settings
+		# This could probably support groups quite easily...
+		if request.method == :post
+			if @params[:username] != nil
+				uuid = UserService.lookupUserName(@params[:username].downcase)
+				if uuid == nil
+					render :template => "errors/invalid_user_or_group"
+				else
+					if session != nil
+						if session[:authcode] != nil && session[:uuid] != nil
+							verify_authcode = UserService.verifyAuthCode(@session[:uuid], @session[:authcode])
+							if verify_authcode == true
+								@username = @params[:username].downcase.gsub(/\W/, "").gsub(" ", "") # wise guy, eh?
+								@displayname = @params[:displayname]
+								@secretquestion = @params[:secretquestion]
+								@secretanswer = @params[:secretanswer]
+								@password1 = @params[:password1]
+								@password2 = @params[:password2]
+								@email = @params[:email]
+								@name = @params[:name]
+								
+								# Validate e-mail address
+								if email_valid?(@email) == false
+									@error = "Please enter a valid e-mail address."
+									render :template => "account/settings"
+								else
+									# email is valid, check if display name is filled in.
+									if @displayname.length == 0
+										@error = "You have not entered a display name."
+										render :template => "account/settings"
+									else
+										# that's valid, check the password.
+										if @password1.length != 0 && @password1 != @password2
+											@error = "Your passwords don't match."
+											render :template => "account/settings"
+										else
+											if @password1.length != 0 && @password1.length < 5
+												@error = "Your new password is too short."
+												render :template => "account/settings"
+											else
+												# okay, the password isn't screwy. check the secret question
+												if @secretquestion.length == 0
+													@error = "Your secret question cannot be blank."
+													render :template => "account/settings"
+												else
+													# secret question is good, check secret answer
+													if @secretanswer.length == 0
+														@error = "Your secret answer cannot be blank."
+														render :template => "account/settings"
+													else
+														# everything checks out correctly.
+														if @password1 == @password2 && @password1.length > 0
+															UserService.setUserProperty(session[:uuid], session[:authcode], :password, @password1)
+															# re-authenticate to update the authcode.
+															@authcode = UserService.authenticate(@username, @password1, request.remote_ip)
+															reset_session
+															session[:authcode] = @authcode[:authcode]
+															session[:uuid] = @authcode[:uuid]
+														end
+														UserService.setUserProperty(session[:uuid], session[:authcode], :secretquestion, @secretquestion)
+														UserService.setUserProperty(session[:uuid], session[:authcode], :secretanswer, @secretanswer)
+														UserService.setUserProperty(session[:uuid], session[:authcode], :name, @name)
+														UserService.setUserProperty(session[:uuid], session[:authcode], :displayname, @displayname)
+														UserService.setUserProperty(session[:uuid], session[:authcode], :email, @email)
+														@info = "Successfully applied changes"
+														populate_user_variables #reload the user info for the top thingy
+														render :template => "account/settings"
+													end
+												end
+											end
+										end
+									end				
+								end
+							else
+								render :template => "errors/access_denied"
+							end
+						else
+							render :template => "errors/access_denied"
+						end
+					else
+						render :template => "errors/access_denied"
+					end
+				end
+			else
+				render :template => "errors/invalid_user_or_group"
+			end			
+		elsif request.method == :get
+			if @params[:username] != nil
+				uuid = UserService.lookupUserName(@params[:username].downcase)
+				if uuid == nil
+					render :template => "errors/invalid_user_or_group"
+				else
+					if session != nil
+						if session[:authcode] != nil && session[:uuid] != nil
+							verify_authcode = UserService.verifyAuthCode(@session[:uuid], @session[:authcode])
+							if verify_authcode == true
+								@displayname = UserService.getUserProperty(@session[:uuid], @session[:authcode], :displayname)
+								@name = UserService.getUserProperty(@session[:uuid], @session[:authcode], :name)
+								@secretquestion = UserService.getUserProperty(@session[:uuid], @session[:authcode], :secretquestion)
+								@secretanswer = UserService.getUserProperty(@session[:uuid], @session[:authcode], :secretanswer)
+								@email = UserService.getUserProperty(@session[:uuid], @session[:authcode], :email)
+								@username = @params[:username].downcase
+							else
+								render :template => "errors/access_denied"
+							end
+						else
+							render :template => "errors/access_denied"
+						end
+					else
+						render :template => "errors/access_denied"
+					end
+				end
+			else
+				render :template => "errors/invalid_user_or_group"
+			end
 		end
 	end
 end

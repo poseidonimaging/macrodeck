@@ -26,6 +26,9 @@ ActionController::Routing::Routes.draw do |map|
   # Route user/:username/home
   map.connect 'user/:username/home', :controller => 'account', :action => 'home'
   
+  # Route user/:username/settings
+  map.connect 'user/:username/settings', :controller => 'account', :action => 'settings'
+  
   # Route / to the MacroDeck blog until pages are created.
   map.connect '', :controller => 'blog', :action => 'index', :groupname => 'macrodeck'
   

@@ -11,13 +11,29 @@ h1 span {
 }
 
 /* Top of Page */
+#topmenu {
+	position: absolute;
+	top: 0;
+	left: 0;
+	color: #fff;
+	text-align: left;
+	padding: 3px;
+	font-size: 8pt;
+	font-weight: bold;
+	padding-left: 8px;
+}
+#topmenu a {
+	color: #fff;
+	font-weight: normal;
+}
 #top {
 	background-color: #000000;
 }
 #logo h1 {
 	display: block;
-	height: 100px;
+	height: 105px;
 	width: 400px;
+	background-position: bottom left;
 	background-image: url(/images/toplogo.png);
 	background-repeat: no-repeat;
 	margin: 0;
@@ -143,6 +159,8 @@ p.steptext {
 	font-weight: normal;
 	padding-left: 15px;
 }
+
+/* forms */
 input.offset {
 	position: absolute;
 	left: 140px;
@@ -170,6 +188,10 @@ p.info {
 	padding: 5px;
 	border: 1px solid #8b8b8b;
 	background-color: #efefef;
+}
+p.padbottom {
+	/* used by things that need extra padding on the bottom */
+	padding-bottom: 5px;
 }
 
 /* login */

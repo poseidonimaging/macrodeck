@@ -19,7 +19,7 @@ class UserService < BaseService
 	
 	# Creates a new user in the database, first checking to see if the user exists or not.
 	# Returns the new user's UUID.
-	def self.createUser(userName, password, secretQuestion, secretAnswer, name, displayName)
+	def self.createUser(userName, password, secretQuestion, secretAnswer, name, displayName, email)
 		if self.doesUserExist?(userName) == false
 			user = User.new
 			user.uuid = UUIDService.generateUUID
@@ -36,6 +36,7 @@ class UserService < BaseService
 			user.displayname = displayName
 			user.creation = Time.now.to_i
 			# removed 10-July-2006 by Ziggy #user.dob = dob
+			user.email = email
 			user.save!
 			return user.uuid
 		else
@@ -112,6 +113,8 @@ class UserService < BaseService
 					return user.creation
 				when :verified_email, "verified_email"
 					return user.verified_email
+				when :email, "email"
+					return user.email
 				else
 					return nil
 			end
@@ -120,6 +123,42 @@ class UserService < BaseService
 			return nil
 		end
 	end
+
+	# Sets the requested user property of the user specified.
+	# Users are specified by UUID and authCode. Valid properties:
+	# :secretquestion, :secretanswer, :name, :displayname, :password,
+	# and :email. :password will automatically be encrypted.
+	def self.setUserProperty(uuid, authCode, property, value)
+		user = User.find(:first, :conditions => ["uuid = ? AND authcode = ?", uuid, authCode])
+		if user != nil
+			# get the property requested.
+			case property
+				when :secretquestion, "secretquestion"
+					user.secretquestion = value
+				when :secretanswer, "secretanswer"
+					user.secretanswer = value
+				when :name, "name"
+					user.name = value
+				when :displayname, "displayname"
+					user.displayname = value
+				when :email, "email"
+					user.email = value
+				when :password, "password"
+					if defined?(PASSWORD_SALT)
+						user.password = "sha512:" + Digest::SHA512::hexdigest(PASSWORD_SALT + ":" + value)
+					else
+						user.password = "sha512:" + Digest::SHA512::hexdigest(value)
+					end
+				else
+					return false
+			end
+			user.save!
+			return true
+		else
+			# invalid information
+			return false
+		end
+	end	
 	
 	# Creates a group with the information specified.
 	def self.createGroup(groupName, displayname)
