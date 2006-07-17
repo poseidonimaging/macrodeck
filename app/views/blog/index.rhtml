@@ -1,4 +1,9 @@
-<% @menu_content = '<a href="/">Home</a>' %>
+<% if @user_loggedin == true %>
+<% @menu_content = "<a href=\"/#{@type}/#{@name}/blog/\">View Blog</a> <a href=\"/#{@type}/#{@name}/blog/post\">Post New Blog</a>" %>
+<% else %>
+<% @menu_content = "<a href=\"/#{@type}/#{@name}/blog/\">View Blog</a>" %>
+<% end %>
+
 <% @summary = build_summary(@blogmetadata[:description], @blogmetadata[:title]) %>
 <% @posts.each do |post| %>
 <h3 class="postname"><%= post.title %></h3>

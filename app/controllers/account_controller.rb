@@ -114,6 +114,7 @@ class AccountController < ApplicationController
 										# it checks out, boss!
 										uuid = UserService.createUser(@username, @password, @secretquestion, @secretanswer, @name, @displayname, @email)
 										if uuid != nil
+											BlogService.createBlog("#{@username}'s Blog", nil, CREATOR_MACRODECK, uuid)
 											render :template => "account/registerdone"
 										else
 											@error = "There was an error creating your user account. Please try again."

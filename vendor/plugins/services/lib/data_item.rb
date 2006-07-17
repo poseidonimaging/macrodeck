@@ -12,9 +12,9 @@ class DataItem < ActiveRecord::Base
 	# type if desired.
 	def self.findDataByGrouping(groupID, dataType = nil)
 		if dataType != nil
-			return self.find(:all, :conditions => ["grouping = ? AND datatype = ?", groupID, dataType], :order => "creation ASC")
+			return self.find(:all, :conditions => ["grouping = ? AND datatype = ?", groupID, dataType], :order => "creation DESC")
 		else
-			return self.find(:all, :conditions => ["grouping = ?", groupID], :order => "creation ASC")
+			return self.find(:all, :conditions => ["grouping = ?", groupID], :order => "creation DESC")
 		end
 	end
 	

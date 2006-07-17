@@ -18,10 +18,12 @@ ActionController::Routing::Routes.draw do |map|
   map.connect ':controller/service.wsdl', :action => 'wsdl'
   
   # Route group/:groupname/blog
-  map.connect 'group/:groupname/blog', :controller => 'blog', :action => 'index'
+  map.connect 'group/:groupname/blog',		:controller => 'blog', :action => 'index'
+  map.connect 'group/:groupname/blog/post',	:controller => 'blog', :action => 'post'
   
   # Route user/:username/blog
-  map.connect 'user/:username/blog', :controller => 'blog', :action => 'index'
+  map.connect 'user/:username/blog',		:controller => 'blog', :action => 'index'
+  map.connect 'user/:username/blog/post',	:controller => 'blog', :action => 'post'
   
   # Route user/:username/home
   map.connect 'user/:username/home', :controller => 'account', :action => 'home'
