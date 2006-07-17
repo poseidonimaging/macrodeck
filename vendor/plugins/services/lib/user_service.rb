@@ -37,6 +37,7 @@ class UserService < BaseService
 			user.creation = Time.now.to_i
 			# removed 10-July-2006 by Ziggy #user.dob = dob
 			user.email = email
+			user.verified_email = false
 			user.save!
 			return user.uuid
 		else
