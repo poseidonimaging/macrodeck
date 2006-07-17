@@ -4,6 +4,10 @@ class AccountController < ApplicationController
 	def index
 		# It's just a page.
 	end
+	def logout
+		reset_session
+		populate_user_variables
+	end
 	def register
 		# step 1 - username
 		# step 2 - password, secret question, secret answer
