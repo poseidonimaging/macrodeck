@@ -64,7 +64,22 @@ class BlogService < BaseService
 	
 	# Edits a post based on its postID.
 	def self.editBlogPost(postID, postTitle, postDescription, postContent, readPermissions, writePermissions)
-		
+		if DataService.doesDataItemExist?(postID)
+			DataService.modifyDataItem(postID, :string, postContent)
+			DataService.modifyDataItemMetadata(postID, :title, postTitle)
+			DataService.modifyDataItemMetadata(postID, :description, postDescription)
+			# modify the comments grouping
+			commentsgroup = DataService.findDataGrouping(DGROUP_COMMENTS, :parent, postID)
+			gid = nil
+			commentsgroup.each do |group|
+				gid = group.groupingid
+			end
+			DataService.modifyDataGroupMetadata(gid, :title, postTitle)
+			DataService.modifyDataGroupMetadata(gid, :description, postDescription)
+			return true
+		else
+			return false
+		end
 	end
 	
 	# Returns a blog post by its dataID

@@ -34,16 +34,20 @@ class DataService < BaseService
 	# if nothing can be found.
 	def self.getDataString(dataID)
 		value = DataItem.findDataItem(dataID)
-		if value.stringdata.class != nil
-			if value.stringdata.class == String
-				return value.stringdata
+		if value != nil
+			if value.stringdata.class != nil
+				if value.stringdata.class == String
+					return value.stringdata
+				else
+					return nil
+				end
 			else
+				# It doesn't have a class method.
+				# So something is weird and it's not
+				# a string as we expect.
 				return nil
 			end
 		else
-			# It doesn't have a class method.
-			# So something is weird and it's not
-			# a string as we expect.
 			return nil
 		end
 	end
@@ -52,10 +56,17 @@ class DataService < BaseService
 	# if nothing can be found.
 	def self.getDataInteger(dataID)
 		value = DataItem.findDataItem(dataID)
-		if value.integerdata.class != nil
-			if value.integerdata.class == Fixnum
-				return value.integerdata
+		if value != nil
+			if value.integerdata.class != nil
+				if value.integerdata.class == Fixnum
+					return value.integerdata
+				else
+					return nil
+				end
 			else
+				# It doesn't have a class method.
+				# So something is weird and it's not
+				# a string as we expect.
 				return nil
 			end
 		else
@@ -68,16 +79,23 @@ class DataService < BaseService
 	def self.getDataObject(dataID)
 		value = DataItem.findDataItem(dataID)
 		hashvalue = Hash.new
-		if value.objectdata.class != nil
-			if value.objectdata.class == String
-				hashvalue = YAML.load(value.objectdata.to_s)
-				return hashvalue
+		if value != nil
+			if value.objectdata.class != nil
+				if value.objectdata.class == String
+					hashvalue = YAML.load(value.objectdata.to_s)
+					return hashvalue
+				else
+					return nil
+				end
 			else
+				# It doesn't have a class method.
+				# So something is weird and it's not
+				# a string as we expect.
 				return nil
 			end
 		else
 			return nil
-		end
+		end	
 	end
 	
 	# Creates a new string value with the information provided.
@@ -218,6 +236,16 @@ class DataService < BaseService
 					return false
 			end
 			dataObj.save!
+			return true
+		else
+			return false
+		end
+	end
+	
+	# Returns true if a data item exists, false if not.
+	def self.doesDataItemExist?(dataID)
+		dataObj = DataItem.find(:first, :conditions => ["dataid = ?", dataID])
+		if dataObj != nil
 			return true
 		else
 			return false

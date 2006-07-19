@@ -28,48 +28,122 @@ class BlogController < ApplicationController
 	end
 	
 	def edit
-		if @params[:groupname] != nil
-			uuid = UserService.lookupGroupName(@params[:groupname].downcase)
-			if uuid == nil
-				render :template => "errors/invalid_user_or_group"
+		if request.method == :get
+			if @params[:groupname] != nil
+				uuid = UserService.lookupGroupName(@params[:groupname].downcase)
+				if uuid == nil
+					render :template => "errors/invalid_user_or_group"
+				else
+					@type = "group"
+					@name = @params[:groupname].downcase
+					@blogmetadata = BlogService.getBlogMetadata(BlogService.getBlogUUID(uuid))
+					if @user_loggedin == true
+						@post = BlogService.getBlogPost(@params[:uuid])
+						if @post == nil
+							render :template => "errors/invalid_post"
+						else
+							@postmetadata = BlogService.getPostMetadata(@params[:uuid])
+							@postuuid = @params[:uuid]
+							render :template => "blog/edit"
+						end
+					else
+						render :template => "errors/access_denied"
+					end
+				end
+			elsif @params[:username] != nil
+				uuid = UserService.lookupUserName(@params[:username].downcase)
+				if uuid == nil
+					render :template => "errors/invalid_user_or_group"
+				else
+					@type = "user"
+					@name = @params[:username].downcase
+					@blogmetadata = BlogService.getBlogMetadata(BlogService.getBlogUUID(uuid))
+					if @user_loggedin == true
+						@post = BlogService.getBlogPost(@params[:uuid])
+						if @post == nil
+							render :template => "errors/invalid_post"
+						else
+							@postmetadata = BlogService.getPostMetadata(@params[:uuid])
+							@postuuid = @params[:uuid]
+							render :template => "blog/edit"
+						end
+					else
+						render :template => "errors/access_denied"
+					end
+				end
 			else
+				render :template => "errors/invalid_user_or_group"
+			end
+		elsif request.method == :post
+			if @params[:groupname] != nil
+				@uuid = UserService.lookupGroupName(@params[:groupname].downcase)
 				@type = "group"
-				@name = @params[:groupname].downcase
-				@blogmetadata = BlogService.getBlogMetadata(BlogService.getBlogUUID(uuid))
-				if @user_loggedin == true
-					@post = BlogService.getBlogPost(@params[:uuid])
-					if @post == nil
-						render :template => "errors/invalid_post"
+				if @uuid == nil
+					render :template => "errors/invalid_user_or_group"
+				else				
+					# Any user can post on any blog. Solution until permissions are completed.
+					@name = @params[:groupname].downcase
+					@blogmetadata = BlogService.getBlogMetadata(BlogService.getBlogUUID(@uuid))
+					if @user_loggedin == true
+						# Validate the fields
+						@post = BlogService.getBlogPost(@params[:uuid])
+						if @post == nil
+							render :template => "errors/invalid_post"
+						else
+							if @params[:title].length > 0 && @params[:content].length > 0
+								BlogService.editBlogPost(@params[:uuid], @params[:title], @params[:description], @params[:content], nil, nil)
+								redirect_to "/#{@type}/#{@name}/blog"
+							else
+								if @params[:title].length == 0
+									@error = "Please enter a title for your blog."
+								else
+									@error = "Please enter content for your blog."
+								end
+								@postuuid = @params[:uuid]
+								render :template => "blog/edit"
+							end
+						end
 					else
-						@postmetadata = BlogService.getPostMetadata(@params[:uuid])
-						render :template => "blog/edit"
+						render :template => "errors/access_denied"
 					end
-				else
-					render :template => "errors/access_denied"
 				end
-			end
-		elsif @params[:username] != nil
-			uuid = UserService.lookupUserName(@params[:username].downcase)
-			if uuid == nil
-				render :template => "errors/invalid_user_or_group"
-			else
+			elsif @params[:username] != nil
+				@uuid = UserService.lookupUserName(@params[:username].downcase)
 				@type = "user"
-				@name = @params[:username].downcase
-				@blogmetadata = BlogService.getBlogMetadata(BlogService.getBlogUUID(uuid))
-				if @user_loggedin == true
-					@post = BlogService.getBlogPost(@params[:uuid])
-					if @post == nil
-						render :template => "errors/invalid_post"
-					else
-						@postmetadata = BlogService.getPostMetadata(@params[:uuid])
-						render :template => "blog/edit"
-					end
+				if @uuid == nil
+					render :template => "errors/invalid_user_or_group"
 				else
-					render :template => "errors/access_denied"
+					# Any user can post on any blog. Solution until permissions are completed.				
+					@name = @params[:username].downcase
+					@blogmetadata = BlogService.getBlogMetadata(BlogService.getBlogUUID(@uuid))
+					if @user_loggedin == true
+						# Validate the fields
+						@post = BlogService.getBlogPost(@params[:uuid])
+						if @post == nil
+							render :template => "errors/invalid_post"
+						else
+							if @params[:title].length > 0 && @params[:content].length > 0
+								BlogService.editBlogPost(@params[:uuid], @params[:title], @params[:description], @params[:content], nil, nil)
+								redirect_to "/#{@type}/#{@name}/blog"
+							else
+								if @params[:title].length == 0
+									@error = "Please enter a title for your blog."
+								else
+									@error = "Please enter content for your blog."
+								end
+								@postuuid = @params[:uuid]
+								render :template => "blog/edit"
+							end
+						end
+					else
+						render :template => "errors/access_denied"
+					end
 				end
-			end
+			else
+				render :template => "errors/invalid_user_or_group"
+			end		
 		else
-			render :template => "errors/invalid_user_or_group"
+			raise "Unrecognized HTTP request method in blog/edit"
 		end
 	end
 	
