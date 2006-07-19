@@ -224,6 +224,35 @@ class DataService < BaseService
 		end
 	end
 	
+	# Modifies the metadata for the specified data group.
+	# Valid metadata names are: :type, :creator, :owner,
+	# :tags, :title, and :description
+	def self.modifyDataGroupMetadata(groupID, name, value)
+		dgroup = DataGroup.find(:first, :conditions => ["groupingid = ?", groupID])
+		if dgroup != nil
+			case name
+				when :type, "type"
+					dgroup.groupingtype = value
+				when :creator, "creator"
+					dgroup.creator = value
+				when :owner, "owner"
+					dgroup.owner = value
+				when :tags, "tags"
+					dgroup.tags = value
+				when :title, "title"
+					dgroup.title = value
+				when :description, "description"
+					dgroup.description = value
+				else
+					return false
+			end
+			dgroup.save!
+			return true
+		else
+			return false
+		end
+	end
+	
 	# Creates a new data grouping with the specified parameters.
 	# +groupingID+ may be nil, if so, it will be generated in
 	# this function.
