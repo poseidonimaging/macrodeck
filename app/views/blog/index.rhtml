@@ -9,4 +9,5 @@
 <h3 class="postname"><%= post.title %></h3>
 <h4 class="postinfo">Posted by <%= UUIDService.lookupUUID(post.creator) %> on <%= Time.at(post.creation).strftime("%B %d, %Y at %I:%M %p") %></h4>
 <div class="postcontent"><%= markdown(post.stringdata) %></div>
+<% if @user_loggedin == true %><div class="editcontrols"><a href="<%= "#{@type}/#{@name}/blog/edit/#{post.dataid}" %>">Edit this post</a></div><% end %>
 <% end %>

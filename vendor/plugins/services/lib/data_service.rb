@@ -256,6 +256,24 @@ class DataService < BaseService
 			return nil
 		end
 	end
+	
+	# Gets the metadata associated with a particular data
+	# item, in a hash. The data that is returned should
+	# look like this:
+	# 
+	#  { :type => "UUID", :creator => "UUID", :owner => "UUID", :tags => "stupid, retarded, excellent", :title => "Ten Reasons Coke Sucks", :description => "Ten reasons why I hate Coke", :datacreator => "UUID", :creation => unix_timestamp }
+	#
+	# Functions will be provided in the future to lookup UUIDs
+	# so that this kind of thing can be looked up.
+	def self.getItemMetadata(dataID)
+		ditem = DataItem.find(:first, :conditions => ["dataid = ?", dataID])
+		if ditem != nil
+			h = { :type => ditem.datatype, :creator => ditem.creator, :owner => ditem.owner, :tags => ditem.tags, :creation => ditem.creation, :title => ditem.title, :description => ditem.description }
+			return h
+		else
+			return nil
+		end
+	end
 end
 
 Services.registerService(DataService)

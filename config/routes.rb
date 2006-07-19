@@ -18,18 +18,18 @@ ActionController::Routing::Routes.draw do |map|
   map.connect ':controller/service.wsdl', :action => 'wsdl'
   
   # Route group/:groupname/blog
-  map.connect 'group/:groupname/blog',		:controller => 'blog', :action => 'index'
-  map.connect 'group/:groupname/blog/post',	:controller => 'blog', :action => 'post'
+  map.connect 'group/:groupname/blog',				:controller => 'blog', :action => 'index'
+  map.connect 'group/:groupname/blog/post',			:controller => 'blog', :action => 'post'
+  map.connect 'group/:groupname/blog/edit/:uuid',	:controller => 'blog', :action => 'edit'
   
   # Route user/:username/blog
-  map.connect 'user/:username/blog',		:controller => 'blog', :action => 'index'
-  map.connect 'user/:username/blog/post',	:controller => 'blog', :action => 'post'
+  map.connect 'user/:username/blog',				:controller => 'blog', :action => 'index'
+  map.connect 'user/:username/blog/post',			:controller => 'blog', :action => 'post'
+  map.connect 'user/:username/blog/edit/:uuid',		:controller => 'blog', :action => 'edit'
   
-  # Route user/:username/home
-  map.connect 'user/:username/home', :controller => 'account', :action => 'home'
-  
-  # Route user/:username/settings
-  map.connect 'user/:username/settings', :controller => 'account', :action => 'settings'
+  # Route user home and settings
+  map.connect 'user/:username/home',				:controller => 'account', :action => 'home'
+  map.connect 'user/:username/settings',			:controller => 'account', :action => 'settings'
   
   # Route / to the MacroDeck blog until pages are created.
   map.connect '', :controller => 'blog', :action => 'index', :groupname => 'macrodeck'

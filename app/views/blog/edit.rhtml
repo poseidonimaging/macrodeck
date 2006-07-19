@@ -1,0 +1,19 @@
+<% @menu_content = "<a href=\"/#{@type}/#{@name}/blog/\">View Blog</a> <a href=\"/#{@type}/#{@name}/blog/post\">Post New Blog</a>" %>
+<% @summary = build_summary("", "Editing Blog Post") %>
+
+<% if @error != nil %>
+<p class="error"><%= @error %></p>
+<% end %>
+
+<%= form_tag("/#{@type}/#{@name}/blog/edit") %>
+<fieldset>
+	<legend>Create Blog Post</legend>
+	<p>Post Title: <%= text_field_tag "title", @postmetadata[:title], :size => 40 %></p>
+	<p>Post Summary (optional):<br />
+	<%= text_area_tag "description", @postmetadata[:description], :size => "40x5" %></p>
+	<p>Post Content:<br />
+	<%= text_area_tag "content", @post, :size => "80x10" %><br />
+	(<a href="http://daringfireball.net/projects/markdown/syntax">MarkDown</a> formatting allowed)</p>
+	<p><%= submit_tag "Edit" %> <%= link_to "Cancel", "/#{@type}/#{@name}/blog/" %></p>
+</fieldset>
+<%= end_form_tag %>

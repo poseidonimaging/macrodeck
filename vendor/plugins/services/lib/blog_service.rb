@@ -62,6 +62,11 @@ class BlogService < BaseService
 		DataService.createDataGroup(DGROUP_COMMENTS, nil, postTitle, postDescription, nil, creator, owner, postID)
 	end
 	
+	# Returns a blog post by its dataID
+	def self.getBlogPost(postID)
+		return DataService.getDataString(postID)
+	end
+	
 	# Creates a new comment on a blog post
 	def self.createBlogComment(postID, creator, commentTitle, commentContent, readPermissions, writePermissions)
 		commentsGrouping = DataService.findDataGrouping(DGROUP_COMMENTS, :parent, postID)
@@ -73,6 +78,11 @@ class BlogService < BaseService
 	# +blogID+ is the groupingID of the blog
 	def self.getBlogMetadata(blogID)
 		return DataService.getGroupMetadata(blogID)
+	end
+	
+	# Returns a hash of the post's metadata; see DataService.getItemMetadata.
+	def self.getPostMetadata(postID)
+		return DataService.getItemMetadata(postID)
 	end
 	
 	# Returns the UUID of the blog of a user/group. If for some reason a user

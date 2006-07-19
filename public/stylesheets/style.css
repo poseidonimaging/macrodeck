@@ -150,6 +150,20 @@ div.postcontent {
 	margin-left: 10px;
 	font-size: 9pt;
 }
+div.editcontrols {
+	height: 16px;
+	margin-left: 15px;
+	font-size: 8pt;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	padding-left: 17px;
+	background-image: url(/images/grayarrow.png);
+	background-repeat: no-repeat;
+	background-position: center left;
+}
+div.editcontrols a {
+	color: #000;
+}
 
 /* registration */
 p.stepname {
