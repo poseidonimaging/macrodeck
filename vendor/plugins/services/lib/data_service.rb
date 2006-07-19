@@ -170,6 +170,60 @@ class DataService < BaseService
 		return dataObj.dataid
 	end
 	
+	# Modifies a data item of the type and ID
+	# specified. Type can be :string, :integer,
+	# or :object
+	def self.modifyDataItem(dataID, dataType, data)
+		dataObj = DataItem.find(:first, :conditions => ["dataid = ?", dataID])
+		if dataObj != nil
+			case dataType
+				when :string, "string"
+					dataObj.stringdata = data
+				when :integer, "integer"
+					dataObj.integerdata = data
+				when :object, "object"
+					dataObj.objectdata = data.to_yaml
+				else
+					return false
+			end
+			dataObj.save!
+			return true
+		else
+			return false
+		end
+	end
+	
+	# Modifies the data item metadata specified in name.
+	# Name may be :type, :creator, :owner, :tags, :title,
+	# :datacreator, or :description.
+	def self.modifyDataItemMetadata(dataID, name, value)
+		dataObj = DataItem.find(:first, :conditions => ["dataid = ?", dataID])
+		if dataObj != nil
+			case name
+				when :type, "type"
+					dataObj.datatype = value
+				when :creator, "creator"
+					dataObj.creator = value
+				when :owner, "owner"
+					dataObj.owner = value
+				when :tags, "tags"
+					dataObj.tags = value
+				when :title, "title"
+					dataObj.title = value
+				when :datacreator, "datacreator"
+					dataObj.datacreator = value
+				when :description, "description"
+					dataObj.description = value
+				else
+					return false
+			end
+			dataObj.save!
+			return true
+		else
+			return false
+		end
+	end
+	
 	# Creates a new data grouping with the specified parameters.
 	# +groupingID+ may be nil, if so, it will be generated in
 	# this function.
@@ -268,7 +322,7 @@ class DataService < BaseService
 	def self.getItemMetadata(dataID)
 		ditem = DataItem.find(:first, :conditions => ["dataid = ?", dataID])
 		if ditem != nil
-			h = { :type => ditem.datatype, :creator => ditem.creator, :owner => ditem.owner, :tags => ditem.tags, :creation => ditem.creation, :title => ditem.title, :description => ditem.description }
+			h = { :type => ditem.datatype, :creator => ditem.creator, :owner => ditem.owner, :tags => ditem.tags, :creation => ditem.creation, :title => ditem.title, :description => ditem.description, :datacreator => ditem.datacreator }
 			return h
 		else
 			return nil

@@ -62,6 +62,11 @@ class BlogService < BaseService
 		DataService.createDataGroup(DGROUP_COMMENTS, nil, postTitle, postDescription, nil, creator, owner, postID)
 	end
 	
+	# Edits a post based on its postID.
+	def self.editBlogPost(postID, postTitle, postDescription, postContent, readPermissions, writePermissions)
+		
+	end
+	
 	# Returns a blog post by its dataID
 	def self.getBlogPost(postID)
 		return DataService.getDataString(postID)
