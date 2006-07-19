@@ -1,5 +1,5 @@
-<% @menu_content = "<a href=\"/#{@type}/#{@name}/blog/\">View Blog</a> <a href=\"/#{@type}/#{@name}/blog/post\">Post New Blog</a>" %>
-<% @summary = build_summary("", "Editing Blog Post") %>
+<% @menu_content = "<a href=\"/#{@type}/#{@name}/blog/\">View Blog</a> <a href=\"/#{@type}/#{@name}/blog/post\">New Entry</a>" %>
+<% @summary = build_summary("Editing blog entry in " + @blogmetadata[:title] , "Edit Entry") %>
 
 <% if @error != nil %>
 <p class="error"><%= @error %></p>
@@ -7,7 +7,7 @@
 
 <%= form_tag("/#{@type}/#{@name}/blog/edit/#{@postuuid}") %>
 <fieldset>
-	<legend>Edit Blog Post</legend>
+	<legend>Edit Blog Entry</legend>
 	<p>Post Title: <%= text_field_tag "title", @postmetadata[:title], :size => 40 %></p>
 	<p>Post Summary (optional):<br />
 	<%= text_area_tag "description", @postmetadata[:description], :size => "40x5" %></p>

@@ -175,6 +175,7 @@ class AccountController < ApplicationController
 				if session != nil
 					if session[:authcode] != nil && session[:uuid] != nil
 						verify_authcode = UserService.verifyAuthCode(@session[:uuid], @session[:authcode])
+						@username = @params[:username].downcase
 						if verify_authcode == true
 							# there's no real data put on the homepage yet.
 						else
