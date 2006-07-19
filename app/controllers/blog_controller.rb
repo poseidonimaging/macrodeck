@@ -27,6 +27,102 @@ class BlogController < ApplicationController
 		end
 	end
 	
+	def delete
+		# for security purposes (i.e. so people don't post images linking to the delete link),
+		# you can only actually delete via POST
+		if request.method == :get
+			if @params[:groupname] != nil
+				uuid = UserService.lookupGroupName(@params[:groupname].downcase)
+				if uuid == nil
+					render :template => "errors/invalid_user_or_group"
+				else
+					@type = "group"
+					@name = @params[:groupname].downcase
+					@blogmetadata = BlogService.getBlogMetadata(BlogService.getBlogUUID(uuid))
+					if @user_loggedin == true
+						@post = BlogService.getBlogPost(@params[:uuid])
+						if @post == nil
+							render :template => "errors/invalid_post"
+						else
+							@postmetadata = BlogService.getPostMetadata(@params[:uuid])
+							@postuuid = @params[:uuid]
+							render :template => "blog/delete"
+						end
+					else
+						render :template => "errors/access_denied"
+					end
+				end
+			elsif @params[:username] != nil
+				uuid = UserService.lookupUserName(@params[:username].downcase)
+				if uuid == nil
+					render :template => "errors/invalid_user_or_group"
+				else
+					@type = "user"
+					@name = @params[:username].downcase
+					@blogmetadata = BlogService.getBlogMetadata(BlogService.getBlogUUID(uuid))
+					if @user_loggedin == true
+						@post = BlogService.getBlogPost(@params[:uuid])
+						if @post == nil
+							render :template => "errors/invalid_post"
+						else
+							@postmetadata = BlogService.getPostMetadata(@params[:uuid])
+							@postuuid = @params[:uuid]
+							render :template => "blog/delete"
+						end
+					else
+						render :template => "errors/access_denied"
+					end
+				end
+			else
+				render :template => "errors/invalid_user_or_group"
+			end
+		elsif request.method == :post
+			if @params[:groupname] != nil
+				uuid = UserService.lookupGroupName(@params[:groupname].downcase)
+				if uuid == nil
+					render :template => "errors/invalid_user_or_group"
+				else
+					@type = "group"
+					@name = @params[:groupname].downcase
+					if @user_loggedin == true
+						@post = BlogService.getBlogPost(@params[:uuid])
+						if @post == nil
+							render :template => "errors/invalid_post"
+						else
+							@postuuid = @params[:uuid]
+							BlogService.deleteBlogPost(@postuuid)
+							redirect_to "/#{@type}/#{@name}/blog"
+						end
+					else
+						render :template => "errors/access_denied"
+					end
+				end
+			elsif @params[:username] != nil
+				uuid = UserService.lookupUserName(@params[:username].downcase)
+				if uuid == nil
+					render :template => "errors/invalid_user_or_group"
+				else
+					@type = "user"
+					@name = @params[:username].downcase
+					if @user_loggedin == true
+						@post = BlogService.getBlogPost(@params[:uuid])
+						if @post == nil
+							render :template => "errors/invalid_post"
+						else
+							@postuuid = @params[:uuid]
+							BlogService.deleteBlogPost(@postuuid)
+							redirect_to "/#{@type}/#{@name}/blog"
+						end
+					else
+						render :template => "errors/access_denied"
+					end
+				end
+			else
+				render :template => "errors/invalid_user_or_group"
+			end		
+		end
+	end
+	
 	def edit
 		if request.method == :get
 			if @params[:groupname] != nil

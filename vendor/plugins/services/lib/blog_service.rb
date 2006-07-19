@@ -87,6 +87,17 @@ class BlogService < BaseService
 		return DataService.getDataString(postID)
 	end
 	
+	# Deletes a blog post by its dataID
+	def self.deleteBlogPost(postID)
+		DataService.deleteDataItem(postID)
+		commentsgroup = DataService.findDataGrouping(DGROUP_COMMENTS, :parent, postID)
+		gid = nil
+		commentsgroup.each do |group|
+			gid = group.groupingid
+		end
+		DataService.deleteDataGroup(gid)
+	end
+	
 	# Creates a new comment on a blog post
 	def self.createBlogComment(postID, creator, commentTitle, commentContent, readPermissions, writePermissions)
 		commentsGrouping = DataService.findDataGrouping(DGROUP_COMMENTS, :parent, postID)

@@ -17,14 +17,16 @@ class UUIDService < BaseService
 		return UUID.random_create.to_s
 	end
 	
-	# *NOTICE* This function is temporary only!
-	def self.lookupUUID(id)
-		case id
-			when DataService.serviceUUID then		return DataService.serviceName
-			when BlogService.serviceUUID then		return BlogService.serviceName
-			when UUIDService.serviceUUID then		return UUIDService.serviceName
-			when USER_CSAKON then					return "csakon"
-			when USER_ZIGGYTHEHAMSTER then			return "ziggythehamster"
+	# Looks up the uuid and returns a human readable
+	# name. This searches users, groups, services, and
+	# so on. *NOTE* It doesn't _actually_ look services
+	# or anything other than users up yet.
+	def self.lookupUUID(uuid)
+		displayname = UserService.lookupUUID(uuid)
+		if displayname != nil
+			return displayname
+		else
+			return uuid
 		end
 	end
 end

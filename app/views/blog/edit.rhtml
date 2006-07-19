@@ -7,7 +7,7 @@
 
 <%= form_tag("/#{@type}/#{@name}/blog/edit/#{@postuuid}") %>
 <fieldset>
-	<legend>Create Blog Post</legend>
+	<legend>Edit Blog Post</legend>
 	<p>Post Title: <%= text_field_tag "title", @postmetadata[:title], :size => 40 %></p>
 	<p>Post Summary (optional):<br />
 	<%= text_area_tag "description", @postmetadata[:description], :size => "40x5" %></p>

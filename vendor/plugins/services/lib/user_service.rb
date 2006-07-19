@@ -316,6 +316,23 @@ class UserService < BaseService
 		end
 	end
 	
+	# Returns a user/group's display name or nil if the user/group
+	# doesn't exist.
+	def self.lookupUUID(uuid)
+		user = User.find(:first, :conditions => ["uuid = ?", uuid])
+		if user != nil
+			return user.displayname
+		else
+			# lookup group name
+			group = Group.find(:first, :conditions => ["uuid = ?", uuid])
+			if group != nil
+				return group.displayname
+			else
+				return nil
+			end
+		end
+	end
+	
 	# Validates an authcode specified with one in the database. If it matches, it returns
 	# true. Otherwise, it returns false.
 	def self.verifyAuthCode(uuid, authCode)

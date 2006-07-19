@@ -1,0 +1,11 @@
+<% @menu_content = "<a href=\"/#{@type}/#{@name}/blog/\">View Blog</a> <a href=\"/#{@type}/#{@name}/blog/post\">Post New Blog</a>" %>
+<% @summary = build_summary("", "Delete Blog Post") %>
+
+<% if @error != nil %>
+<p class="error"><%= @error %></p>
+<% end %>
+
+<%= form_tag("/#{@type}/#{@name}/blog/delete/#{@postuuid}") %>
+<p>Are you sure you want to delete the post titled "<%= @postmetadata[:title] %>"?</p>
+<p><%= submit_tag "Yes" %> <%= link_to "No", "/#{@type}/#{@name}/blog/" %></p>
+<%= end_form_tag %>

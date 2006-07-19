@@ -188,6 +188,28 @@ class DataService < BaseService
 		return dataObj.dataid
 	end
 	
+	# Deletes a data item specified by its ID
+	def self.deleteDataItem(dataID)
+		dataObj = DataItem.find(:first, :conditions => ["dataid = ?", dataID])
+		if dataObj != nil
+			dataObj.destroy
+			return true
+		else
+			return false
+		end		
+	end
+	
+	# Deletes a data group specified by its groupID
+	def self.deleteDataGroup(groupID)
+		dgroup = DataGroup.find(:first, :conditions => ["groupingid = ?", groupID])
+		if dgroup != nil
+			dgroup.destroy
+			return true
+		else
+			return false
+		end
+	end
+	
 	# Modifies a data item of the type and ID
 	# specified. Type can be :string, :integer,
 	# or :object
