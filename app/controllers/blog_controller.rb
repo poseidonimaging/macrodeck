@@ -100,6 +100,7 @@ class BlogController < ApplicationController
 									@error = "Please enter content for your blog."
 								end
 								@postuuid = @params[:uuid]
+								@postmetadata = BlogService.getPostMetadata(@params[:uuid])
 								render :template => "blog/edit"
 							end
 						end
@@ -132,6 +133,7 @@ class BlogController < ApplicationController
 									@error = "Please enter content for your blog."
 								end
 								@postuuid = @params[:uuid]
+								@postmetadata = BlogService.getPostMetadata(@params[:uuid])
 								render :template => "blog/edit"
 							end
 						end
