@@ -2,5 +2,5 @@
 cd ~/macrodeck.com/public
 ./copy-dispatch.sh
 cd ~/macrodeck.com/config
-sed -e "s/^ENV/#ENV/" environment.rb > environment.rb
+sed -i -e "s/^ENV/#ENV/" environment.rb
 cd ~/macrodeck.com
