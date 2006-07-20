@@ -1,7 +1,6 @@
-#!/bin/sh
-cd public
-sh copy-dispatch.sh
-cd ..
-cd config
+#!/bin/bash
+cd ~/macrodeck.com/public
+./copy-dispatch.sh
+cd ~/macrodeck.com/config
 sed -e "s/^ENV['RAILS_ENV']/#ENV['RAILS_ENV']/" environment.rb > environment.rb
-cd ..
+cd ~/macrodeck.com
