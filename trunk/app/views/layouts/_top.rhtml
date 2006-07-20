@@ -1,0 +1,30 @@
+<div id="login">
+	<% if @user_loggedin == true %>
+		Hello, <% if @user_firstname != nil %><%= h(@user_firstname) %><% else %><%= h(@user_displayname) %><% end %>! 
+		<%= link_to "(logout)", { :controller => "account", :action => "logout" } %><br />
+		<%= link_to "My Account", "/user/#{@user_username}/settings/" %>
+	<% elsif @user_loggedin == false %>
+		Hello, Guest!<br />
+		Please <%= link_to "Login", { :controller => "account", :action => "login" } %> or <%= link_to "Register", { :controller => "account", :action => "register" } %>.
+	<% else %>
+		Oh no!<br />
+		An internal error occured!
+	<% end %>
+</div>
+<div id="top">
+	<div id="topmenu"><a href="/">Home</a> | <a href="/group/macrodeck/blog/">Development Blog</a> | <a href="http://developer.macrodeck.com/">Developers</a> | 
+	<a href="#">Our Vision</a></div>
+	<div id="logo"><h1><span>MacroDeck: Tools to make you more human</span></h1></div>
+	<div id="menu">
+	<% if @menu_content != nil %>
+		<%= @menu_content %>
+	<% else %>
+		&nbsp; <!-- space so the thing lays out correctly -->
+	<% end %>
+	</div>
+	<% if @summary != nil %>
+	<div id="summary">
+		<%= @summary %>
+	</div>
+	<% end %>
+</div>

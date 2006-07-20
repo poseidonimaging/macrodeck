@@ -1,0 +1,412 @@
+# This service handles all of the data for MacroDeck.
+# This service *requires* Rails to function due to its
+# use of ActiveRecord. I believe that if you were to
+# load ActiveRecord, you could probably get away
+# with using only ActiveRecord.
+
+
+require "data_item"		# DataItem model
+require "data_group"	# DataGroup model
+require "yaml"
+
+# Constants for data types
+
+DTYPE_POST		= "13569fca-5b8c-4ec3-8738-350165a37592" # A blog post.
+DTYPE_EVENT		= "1a5527bb-515b-4f69-807e-facf578e0f2d" # A calendar event.
+DTYPE_COMMENT	= "9a232c1d-55f7-4edd-8b60-e942eca82ea2" # A blog post comment.
+
+# Constants for data groups
+
+DGROUP_BLOG		= "f7ae8ebd-c49a-4c9c-8f8c-425d32e64d88" # A user/group/site's blog.
+DGROUP_CALENDAR	= "ae32a6aa-bfb2-4126-87a1-7041da0ce6e5" # A calendar.
+DGROUP_COMMENTS	= "841d7152-1a50-43c5-b53f-75437faad6a2" # A blog post's comments.
+
+class DataService < BaseService
+	@serviceAuthor = "Keith Gable <ziggy@ignition-project.com>"
+	@serviceID = "com.macrodeck.DataService"
+	@serviceName = "DataService"	
+	@serviceVersionMajor = 0
+	@serviceVersionMinor = 1	
+	@serviceVersionRevision = 20060620
+	@serviceUUID = "ae52b2a9-0872-4651-b159-c37715a53704"
+	
+	# Returns a string value from the dataID requested or nil
+	# if nothing can be found.
+	def self.getDataString(dataID)
+		value = DataItem.findDataItem(dataID)
+		if value != nil
+			if value.stringdata.class != nil
+				if value.stringdata.class == String
+					return value.stringdata
+				else
+					return nil
+				end
+			else
+				# It doesn't have a class method.
+				# So something is weird and it's not
+				# a string as we expect.
+				return nil
+			end
+		else
+			return nil
+		end
+	end
+	
+	# Returns an integer value from the dataID requested or nil
+	# if nothing can be found.
+	def self.getDataInteger(dataID)
+		value = DataItem.findDataItem(dataID)
+		if value != nil
+			if value.integerdata.class != nil
+				if value.integerdata.class == Fixnum
+					return value.integerdata
+				else
+					return nil
+				end
+			else
+				# It doesn't have a class method.
+				# So something is weird and it's not
+				# a string as we expect.
+				return nil
+			end
+		else
+			return nil
+		end
+	end
+	
+	# Returns an object value from the dataID requested or nil
+	# if nothing can be found.
+	def self.getDataObject(dataID)
+		value = DataItem.findDataItem(dataID)
+		hashvalue = Hash.new
+		if value != nil
+			if value.objectdata.class != nil
+				if value.objectdata.class == String
+					hashvalue = YAML.load(value.objectdata.to_s)
+					return hashvalue
+				else
+					return nil
+				end
+			else
+				# It doesn't have a class method.
+				# So something is weird and it's not
+				# a string as we expect.
+				return nil
+			end
+		else
+			return nil
+		end	
+	end
+	
+	# Creates a new string value with the information provided.
+	# +creatorApp+ may be nil; in that case, DataService will be
+	# the creator. +grouping+ may also be nil. If it is nil, a
+	# UUID will be generated. +title+, +description+, and +tags+
+	# may also be nil, but will be stored as nil in the database.
+	# Temporarily, +readPermissions+ and +writePermissions+ may be
+	# nil, but this is subject to change.
+	#
+	# Returns the object's data ID, raises an exception if something
+	# gnarly happened.
+	def self.createDataString(dataType, creatorApp, grouping, creator, owner, tags, title, description, data, readPermissions, writePermissions)
+		dataObj = DataItem.new
+		if creatorApp == nil
+			creatorApp = @serviceUUID
+		end
+		if grouping == nil
+			grouping = UUIDService.generateUUID
+		end
+		dataObj.datatype = dataType
+		dataObj.datacreator = creatorApp
+		dataObj.dataid = UUIDService.generateUUID
+		dataObj.grouping = grouping
+		dataObj.owner = owner
+		dataObj.creator = creator
+		dataObj.creation = Time.now.to_i
+		dataObj.tags = tags
+		dataObj.title = title
+		dataObj.description = description
+		dataObj.stringdata = data
+		dataObj.read_permissions = readPermissions
+		dataObj.write_permissions = writePermissions
+		dataObj.save!
+		return dataObj.dataid
+	end
+	
+	# This function works much like createDataString except that
+	# it saves an integer
+	def self.createDataInteger(dataType, creatorApp, grouping, creator, owner, tags, title, description, data, readPermissions, writePermissions)
+		dataObj = DataItem.new
+		if creatorApp == nil
+			creatorApp = @serviceUUID
+		end
+		if grouping == nil
+			grouping = UUIDService.generateUUID
+		end
+		dataObj.datatype = dataType
+		dataObj.datacreator = creatorApp
+		dataObj.dataid = UUIDService.generateUUID
+		dataObj.grouping = grouping
+		dataObj.owner = owner
+		dataObj.creator = creator
+		dataObj.creation = Time.now.to_i
+		dataObj.tags = tags
+		dataObj.title = title
+		dataObj.description = description
+		dataObj.integerdata = data
+		dataObj.read_permissions = readPermissions
+		dataObj.write_permissions = writePermissions
+		dataObj.save!
+		return dataObj.dataid
+	end
+	
+	# This function works much like createDataString except that
+	# it saves a hash as YAML (hashes are very complex objects,
+	# so they should work for all other kinds of data)
+	def self.createDataObject(dataType, creatorApp, grouping, creator, owner, tags, title, description, data, readPermissions, writePermissions)
+		dataObj = DataItem.new
+		if creatorApp == nil
+			creatorApp = @serviceUUID
+		end
+		if grouping == nil
+			grouping = UUIDService.generateUUID
+		end
+		dataObj.datatype = dataType
+		dataObj.datacreator = creatorApp
+		dataObj.dataid = UUIDService.generateUUID
+		dataObj.grouping = grouping
+		dataObj.owner = owner
+		dataObj.creator = creator
+		dataObj.creation = Time.now.to_i
+		dataObj.tags = tags
+		dataObj.title = title
+		dataObj.description = description
+		dataObj.objectdata = data.to_yaml
+		dataObj.read_permissions = readPermissions
+		dataObj.write_permissions = writePermissions
+		dataObj.save!
+		return dataObj.dataid
+	end
+	
+	# Deletes a data item specified by its ID
+	def self.deleteDataItem(dataID)
+		dataObj = DataItem.find(:first, :conditions => ["dataid = ?", dataID])
+		if dataObj != nil
+			dataObj.destroy
+			return true
+		else
+			return false
+		end		
+	end
+	
+	# Deletes a data group specified by its groupID
+	def self.deleteDataGroup(groupID)
+		dgroup = DataGroup.find(:first, :conditions => ["groupingid = ?", groupID])
+		if dgroup != nil
+			dgroup.destroy
+			return true
+		else
+			return false
+		end
+	end
+	
+	# Modifies a data item of the type and ID
+	# specified. Type can be :string, :integer,
+	# or :object
+	def self.modifyDataItem(dataID, dataType, data)
+		dataObj = DataItem.find(:first, :conditions => ["dataid = ?", dataID])
+		if dataObj != nil
+			case dataType
+				when :string, "string"
+					dataObj.stringdata = data
+				when :integer, "integer"
+					dataObj.integerdata = data
+				when :object, "object"
+					dataObj.objectdata = data.to_yaml
+				else
+					return false
+			end
+			dataObj.save!
+			return true
+		else
+			return false
+		end
+	end
+	
+	# Modifies the data item metadata specified in name.
+	# Name may be :type, :creator, :owner, :tags, :title,
+	# :datacreator, or :description.
+	def self.modifyDataItemMetadata(dataID, name, value)
+		dataObj = DataItem.find(:first, :conditions => ["dataid = ?", dataID])
+		if dataObj != nil
+			case name
+				when :type, "type"
+					dataObj.datatype = value
+				when :creator, "creator"
+					dataObj.creator = value
+				when :owner, "owner"
+					dataObj.owner = value
+				when :tags, "tags"
+					dataObj.tags = value
+				when :title, "title"
+					dataObj.title = value
+				when :datacreator, "datacreator"
+					dataObj.datacreator = value
+				when :description, "description"
+					dataObj.description = value
+				else
+					return false
+			end
+			dataObj.save!
+			return true
+		else
+			return false
+		end
+	end
+	
+	# Returns true if a data item exists, false if not.
+	def self.doesDataItemExist?(dataID)
+		dataObj = DataItem.find(:first, :conditions => ["dataid = ?", dataID])
+		if dataObj != nil
+			return true
+		else
+			return false
+		end
+	end
+	
+	# Modifies the metadata for the specified data group.
+	# Valid metadata names are: :type, :creator, :owner,
+	# :tags, :title, and :description
+	def self.modifyDataGroupMetadata(groupID, name, value)
+		dgroup = DataGroup.find(:first, :conditions => ["groupingid = ?", groupID])
+		if dgroup != nil
+			case name
+				when :type, "type"
+					dgroup.groupingtype = value
+				when :creator, "creator"
+					dgroup.creator = value
+				when :owner, "owner"
+					dgroup.owner = value
+				when :tags, "tags"
+					dgroup.tags = value
+				when :title, "title"
+					dgroup.title = value
+				when :description, "description"
+					dgroup.description = value
+				else
+					return false
+			end
+			dgroup.save!
+			return true
+		else
+			return false
+		end
+	end
+	
+	# Creates a new data grouping with the specified parameters.
+	# +groupingID+ may be nil, if so, it will be generated in
+	# this function.
+	def self.createDataGroup(groupType, groupingID, title, description, tags, creator, owner, parent)
+		if groupingID == nil
+			groupingID = UUIDService.generateUUID
+		end
+		group = DataGroup.new
+		group.groupingtype = groupType
+		group.creator = creator
+		group.groupingid = groupingID
+		group.owner = owner
+		group.tags = tags
+		group.parent = parent
+		group.title = title
+		group.description = description
+		group.save!
+	end
+	
+	# Returns the owner of the data group specified (by its groupingID)
+	def self.getDataGroupOwner(groupingID)
+		group = DataGroup::find(:first, :conditions => ["groupingid = ?", groupingID])
+		return group.owner
+	end
+	
+	# Returns the creator of the data group specified (by its groupingID)
+	def self.getDataGroupCreator(groupingID)
+		group = DataGroup::find(:first, :conditions => ["groupingid = ?", groupingID])
+		return group.creator
+	end
+	
+	# Returns the owner of the data item specified (by its dataID)
+	def self.getDataItemOwner(dataID)
+		item = DataItem::find(:first, :conditions => ["dataid = ?", dataID])
+		return item.owner
+	end
+	
+	# Returns the creator of the data item specified (by its dataID)
+	def self.getDataItemCreator(dataID)
+		item = DataItem::find(:first, :conditions => ["dataid = ?", dataID])
+		return item.creator
+	end
+	
+	# Finds a data grouping.
+	#
+	# +searchBy+ may be :type, :parent, :creator, or :owner,
+	# and +query+ is the particular parent, creator, or
+	# owner you wish to look for. If you're looking by
+	# type only, query should be nil.
+	def self.findDataGrouping(type, searchBy, query)
+		case searchBy
+			when :parent, "parent"
+				data = DataGroup.findGroupingsByParent(type, query)
+				return data
+			when :creator, "creator"
+				data = DataGroup.findGroupingsByCreator(type, query)
+				return data
+			when :owner, "owner"
+				data = DataGroup.findGroupingsByOwner(type, query)
+				return data
+			when :type, "type"
+				data = DataGroup.findGroupings(type)
+				return data
+			else
+				return nil
+		end
+	end
+	
+	# Gets the metadata associated with a particular data
+	# grouping, in a hash. The data that is returned should
+	# look like this:
+	#
+	#  { :type => "UUID", :creator => "UUID", :owner => "UUID", :tags => "geek, tech blog, programmer", :title => "Ziggy's Blog!", :description => "Bloggity Blog." }
+	#
+	# Functions will be provided in the future to lookup UUIDs
+	# so types, creators, and owners can be converted into
+	# English.
+	def self.getGroupMetadata(groupingID)
+		dgroup = DataGroup.find(:first, :conditions => ["groupingid = ?", groupingID])
+		if dgroup != nil
+			h = { :type => dgroup.groupingtype, :creator => dgroup.creator, :owner => dgroup.owner, :tags => dgroup.tags, :title => dgroup.title, :description => dgroup.description }
+			return h
+		else
+			return nil
+		end
+	end
+	
+	# Gets the metadata associated with a particular data
+	# item, in a hash. The data that is returned should
+	# look like this:
+	# 
+	#  { :type => "UUID", :creator => "UUID", :owner => "UUID", :tags => "stupid, retarded, excellent", :title => "Ten Reasons Coke Sucks", :description => "Ten reasons why I hate Coke", :datacreator => "UUID", :creation => unix_timestamp }
+	#
+	# Functions will be provided in the future to lookup UUIDs
+	# so that this kind of thing can be looked up.
+	def self.getItemMetadata(dataID)
+		ditem = DataItem.find(:first, :conditions => ["dataid = ?", dataID])
+		if ditem != nil
+			h = { :type => ditem.datatype, :creator => ditem.creator, :owner => ditem.owner, :tags => ditem.tags, :creation => ditem.creation, :title => ditem.title, :description => ditem.description, :datacreator => ditem.datacreator }
+			return h
+		else
+			return nil
+		end
+	end
+end
+
+Services.registerService(DataService)

@@ -1,0 +1,19 @@
+<h2>Create Blog</h2>
+<%= form_tag({ :controller => "test", :action => "create_blog" }) %>
+<fieldset>
+	<legend>Information</legend>
+	<p><strong>NOTE!</strong> This page creates blogs! Blogs as in "a set of posts". If you want
+	to create a post, you are not in the right place! Also keep in mind that before user management,
+	it's a bad idea to actually use this form.</p>
+</fieldset>
+<fieldset>
+	<legend>Create Blog</legend>
+	<p>Blog Name: <%= text_field_tag "blogname", nil, :size => 40 %></p>
+	<p>Blog Description: <br />
+	<%= text_area_tag "blogdescription", nil, :size => "40x5" %></p>
+	<p>Owner UUID: <%= text_field_tag "blogowner", nil, :size => 40 %></p>
+	<p>Creator UUID: <code><%= CREATOR_MACRODECK %></code> (MacroDeck)</p>
+	<p><%= submit_tag "Create" %></p>
+</fieldset>
+<%= end_form_tag %>
+<p><%= link_to "&laquo; Back", { :controller => "test", :action => "index" } %></p>

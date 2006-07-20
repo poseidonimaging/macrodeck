@@ -1,0 +1,14 @@
+<h2>Create User</h2>
+<%= form_tag({ :controller => "test", :action => "create_user" }) %>
+<fieldset>
+	<legend>Create User</legend>
+	<p>User Name: <%= text_field_tag "username", nil, :size => 40 %></p>
+	<p>Password: <%= text_field_tag "password", nil, :size => 40 %></p>
+	<p>Secret Question: <%= text_field_tag "secretquestion", nil, :size => 60 %></p>
+	<p>Secret Answer: <%= text_field_tag "secretanswer", nil, :size => 60 %></p>
+	<p>Name: <%= text_field_tag "name", nil, :size => 40 %></p>
+	<p>Display Name: <%= text_field_tag "displayname", nil, :size => 40 %></p>
+	<p><%= submit_tag "Add User" %></p>
+</fieldset>
+<%= end_form_tag %>
+<p><%= link_to "&laquo; Back", { :controller => "test", :action => "index" } %></p>

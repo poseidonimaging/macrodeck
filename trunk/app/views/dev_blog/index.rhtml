@@ -1,0 +1,6 @@
+<h2>MacroDeck Development Blog</h2>
+<% @posts.each do |post| %>
+<h3 class="postname"><%= post.title %></h3>
+<h4 class="postinfo">Posted by <%= UUIDService.lookupUUID(post.creator) %> on <%= Time.at(post.creation).strftime("%B %d, %Y at %I:%M %p") %></h4>
+<div class="postcontent"><%= markdown(post.stringdata) %></div>
+<% end %>
