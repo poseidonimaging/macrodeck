@@ -25,9 +25,9 @@ class DataService < BaseService
 	@serviceAuthor = "Keith Gable <ziggy@ignition-project.com>"
 	@serviceID = "com.macrodeck.DataService"
 	@serviceName = "DataService"	
-	@serviceVersionMajor = 1
-	@serviceVersionMinor = 0	
-	@serviceVersionRevision = 20060704
+	@serviceVersionMajor = 0
+	@serviceVersionMinor = 1	
+	@serviceVersionRevision = 20060620
 	@serviceUUID = "ae52b2a9-0872-4651-b159-c37715a53704"
 	
 	# Returns a string value from the dataID requested or nil

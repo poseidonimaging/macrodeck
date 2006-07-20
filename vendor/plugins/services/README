@@ -53,7 +53,7 @@ you access from a class a class method.
 
 == How Services Work
 
-First, when our Rails app starts, it loads services.rb. This then
+First, when our Rails app starts, it loads Services. This then
 loads base_service.rb, which provides the BaseService object. Next,
 we start services individually. In the future, we will allow
 services to be turned on and off from an administration panel of
@@ -93,6 +93,12 @@ The following instance variables are used to define this information:
                           your domain name is "coolestsiteever.com", your Java-style name
                           would be "com.coolestsiteever.YourService" (or if you want you
                           can add more crap between your domain name and YourService).
+
+[@serviceAuthor]          Example: Keith Gable <ziggy@ignition-project.com>
+                          
+                          The name of the service's author. Your name and e-mail. If you
+                          can't figure this out, allow me to go over there and hit you
+                          with a shovel.						  
 						  
 [@serviceName]            Example: TestService
 

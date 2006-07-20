@@ -7,9 +7,9 @@ class UUIDService < BaseService
 	@serviceAuthor = "Keith Gable <ziggy@ignition-project.com>"
 	@serviceID = "com.macrodeck.UUIDService"
 	@serviceName = "UUIDService"	
-	@serviceVersionMajor = 1
-	@serviceVersionMinor = 0	
-	@serviceVersionRevision = 20060624
+	@serviceVersionMajor = 0
+	@serviceVersionMinor = 1	
+	@serviceVersionRevision = 20060620
 	@serviceUUID = "05705b50-135a-489f-bbbd-a8fc7d38b643"
 	
 	# Returns a string containing a random UUID.

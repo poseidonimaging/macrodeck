@@ -6,9 +6,9 @@ class BlogService < BaseService
 	@serviceAuthor = "Keith Gable <ziggy@ignition-project.com>"
 	@serviceID = "com.macrodeck.BlogService"
 	@serviceName = "BlogService"	
-	@serviceVersionMajor = 1
-	@serviceVersionMinor = 0	
-	@serviceVersionRevision = 20060630
+	@serviceVersionMajor = 0
+	@serviceVersionMinor = 1	
+	@serviceVersionRevision = 20060620
 	@serviceUUID = "e26afd5f-8aa9-47c9-804d-3fd0c333aaa4"
 	
 	# Returns all of the blog posts for user/group specified in

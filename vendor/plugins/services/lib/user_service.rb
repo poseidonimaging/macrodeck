@@ -12,9 +12,9 @@ class UserService < BaseService
 	@serviceAuthor = "Keith Gable <ziggy@ignition-project.com>"
 	@serviceID = "com.macrodeck.UserService"
 	@serviceName = "UserService"	
-	@serviceVersionMajor = 1
-	@serviceVersionMinor = 0	
-	@serviceVersionRevision = 20060704
+	@serviceVersionMajor = 0
+	@serviceVersionMinor = 1	
+	@serviceVersionRevision = 20060620
 	@serviceUUID = "8d6e8d29-55b0-4d74-bf71-84b2d653ba1f"
 	
 	# Creates a new user in the database, first checking to see if the user exists or not.
