@@ -7,8 +7,8 @@ class BlogService < BaseService
 	@serviceID = "com.macrodeck.BlogService"
 	@serviceName = "BlogService"	
 	@serviceVersionMajor = 0
-	@serviceVersionMinor = 1	
-	@serviceVersionRevision = 20060620
+	@serviceVersionMinor = 2	
+	@serviceVersionRevision = 20060625
 	@serviceUUID = "e26afd5f-8aa9-47c9-804d-3fd0c333aaa4"
 	
 	# Returns all of the blog posts for user/group specified in
@@ -84,7 +84,7 @@ class BlogService < BaseService
 	
 	# Returns a blog post by its dataID
 	def self.getBlogPost(postID)
-		return DataService.getDataString(postID)
+		return DataService.getData(postID, :string)
 	end
 	
 	# Deletes a blog post by its dataID

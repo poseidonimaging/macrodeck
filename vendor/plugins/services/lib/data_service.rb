@@ -26,76 +26,30 @@ class DataService < BaseService
 	@serviceID = "com.macrodeck.DataService"
 	@serviceName = "DataService"	
 	@serviceVersionMajor = 0
-	@serviceVersionMinor = 1	
-	@serviceVersionRevision = 20060620
+	@serviceVersionMinor = 2
+	@serviceVersionRevision = 20060625
 	@serviceUUID = "ae52b2a9-0872-4651-b159-c37715a53704"
 	
-	# Returns a string value from the dataID requested or nil
-	# if nothing can be found.
-	def self.getDataString(dataID)
-		value = DataItem.findDataItem(dataID)
-		if value != nil
-			if value.stringdata.class != nil
-				if value.stringdata.class == String
-					return value.stringdata
+	# Gets the specified data, by type (:string, :integer, :object),
+	# of the data item specified
+	def self.getData(dataID, dataType)
+		ditem = DataItem.findDataItem(dataID)
+		h = Hash.new
+		if ditem != nil
+			case dataType
+				when :string, "string"
+					return ditem.stringdata
+				when :integer, "integer"
+					return ditem.integerdata
+				when :object, "object"
+					h = YAML.load(ditem.objectdata.to_s)
+					return h
 				else
 					return nil
-				end
-			else
-				# It doesn't have a class method.
-				# So something is weird and it's not
-				# a string as we expect.
-				return nil
 			end
 		else
 			return nil
 		end
-	end
-	
-	# Returns an integer value from the dataID requested or nil
-	# if nothing can be found.
-	def self.getDataInteger(dataID)
-		value = DataItem.findDataItem(dataID)
-		if value != nil
-			if value.integerdata.class != nil
-				if value.integerdata.class == Fixnum
-					return value.integerdata
-				else
-					return nil
-				end
-			else
-				# It doesn't have a class method.
-				# So something is weird and it's not
-				# a string as we expect.
-				return nil
-			end
-		else
-			return nil
-		end
-	end
-	
-	# Returns an object value from the dataID requested or nil
-	# if nothing can be found.
-	def self.getDataObject(dataID)
-		value = DataItem.findDataItem(dataID)
-		hashvalue = Hash.new
-		if value != nil
-			if value.objectdata.class != nil
-				if value.objectdata.class == String
-					hashvalue = YAML.load(value.objectdata.to_s)
-					return hashvalue
-				else
-					return nil
-				end
-			else
-				# It doesn't have a class method.
-				# So something is weird and it's not
-				# a string as we expect.
-				return nil
-			end
-		else
-			return nil
-		end	
 	end
 	
 	# Creates a new string value with the information provided.
