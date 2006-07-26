@@ -52,23 +52,60 @@ class DataService < BaseService
 		end
 	end
 	
-	# Creates a new string value with the information provided.
-	# +creatorApp+ may be nil; in that case, DataService will be
-	# the creator. +grouping+ may also be nil. If it is nil, a
-	# UUID will be generated. +title+, +description+, and +tags+
-	# may also be nil, but will be stored as nil in the database.
-	# Temporarily, +readPermissions+ and +writePermissions+ may be
-	# nil, but this is subject to change.
+	# Creates a data item with the type and value specified.
+	# +dataType+ is a UUID that indicates the type of data
+	# kept in this data item. For example, a blog entry is
+	# a type of data.
+	# +valueType+ may be :string, :object, or :integer, and is
+	# the kind of data stored in dataValue.
+	# +metadata+ is optional, but if used, should be a hash
+	# that looks like this (include only the metadata you want
+	# to set):
 	#
-	# Returns the object's data ID, raises an exception if something
-	# gnarly happened.
-	def self.createDataString(dataType, creatorApp, grouping, creator, owner, tags, title, description, data, readPermissions, writePermissions)
+	#  {
+	#  :creator => "UUID",
+	#  :creatorapp => "UUID", # the UUID of the service/widget/application that created the item
+	#  :description => "A bunch of photos from QuakeCon 2006",
+	#  :grouping => "UUID",
+	#  :owner => "UUID",
+	#  :tags => "personal, images",
+	#  :title => "QuakeCon 2006 Photos"
+	#  }
+	#
+	# Keep in mind that permissions should get set via another function that's not yet written.
+	#
+	# Returns the data item's UUID if successful, raises an exception if not.
+	def self.createData(dataType, valueType, dataValue, metadata = nil)
 		dataObj = DataItem.new
+		if metadata != nil
+			creator = metadata[:creator]
+			creatorApp = metadata[:creatorapp]
+			description = metadata[:description]
+			grouping = metadata[:grouping]
+			owner = metadata[:owner]
+			tags = metadata[:tags]
+			title = metadata[:title]
+		else
+			creator = nil
+			creatorApp = nil
+			description = nil
+			grouping = nil
+			owner = nil
+			tags = nil
+			title = nil
+		end
+		# FIXME: The UUID should get set to a UUID representing nobody; probably the "all zeros" UUID
+		if creator == nil
+			creator = @serviceUUID
+		end
 		if creatorApp == nil
 			creatorApp = @serviceUUID
 		end
 		if grouping == nil
 			grouping = UUIDService.generateUUID
+		end
+		if owner == nil
+			owner = @serviceUUID
 		end
 		dataObj.datatype = dataType
 		dataObj.datacreator = creatorApp
@@ -80,65 +117,20 @@ class DataService < BaseService
 		dataObj.tags = tags
 		dataObj.title = title
 		dataObj.description = description
-		dataObj.stringdata = data
-		dataObj.read_permissions = readPermissions
-		dataObj.write_permissions = writePermissions
+		case valueType
+			when :string, "string"
+				dataObj.stringdata = dataValue
+			when :integer, "integer"
+				dataObj.integerdata = dataValue
+			when :object, "object"
+				dataObj.integerdata = dataValue.to_yaml
+			else
+				raise ArgumentError
+		end
+		dataObj.read_permissions = nil
+		dataObj.write_permissions = nil
 		dataObj.save!
-		return dataObj.dataid
-	end
-	
-	# This function works much like createDataString except that
-	# it saves an integer
-	def self.createDataInteger(dataType, creatorApp, grouping, creator, owner, tags, title, description, data, readPermissions, writePermissions)
-		dataObj = DataItem.new
-		if creatorApp == nil
-			creatorApp = @serviceUUID
-		end
-		if grouping == nil
-			grouping = UUIDService.generateUUID
-		end
-		dataObj.datatype = dataType
-		dataObj.datacreator = creatorApp
-		dataObj.dataid = UUIDService.generateUUID
-		dataObj.grouping = grouping
-		dataObj.owner = owner
-		dataObj.creator = creator
-		dataObj.creation = Time.now.to_i
-		dataObj.tags = tags
-		dataObj.title = title
-		dataObj.description = description
-		dataObj.integerdata = data
-		dataObj.read_permissions = readPermissions
-		dataObj.write_permissions = writePermissions
-		dataObj.save!
-		return dataObj.dataid
-	end
-	
-	# This function works much like createDataString except that
-	# it saves a hash as YAML (hashes are very complex objects,
-	# so they should work for all other kinds of data)
-	def self.createDataObject(dataType, creatorApp, grouping, creator, owner, tags, title, description, data, readPermissions, writePermissions)
-		dataObj = DataItem.new
-		if creatorApp == nil
-			creatorApp = @serviceUUID
-		end
-		if grouping == nil
-			grouping = UUIDService.generateUUID
-		end
-		dataObj.datatype = dataType
-		dataObj.datacreator = creatorApp
-		dataObj.dataid = UUIDService.generateUUID
-		dataObj.grouping = grouping
-		dataObj.owner = owner
-		dataObj.creator = creator
-		dataObj.creation = Time.now.to_i
-		dataObj.tags = tags
-		dataObj.title = title
-		dataObj.description = description
-		dataObj.objectdata = data.to_yaml
-		dataObj.read_permissions = readPermissions
-		dataObj.write_permissions = writePermissions
-		dataObj.save!
+		
 		return dataObj.dataid
 	end
 	

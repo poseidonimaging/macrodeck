@@ -54,10 +54,12 @@ class BlogService < BaseService
 	
 	# Creates a new blog post within the blog specified. Blogs are specified
 	# by their GroupingID.
+	#
+	# FIXME: Make this method's signature more sane.
 	def self.createBlogPost(blogID, creator, postTitle, postDescription, postContent, readPermissions, writePermissions)
 		# The owner is retrieved from the blog itself.
 		owner = DataService.getDataGroupOwner(blogID)
-		postID = DataService.createDataString(DTYPE_POST, @serviceUUID, blogID, creator, owner, nil, postTitle, postDescription, postContent, readPermissions, writePermissions)
+		postID = DataService.createData(DTYPE_POST, :string, postContent, { :creatorapp => @serviceUUID, :creator => creator, :grouping => blogID, :owner => owner, :title => postTitle, :description => postDescription })
 		# now create comments group
 		DataService.createDataGroup(DGROUP_COMMENTS, nil, postTitle, postDescription, nil, creator, owner, postID)
 	end
@@ -99,10 +101,12 @@ class BlogService < BaseService
 	end
 	
 	# Creates a new comment on a blog post
+	#
+	# FIXME: This function's signature needs to be changed to be more sane.
 	def self.createBlogComment(postID, creator, commentTitle, commentContent, readPermissions, writePermissions)
 		commentsGrouping = DataService.findDataGrouping(DGROUP_COMMENTS, :parent, postID)
 		owner = DataService.getDataGroupOwner(commentsGrouping)
-		DataService.createDataString(DTYPE_COMMENT, @serviceUUID, commentsGrouping, creator, owner, nil, commentTitle, nil, commentContent, readPermissions, writePermissions)
+		DataService.createData(DTYPE_COMMENT, :string, commentContent, { :creatorapp => @serviceUUID, :grouping => commentsGrouping, :creator => creator, :owner => owner, :title => commentTitle })
 	end
 	
 	# Returns a hash of the blog's metadata; see DataService.getGroupMetadata.
