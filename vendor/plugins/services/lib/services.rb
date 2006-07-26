@@ -5,8 +5,13 @@
 # You will probably be interested in Services and BaseService.
 
 require "base_service"
+require "default_uuids"
+require "local_uuids"
 
-class Services	
+include ServicesModule::DefaultUUIDs
+include ServicesModule::LocalUUIDs
+
+class Services
 	@@loadedServices = Array.new
 	
 	# Starts a service from fileName.
