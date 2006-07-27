@@ -15,6 +15,9 @@ module ServicesModule
 
 		DGROUP_BLOG		= "f7ae8ebd-c49a-4c9c-8f8c-425d32e64d88" # A user/group/site's blog.
 		DGROUP_CALENDAR	= "ae32a6aa-bfb2-4126-87a1-7041da0ce6e5" # A calendar.
-		DGROUP_COMMENTS	= "841d7152-1a50-43c5-b53f-75437faad6a2" # A blog post's comments.		
+		DGROUP_COMMENTS	= "841d7152-1a50-43c5-b53f-75437faad6a2" # A blog post's comments.
+
+		# Default creator/owner constants
+		NOBODY			= "574ecd0f-afb1-40e4-a71b-1e66622db0de"
 	end
 end

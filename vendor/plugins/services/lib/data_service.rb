@@ -15,7 +15,7 @@ class DataService < BaseService
 	@serviceName = "DataService"	
 	@serviceVersionMajor = 0
 	@serviceVersionMinor = 2
-	@serviceVersionRevision = 20060625
+	@serviceVersionRevision = 20060626
 	@serviceUUID = "ae52b2a9-0872-4651-b159-c37715a53704"
 	
 	# Gets the specified data, by type (:string, :integer, :object),
@@ -84,7 +84,7 @@ class DataService < BaseService
 		end
 		# FIXME: The UUID should get set to a UUID representing nobody; probably the "all zeros" UUID
 		if creator == nil
-			creator = @serviceUUID
+			creator = NOBODY
 		end
 		if creatorApp == nil
 			creatorApp = @serviceUUID
@@ -93,7 +93,7 @@ class DataService < BaseService
 			grouping = UUIDService.generateUUID
 		end
 		if owner == nil
-			owner = @serviceUUID
+			owner = NOBODY
 		end
 		dataObj.datatype = dataType
 		dataObj.datacreator = creatorApp
@@ -167,70 +167,10 @@ class DataService < BaseService
 		end
 	end
 	
-	# Modifies the data item metadata specified in name.
-	# Name may be :type, :creator, :owner, :tags, :title,
-	# :datacreator, or :description.
-	def self.modifyDataItemMetadata(dataID, name, value)
-		dataObj = DataItem.find(:first, :conditions => ["dataid = ?", dataID])
-		if dataObj != nil
-			case name
-				when :type, "type"
-					dataObj.datatype = value
-				when :creator, "creator"
-					dataObj.creator = value
-				when :owner, "owner"
-					dataObj.owner = value
-				when :tags, "tags"
-					dataObj.tags = value
-				when :title, "title"
-					dataObj.title = value
-				when :datacreator, "datacreator"
-					dataObj.datacreator = value
-				when :description, "description"
-					dataObj.description = value
-				else
-					return false
-			end
-			dataObj.save!
-			return true
-		else
-			return false
-		end
-	end
-	
 	# Returns true if a data item exists, false if not.
 	def self.doesDataItemExist?(dataID)
 		dataObj = DataItem.find(:first, :conditions => ["dataid = ?", dataID])
 		if dataObj != nil
-			return true
-		else
-			return false
-		end
-	end
-	
-	# Modifies the metadata for the specified data group.
-	# Valid metadata names are: :type, :creator, :owner,
-	# :tags, :title, and :description
-	def self.modifyDataGroupMetadata(groupID, name, value)
-		dgroup = DataGroup.find(:first, :conditions => ["groupingid = ?", groupID])
-		if dgroup != nil
-			case name
-				when :type, "type"
-					dgroup.groupingtype = value
-				when :creator, "creator"
-					dgroup.creator = value
-				when :owner, "owner"
-					dgroup.owner = value
-				when :tags, "tags"
-					dgroup.tags = value
-				when :title, "title"
-					dgroup.title = value
-				when :description, "description"
-					dgroup.description = value
-				else
-					return false
-			end
-			dgroup.save!
 			return true
 		else
 			return false
@@ -254,30 +194,6 @@ class DataService < BaseService
 		group.title = title
 		group.description = description
 		group.save!
-	end
-	
-	# Returns the owner of the data group specified (by its groupingID)
-	def self.getDataGroupOwner(groupingID)
-		group = DataGroup::find(:first, :conditions => ["groupingid = ?", groupingID])
-		return group.owner
-	end
-	
-	# Returns the creator of the data group specified (by its groupingID)
-	def self.getDataGroupCreator(groupingID)
-		group = DataGroup::find(:first, :conditions => ["groupingid = ?", groupingID])
-		return group.creator
-	end
-	
-	# Returns the owner of the data item specified (by its dataID)
-	def self.getDataItemOwner(dataID)
-		item = DataItem::find(:first, :conditions => ["dataid = ?", dataID])
-		return item.owner
-	end
-	
-	# Returns the creator of the data item specified (by its dataID)
-	def self.getDataItemCreator(dataID)
-		item = DataItem::find(:first, :conditions => ["dataid = ?", dataID])
-		return item.creator
 	end
 	
 	# Finds a data grouping.
@@ -314,7 +230,7 @@ class DataService < BaseService
 	# Functions will be provided in the future to lookup UUIDs
 	# so types, creators, and owners can be converted into
 	# English.
-	def self.getGroupMetadata(groupingID)
+	def self.getDataGroupMetadata(groupingID)
 		dgroup = DataGroup.find(:first, :conditions => ["groupingid = ?", groupingID])
 		if dgroup != nil
 			h = { :type => dgroup.groupingtype, :creator => dgroup.creator, :owner => dgroup.owner, :tags => dgroup.tags, :title => dgroup.title, :description => dgroup.description }
@@ -324,6 +240,35 @@ class DataService < BaseService
 		end
 	end
 	
+	# Modifies the metadata for the specified data group.
+	# Valid metadata names are: :type, :creator, :owner,
+	# :tags, :title, and :description
+	def self.modifyDataGroupMetadata(groupID, name, value)
+		dgroup = DataGroup.find(:first, :conditions => ["groupingid = ?", groupID])
+		if dgroup != nil
+			case name
+				when :type, "type"
+					dgroup.groupingtype = value
+				when :creator, "creator"
+					dgroup.creator = value
+				when :owner, "owner"
+					dgroup.owner = value
+				when :tags, "tags"
+					dgroup.tags = value
+				when :title, "title"
+					dgroup.title = value
+				when :description, "description"
+					dgroup.description = value
+				else
+					return false
+			end
+			dgroup.save!
+			return true
+		else
+			return false
+		end
+	end	
+	
 	# Gets the metadata associated with a particular data
 	# item, in a hash. The data that is returned should
 	# look like this:
@@ -332,7 +277,7 @@ class DataService < BaseService
 	#
 	# Functions will be provided in the future to lookup UUIDs
 	# so that this kind of thing can be looked up.
-	def self.getItemMetadata(dataID)
+	def self.getDataItemMetadata(dataID)
 		ditem = DataItem.find(:first, :conditions => ["dataid = ?", dataID])
 		if ditem != nil
 			h = { :type => ditem.datatype, :creator => ditem.creator, :owner => ditem.owner, :tags => ditem.tags, :creation => ditem.creation, :title => ditem.title, :description => ditem.description, :datacreator => ditem.datacreator }
@@ -341,6 +286,37 @@ class DataService < BaseService
 			return nil
 		end
 	end
+	
+	# Modifies the data item metadata specified in name.
+	# Name may be :type, :creator, :owner, :tags, :title,
+	# :datacreator, or :description.
+	def self.modifyDataItemMetadata(dataID, name, value)
+		dataObj = DataItem.find(:first, :conditions => ["dataid = ?", dataID])
+		if dataObj != nil
+			case name
+				when :type, "type"
+					dataObj.datatype = value
+				when :creator, "creator"
+					dataObj.creator = value
+				when :owner, "owner"
+					dataObj.owner = value
+				when :tags, "tags"
+					dataObj.tags = value
+				when :title, "title"
+					dataObj.title = value
+				when :datacreator, "datacreator"
+					dataObj.datacreator = value
+				when :description, "description"
+					dataObj.description = value
+				else
+					return false
+			end
+			dataObj.save!
+			return true
+		else
+			return false
+		end
+	end	
 end
 
 Services.registerService(DataService)

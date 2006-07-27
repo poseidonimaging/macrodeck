@@ -8,7 +8,7 @@ class BlogService < BaseService
 	@serviceName = "BlogService"	
 	@serviceVersionMajor = 0
 	@serviceVersionMinor = 2	
-	@serviceVersionRevision = 20060625
+	@serviceVersionRevision = 20060626
 	@serviceUUID = "e26afd5f-8aa9-47c9-804d-3fd0c333aaa4"
 	
 	# Returns all of the blog posts for user/group specified in
@@ -58,7 +58,8 @@ class BlogService < BaseService
 	# FIXME: Make this method's signature more sane.
 	def self.createBlogPost(blogID, creator, postTitle, postDescription, postContent, readPermissions, writePermissions)
 		# The owner is retrieved from the blog itself.
-		owner = DataService.getDataGroupOwner(blogID)
+		blog_meta = DataService.getDataGroupMetadata(blogID)
+		owner = blog_meta[:owner]
 		postID = DataService.createData(DTYPE_POST, :string, postContent, { :creatorapp => @serviceUUID, :creator => creator, :grouping => blogID, :owner => owner, :title => postTitle, :description => postDescription })
 		# now create comments group
 		DataService.createDataGroup(DGROUP_COMMENTS, nil, postTitle, postDescription, nil, creator, owner, postID)
@@ -105,19 +106,20 @@ class BlogService < BaseService
 	# FIXME: This function's signature needs to be changed to be more sane.
 	def self.createBlogComment(postID, creator, commentTitle, commentContent, readPermissions, writePermissions)
 		commentsGrouping = DataService.findDataGrouping(DGROUP_COMMENTS, :parent, postID)
-		owner = DataService.getDataGroupOwner(commentsGrouping)
+		post_meta = DataService.getDataGroupMetadata(commentsGrouping)
+		owner = post_meta[:owner]
 		DataService.createData(DTYPE_COMMENT, :string, commentContent, { :creatorapp => @serviceUUID, :grouping => commentsGrouping, :creator => creator, :owner => owner, :title => commentTitle })
 	end
 	
 	# Returns a hash of the blog's metadata; see DataService.getGroupMetadata.
 	# +blogID+ is the groupingID of the blog
 	def self.getBlogMetadata(blogID)
-		return DataService.getGroupMetadata(blogID)
+		return DataService.getDataGroupMetadata(blogID)
 	end
 	
 	# Returns a hash of the post's metadata; see DataService.getItemMetadata.
 	def self.getPostMetadata(postID)
-		return DataService.getItemMetadata(postID)
+		return DataService.getDataItemMetadata(postID)
 	end
 	
 	# Returns the UUID of the blog of a user/group. If for some reason a user
@@ -125,7 +127,7 @@ class BlogService < BaseService
 	# should not happen, and therefore we don't care.
 	def self.getBlogUUID(userOrGroupUUID)
 		blogid = nil
-		groupings = DataService.findDataGrouping(DGROUP_BLOG, "owner", userOrGroupUUID)
+		groupings = DataService.findDataGrouping(DGROUP_BLOG, :owner, userOrGroupUUID)
 		groupings.each do |grouping|
 			blogid = grouping.groupingid
 		end
