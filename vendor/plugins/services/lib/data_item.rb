@@ -9,12 +9,20 @@
 class DataItem < ActiveRecord::Base
 	# Finds a group of data based on the grouping
 	# UUID specified. Can limit to a certain data
-	# type if desired.
-	def self.findDataByGrouping(groupID, dataType = nil)
-		if dataType != nil
-			return self.find(:all, :conditions => ["grouping = ? AND datatype = ?", groupID, dataType], :order => "creation DESC")
+	# type if desired. The order the data is returned
+	# can be specified using :desc or :asc.
+	def self.findDataByGrouping(groupID, dataType = nil, order = :desc)
+		if order == :desc
+			sql_order = "DESC"
+		elsif order == :asc
+			sql_order = "ASC"
 		else
-			return self.find(:all, :conditions => ["grouping = ?", groupID], :order => "creation DESC")
+			sql_order = "DESC"
+		end
+		if dataType != nil
+			return self.find(:all, :conditions => ["grouping = ? AND datatype = ?", groupID, dataType], :order => "creation #{sql_order}")
+		else
+			return self.find(:all, :conditions => ["grouping = ?", groupID], :order => "creation #{sql_order}")
 		end
 	end
 	

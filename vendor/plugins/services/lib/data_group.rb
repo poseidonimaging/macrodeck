@@ -5,22 +5,22 @@
 
 class DataGroup < ActiveRecord::Base
 	# Finds groupings by their type
-	def self.findGroupings(dataType)
-		return self::find(:all, :conditions => ["groupingtype = ?", dataType])
+	def self.findGroupings(dataType, resultsToReturn = :all)
+		return self::find(resultsToReturn, :conditions => ["groupingtype = ?", dataType])
 	end
 	
 	# Finds groupings by type and their creator.
-	def self.findGroupingsByCreator(dataType, creator)
-		return self::find(:all, :conditions => ["groupingtype = ? AND creator = ?", dataType, creator])
+	def self.findGroupingsByCreator(dataType, creator, resultsToReturn = :all)
+		return self::find(resultsToReturn, :conditions => ["groupingtype = ? AND creator = ?", dataType, creator])
 	end
 	
 	# Finds groupings by type and owner.
-	def self.findGroupingsByOwner(dataType, owner)
-		return self::find(:all, :conditions => ["groupingtype = ? AND owner = ?", dataType, owner])
+	def self.findGroupingsByOwner(dataType, owner, resultsToReturn = :all)
+		return self::find(resultsToReturn, :conditions => ["groupingtype = ? AND owner = ?", dataType, owner])
 	end
 	
 	# Finds groupings by their type and parent
-	def self.findGroupingsByParent(dataType, parent)
-		return self::find(:all, :conditions => ["groupingtype = ? AND parent = ?", dataType, parent])
+	def self.findGroupingsByParent(dataType, parent, resultsToReturn = :all)
+		return self::find(resultsToReturn, :conditions => ["groupingtype = ? AND parent = ?", dataType, parent])
 	end
 end

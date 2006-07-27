@@ -19,30 +19,17 @@ class BlogService < BaseService
 	# function looked for it by the creator, which would be
 	# incorrect.
 	def self.getBlogPosts(owner)
-		blogposts = Array.new
-		groupings = DataService.findDataGrouping(DGROUP_BLOG, "owner", owner)
-		groupings.each do |grouping|
-			# There really should only be one grouping per user with
-			# a DGROUP_BLOG datatype, since more than one would imply
-			# a user has more than one blog. But this handles that
-			# just in case.
-			posts = DataItem.findDataByGrouping(grouping.groupingid, DTYPE_POST)
-			# Append the posts found to blogposts.
-			blogposts = blogposts + posts
-		end
+		blog = DataService.findDataGrouping(DGROUP_BLOG, :owner, owner, :first)
+		blogposts = DataService.getDataGroupItems(blog.groupingid, DTYPE_POST)
 		return blogposts
 	end
 	
 	# Returns all of the comments for blog post specified in postID.
 	# The postID is retrieved from a particular post's dataid.
 	def self.getBlogComments(postID)
-		blogcomments = Array.new
-		groupings = DataService.findDataGrouping(DGROUP_COMMENTS, "parent", postID)
-		groupings.each do |grouping|
-			comments = DataItem.findDataByGrouping(grouping.groupingid, DTYPE_COMMENT)
-			blogcomments = blogcomments + comments
-		end
-		return blogcomments
+		post = DataService.findDataGrouping(DGROUP_COMMENTS, :parent, postID, :first)
+		comments = DataService.getDataGroupItems(blog.groupingid, DTYPE_COMMENT)
+		return comments
 	end
 	
 	# Creates a new blog. This should be done when a user registers.
@@ -72,13 +59,9 @@ class BlogService < BaseService
 			DataService.modifyDataItemMetadata(postID, :title, postTitle)
 			DataService.modifyDataItemMetadata(postID, :description, postDescription)
 			# modify the comments grouping
-			commentsgroup = DataService.findDataGrouping(DGROUP_COMMENTS, :parent, postID)
-			gid = nil
-			commentsgroup.each do |group|
-				gid = group.groupingid
-			end
-			DataService.modifyDataGroupMetadata(gid, :title, postTitle)
-			DataService.modifyDataGroupMetadata(gid, :description, postDescription)
+			comments = DataService.findDataGrouping(DGROUP_COMMENTS, :parent, postID, :first)
+			DataService.modifyDataGroupMetadata(comments.groupingid, :title, postTitle)
+			DataService.modifyDataGroupMetadata(comments.groupingid, :description, postDescription)
 			return true
 		else
 			return false
@@ -93,12 +76,8 @@ class BlogService < BaseService
 	# Deletes a blog post by its dataID
 	def self.deleteBlogPost(postID)
 		DataService.deleteDataItem(postID)
-		commentsgroup = DataService.findDataGrouping(DGROUP_COMMENTS, :parent, postID)
-		gid = nil
-		commentsgroup.each do |group|
-			gid = group.groupingid
-		end
-		DataService.deleteDataGroup(gid)
+		comments = DataService.findDataGrouping(DGROUP_COMMENTS, :parent, postID, :first)
+		DataService.deleteDataGroup(comments.groupingid)
 	end
 	
 	# Creates a new comment on a blog post
@@ -123,15 +102,15 @@ class BlogService < BaseService
 	end
 	
 	# Returns the UUID of the blog of a user/group. If for some reason a user
-	# has more than one blog, it'll return the last blog in the database. This
+	# has more than one blog, it'll return the first blog in the database. This
 	# should not happen, and therefore we don't care.
 	def self.getBlogUUID(userOrGroupUUID)
-		blogid = nil
-		groupings = DataService.findDataGrouping(DGROUP_BLOG, :owner, userOrGroupUUID)
-		groupings.each do |grouping|
-			blogid = grouping.groupingid
+		blog = DataService.findDataGrouping(DGROUP_BLOG, :owner, userOrGroupUUID, :first)
+		if blog != nil
+			return blog.groupingid
+		else
+			return nil
 		end
-		return blogid
 	end
 end
 

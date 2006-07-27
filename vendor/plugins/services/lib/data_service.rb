@@ -121,29 +121,7 @@ class DataService < BaseService
 		
 		return dataObj.dataid
 	end
-	
-	# Deletes a data item specified by its ID
-	def self.deleteDataItem(dataID)
-		dataObj = DataItem.find(:first, :conditions => ["dataid = ?", dataID])
-		if dataObj != nil
-			dataObj.destroy
-			return true
-		else
-			return false
-		end		
-	end
-	
-	# Deletes a data group specified by its groupID
-	def self.deleteDataGroup(groupID)
-		dgroup = DataGroup.find(:first, :conditions => ["groupingid = ?", groupID])
-		if dgroup != nil
-			dgroup.destroy
-			return true
-		else
-			return false
-		end
-	end
-	
+
 	# Modifies a data item of the type and ID
 	# specified. Type can be :string, :integer,
 	# or :object
@@ -161,6 +139,28 @@ class DataService < BaseService
 					return false
 			end
 			dataObj.save!
+			return true
+		else
+			return false
+		end
+	end	
+	
+	# Deletes a data item specified by its ID
+	def self.deleteDataItem(dataID)
+		dataObj = DataItem.find(:first, :conditions => ["dataid = ?", dataID])
+		if dataObj != nil
+			dataObj.destroy
+			return true
+		else
+			return false
+		end		
+	end
+	
+	# Deletes a data group specified by its groupID
+	def self.deleteDataGroup(groupID)
+		dgroup = DataGroup.find(:first, :conditions => ["groupingid = ?", groupID])
+		if dgroup != nil
+			dgroup.destroy
 			return true
 		else
 			return false
@@ -196,25 +196,39 @@ class DataService < BaseService
 		group.save!
 	end
 	
+	# Gets a group of data and returns an array containing all of the data.
+	# To only get a certain type of data in the group, you can specify
+	# type. You can also specify the order (by creation time) to
+	# return them. :desc is newest first, :asc is oldest first. Default
+	# is :desc.
+	def self.getDataGroupItems(groupingID, type = nil, order = :desc)
+		return DataItem.findDataByGrouping(groupingID, type, order)
+	end
+	
 	# Finds a data grouping.
 	#
 	# +searchBy+ may be :type, :parent, :creator, or :owner,
 	# and +query+ is the particular parent, creator, or
 	# owner you wish to look for. If you're looking by
-	# type only, query should be nil.
-	def self.findDataGrouping(type, searchBy, query)
+	# type only, query should be nil. resultsToReturn is
+	# optional, and defaults to returning all results (:all).
+	# The other option is to return the first result (:first).
+	def self.findDataGrouping(type, searchBy, query, resultsToReturn = :all)
+		if resultsToReturn != :all && resultsToReturn != :first
+			resultsToReturn = :all
+		end
 		case searchBy
 			when :parent, "parent"
-				data = DataGroup.findGroupingsByParent(type, query)
+				data = DataGroup.findGroupingsByParent(type, query, resultsToReturn)
 				return data
 			when :creator, "creator"
-				data = DataGroup.findGroupingsByCreator(type, query)
+				data = DataGroup.findGroupingsByCreator(type, query, resultsToReturn)
 				return data
 			when :owner, "owner"
-				data = DataGroup.findGroupingsByOwner(type, query)
+				data = DataGroup.findGroupingsByOwner(type, query, resultsToReturn)
 				return data
 			when :type, "type"
-				data = DataGroup.findGroupings(type)
+				data = DataGroup.findGroupings(type, resultsToReturn)
 				return data
 			else
 				return nil
