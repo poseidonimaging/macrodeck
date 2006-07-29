@@ -330,7 +330,29 @@ class DataService < BaseService
 		else
 			return false
 		end
-	end	
+	end
+	
+	# Returns true if the user specified (by UUID) can
+	# read the data item specified (by UUID)
+	def self.canRead?(dataID, userID)
+		ditem = DataItem.find(:first, :conditions => ["dataid = ?", dataID])
+		if ditem != nil
+			return UserService.checkPermissions(ditem.read_permissions, userID)
+		else
+			return false
+		end
+	end
+	
+	# Returns true if the user specified (by UUID) can
+	# write to the data item specified (by UUID)
+	def self.canWrite?(dataID, userID)
+		ditem = DataItem.find(:first, :conditions => ["dataid = ?", dataID])
+		if ditem != nil
+			return UserService.checkPermissions(ditem.write_permissions, userID)
+		else
+			return false
+		end
+	end
 end
 
 Services.registerService(DataService)
