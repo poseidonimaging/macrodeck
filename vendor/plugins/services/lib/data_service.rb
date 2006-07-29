@@ -332,12 +332,62 @@ class DataService < BaseService
 		end
 	end
 	
+	# Sets the permissions on a data item. +kind+
+	# is either :read or :write for read permissions
+	# and write permissions respectively. +value+
+	# is the permission array (see Services:UserService
+	# on the wiki)
+	def self.setPermissions(dataID, kind, value)
+		ditem = DataItem.find(:first, :conditions => ["dataid = ?", dataID])
+		if ditem != nil
+			case kind
+				when :write, "write"
+					ditem.write_permissions = value.to_yaml
+					return true
+				when :read, "read"
+					ditem.read_permissions = value.to_yaml
+					return true
+				else
+					return false
+			end
+		else
+			return false
+		end
+	end
+	
+	# Sets the default permissions on a data group.
+	# See setPermissions for more info.
+	def self.setDefaultPermissions(groupID, kind, value)
+		dgroup = DataGroup.find(:first, :conditions => ["groupingid = ?", dataID])
+		if ditem != nil
+			case kind
+				when :write, "write"
+					ditem.default_write_permissions = value.to_yaml
+					return true
+				when :read, "read"
+					ditem.default_read_permissions = value.to_yaml
+					return true
+				else
+					return false
+			end
+		else
+			return false
+		end	
+	end
+	
 	# Returns true if the user specified (by UUID) can
 	# read the data item specified (by UUID)
 	def self.canRead?(dataID, userID)
 		ditem = DataItem.find(:first, :conditions => ["dataid = ?", dataID])
 		if ditem != nil
-			return UserService.checkPermissions(ditem.read_permissions, userID)
+			# the creator and owner always have permission to read/write.
+			if ditem.creator == userID
+				return true
+			elsif ditem.owner == userID
+				return true
+			else
+				return UserService.checkPermissions(ditem.read_permissions, userID)
+			end
 		else
 			return false
 		end
@@ -348,7 +398,14 @@ class DataService < BaseService
 	def self.canWrite?(dataID, userID)
 		ditem = DataItem.find(:first, :conditions => ["dataid = ?", dataID])
 		if ditem != nil
-			return UserService.checkPermissions(ditem.write_permissions, userID)
+			# the creator and owner always have permission to read/write.
+			if ditem.creator == userID
+				return true
+			elsif ditem.owner == userID
+				return true
+			else
+				return UserService.checkPermissions(ditem.write_permissions, userID)
+			end
 		else
 			return false
 		end
