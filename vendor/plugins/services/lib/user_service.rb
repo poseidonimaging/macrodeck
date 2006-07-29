@@ -381,7 +381,7 @@ class UserService < BaseService
 				if self.doesGroupMemberExist?(perm[:id], uuid)
 					if perm[:action] == :allow
 						return true
-					elsif perm[:action == :deny
+					elsif perm[:action] == :deny
 						return false
 					end
 				end
