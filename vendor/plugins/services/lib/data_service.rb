@@ -8,6 +8,9 @@
 require "data_item"		# DataItem model
 require "data_group"	# DataGroup model
 require "yaml"
+require "default_permissions" # Default permissions
+
+include DataServiceModule::DefaultPermissions
 
 class DataService < BaseService
 	@serviceAuthor = "Keith Gable <ziggy@ignition-project.com>"
@@ -60,7 +63,9 @@ class DataService < BaseService
 	#  :title => "QuakeCon 2006 Photos"
 	#  }
 	#
-	# Keep in mind that permissions should get set via another function that's not yet written.
+	# Keep in mind that permissions should get set via setPermissions if the
+	# defaults don't suit you. If this item belongs to a pre-existing grouping,
+	# and that grouping has default permissions, those will be applied.
 	#
 	# Returns the data item's UUID if successful, raises an exception if not.
 	def self.createData(dataType, valueType, dataValue, metadata = nil)
@@ -82,7 +87,6 @@ class DataService < BaseService
 			tags = nil
 			title = nil
 		end
-		# FIXME: The UUID should get set to a UUID representing nobody; probably the "all zeros" UUID
 		if creator == nil
 			creator = NOBODY
 		end
@@ -94,6 +98,23 @@ class DataService < BaseService
 		end
 		if owner == nil
 			owner = NOBODY
+		end
+		# figure out permissions
+		dgroup = DataGroup.find(:first, :conditions => ["groupingid = ?", grouping])
+		if dgroup != nil
+			if dgroup.default_read_permissions != nil
+				read_perms = YAML::load(dgroup.default_read_permissions)
+			else
+				read_perms = DEFAULT_READ_PERMISSIONS
+			end
+			if dgroup.default_write_permissions != nil
+				write_perms = YAML::load(dgroup.default_write_permissions)
+			else
+				write_perms = DEFAULT_WRITE_PERMISSIONS
+			end
+		else
+			read_perms = DEFAULT_READ_PERMS
+			write_perms = DEFAULT_WRITE_PERMS
 		end
 		dataObj.datatype = dataType
 		dataObj.datacreator = creatorApp
@@ -115,8 +136,8 @@ class DataService < BaseService
 			else
 				raise ArgumentError
 		end
-		dataObj.read_permissions = nil
-		dataObj.write_permissions = nil
+		dataObj.read_permissions = read_perms.to_yaml
+		dataObj.write_permissions = write_perms.to_yaml
 		dataObj.save!
 		
 		return dataObj.dataid
@@ -194,6 +215,7 @@ class DataService < BaseService
 		group.title = title
 		group.description = description
 		group.save!
+		return groupingID
 	end
 	
 	# Gets a group of data and returns an array containing all of the data.
@@ -343,9 +365,11 @@ class DataService < BaseService
 			case kind
 				when :write, "write"
 					ditem.write_permissions = value.to_yaml
+					ditem.save!
 					return true
 				when :read, "read"
 					ditem.read_permissions = value.to_yaml
+					ditem.save!
 					return true
 				else
 					return false
@@ -355,17 +379,39 @@ class DataService < BaseService
 		end
 	end
 	
-	# Sets the default permissions on a data group.
-	# See setPermissions for more info.
-	def self.setDefaultPermissions(groupID, kind, value)
-		dgroup = DataGroup.find(:first, :conditions => ["groupingid = ?", dataID])
+	# Returns an array containing the permissions requested
+	# of the data item specified.
+	def self.getPermissions(dataID, kind)
+		ditem = DataItem.find(:first, :conditions => ["dataid = ?", dataID])
 		if ditem != nil
 			case kind
 				when :write, "write"
-					ditem.default_write_permissions = value.to_yaml
+					p = YAML::load(ditem.write_permissions)
+					return p
+				when :read, "read"
+					p = YAML::load(ditem.read_permissions)
+					return p
+				else
+					return nil
+			end
+		else
+			return nil
+		end	
+	end
+	
+	# Sets the default permissions on a data group.
+	# See setPermissions for more info.
+	def self.setDefaultPermissions(groupID, kind, value)
+		dgroup = DataGroup.find(:first, :conditions => ["groupingid = ?", groupID])
+		if dgroup != nil
+			case kind
+				when :write, "write"
+					dgroup.default_write_permissions = value.to_yaml
+					dgroup.save!
 					return true
 				when :read, "read"
-					ditem.default_read_permissions = value.to_yaml
+					dgroup.default_read_permissions = value.to_yaml
+					dgroup.save!
 					return true
 				else
 					return false
