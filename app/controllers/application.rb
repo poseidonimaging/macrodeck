@@ -43,13 +43,17 @@ class ApplicationController < ActionController::Base
 					else
 						@user_firstname = nil
 					end
+					@user_uuid = @session[:uuid]
 				else
+					@user_uuid = "anonymous"
 					@user_loggedin = false
 				end
 			else
+				@user_uuid = "anonymous"
 				@user_loggedin = false
 			end
 		else
+			@user_uuid = "anonymous"
 			@user_loggedin = false
 		end
 		return true

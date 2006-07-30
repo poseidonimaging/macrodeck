@@ -376,7 +376,7 @@ class DataService < BaseService
 	end
 	
 	# Returns true if the user specified (by UUID) can
-	# read the data item specified (by UUID)
+	# read the data item or data group specified (by UUID)
 	def self.canRead?(dataID, userID)
 		ditem = DataItem.find(:first, :conditions => ["dataid = ?", dataID])
 		if ditem != nil
@@ -386,15 +386,27 @@ class DataService < BaseService
 			elsif ditem.owner == userID
 				return true
 			else
-				return UserService.checkPermissions(ditem.read_permissions, userID)
+				return UserService.checkPermissions(YAML::load(ditem.read_permissions), userID)
 			end
 		else
-			return false
+			# check data group
+			dgroup = DataGroup.find(:first, :conditions => ["groupingid = ?", dataID])
+			if dgroup != nil
+				if dgroup.creator == userID
+					return true
+				elsif dgroup.owner == userID
+					return true
+				else
+					return UserService.checkPermissions(YAML::load(dgroup.default_read_permissions), userID)
+				end
+			else
+				return false
+			end		
 		end
 	end
 	
 	# Returns true if the user specified (by UUID) can
-	# write to the data item specified (by UUID)
+	# write to the data item or data group specified (by UUID)
 	def self.canWrite?(dataID, userID)
 		ditem = DataItem.find(:first, :conditions => ["dataid = ?", dataID])
 		if ditem != nil
@@ -404,10 +416,22 @@ class DataService < BaseService
 			elsif ditem.owner == userID
 				return true
 			else
-				return UserService.checkPermissions(ditem.write_permissions, userID)
+				return UserService.checkPermissions(YAML::load(ditem.write_permissions), userID)
 			end
 		else
-			return false
+			# check data group
+			dgroup = DataGroup.find(:first, :conditions => ["groupingid = ?", dataID])
+			if dgroup != nil
+				if dgroup.creator == userID
+					return true
+				elsif dgroup.owner == userID
+					return true
+				else
+					return UserService.checkPermissions(YAML::load(dgroup.default_write_permissions), userID)
+				end
+			else
+				return false
+			end
 		end
 	end
 end

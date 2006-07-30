@@ -370,27 +370,33 @@ class UserService < BaseService
 	# allow everyone in an permission array, nobody can see it!
 	def self.checkPermissions(perms, uuid)
 		perms.each do |perm|
-			if perm[:id].downcase == uuid.downcase
-				if perm[:action] == :allow
-					return true
-				elsif perm[:action] == :deny
-					return false
-				end
-			elsif self.isGroup?(perm[:id])
-				# if the permission is a group
-				if self.doesGroupMemberExist?(perm[:id], uuid)
+			if perm[:id] != nil
+				if perm[:id].downcase == uuid.downcase
+					if perm[:action] == :allow
+						return true
+					elsif perm[:action] == :deny
+						return false
+					end
+				elsif self.isGroup?(perm[:id])
+					# if the permission is a group
+					if self.doesGroupMemberExist?(perm[:id], uuid)
+						if perm[:action] == :allow
+							return true
+						elsif perm[:action] == :deny
+							return false
+						end
+					end
+				elsif perm[:id].downcase == "everybody"
 					if perm[:action] == :allow
 						return true
 					elsif perm[:action] == :deny
 						return false
 					end
 				end
-			elsif perm[:id].downcase == "everybody"
-				if perm[:action] == :allow
-					return true
-				elsif perm[:action] == :deny
-					return false
-				end
+			else
+				# perm[:id] is nil therefore something is wrong.
+				# deny them.
+				return false
 			end
 		end
 		# if the user hasn't matched a rule yet, they
