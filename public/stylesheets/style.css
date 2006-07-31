@@ -86,6 +86,31 @@ h1 span {
 	padding-right: 5px;
 }
 
+/* Generic */
+.hide {
+	display: none;
+}
+
+/* The Magic Expander! */
+.expand {
+	display: block;
+	padding: 5px;
+	padding-left: 15px;
+	background-image: url(/images/expand.png);
+	background-repeat: no-repeat;
+	background-position: center left;
+	color: #000;
+}
+.expanded {
+	display: block;
+	padding: 5px;
+	padding-left: 15px;
+	background-image: url(/images/expanded.png);
+	background-repeat: no-repeat;
+	background-position: center left;
+	color: #000;
+}
+
 /* Content Stuff */
 #content-container {
 	margin: 0;

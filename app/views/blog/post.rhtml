@@ -9,8 +9,9 @@
 <fieldset>
 	<legend>Create New Entry</legend>
 	<p>Post Title: <%= text_field_tag "title", nil, :size => 40 %></p>
-	<p>Post Summary (optional):<br />
-	<%= text_area_tag "description", nil, :size => "40x5" %></p>
+	<p style="padding-bottom: 0;">
+	<a href="#" onclick="Effect.ExpandContractTree('description', 'description-expander'); return false;" class="expand" id="description-expander">Post Summary (optional)</a></p>
+	<p id="description" style="display: none; padding-top: 0;"><%= text_area_tag "description", nil, :size => "40x5", :id => "description-tbox" %></p>
 	<p>Post Content:<br />
 	<%= text_area_tag "content", nil, :size => "80x10" %><br />
 	(<a href="http://daringfireball.net/projects/markdown/syntax">MarkDown</a> formatting allowed)</p>
