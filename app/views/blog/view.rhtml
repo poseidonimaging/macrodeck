@@ -1,0 +1,67 @@
+<% if DataService.canWrite?(@postuuid, @user_uuid) %>
+<% @menu_content = "<a href=\"/#{@type}/#{@name}/blog/\">View Blog</a> <a href=\"/#{@type}/#{@name}/blog/post\">New Entry</a>" %>
+<% else %>
+<% @menu_content = "<a href=\"/#{@type}/#{@name}/blog/\">View Blog</a>" %>
+<% end %>
+<% @summary = build_summary(@postmetadata[:description], @postmetadata[:title]) %>
+
+<div class="post">
+	<h3 class="postname"><%= @postmetadata[:title] %></h3>
+	<h4 class="postinfo">Posted by <%= UUIDService.lookupUUID(@postmetadata[:creator]) %> on <%= Time.at(@postmetadata[:creation]).strftime("%B %d, %Y at %I:%M %p") %></h4>
+	<div class="postcontent"><%= markdown(@post) %></div>
+	<div class="controls">
+	<% if DataService.canWrite?(@postuuid, @user_uuid) %>
+		<a href="<%= "/#{@type}/#{@name}/blog/edit/#{@postuuid}" %>" class="control">Edit this entry</a> 
+		<a href="<%= "/#{@type}/#{@name}/blog/delete/#{@postuuid}" %>" class="control">Delete this entry</a>
+	<% end %>
+	</div>
+</div>
+
+<div class="post">
+	<h3 class="comments">Comments</h3>
+	<div class="comments">
+		<% cnum = 1 %>
+		<% if @comments != nil && @comments.length > 0 %>
+			<% @comments.each do |comment| %>
+				<div class="comment">
+					<h4 class="comment">
+						<span class="comment-number"><%= cnum %>.</span>
+						<% if comment[:loggedin] == false %>
+							<span class="anonymous"><%= comment[:username] %></span>
+						<% else %>
+							<span class="loggedin"><%= UUIDService.lookupUUID(comment[:user]) %></span>
+						<% end %>
+						<span class="comment-says">says...</span>
+					</h4>
+					<div class="comment-content">
+						<%= markdown(comment[:content]) %>
+					</div>
+				</div>
+			<% cnum = cnum + 1 %>
+			<% end %>
+		<% else %>
+			<% if DataService.canWrite?(BlogService.getCommentsUUID(@postuuid), @user_uuid) %>
+				<p>There are no comments for this post. Be the first to make a comment!</p>
+			<% else %>
+				<p>There are no comments for this post.</p>
+			<% end %>
+		<% end %>
+	</div>
+	<% if DataService.canWrite?(BlogService.getCommentsUUID(@postuuid), @user_uuid) %>
+		<h3 class="comments">Post a Comment</h3>
+		<div class="comments">
+			<% if @error != nil %>
+			<p class="error"><%= @error %></p>
+			<% end %>
+			<%= form_tag("/#{@type}/#{@name}/blog/view/#{@postuuid}") %>
+				<% if @user_loggedin == false %>
+					<p>Username: <%= text_field_tag "uname", "Anonymous" %></p>
+				<% end %>
+				<p>Comment:<br />
+				<%= text_area_tag "content", nil, :size => "80x10" %>
+				</p>
+				<p><%= submit_tag "Add Comment" %></p>
+			<%= end_form_tag %>
+		</div>
+	<% end %>
+</div>

@@ -22,12 +22,14 @@ ActionController::Routing::Routes.draw do |map|
   map.connect 'group/:groupname/blog/post',			:controller => 'blog', :action => 'post'
   map.connect 'group/:groupname/blog/edit/:uuid',	:controller => 'blog', :action => 'edit'
   map.connect 'group/:groupname/blog/delete/:uuid',	:controller => 'blog', :action => 'delete'
+  map.connect 'group/:groupname/blog/view/:uuid',	:controller => 'blog', :action => 'view'
   
   # Route user/:username/blog
   map.connect 'user/:username/blog',				:controller => 'blog', :action => 'index'
   map.connect 'user/:username/blog/post',			:controller => 'blog', :action => 'post'
   map.connect 'user/:username/blog/edit/:uuid',		:controller => 'blog', :action => 'edit'
   map.connect 'user/:username/blog/delete/:uuid',	:controller => 'blog', :action => 'delete'
+  map.connect 'user/:username/blog/view/:uuid',		:controller => 'blog', :action => 'view'
   
   # Route user home and settings
   map.connect 'user/:username/home',				:controller => 'account', :action => 'home'

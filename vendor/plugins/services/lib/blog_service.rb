@@ -26,9 +26,23 @@ class BlogService < BaseService
 	
 	# Returns all of the comments for blog post specified in postID.
 	# The postID is retrieved from a particular post's dataid.
+	# Returns a hash that looks like this:
+	#
+	#  { :content => "Comment Content", :user => "UUID", :username => "Username if anonymous", :loggedin => true }
+	#
 	def self.getBlogComments(postID)
 		post = DataService.findDataGrouping(DGROUP_COMMENTS, :parent, postID, :first)
-		comments = DataService.getDataGroupItems(blog.groupingid, DTYPE_COMMENT)
+		cgroups = DataService.getDataGroupItems(post.groupingid, DTYPE_COMMENT, :asc)
+		comments = Array.new
+		cgroups.each do |cgroup|
+			if cgroup.objectdata != nil
+				cxtrameta = YAML::load(cgroup.objectdata)
+				comment = { :content => cgroup.stringdata, :user => ANONYMOUS, :username => cxtrameta[:username], :loggedin => false }
+			else
+				comment = { :content => cgroup.stringdata, :user => cgroup.creator, :loggedin => true }
+			end
+			comments << comment
+		end
 		return comments
 	end
 	
@@ -87,11 +101,17 @@ class BlogService < BaseService
 	# Creates a new comment on a blog post
 	#
 	# FIXME: This function's signature needs to be changed to be more sane.
-	def self.createBlogComment(postID, creator, commentTitle, commentContent, readPermissions, writePermissions)
-		commentsGrouping = DataService.findDataGrouping(DGROUP_COMMENTS, :parent, postID)
-		post_meta = DataService.getDataGroupMetadata(commentsGrouping)
+	def self.createBlogComment(postID, creator, username, commentContent)
+		commentsGrouping = DataService.findDataGrouping(DGROUP_COMMENTS, :parent, postID, :first)
+		post_meta = DataService.getDataGroupMetadata(commentsGrouping.groupingid)
 		owner = post_meta[:owner]
-		DataService.createData(DTYPE_COMMENT, :string, commentContent, { :creatorapp => @serviceUUID, :grouping => commentsGrouping, :creator => creator, :owner => owner, :title => commentTitle })
+		if creator == ANONYMOUS
+			commentid = DataService.createData(DTYPE_COMMENT, :string, commentContent, { :creatorapp => @serviceUUID, :grouping => commentsGrouping.groupingid, :creator => creator, :owner => owner })
+			# add the extra meta stuff
+			DataService.modifyDataItem(commentid, :object, { :username => username, :user => nil, :loggedin => false })
+		else
+			DataService.createData(DTYPE_COMMENT, :string, commentContent, { :creatorapp => @serviceUUID, :grouping => commentsGrouping.groupingid, :creator => creator, :owner => owner })
+		end
 	end
 	
 	# Returns a hash of the blog's metadata; see DataService.getGroupMetadata.
@@ -116,6 +136,11 @@ class BlogService < BaseService
 			return nil
 		end
 	end
+	
+	def self.getCommentsUUID(postID)
+		post = DataService.findDataGrouping(DGROUP_COMMENTS, :parent, postID, :first)
+		return post.groupingid
+	end	
 end
 
 Services.registerService(BlogService)

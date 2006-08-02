@@ -19,5 +19,6 @@ module ServicesModule
 
 		# Default creator/owner constants
 		NOBODY			= "574ecd0f-afb1-40e4-a71b-1e66622db0de"
+		ANONYMOUS		= "00000000-0000-0000-0000-000000000000"
 	end
 end

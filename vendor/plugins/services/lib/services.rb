@@ -7,7 +7,9 @@
 require "base_service"
 require "default_uuids"
 require "local_uuids"
+require "default_permissions" # Default permissions
 
+include ServicesModule::DefaultPermissions
 include ServicesModule::DefaultUUIDs
 include ServicesModule::LocalUUIDs
 

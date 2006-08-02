@@ -3,7 +3,7 @@
 # actually. In the future there might be default permissions
 # based on data type. But not yet.
 
-module DataServiceModule
+module ServicesModule
 	module DefaultPermissions
 		DEFAULT_READ_PERMISSIONS	= [{ :id => "everybody", :action => :allow }]
 		DEFAULT_WRITE_PERMISSIONS	= [{ :id => "everybody", :action => :deny  }]

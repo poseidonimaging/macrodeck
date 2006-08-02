@@ -110,6 +110,13 @@ h1 span {
 	background-position: center left;
 	color: #000;
 }
+.expandercontainer {
+	padding-bottom: 0;
+}
+.expandcontent {
+	margin-left: 15px;
+	padding-top: 0;
+}
 
 /* Content Stuff */
 #content-container {
@@ -156,7 +163,7 @@ td p {
 }
 
 /* blog stuff */
-h3.postname {
+h3.postname, h3.comments {
 	margin: 0;
 	padding: 5px;
 	padding-bottom: 3px;
@@ -171,11 +178,29 @@ h4.postinfo {
 	color: #999;
 	font-weight: normal;
 }
-div.postcontent {
+h4.comment {
+	margin: 0;
+	padding: 0;
+}
+div.comment {
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+div.postcontent, div.comments {
 	margin-left: 10px;
 	font-size: 9pt;
 }
-div.editcontrols {
+div.comment-content {
+	margin-left: 15px;
+	font-size: 8pt;
+}
+div.comment-content p {
+	margin: 0;
+	padding: 0;
+}
+.control {
+	display: block;
+	float: left;
 	height: 16px;
 	margin-left: 15px;
 	font-size: 8pt;
@@ -185,9 +210,13 @@ div.editcontrols {
 	background-image: url(/images/grayarrow.png);
 	background-repeat: no-repeat;
 	background-position: center left;
-}
-div.editcontrols a {
 	color: #000;
+}
+div.post {
+	clear: both;
+}
+.anonymous {
+	color: #999;
 }
 
 /* registration */

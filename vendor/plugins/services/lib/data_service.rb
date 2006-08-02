@@ -8,9 +8,6 @@
 require "data_item"		# DataItem model
 require "data_group"	# DataGroup model
 require "yaml"
-require "default_permissions" # Default permissions
-
-include DataServiceModule::DefaultPermissions
 
 class DataService < BaseService
 	@serviceAuthor = "Keith Gable <ziggy@ignition-project.com>"
@@ -113,8 +110,8 @@ class DataService < BaseService
 				write_perms = DEFAULT_WRITE_PERMISSIONS
 			end
 		else
-			read_perms = DEFAULT_READ_PERMS
-			write_perms = DEFAULT_WRITE_PERMS
+			read_perms = DEFAULT_READ_PERMISSIONS
+			write_perms = DEFAULT_WRITE_PERMISSIONS
 		end
 		dataObj.datatype = dataType
 		dataObj.datacreator = creatorApp
