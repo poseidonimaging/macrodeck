@@ -1,0 +1,21 @@
+<% @menu_content = "<a href=\"/#{@type}/#{@name}/blog/\">View Blog</a> <a href=\"/#{@type}/#{@name}/blog/post\">New Entry</a>" %>
+<% @summary = build_summary("Creating new entry in " + @blogmetadata[:title], "New Entry") %>
+
+<% if @error != nil %>
+<p class="error"><%= @error %></p>
+<% end %>
+
+<%= form_tag("/#{@type}/#{@name}/blog/post") %>
+<fieldset>
+	<legend>Create New Entry</legend>
+	<p>Post Title: <%= text_field_tag "title", nil, :size => 40 %></p>
+	<p class="expandercontainer">
+		<a href="#" onclick="Effect.ExpandContractTree('description', 'description-expander'); return false;" class="expand" id="description-expander">Post Summary (optional)</a>
+	</p>
+	<p id="description" class="expandcontent" style="display: none;"><%= text_area_tag "description", nil, :size => "40x5", :id => "description-tbox" %></p>
+	<p>Post Content:<br />
+	<%= text_area_tag "content", nil, :size => "80x10" %><br />
+	(<a href="http://daringfireball.net/projects/markdown/syntax">MarkDown</a> formatting allowed)</p>
+	<p><%= submit_tag "Post" %></p>
+</fieldset>
+<%= end_form_tag %>

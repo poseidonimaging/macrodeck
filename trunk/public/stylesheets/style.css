@@ -1,0 +1,293 @@
+body {
+	font-family: 'Lucida Grande', 'Lucida Sans Unicode', 'Tahoma', 'Verdana', 'Arial', sans-serif;
+	font-size: 9pt;
+	margin: 0;
+	padding: 0;
+}
+
+/* Headers */
+h1 span {
+	display: none;
+}
+
+/* Top of Page */
+#topmenu {
+	position: absolute;
+	top: 0;
+	left: 0;
+	color: #fff;
+	text-align: left;
+	padding: 3px;
+	font-size: 8pt;
+	font-weight: bold;
+	padding-left: 8px;
+}
+#topmenu a {
+	color: #fff;
+	font-weight: normal;
+}
+#top {
+	background-color: #000000;
+}
+#logo h1 {
+	display: block;
+	height: 28px;
+	width: 161px;
+	background-position: bottom left;
+	background-image: url(/images/logo.png);
+	background-repeat: no-repeat;
+	margin: 0;
+	padding: 0;
+}
+#logo {
+	margin: 0;
+	padding: 15px;
+	padding-left: 10px;
+	height: 50px;
+}
+#menu {
+	background-image: url(/images/longbar.png);
+	background-position: bottom;
+	border-bottom: 1px solid #8B8B8B;
+	font-size: 8pt;
+	font-weight: bold;
+	padding: 3px;
+	margin: 0;
+}
+#menu a {
+	text-decoration: none;
+	color: #000;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+#menu a:hover {
+	text-decoration: underline;
+}
+#summary {
+	background-image: url(/images/pinstripe.png);
+	font-size: 8pt;
+	font-weight: normal;
+	padding: 5px;
+	border-bottom: 1px solid #E0E0E0;
+	/* border-bottom: 1px solid #8B8B8B; -- bottom of titlebar */
+}
+#summary h2 {
+	margin: 0;
+	padding: 0;
+	display: inline;
+	font-size: 8pt;
+	font-weight: bold;
+	padding-right: 5px;
+}
+#summary p {
+	margin: 0;
+	padding: 0;
+	display: inline;
+	font-size: 8pt;
+	padding-right: 5px;
+}
+
+/* Generic */
+.hide {
+	display: none;
+}
+
+/* The Magic Expander! */
+.expand {
+	display: block;
+	padding: 5px;
+	padding-left: 15px;
+	background-image: url(/images/expand.png);
+	background-repeat: no-repeat;
+	background-position: center left;
+	color: #000;
+}
+.expanded {
+	display: block;
+	padding: 5px;
+	padding-left: 15px;
+	background-image: url(/images/expanded.png);
+	background-repeat: no-repeat;
+	background-position: center left;
+	color: #000;
+}
+.expandercontainer {
+	padding-bottom: 0;
+}
+.expandcontent {
+	margin-left: 15px;
+	padding-top: 0;
+}
+
+/* Content Stuff */
+#content-container {
+	margin: 0;
+	padding: 10px;
+}
+
+/* Tables */
+td, th {
+	/* IE Workaround */
+	font-family: 'Lucida Grande', 'Lucida Sans Unicode', 'Tahoma', 'Verdana', 'Arial', sans-serif;
+	font-size: 9pt;
+}
+table {
+	border-collapse: collapse;
+	border: 0;
+	margin: 0;
+	padding: 0;
+}
+th {
+	font-weight: bold;
+	text-align: left;
+	border-bottom: 1px solid #ccc;
+	margin: 0;
+	padding: 5px;
+}
+td {
+	border-collapse: collapse;
+	padding: 5px;
+	margin: 0;
+	border-bottom: 1px dashed #ccc;
+	vertical-align: top;
+}
+td .name {
+	font-weight: bold;
+}
+td .uuid {
+	font-family: 'Bitstream Vera Sans Mono', 'Lucida Console', 'Courier New', monospace;
+	font-size: 9pt;
+}
+td p {
+	margin: 0;
+	padding: 0;
+}
+
+/* blog stuff */
+h3.postname, h3.comments {
+	margin: 0;
+	padding: 5px;
+	padding-bottom: 3px;
+	border-bottom: 1px solid #ccc;
+}
+h4.postinfo {
+	text-align: right;
+	margin: 0;
+	padding: 5px;
+	padding-top: 3px;
+	font-size: 8pt;
+	color: #999;
+	font-weight: normal;
+}
+h4.comment {
+	margin: 0;
+	padding: 0;
+}
+div.comment {
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+div.postcontent, div.comments {
+	margin-left: 10px;
+	font-size: 9pt;
+}
+div.comment-content {
+	margin-left: 15px;
+	font-size: 8pt;
+}
+div.comment-content p {
+	margin: 0;
+	padding: 0;
+}
+.control {
+	display: block;
+	float: left;
+	height: 16px;
+	margin-left: 15px;
+	font-size: 8pt;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	padding-left: 17px;
+	background-image: url(/images/grayarrow.png);
+	background-repeat: no-repeat;
+	background-position: center left;
+	color: #000;
+}
+div.post {
+	clear: both;
+}
+.anonymous {
+	color: #999;
+}
+
+/* registration */
+p.stepname {
+	font-weight: bold;
+}
+p.steptext {
+	font-weight: normal;
+	padding-left: 15px;
+}
+
+/* forms */
+input.offset {
+	position: absolute;
+	left: 140px;
+}
+input.password {
+	font-style: italic;
+}
+
+/* generic */
+div.center {
+	padding: 5px;
+	margin-left: auto;
+	margin-right: auto;
+	border: 1px solid #8B8B8B;
+	background-color: #efefef;
+	text-align: center;
+	width: 150px;
+}
+p.error {
+	padding: 5px;
+	border: 1px solid #660000;
+	background-color: #FF9999;
+}
+p.info {
+	padding: 5px;
+	border: 1px solid #8b8b8b;
+	background-color: #efefef;
+}
+p.padbottom {
+	/* used by things that need extra padding on the bottom */
+	padding-bottom: 5px;
+}
+
+/* the top bar */
+div#useritems {
+	position: absolute;
+	top: 0;
+	right: 0;
+	padding: 3px;
+	font-size: 8pt;
+	color: #fff;
+	text-align: right;
+}
+div#useritems a {
+	color: #fff;
+	text-decoration: none;
+}
+div.useritem {
+	float: right;
+	text-align: center;
+	margin: 5px;
+	border: 1px solid #000;
+	padding: 3px;
+}
+div.useritem:hover {
+	background-color: #0456C9;
+	border: 1px solid #1C72DB;
+}
+div.useritem img {
+	border: 0;
+}

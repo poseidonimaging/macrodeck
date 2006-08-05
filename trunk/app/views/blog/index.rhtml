@@ -1,0 +1,25 @@
+<% if DataService.canWrite?(@guuid, @user_uuid) %>
+<% @menu_content = "<a href=\"/#{@type}/#{@name}/blog/\">View Blog</a> <a href=\"/#{@type}/#{@name}/blog/post\">New Entry</a>" %>
+<% else %>
+<% @menu_content = "<a href=\"/#{@type}/#{@name}/blog/\">View Blog</a>" %>
+<% end %>
+
+<% @summary = build_summary(@blogmetadata[:description], @blogmetadata[:title]) %>
+<% @posts.each do |post| %>
+	<% if DataService.canRead?(post.dataid, @user_uuid) %>
+		<div class="post">
+			<h3 class="postname"><%= post.title %></h3>
+			<h4 class="postinfo">Posted by <%= UUIDService.lookupUUID(post.creator) %> on <%= Time.at(post.creation).strftime("%B %d, %Y at %I:%M %p") %></h4>
+			<div class="postcontent"><%= markdown(post.stringdata) %></div>
+			<div class="controls">
+			<% if DataService.canRead?(BlogService.getCommentsUUID(post.dataid), @user_uuid) %>
+				<a href="<%= "/#{@type}/#{@name}/blog/view/#{post.dataid}" %>" class="control">View comments</a>
+			<% end %>
+			<% if DataService.canWrite?(post.dataid, @user_uuid) %>
+				<a href="<%= "/#{@type}/#{@name}/blog/edit/#{post.dataid}" %>" class="control">Edit this entry</a> 
+				<a href="<%= "/#{@type}/#{@name}/blog/delete/#{post.dataid}" %>" class="control">Delete this entry</a>
+			<% end %>
+			</div>
+		</div>
+	<% end %>
+<% end %>
