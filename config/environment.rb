@@ -67,6 +67,12 @@ EMAIL_VALIDATION		= /^([a-zA-Z0-9&_?\/`!|#*$^%=~{}+'-]+|"([\x00-\x0C\x0E-\x21\x2
 # User Password Salt
 PASSWORD_SALT			= "giomullyoxonoind" # Random character generator
 
+# Default tabs
+DEFAULT_TABS			= [	{ :url => "/",								:text => "Home", 			:id => "home" },
+							{ :url => "/group/macrodeck/blog/", 		:text => "Development Blog",:id => "devblog" },
+							{ :url => "/directory/",					:text => "Directory",		:id => "directory" },
+							{ :url => "http://developer.macrodeck.com/",:text => "Developers",		:id => "developers" }]
+
 # Start services we need
 Services.startService "uuid_service"
 Services.startService "data_service"

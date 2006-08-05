@@ -1,7 +1,7 @@
 # Filters added to this controller will be run for all controllers in the application.
 # Likewise, all the methods added will be available for all controllers.
 class ApplicationController < ActionController::Base
-	before_filter :check_authcode, :update_session, :populate_user_variables
+	before_filter :check_authcode, :update_session, :populate_user_variables, :reset_tabs
 
 	# If a session is present, renew it. 
 	def update_session
@@ -27,6 +27,11 @@ class ApplicationController < ActionController::Base
 			end
 		end
 		return true
+	end
+	
+	def reset_tabs
+		# Sets the tabs to default; changed whenever a page sets another kind of tabs
+		@tabs = DEFAULT_TABS
 	end
 	
 	# Populates some variables related to the current logged on user, if any.

@@ -1,19 +1,17 @@
-<div id="login">
+<div id="useritems">
 	<% if @user_loggedin == true %>
-		Hello, <% if @user_firstname != nil %><%= h(@user_firstname) %><% else %><%= h(@user_displayname) %><% end %>! 
-		<%= link_to "(logout)", { :controller => "account", :action => "logout" } %><br />
-		<%= link_to "My Account", "/user/#{@user_username}/settings/" %>
+		<div class="useritem"><%= link_to image_tag("icons/logout.png") + "<br />Log Out", { :controller => "account", :action => "logout" } %></div>
+		<div class="useritem"><%= link_to image_tag("icons/settings.png") + "<br />Settings", "/user/#{@user_username}/settings/" %></div>
+		<div class="useritem"><%= link_to image_tag("icons/my_home.png") + "<br />My Home", "/user/#{@user_username}/home/" %></div>
 	<% elsif @user_loggedin == false %>
-		Hello, Guest!<br />
-		Please <%= link_to "Login", { :controller => "account", :action => "login" } %> or <%= link_to "Register", { :controller => "account", :action => "register" } %>.
+		<div class="useritem"><%= link_to image_tag("icons/login.png") + "<br />Log In", { :controller => "account", :action => "login" } %></div>	
+		<div class="useritem"><%= link_to image_tag("icons/register.png") + "<br />Register", { :controller => "account", :action => "register" } %></div>
 	<% else %>
 		Oh no!<br />
 		An internal error occured!
 	<% end %>
 </div>
 <div id="top">
-	<div id="topmenu"><a href="/">Home</a> | <a href="/group/macrodeck/blog/">Development Blog</a> | <a href="http://developer.macrodeck.com/">Developers</a> | 
-	<a href="#">Our Vision</a></div>
 	<div id="logo"><h1><span>MacroDeck: Tools to make you more human</span></h1></div>
 	<div id="menu">
 	<% if @menu_content != nil %>

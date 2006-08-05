@@ -8,7 +8,7 @@ class BlogService < BaseService
 	@serviceName = "BlogService"	
 	@serviceVersionMajor = 0
 	@serviceVersionMinor = 2	
-	@serviceVersionRevision = 20060626
+	@serviceVersionRevision = 20060705
 	@serviceUUID = "e26afd5f-8aa9-47c9-804d-3fd0c333aaa4"
 	
 	# Returns all of the blog posts for user/group specified in

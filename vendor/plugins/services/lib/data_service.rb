@@ -15,7 +15,7 @@ class DataService < BaseService
 	@serviceName = "DataService"	
 	@serviceVersionMajor = 0
 	@serviceVersionMinor = 2
-	@serviceVersionRevision = 20060626
+	@serviceVersionRevision = 20060705
 	@serviceUUID = "ae52b2a9-0872-4651-b159-c37715a53704"
 	
 	# Gets the specified data, by type (:string, :integer, :object),
