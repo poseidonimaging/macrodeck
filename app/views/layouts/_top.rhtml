@@ -12,7 +12,10 @@
 	<% end %>
 </div>
 <div id="top">
-	<div id="logo"><h1><span>MacroDeck: Tools to make you more human</span></h1></div>
+	<div id="logo"><h1><a href="/"><span>MacroDeck: Tools to make you more human</span></a></h1></div>
+	<div id="tabs">
+		<%= build_tabs %>
+	</div>
 	<div id="menu">
 	<% if @menu_content != nil %>
 		<%= @menu_content %>

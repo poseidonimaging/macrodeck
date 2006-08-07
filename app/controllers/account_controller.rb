@@ -178,6 +178,8 @@ class AccountController < ApplicationController
 						@username = @params[:username].downcase
 						if verify_authcode == true
 							# there's no real data put on the homepage yet.
+							set_tabs_for_user(@username, true)
+							set_current_tab "home"
 						else
 							render :template => "errors/access_denied"
 						end
@@ -212,6 +214,8 @@ class AccountController < ApplicationController
 								@password2 = @params[:password2]
 								@email = @params[:email]
 								@name = @params[:name]
+								set_tabs_for_user(@username, true)
+								set_current_tab "settings"
 								
 								# Validate e-mail address
 								if email_valid?(@email) == false
@@ -294,6 +298,8 @@ class AccountController < ApplicationController
 								@secretanswer = UserService.getUserProperty(@session[:uuid], @session[:authcode], :secretanswer)
 								@email = UserService.getUserProperty(@session[:uuid], @session[:authcode], :email)
 								@username = @params[:username].downcase
+								set_tabs_for_user(@username, true)
+								set_current_tab "settings"								
 							else
 								render :template => "errors/access_denied"
 							end

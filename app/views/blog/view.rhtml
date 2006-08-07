@@ -9,10 +9,10 @@
 	<h3 class="postname"><%= @postmetadata[:title] %></h3>
 	<h4 class="postinfo">Posted by <%= UUIDService.lookupUUID(@postmetadata[:creator]) %> on <%= Time.at(@postmetadata[:creation]).strftime("%B %d, %Y at %I:%M %p") %></h4>
 	<div class="postcontent"><%= markdown(@post) %></div>
-	<div class="controls">
+	<div class="actions">
 	<% if DataService.canWrite?(@postuuid, @user_uuid) %>
-		<a href="<%= "/#{@type}/#{@name}/blog/edit/#{@postuuid}" %>" class="control">Edit this entry</a> 
-		<a href="<%= "/#{@type}/#{@name}/blog/delete/#{@postuuid}" %>" class="control">Delete this entry</a>
+		<a href="<%= "/#{@type}/#{@name}/blog/edit/#{@postuuid}" %>" class="action edit">Edit this entry</a> 
+		<a href="<%= "/#{@type}/#{@name}/blog/delete/#{@postuuid}" %>" class="action delete">Delete this entry</a>
 	<% end %>
 	</div>
 </div>

@@ -31,9 +31,14 @@ ActionController::Routing::Routes.draw do |map|
   map.connect 'user/:username/blog/delete/:uuid',	:controller => 'blog', :action => 'delete'
   map.connect 'user/:username/blog/view/:uuid',		:controller => 'blog', :action => 'view'
   
-  # Route user home and settings
+  # Route user other stuff
   map.connect 'user/:username/home',				:controller => 'account', :action => 'home'
   map.connect 'user/:username/settings',			:controller => 'account', :action => 'settings'
+  map.connect 'user/:username/environments',		:controller => 'incomplete', :action => 'environments'
+  map.connect 'user/:username/shared',				:controller => 'incomplete', :action => 'shareditems'
+  
+  # Route misc.
+  map.connect 'directory',							:controller => 'incomplete', :action => 'directory'
   
   # Route / to the MacroDeck blog until pages are created.
   map.connect '', :controller => 'blog', :action => 'index', :groupname => 'macrodeck'

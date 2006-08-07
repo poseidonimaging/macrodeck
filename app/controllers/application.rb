@@ -32,10 +32,44 @@ class ApplicationController < ActionController::Base
 	def reset_tabs
 		# Sets the tabs to default; changed whenever a page sets another kind of tabs
 		@tabs = DEFAULT_TABS
+		@current_tab = nil
+	end
+	
+	def set_tabs(tabs)
+		@tabs = tabs
+	end
+	
+	# Sets the current tabs to the user tabs
+	# Specify the name of the user, and if they're
+	# the person viewing the tabs.
+	def set_tabs_for_user(name, isUser)
+		if isUser
+			tabs = 	[{ :url => "/user/#{name}/home/",			:text => "My Home",			:id => "home" },
+					 { :url => "/user/#{name}/blog/",			:text => "My Blog",			:id => "blog" },
+					 { :url => "/user/#{name}/environments/", 	:text => "My Environments", :id => "environments" },
+					 { :url => "/user/#{name}/shared/",			:text => "My Shared Items",	:id => "shareditems" },
+					 { :url => "/user/#{name}/settings/",		:text => "My Settings",		:id => "settings" }]
+			@tabs = tabs
+		else
+			tabs = 	[{ :url => "/user/#{name}/blog/",			:text => "#{name}'s Blog",			:id => "blog" },
+					 { :url => "/user/#{name}/profile/",	 	:text => "#{name}'s Profile",		:id => "profile" },
+					 { :url => "/user/#{name}/shared/",			:text => "#{name}'s Shared Items",	:id => "shareditems" }]
+			@tabs = tabs
+		end
+	end
+	
+	def set_current_tab(tabID)
+		@current_tab = tabID
 	end
 	
 	# Populates some variables related to the current logged on user, if any.
 	def populate_user_variables
+		@user_loggedin = nil
+		@user_username = nil
+		@user_name = nil
+		@user_displayname = nil
+		@user_uuid = nil
+		
 		if @session
 			if @session[:authcode] != nil && @session[:uuid] != nil
 				if UserService.getUserProperty(@session[:uuid], @session[:authcode], :username) != nil

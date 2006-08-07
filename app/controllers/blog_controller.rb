@@ -12,6 +12,9 @@ class BlogController < ApplicationController
 				@blogmetadata = BlogService.getBlogMetadata(BlogService.getBlogUUID(uuid))
 				@guuid = BlogService.getBlogUUID(uuid)
 				@posts = BlogService.getBlogPosts(uuid)
+				if uuid == GROUP_MACRODECK
+					set_current_tab "devblog"
+				end
 			end
 		elsif @params[:username] != nil
 			uuid = UserService.lookupUserName(@params[:username].downcase)
@@ -23,6 +26,13 @@ class BlogController < ApplicationController
 				@blogmetadata = BlogService.getBlogMetadata(BlogService.getBlogUUID(uuid))
 				@guuid = BlogService.getBlogUUID(uuid)				
 				@posts = BlogService.getBlogPosts(uuid)
+				if @name == @user_username.downcase
+					set_tabs_for_user(@name, true)
+					set_current_tab "blog"
+				else
+					set_tabs_for_user(@name, false)
+					set_current_tab "blog"
+				end
 			end
 		else
 			render :template => "errors/invalid_user_or_group"
