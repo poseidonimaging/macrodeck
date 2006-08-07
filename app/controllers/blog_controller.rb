@@ -26,7 +26,8 @@ class BlogController < ApplicationController
 				@blogmetadata = BlogService.getBlogMetadata(BlogService.getBlogUUID(uuid))
 				@guuid = BlogService.getBlogUUID(uuid)				
 				@posts = BlogService.getBlogPosts(uuid)
-				if @name == @user_username.downcase
+
+				if @user_username != nil && @name == @user_username.downcase
 					set_tabs_for_user(@name, true)
 					set_current_tab "blog"
 				else

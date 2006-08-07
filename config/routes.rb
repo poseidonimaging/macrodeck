@@ -36,6 +36,7 @@ ActionController::Routing::Routes.draw do |map|
   map.connect 'user/:username/settings',			:controller => 'account', :action => 'settings'
   map.connect 'user/:username/environments',		:controller => 'incomplete', :action => 'environments'
   map.connect 'user/:username/shared',				:controller => 'incomplete', :action => 'shareditems'
+  map.connect 'user/:username/profile',				:controller => 'incomplete', :action => 'profile'
   
   # Route misc.
   map.connect 'directory',							:controller => 'incomplete', :action => 'directory'
