@@ -8,6 +8,7 @@
 require "data_item"		# DataItem model
 require "data_group"	# DataGroup model
 require "yaml"
+require "data_web_service" # DataWebService
 
 class DataService < BaseService
 	@serviceAuthor = "Keith Gable <ziggy@ignition-project.com>"
