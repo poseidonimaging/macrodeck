@@ -16,7 +16,7 @@ class DataService < BaseService
 	@serviceName = "DataService"	
 	@serviceVersionMajor = 0
 	@serviceVersionMinor = 2
-	@serviceVersionRevision = 20060705
+	@serviceVersionRevision = 20060813
 	@serviceUUID = "ae52b2a9-0872-4651-b159-c37715a53704"
 	
 	# Gets the specified data, by type (:string, :integer, :object),
@@ -46,7 +46,8 @@ class DataService < BaseService
 	# kept in this data item. For example, a blog entry is
 	# a type of data.
 	# +valueType+ may be :string, :object, or :integer, and is
-	# the kind of data stored in dataValue.
+	# the kind of data stored in dataValue. You can pass
+	# :nothing to clear all three values as well.
 	# +metadata+ is optional, but if used, should be a hash
 	# that looks like this (include only the metadata you want
 	# to set):
@@ -130,7 +131,11 @@ class DataService < BaseService
 			when :integer, "integer"
 				dataObj.integerdata = dataValue
 			when :object, "object"
-				dataObj.integerdata = dataValue.to_yaml
+				dataObj.objectdata = dataValue.to_yaml
+			when :nothing, "nothing"
+				dataObj.stringdata = nil
+				dataObj.integerdata = nil
+				dataObj.objectdata = nil
 			else
 				raise ArgumentError
 		end
@@ -144,16 +149,16 @@ class DataService < BaseService
 	# Modifies a data item of the type and ID
 	# specified. Type can be :string, :integer,
 	# or :object
-	def self.modifyDataItem(dataID, dataType, data)
+	def self.modifyDataItem(dataID, valueType, value)
 		dataObj = DataItem.find(:first, :conditions => ["dataid = ?", dataID])
 		if dataObj != nil
-			case dataType
+			case valueType
 				when :string, "string"
-					dataObj.stringdata = data
+					dataObj.stringdata = value
 				when :integer, "integer"
-					dataObj.integerdata = data
+					dataObj.integerdata = value
 				when :object, "object"
-					dataObj.objectdata = data.to_yaml
+					dataObj.objectdata = value.to_yaml
 				else
 					return false
 			end

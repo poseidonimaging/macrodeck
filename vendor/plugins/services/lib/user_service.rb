@@ -13,8 +13,8 @@ class UserService < BaseService
 	@serviceID = "com.macrodeck.UserService"
 	@serviceName = "UserService"	
 	@serviceVersionMajor = 0
-	@serviceVersionMinor = 2
-	@serviceVersionRevision = 20060705
+	@serviceVersionMinor = 3
+	@serviceVersionRevision = 20060813
 	@serviceUUID = "8d6e8d29-55b0-4d74-bf71-84b2d653ba1f"
 	
 	# Creates a new user in the database, first checking to see if the user exists or not.
@@ -288,7 +288,8 @@ class UserService < BaseService
 	# and password hash that are specified.
 	def self.createAuthCode(userName, passHash, ipAddress)
 		ipaddr_arr = ipAddress.split(".")
-		return Digest::SHA512::hexdigest(userName + ":" + passHash + ":" + ipaddr_arr[0].to_s + ":" + ipaddr_arr[1].to_s + ":" + ipaddr_arr[2].to_s + ":" + Time.now.mon.to_s)
+		# Changed the month addition to the current time so logging out and logging back in will make all cookies invalid.
+		return Digest::SHA512::hexdigest(userName + ":" + passHash + ":" + ipaddr_arr[0].to_s + ":" + ipaddr_arr[1].to_s + ":" + ipaddr_arr[2].to_s + ":" + Time.now.to_i)
 	end
 	
 	# Returns an array (that contains hashes) of the users
@@ -361,6 +362,18 @@ class UserService < BaseService
 			return true
 		else
 			return false
+		end
+	end
+	
+	# Returns a User object for the authCode specified. Two users should not have the same
+	# authCode, so this should always work. If the authCode's not in the database, this function
+	# will return nil.
+	def self.userFromAuthCode(authCode)
+		user = User.find(:first, :conditions => ["authcode = ?", authCode])
+		if user != nil
+			return user
+		else
+			reutrn nil
 		end
 	end
 	
