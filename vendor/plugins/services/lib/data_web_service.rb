@@ -10,6 +10,10 @@ module DataServiceCustomTypes
 		member :description,	:string
 		member :creatorApp,		:string
 	end
+	
+	class YAML < ActionWebService::Struct
+		member :yamlContent,	:string
+	end
 end
 
 # The DataService API definition
@@ -27,6 +31,28 @@ class DataServiceAPI < ActionWebService::API::Base
 			:returns => [:bool]
 		}
 	api_method :delete_string_value, {
+			:expects => [{ :authCode	=> :string },
+						 { :itemUUID	=> :string }],
+			:returns =>	[:bool]
+		}
+	api_method :set_integer_value, {
+			:expects =>	[{ :authCode	=> :string },
+						 { :itemUUID	=> :string },
+						 { :value		=> :int }],
+			:returns => [:bool]
+		}
+	api_method :delete_integer_value, {
+			:expects => [{ :authCode	=> :string },
+						 { :itemUUID	=> :string }],
+			:returns =>	[:bool]
+		}
+	api_method :set_object_value, {
+			:expects =>	[{ :authCode	=> :string },
+						 { :itemUUID	=> :string },
+						 { :value		=> DataServiceCustomTypes::YAML }],
+			:returns => [:bool]
+		}
+	api_method :delete_object_value, {
 			:expects => [{ :authCode	=> :string },
 						 { :itemUUID	=> :string }],
 			:returns =>	[:bool]
