@@ -24,6 +24,11 @@ class DataServiceAPI < ActionWebService::API::Base
 						 { :metadata	=> DataServiceCustomTypes::ItemMetadata }],
 			:returns => [:string]
 		}
+	api_method :delete_data_item, {
+			:expects =>	[{ :authCode	=> :string },
+						 { :itemUUID	=> :string }],
+			:returns => [:bool]
+		}
 	api_method :set_string_value, {
 			:expects =>	[{ :authCode	=> :string },
 						 { :itemUUID	=> :string },
@@ -105,13 +110,27 @@ class DataWebService < ActionWebService::Base
 		end
 	end
 	
+	# Deletes a data item and all associated data and
+	# metadata.
+	def delete_data_item(authCode, itemUUID)
+		user = UserService.userFromAuthCode(authCode)
+		if user != nil
+			if DataService.canWrite?(itemUUID, user.uuid)
+				result = DataService.deleteDataItem(itemUUID)
+				return result
+			else
+				return false
+			end
+		else
+			return false
+		end	
+	end
+	
 	# Sets a string value on an existing data item. Returns
 	# true if all is okay otherwise false.
 	def set_string_value(authCode, itemUUID, value)
 		user = UserService.userFromAuthCode(authCode)
 		if user != nil
-			# The user exists! Hooray!
-			# Now we check to make sure they have permission to write to this grouping.
 			if DataService.canWrite?(itemUUID, user.uuid)
 				result = DataService.modifyDataItem(itemUUID, :string, value)
 				return result
@@ -128,8 +147,6 @@ class DataWebService < ActionWebService::Base
 	def delete_string_value(authCode, itemUUID)
 		user = UserService.userFromAuthCode(authCode)
 		if user != nil
-			# The user exists! Hooray!
-			# Now we check to make sure they have permission to write to this grouping.
 			if DataService.canWrite?(itemUUID, user.uuid)
 				result = DataService.modifyDataItem(itemUUID, :string, nil)
 				return result
@@ -140,4 +157,72 @@ class DataWebService < ActionWebService::Base
 			return false
 		end		
 	end
+	
+	# Sets an integer value on an existing data item. Returns
+	# true if all is okay otherwise false.
+	def set_integer_value(authCode, itemUUID, value)
+		user = UserService.userFromAuthCode(authCode)
+		if user != nil
+			if DataService.canWrite?(itemUUID, user.uuid)
+				result = DataService.modifyDataItem(itemUUID, :integer, value)
+				return result
+			else
+				return false
+			end
+		else
+			return false
+		end	
+	end
+	
+	# Deletes the integer value of a data item. Returns true
+	# if all is good, otherwise false.
+	def delete_integer_value(authCode, itemUUID)
+		user = UserService.userFromAuthCode(authCode)
+		if user != nil
+			if DataService.canWrite?(itemUUID, user.uuid)
+				result = DataService.modifyDataItem(itemUUID, :integer, nil)
+				return result
+			else
+				return false
+			end
+		else
+			return false
+		end		
+	end
+	
+	# Sets an object value on an existing data item. Returns
+	# true if all is okay otherwise false. Expects the object
+	# to be specified as YAML.
+	def set_object_value(authCode, itemUUID, value)
+		user = UserService.userFromAuthCode(authCode)
+		if user != nil
+			if DataService.canWrite?(itemUUID, user.uuid)
+				# This will load the YAML into an object so that
+				# partially malformed YAML is inserted correctly.
+				obj = YAML::load(value[:yamlContent])
+				result = DataService.modifyDataItem(itemUUID, :object, obj)
+				return result
+			else
+				return false
+			end
+		else
+			return false
+		end	
+	end
+	
+	# Deletes the object value of a data item. Returns true
+	# if all is good, otherwise false.
+	def delete_object_value(authCode, itemUUID)
+		user = UserService.userFromAuthCode(authCode)
+		if user != nil
+			if DataService.canWrite?(itemUUID, user.uuid)
+				result = DataService.modifyDataItem(itemUUID, :object, nil)
+				return result
+			else
+				return false
+			end
+		else
+			return false
+		end		
+	end	
 end
