@@ -1,5 +1,8 @@
 class TestController < ApplicationController
 	layout "default"
+	def widget_test
+		# Just HTML!
+	end
 	def start_service
 		Services.startService @params[:service]
 		redirect_to :action => "show_loaded_services"

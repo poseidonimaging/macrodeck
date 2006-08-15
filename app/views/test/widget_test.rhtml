@@ -1,0 +1,33 @@
+<h2>Widget Test</h2>
+<h3>InputButtonComponent</h3>
+<div id='input-button-component'>
+<script type="text/javascript">
+	// create element to insert into
+	ok_container = document.createElement('div');
+	ok_container.id = 'ok-button';
+	ok_container.style.display = 'inline';
+	ok_container.style.padding = '5px';
+	$('input-button-component').appendChild(ok_container);
+	
+	// create OK button
+	ok_button = new InputButtonComponent('OK');
+	ok_button.click =	function() {
+							alert('Clicked OK! Version: ' + ok_button.getVersion());
+						}
+	ok_button.display('ok-button');
+	
+	// create cancel button container
+	cancel_container = document.createElement('div');
+	cancel_container.id = 'cancel-button';
+	cancel_container.style.display = 'inline';
+	cancel_container.style.padding = '5px';
+	$('input-button-component').appendChild(cancel_container);
+	
+	// create Cancel button
+	cancel_button = new InputButtonComponent('Cancel');
+	cancel_button.click =	function() {
+								alert("You pressed Cancel. Congratulations!");
+							}
+	cancel_button.display('cancel-button');
+</script>
+</div>
