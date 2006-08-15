@@ -10,5 +10,8 @@ var BaseComponent = Class.create();
 BaseComponent.prototype = {
 	getVersion:		function() {
 						return this.version;
+					},
+	getAuthor:		function() {
+						return this.author;
 					}
 }
