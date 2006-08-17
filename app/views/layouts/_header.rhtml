@@ -17,3 +17,29 @@
 	</script>
 	<%= javascript_include_tag :defaults %>
 	<%= render :partial => "widget/components" %>
+	<%= javascript_include_tag "widgets.js" %>
+	<% if @user_loggedin %>
+		<script type="text/javascript">
+			// <![CDATA[
+			var CurrentUser = {
+				userName:		"<%= escape_javascript(@user_username) %>",
+				name:			"<%= escape_javascript(@user_name) %>",
+				uuid:			"<%= escape_javascript(@user_uuid) %>",
+				authCode:		"<%= escape_javascript(@user_authcode) %>",
+				displayName:	"<%= escape_javascript(@user_displayname) %>"
+			}
+			// ]]>
+		</script>
+	<% else %>
+		<script type="text/javascript">
+			// <![CDATA[
+			var CurrentUser = {
+				userName:		"anonymous",
+				name:			"Anonymous",
+				uuid:			"anonymous",
+				authCode:		null,
+				displayName:	"Anonymous"
+			}
+			// ]]>
+		</script>
+	<% end %>

@@ -69,6 +69,7 @@ class ApplicationController < ActionController::Base
 		@user_name = nil
 		@user_displayname = nil
 		@user_uuid = nil
+		@user_authcode = nil
 		
 		if @session
 			if @session[:authcode] != nil && @session[:uuid] != nil
@@ -77,6 +78,7 @@ class ApplicationController < ActionController::Base
 					@user_username = UserService.getUserProperty(@session[:uuid], @session[:authcode], :username)
 					@user_name = UserService.getUserProperty(@session[:uuid], @session[:authcode], :name)
 					@user_displayname = UserService.getUserProperty(@session[:uuid], @session[:authcode], :displayname)
+					@user_authcode = @session[:authcode]
 					if @user_name != nil
 						@user_firstname = @user_name.split(" ")[0]
 					else
