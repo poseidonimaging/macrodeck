@@ -173,12 +173,6 @@ td p {
 }
 
 /* blog stuff */
-h3.postname, h3.comments {
-	margin: 0;
-	padding: 5px;
-	padding-bottom: 3px;
-	border-bottom: 1px solid #ccc;
-}
 h4.postinfo {
 	text-align: right;
 	margin: 0;
@@ -235,6 +229,19 @@ input.password {
 }
 
 /* generic */
+h3.postname, h3.comments, h3.section {
+	margin: 0;
+	padding: 5px;
+	padding-bottom: 3px;
+	border-bottom: 1px solid #ccc;
+}
+.monospace {
+	font-family: 'Courier New', monospace;
+}
+span.offset {
+	position: absolute;
+	left: 140px;
+}
 div.center {
 	padding: 5px;
 	margin-left: auto;
@@ -251,8 +258,8 @@ p.error {
 }
 p.info {
 	padding: 5px;
-	border: 1px solid #8b8b8b;
-	background-color: #efefef;
+	border: 1px solid #ccc;
+	background-color: #eee;
 }
 p.padbottom {
 	/* used by things that need extra padding on the bottom */
@@ -391,4 +398,20 @@ li.tab .tab-fill-active {
 	margin: 0;
 	padding-left: 5px;
 	padding-right: 5px;
+}
+
+/* Widgets */
+.widgetdemo {
+	padding: 5px;
+	border: 1px solid #ccc;
+	background-color: #eee;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+.depname {
+	font-family: 'Courier New', monospace;
+	padding: 3px;
+	margin: 3px;
+	border: 1px solid #ccc;
+	background-color: #eee;
 }

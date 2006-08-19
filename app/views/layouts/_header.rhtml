@@ -16,7 +16,7 @@
 	urchinTracker();
 	</script>
 	<%= javascript_include_tag :defaults %>
-	<%= render :partial => "widget/components" %>
+	<%= javascript_include_tag "components.js" %>
 	<%= javascript_include_tag "widgets.js" %>
 	<% if @user_loggedin %>
 		<script type="text/javascript">
@@ -43,3 +43,15 @@
 			// ]]>
 		</script>
 	<% end %>
+	<% if @components != nil %>
+		<% @components.uniq! %>
+		<% @components.each do |component| %>
+			<%= javascript_include_tag "components/#{component}.js" %>
+		<% end %>
+	<% end %>
+	<% if @widgets != nil %>
+		<% @widgets.uniq! %>
+		<% @widgets.each do |widget| %>
+			<%= javascript_include_tag "/widget/#{widget}/code.js" %>
+		<% end %>
+	<% end %>	

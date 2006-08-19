@@ -289,7 +289,7 @@ class UserService < BaseService
 	def self.createAuthCode(userName, passHash, ipAddress)
 		ipaddr_arr = ipAddress.split(".")
 		# Changed the month addition to the current time so logging out and logging back in will make all cookies invalid.
-		return Digest::SHA512::hexdigest(userName + ":" + passHash + ":" + ipaddr_arr[0].to_s + ":" + ipaddr_arr[1].to_s + ":" + ipaddr_arr[2].to_s + ":" + Time.now.to_i)
+		return Digest::SHA512::hexdigest(userName + ":" + passHash + ":" + ipaddr_arr[0].to_s + ":" + ipaddr_arr[1].to_s + ":" + ipaddr_arr[2].to_s + ":" + Time.now.to_i.to_s)
 	end
 	
 	# Returns an array (that contains hashes) of the users

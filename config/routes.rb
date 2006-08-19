@@ -38,6 +38,10 @@ ActionController::Routing::Routes.draw do |map|
   map.connect 'user/:username/shared',				:controller => 'incomplete', :action => 'shareditems'
   map.connect 'user/:username/profile',				:controller => 'incomplete', :action => 'profile'
   
+  # Widget Hierarchy Routing
+  map.connect 'widget/:uuid',						:controller => 'widget', :action => 'index'
+  map.connect 'widget/:uuid/code.js',				:controller => 'widget', :action => 'code'
+  
   # Route misc.
   map.connect 'directory',							:controller => 'incomplete', :action => 'directory'
   
