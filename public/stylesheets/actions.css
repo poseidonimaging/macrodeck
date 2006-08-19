@@ -13,6 +13,9 @@
 	background-position: center left;
 	color: #000;
 }
+.actions .add {
+	background-image: url(/images/actions/black/add.gif);
+}
 .actions .edit {
 	background-image: url(/images/actions/black/edit.gif);
 }
@@ -26,6 +29,9 @@
 /* now :hover'ed */
 .actions .action:hover {
 	background-image: url(/images/actions/blue/generic.gif);
+}
+.actions .add:hover {
+	background-image: url(/images/actions/blue/add.gif);
 }
 .actions .edit:hover {
 	background-image: url(/images/actions/blue/edit.gif);

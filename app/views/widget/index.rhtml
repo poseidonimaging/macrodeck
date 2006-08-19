@@ -37,6 +37,11 @@
 <% end %>
 </span></p>
 
-<h3>Options</h3>
-<div class="actions">
+<h3 class="section">Actions</h3>
+<div class="actions padtop">
+	<a href="/widget/<%= @params[:uuid] %>/add_to_toolbox/" class="action add">Add To Toolbox</a>
+	<% if UserService.checkPermissions(YAML::load(@widget.write_permissions), @user_uuid) %>
+		<a href="/widget/<%= @params[:uuid] %>/edit/" class="action edit">Edit Widget</a>
+		<a href="/widget/<%= @params[:uuid] %>/delete/" class="action delete">Delete Widget</a>
+	<% end %>
 </div>

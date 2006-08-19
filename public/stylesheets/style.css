@@ -261,9 +261,13 @@ p.info {
 	border: 1px solid #ccc;
 	background-color: #eee;
 }
-p.padbottom {
+.padbottom {
 	/* used by things that need extra padding on the bottom */
 	padding-bottom: 5px;
+}
+.padtop {
+	/* used by things that need extra padding on the top */
+	padding-top: 5px;
 }
 
 /* the top bar */
