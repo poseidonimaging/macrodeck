@@ -31,6 +31,12 @@ ActionController::Routing::Routes.draw do |map|
   map.connect 'user/:username/blog/delete/:uuid',	:controller => 'blog', :action => 'delete'
   map.connect 'user/:username/blog/view/:uuid',		:controller => 'blog', :action => 'view'
   
+  # Route group/:groupname/environment
+  map.connect 'group/:groupname/environment/:envname',	:controller => 'environment', :action => 'index'
+  
+  # Route user/:username/environment
+  map.connect 'user/:username/environment/:envname',	:controller => 'environment', :action => 'index'
+  
   # Route user other stuff
   map.connect 'user/:username/home',				:controller => 'account', :action => 'home'
   map.connect 'user/:username/settings',			:controller => 'account', :action => 'settings'
