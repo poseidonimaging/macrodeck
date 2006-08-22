@@ -1,4 +1,6 @@
 class EnvironmentController < ApplicationController
+	layout "default"
+	
 	def index
 		if @params[:groupname] != nil
 			uuid = UserService.lookupGroupName(@params[:groupname].downcase)
@@ -56,9 +58,10 @@ class EnvironmentController < ApplicationController
 		def set_variables_for_env
 			case @env.layout_type.downcase
 				when "3-column"
-					@env_widgets[0] = WidgetInstance.find(:all, :conditions => ["parent = ? AND position = 1", @env.uuid], :order => "order ASC")
-					@env_widgets[1] = WidgetInstance.find(:all, :conditions => ["parent = ? AND position = 2", @env.uuid], :order => "order ASC")
-					@env_widgets[2] = WidgetInstance.find(:all, :conditions => ["parent = ? AND position = 3", @env.uuid], :order => "order ASC")
+					@env_widgets = Array.new
+					@env_widgets << WidgetInstance.find(:all, :conditions => ["parent = ? AND position = 1", @env.uuid], :order => "`order` ASC")
+					@env_widgets << WidgetInstance.find(:all, :conditions => ["parent = ? AND position = 2", @env.uuid], :order => "`order` ASC")
+					@env_widgets << WidgetInstance.find(:all, :conditions => ["parent = ? AND position = 3", @env.uuid], :order => "`order` ASC")
 			end
 		end
 end
