@@ -63,7 +63,7 @@ class BlogService < BaseService
 		owner = blog_meta[:owner]
 		postID = DataService.createData(DTYPE_POST, :string, postContent, { :creatorapp => @serviceUUID, :creator => creator, :grouping => blogID, :owner => owner, :title => postTitle, :description => postDescription })
 		# now create comments group
-		commentsID = DataService.createDataGroup(DGROUP_COMMENTS, nil, postTitle, postDescription, nil, creator, owner, postID)
+		commentsID = DataService.createDataGroup(DGROUP_COMMENTS, nil, postID, { :title => postTitle, :description => postDescription, :creator => creator, :owner => owner })
 		read_perms = DataService.getPermissions(postID, :read)
 		write_perms = DataService.getPermissions(postID, :write)
 		DataService.setDefaultPermissions(commentsID, :read, read_perms)
