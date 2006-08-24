@@ -511,8 +511,30 @@ class DataService < BaseService
 	# have to play with the models. Remote data is still accessed
 	# like normal data.
 	def self.createRemoteDataItem(dataType, valueType, dataValue, metadata = nil, sourceId)
+		uuid = self.createData(dataType, valueType, dataValue, metadata)
+		if uuid != nil
+			ditem = DataItem.find(:first, :conditions => ["dataid = ?", uuid])
+			if ditem != nil
+				ditem.sourceid = sourceId
+				ditem.remote_data = true
+				ditem.save!
+			end
+		end
 	end
 	
+	# Creates remote data groups with the sourceid specified.
+	# You still access it like normal data groups.
+	def self.createRemoteDataGroup(groupType, groupingID, parent, metadata = nil, sourceId)
+		uuid = self.createDataGroup(groupType, groupingID, parent, metadata)
+		if uuid != nil
+			dgroup = DataGroup.find(:first, :conditions => ["groupingid = ?", uuid])
+			if dgroup != nil
+				dgroup.sourceid = sourceId
+				dgroup.remote_data = true
+				dgroup.save!
+			end
+		end
+	end
 end
 
 Services.registerService(DataService)
