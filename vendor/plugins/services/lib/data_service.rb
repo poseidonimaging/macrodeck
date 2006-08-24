@@ -7,6 +7,8 @@
 
 require "data_item"		# DataItem model
 require "data_group"	# DataGroup model
+require "data_source"	# DataSource model
+require "user_source"	# UserSource model
 require "yaml"
 require "data_web_service" # DataWebService
 
@@ -15,8 +17,8 @@ class DataService < BaseService
 	@serviceID = "com.macrodeck.DataService"
 	@serviceName = "DataService"	
 	@serviceVersionMajor = 0
-	@serviceVersionMinor = 2
-	@serviceVersionRevision = 20060813
+	@serviceVersionMinor = 3
+	@serviceVersionRevision = 20060823
 	@serviceUUID = "ae52b2a9-0872-4651-b159-c37715a53704"
 	
 	# Gets the specified data, by type (:string, :integer, :object),
@@ -204,9 +206,29 @@ class DataService < BaseService
 	# Creates a new data grouping with the specified parameters.
 	# +groupingID+ may be nil, if so, it will be generated in
 	# this function.
-	def self.createDataGroup(groupType, groupingID, title, description, tags, creator, owner, parent)
+	def self.createDataGroup(groupType, groupingID, parent, metadata = nil)
+	#(dataType, valueType, dataValue, metadata = nil)
 		if groupingID == nil
 			groupingID = UUIDService.generateUUID
+		end
+		if metadata != nil
+			creator = metadata[:creator]
+			description = metadata[:description]
+			owner = metadata[:owner]
+			tags = metadata[:tags]
+			title = metadata[:title]
+		else
+			creator = nil
+			description = nil
+			owner = nil
+			tags = nil
+			title = nil
+		end
+		if creator == nil
+			creator = NOBODY
+		end
+		if owner == nil
+			owner = NOBODY
 		end
 		group = DataGroup.new
 		group.groupingtype = groupType
@@ -483,6 +505,14 @@ class DataService < BaseService
 			end
 		end
 	end
+	
+	# Creates remote data with the sourceid specified.
+	# Keep in mind that this is only a helper function so you don't
+	# have to play with the models. Remote data is still accessed
+	# like normal data.
+	def self.createRemoteDataItem(dataType, valueType, dataValue, metadata = nil, sourceId)
+	end
+	
 end
 
 Services.registerService(DataService)

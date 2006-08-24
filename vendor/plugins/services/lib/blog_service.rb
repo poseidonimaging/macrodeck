@@ -50,7 +50,7 @@ class BlogService < BaseService
 	# *NOTE*! This method should NOT be used to create blog posts! This
 	# is for creating actual _blogs_.
 	def self.createBlog(title, description, creator, owner)
-		DataService.createDataGroup(DGROUP_BLOG, nil, title, description, nil, creator, owner, nil)
+		DataService.createDataGroup(DGROUP_BLOG, nil, nil, { :title => title, :description => description, :creator => creator, :owner => owner })
 	end
 	
 	# Creates a new blog post within the blog specified. Blogs are specified
