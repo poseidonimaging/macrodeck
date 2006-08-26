@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 26) do
+ActiveRecord::Schema.define(:version => 28) do
 
   create_table "data_groups", :force => true do |t|
     t.column "groupingtype", :string
@@ -15,7 +15,7 @@ ActiveRecord::Schema.define(:version => 26) do
     t.column "description", :text
     t.column "default_read_permissions", :text
     t.column "default_write_permissions", :text
-    t.column "remote_data", :boolean
+    t.column "remote_data", :boolean, :default => false, :null => false
     t.column "sourceid", :string
   end
 
@@ -35,7 +35,7 @@ ActiveRecord::Schema.define(:version => 26) do
     t.column "objectdata", :text
     t.column "read_permissions", :text
     t.column "write_permissions", :text
-    t.column "remote_data", :boolean
+    t.column "remote_data", :boolean, :default => false, :null => false
     t.column "sourceid", :string
   end
 
@@ -45,9 +45,10 @@ ActiveRecord::Schema.define(:version => 26) do
     t.column "title", :string
     t.column "description", :text
     t.column "uri", :text
-    t.column "creation", :integer
-    t.column "updated", :integer
-    t.column "update_interval", :integer
+    t.column "creation", :integer, :default => 0, :null => false
+    t.column "updated", :integer, :default => 0, :null => false
+    t.column "update_interval", :integer, :default => 0, :null => false
+    t.column "file_type", :string
   end
 
   create_table "environments", :force => true do |t|
