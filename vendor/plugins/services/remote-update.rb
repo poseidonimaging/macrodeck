@@ -3,9 +3,12 @@
 #
 # Released under a modified GPL license. See LICENSE.
 
-# Start DataService
-require 'lib/services.rb'
-require 'activerecord'
+# Start DataService and UUIDService
+$LOAD_PATH << File.dirname(__FILE__) + "/lib"
+require 'services.rb'
+require 'rubygems'
+require_gem 'activerecord'
+Services.startService "uuid_service"
 Services.startService "data_service"
 
 # Load RSS feed reader
@@ -26,7 +29,7 @@ require 'uri'
 NEWLINE = "\r\n"
 
 # Version Number
-VERSION = "0.3.20060826"
+UPDATER_VERSION = "0.3.20060826"
 
 # Clears the remote sources for the specified UUID
 # This should be called when processing new entries.
@@ -42,7 +45,60 @@ def clear_remote_sources(uuid)
 	return true
 end
 
-def insert_rss(rss_content)
+# When a RSS file is specified, read its contents and
+# insert it into the database. Each channel is considered
+# a data group and each item is considered a data item.
+def insert_rss(rss_content, source)
+	begin
+		feed = RSS::Parser.parse(rss_content)	
+	rescue RSS::InvalidRSSError
+		# for invalid RSS feeds
+		feed = RSS::Parser.parse(rss_content, false)
+	rescue StandardError
+		return false
+	end
+	puts "    * Importing #{feed.items.length} RSS feed items..."
+	uuid = UUIDService.generateUUID
+	DataService.createRemoteDataGroup(source.type, uuid, nil, { :title => feed.channel.title, :description => feed.channel.description }, source.uuid)
+	
+	# Create Data Items for each feed item
+	feed.items.each do |item|
+		h = Hash.new
+		# Find a link to associate with this item
+		begin
+			h[:link] = item.link
+		rescue
+			begin
+				# primarily used in RDF+RSS files.
+				h[:link] = item.about
+			rescue
+				# Didn't find either!
+				h[:link] = nil
+			end
+		end
+		# Next find an author.
+		begin
+			h[:author] = item.dc_creator
+		rescue
+			h[:author] = nil
+		end
+		# Now find the creation time
+		begin
+			d = item.dc_date
+			h[:creation] = Time.parse(d).getutc.to_i
+		rescue
+			# RSS 2.0 uses this method
+			begin
+				d = item.pubDate
+				h[:creation] = Time.parse(d).getutc.to_i
+			rescue
+				h[:creation] = nil
+			end
+		end
+		duuid = DataService.createRemoteDataItem(source.type, :string, item.description, { :title => item.title, :grouping => uuid }, source.uuid)
+		DataService.modifyDataItem(duuid, :object, h)
+		puts "    * Inserted item '#{item.title}'."
+	end
 end
 
 def main
@@ -59,12 +115,13 @@ def main
 			resource = Net::HTTP.start(url.host, url.port) do |http|
 				http.get(url.path, {
 					"Accept" => "*/*",
-					"User-Agent" => "MacroDeckFeedUpdater/" + VERSION + " (+http://www.macrodeck.com/)"
+					"User-Agent" => "MacroDeckFeedUpdater/" + UPDATER_VERSION + " (+http://www.macrodeck.com/)"
 					})
 			end
 			case source.file_type.downcase
 				when "rss"
-					insert_rss(resource.body)
+					clear_remote_sources(source.uuid)
+					insert_rss(resource.body, source)
 			end
 		end
 	end

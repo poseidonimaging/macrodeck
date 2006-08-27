@@ -10,7 +10,6 @@ require "data_group"	# DataGroup model
 require "data_source"	# DataSource model
 require "user_source"	# UserSource model
 require "yaml"
-require "data_web_service" # DataWebService
 
 class DataService < BaseService
 	@serviceAuthor = "Keith Gable <ziggy@ignition-project.com>"
@@ -520,6 +519,7 @@ class DataService < BaseService
 				ditem.save!
 			end
 		end
+		return uuid
 	end
 	
 	# Creates remote data groups with the sourceid specified.
@@ -534,6 +534,7 @@ class DataService < BaseService
 				dgroup.save!
 			end
 		end
+		return uuid
 	end
 end
 
