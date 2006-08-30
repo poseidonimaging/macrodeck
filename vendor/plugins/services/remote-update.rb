@@ -31,6 +31,11 @@ NEWLINE = "\r\n"
 # Version Number
 UPDATER_VERSION = "0.3.20060826"
 
+# Load your yml config from rails
+db_config = YAML::load(File.open("../../../config/database.yml"))
+# This is the real deal...run in production!
+ActiveRecord::Base.establish_connection(db_config['production'])
+
 # Clears the remote sources for the specified UUID
 # This should be called when processing new entries.
 def clear_remote_sources(uuid)
