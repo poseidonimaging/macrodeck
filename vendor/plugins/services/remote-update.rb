@@ -60,11 +60,12 @@ def insert_rss(rss_content, source)
 		# for invalid RSS feeds
 		feed = RSS::Parser.parse(rss_content, false)
 	rescue StandardError
+		puts "    ! Error parsing feed."
 		return false
 	end
 	puts "    * Importing #{feed.items.length} RSS feed items..."
 	uuid = UUIDService.generateUUID
-	DataService.createRemoteDataGroup(source.type, uuid, nil, { :title => feed.channel.title, :description => feed.channel.description }, source.uuid)
+	DataService.createRemoteDataGroup(source.data_type, uuid, nil, { :title => feed.channel.title, :description => feed.channel.description }, source.uuid)
 	
 	# Create Data Items for each feed item
 	feed.items.each do |item|
@@ -100,7 +101,7 @@ def insert_rss(rss_content, source)
 				h[:creation] = nil
 			end
 		end
-		duuid = DataService.createRemoteDataItem(source.type, :string, item.description, { :title => item.title, :grouping => uuid }, source.uuid)
+		duuid = DataService.createRemoteDataItem(source.data_type, :string, item.description, { :title => item.title, :grouping => uuid }, source.uuid)
 		DataService.modifyDataItem(duuid, :object, h)
 		puts "    * Inserted item '#{item.title}'."
 	end
