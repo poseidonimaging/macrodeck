@@ -1,10 +1,10 @@
 <% if DataService.canWrite?(@guuid, @user_uuid) %>
-<% @menu_content = "<a href=\"/#{@type}/#{@name}/blog/\">View Blog</a> <a href=\"/#{@type}/#{@name}/blog/post\">New Entry</a>" %>
+<% @menu_content = "<a href=\"/#{@type}/#{@name}/blog/\">View Blog</a> <a href=\"/#{@type}/#{@name}/blog/post\">New Entry</a> <a href=\"/#{@type}/#{@name}/blog/settings\">Settings</a> <a href=\"/#{@type}/#{@name}/blog/permissions\">Permissions</a>" %>
 <% else %>
 <% @menu_content = "<a href=\"/#{@type}/#{@name}/blog/\">View Blog</a>" %>
 <% end %>
 
-<% @summary = build_summary(@blogmetadata[:description], @blogmetadata[:title]) %>
+<% @summary = build_summary(@blogmetadata[:description], h(@blogmetadata[:title])) %>
 <% @posts.each do |post| %>
 	<% if DataService.canRead?(post.dataid, @user_uuid) %>
 		<div class="post">

@@ -280,7 +280,6 @@ class BlogController < ApplicationController
 				if @uuid == nil
 					render :template => "errors/invalid_user_or_group"
 				else
-					# Any user can post on any blog. Solution until permissions are completed.				
 					@name = @params[:username].downcase
 					@blogmetadata = BlogService.getBlogMetadata(BlogService.getBlogUUID(@uuid))
 					if DataService.canWrite?(BlogService.getBlogUUID(@uuid), @user_uuid)
@@ -299,7 +298,6 @@ class BlogController < ApplicationController
 				if @uuid == nil
 					render :template => "errors/invalid_user_or_group"
 				else
-					# Any user can post on any blog. Solution until permissions are completed.
 					@name = @params[:groupname].downcase
 					@blogmetadata = BlogService.getBlogMetadata(BlogService.getBlogUUID(@uuid))
 					if DataService.canWrite?(BlogService.getBlogUUID(@uuid), @user_uuid)
@@ -326,7 +324,6 @@ class BlogController < ApplicationController
 				if @uuid == nil
 					render :template => "errors/invalid_user_or_group"
 				else
-					# Any user can post on any blog. Solution until permissions are completed.				
 					@name = @params[:username].downcase
 					@blogmetadata = BlogService.getBlogMetadata(BlogService.getBlogUUID(@uuid))
 					if DataService.canWrite?(BlogService.getBlogUUID(@uuid), @user_uuid)
@@ -486,6 +483,94 @@ class BlogController < ApplicationController
 			end		
 		else
 			raise "Unrecognized HTTP request method in blog/view"
+		end
+	end
+	
+	def settings
+		if request.method == :get
+			if @params[:groupname] != nil
+				@uuid = UserService.lookupGroupName(@params[:groupname].downcase)
+				@type = "group"
+				if @uuid == nil
+					render :template => "errors/invalid_user_or_group"
+				else
+					@name = @params[:groupname].downcase
+					@blogmetadata = BlogService.getBlogMetadata(BlogService.getBlogUUID(@uuid))
+					if DataService.canWrite?(BlogService.getBlogUUID(@uuid), @user_uuid)
+						render :template => "blog/settings"
+					else
+						render :template => "errors/access_denied"
+					end			
+				end
+			elsif @params[:username] != nil
+				@uuid = UserService.lookupUserName(@params[:username].downcase)
+				@type = "user"
+				if @uuid == nil
+					render :template => "errors/invalid_user_or_group"
+				else
+					@name = @params[:username].downcase
+					@blogmetadata = BlogService.getBlogMetadata(BlogService.getBlogUUID(@uuid))
+					if DataService.canWrite?(BlogService.getBlogUUID(@uuid), @user_uuid)
+						render :template => "blog/settings"
+					else
+						render :template => "errors/access_denied"
+					end
+				end
+			else
+				render :template => "errors/invalid_user_or_group"
+			end
+		elsif request.method == :post
+			if @params[:groupname] != nil
+				@uuid = UserService.lookupGroupName(@params[:groupname].downcase)
+				@type = "group"
+				if @uuid == nil
+					render :template => "errors/invalid_user_or_group"
+				else
+					@name = @params[:groupname].downcase
+					@blogmetadata = BlogService.getBlogMetadata(BlogService.getBlogUUID(@uuid))
+					if DataService.canWrite?(BlogService.getBlogUUID(@uuid), @user_uuid)
+						# Validate the fields
+						if @params[:title].length > 0
+							DataService.modifyDataGroupMetadata(BlogService.getBlogUUID(@uuid), :title, @params[:title])
+							DataService.modifyDataGroupMetadata(BlogService.getBlogUUID(@uuid), :description, @params[:description])
+							redirect_to "/#{@type}/#{@name}/blog"
+						else
+							if @params[:title].length == 0
+								@error = "Please enter a title for your blog."
+							end
+							render :template => "blog/settings"
+						end
+					else
+						render :template => "errors/access_denied"
+					end			
+				end
+			elsif @params[:username] != nil
+				@uuid = UserService.lookupUserName(@params[:username].downcase)
+				@type = "user"
+				if @uuid == nil
+					render :template => "errors/invalid_user_or_group"
+				else
+					@name = @params[:username].downcase
+					@blogmetadata = BlogService.getBlogMetadata(BlogService.getBlogUUID(@uuid))
+					if DataService.canWrite?(BlogService.getBlogUUID(@uuid), @user_uuid)
+						# Validate the fields
+						if @params[:title].length > 0 
+							DataService.modifyDataGroupMetadata(BlogService.getBlogUUID(@uuid), :title, @params[:title])
+							DataService.modifyDataGroupMetadata(BlogService.getBlogUUID(@uuid), :description, @params[:description])
+							redirect_to "/#{@type}/#{@name}/blog"
+						else
+							if @params[:title].length == 0
+								@error = "Please enter a title for your blog."
+							end
+							render :template => "blog/settings"
+						end						
+					else
+						render :template => "errors/access_denied"
+					end
+				end
+			else
+				render :template => "errors/invalid_user_or_group"
+			end		
 		end
 	end	
 end

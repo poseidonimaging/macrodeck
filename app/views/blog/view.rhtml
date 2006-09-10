@@ -1,9 +1,9 @@
 <% if DataService.canWrite?(@postuuid, @user_uuid) %>
-<% @menu_content = "<a href=\"/#{@type}/#{@name}/blog/\">View Blog</a> <a href=\"/#{@type}/#{@name}/blog/post\">New Entry</a>" %>
+<% @menu_content = "<a href=\"/#{@type}/#{@name}/blog/\">View Blog</a> <a href=\"/#{@type}/#{@name}/blog/post\">New Entry</a> <a href=\"/#{@type}/#{@name}/blog/settings\">Settings</a> <a href=\"/#{@type}/#{@name}/blog/permissions\">Permissions</a>" %>
 <% else %>
 <% @menu_content = "<a href=\"/#{@type}/#{@name}/blog/\">View Blog</a>" %>
 <% end %>
-<% @summary = build_summary(@postmetadata[:description], @postmetadata[:title]) %>
+<% @summary = build_summary(@postmetadata[:description], h(@postmetadata[:title])) %>
 
 <div class="post">
 	<h3 class="postname"><%= @postmetadata[:title] %></h3>
