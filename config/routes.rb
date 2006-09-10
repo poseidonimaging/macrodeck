@@ -24,6 +24,7 @@ ActionController::Routing::Routes.draw do |map|
   map.connect 'group/:groupname/blog/delete/:uuid',	:controller => 'blog', :action => 'delete'
   map.connect 'group/:groupname/blog/view/:uuid',	:controller => 'blog', :action => 'view'
   map.connect 'group/:groupname/blog/settings',		:controller => 'blog', :action => 'settings'
+  map.connect 'group/:groupname/blog/permissions',	:controller => 'blog', :action => 'permissions'
   
   # Route user/:username/blog
   map.connect 'user/:username/blog',				:controller => 'blog', :action => 'index'
@@ -32,6 +33,7 @@ ActionController::Routing::Routes.draw do |map|
   map.connect 'user/:username/blog/delete/:uuid',	:controller => 'blog', :action => 'delete'
   map.connect 'user/:username/blog/view/:uuid',		:controller => 'blog', :action => 'view'
   map.connect 'user/:username/blog/settings',		:controller => 'blog', :action => 'settings'
+  map.connect 'user/:username/blog/permissions',	:controller => 'blog', :action => 'permissions'
   
   # Route group/:groupname/environment
   map.connect 'group/:groupname/environment/:envname',	:controller => 'environment', :action => 'index'
