@@ -1,0 +1,31 @@
+<table class="permissions">
+	<tr class="head">
+		<th class="usergroup">User/Group</th>
+		<th class="allow">Allow</th>
+		<th class="deny">Deny</th>
+		<th></th>
+	</tr>
+	<% i = 0 %>
+	<% @params[:permissions].each do |permission| %>
+		<tr class="<%= cycle "row1", "row2" %>" id="<%= "item_#{@kind}_#{i}" %>">
+			<td class="usergroup"><%= UUIDService.lookupUUID(permission[:id]) %></td>
+			<td class="allow">
+				<% if permission[:action] == :allow %>
+					<%= radio_button_tag "#{@kind}[#{i}]", "allow", true %>
+				<% else %>
+					<%= radio_button_tag "#{@kind}[#{i}]", "allow", false %>				
+				<% end %>
+			</td>
+			<td class="deny">
+				<% if permission[:action] == :deny %>
+					<%= radio_button_tag "#{@kind}[#{i}]", "deny", true %>
+				<% else %>
+					<%= radio_button_tag "#{@kind}[#{i}]", "deny", false %>				
+				<% end %>
+			</td>
+			<td class="actions"><a href="#" onclick="$('<%= "#{@kind}[#{i}]" %>').value = 'delete'; new Effect.Fade('<%= "item_#{@kind}_#{i}" %>'); return false;">Delete</a></td>
+		</tr>
+		<% i = i + 1 %>
+	<% end %>
+</table>
+<a href="#">Add</a>

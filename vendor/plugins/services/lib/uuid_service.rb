@@ -38,7 +38,7 @@ class UUIDService < BaseService
 			if ditem != nil
 				return ditem.title
 			else
-				dgroup = DataGroup.find(:first, :conditions => ["grouping = ?", uuid])
+				dgroup = DataGroup.find(:first, :conditions => ["groupingid = ?", uuid])
 				if dgroup != nil
 					return dgroup.title
 				else
