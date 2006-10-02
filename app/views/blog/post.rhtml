@@ -22,11 +22,11 @@
 	<div id="permissions" class="expandcontent" style="display: none;">
 		<fieldset>
 			<legend>Read Permissions</legend>
-			<%= render_component :controller => "permission", :action => "display_table", :params => { :permissions => DEFAULT_READ_PERMISSIONS, :kind => "read" } %>
+			<%= render_component :controller => "permission", :action => "display_table", :params => { :permissions => @readperms, :kind => "read" } %>
 		</fieldset>
 		<fieldset>
 			<legend>Write Permissions</legend>
-			<%= render_component :controller => "permission", :action => "display_table", :params => { :permissions => DEFAULT_WRITE_PERMISSIONS, :kind => "write" } %>
+			<%= render_component :controller => "permission", :action => "display_table", :params => { :permissions => @writeperms, :kind => "write" } %>
 		</fieldset>
 	</div>
 	<p><%= submit_tag "Post" %></p>

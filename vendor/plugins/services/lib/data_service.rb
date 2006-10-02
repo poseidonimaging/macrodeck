@@ -423,6 +423,23 @@ class DataService < BaseService
 		end	
 	end
 	
+	# Gets the default permissions on a data group.
+	def self.getDefaultPermissions(groupID, kind)
+		dgroup = DataGroup.find(:first, :conditions => ["groupingid = ?", groupID])
+		if dgroup != nil
+			case kind
+				when :write, "write"
+					return YAML::load(dgroup.default_write_permissions)
+				when :read, "read"
+					return YAML::load(dgroup.default_read_permissions)
+				else
+					return false
+			end
+		else
+			return false
+		end	
+	end
+	
 	# Sets the default permissions on a data group.
 	# See setPermissions for more info.
 	def self.setDefaultPermissions(groupID, kind, value)

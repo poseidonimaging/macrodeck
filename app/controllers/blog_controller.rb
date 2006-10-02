@@ -268,6 +268,8 @@ class BlogController < ApplicationController
 				else
 					@name = @params[:groupname].downcase
 					@blogmetadata = BlogService.getBlogMetadata(BlogService.getBlogUUID(@uuid))
+					@readperms = DataService.getDefaultPermissions(BlogService.getBlogUUID(@uuid), :read)
+					@writeperms = DataService.getDefaultPermissions(BlogService.getBlogUUID(@uuid), :write)
 					if DataService.canWrite?(BlogService.getBlogUUID(@uuid), @user_uuid)
 						render :template => "blog/post"
 					else
@@ -292,6 +294,7 @@ class BlogController < ApplicationController
 				render :template => "errors/invalid_user_or_group"
 			end
 		elsif request.method == :post
+			raise "!"
 			if @params[:groupname] != nil
 				@uuid = UserService.lookupGroupName(@params[:groupname].downcase)
 				@type = "group"
