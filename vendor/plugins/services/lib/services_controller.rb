@@ -9,4 +9,5 @@ class ServicesController < ApplicationController
 	web_service_dispatching_mode :delegated
 	
 	web_service :DataService, DataWebService.new
+	web_service :UserService, UserWebService.new
 end

@@ -1,8 +1,10 @@
 # This service provides user support across MacroDeck.
 # This service requires UUIDService to work correctly.
 # It also depends on the existance of Rails, or at
-# least ActiveRecord. It also requires digest/sha2.
+# least ActiveRecord. It also requires digest/sha2 and
+# digest/md5.
 
+require 'digest/md5'
 require 'digest/sha2'
 require 'user'
 require 'group'
@@ -362,6 +364,34 @@ class UserService < BaseService
 			return true
 		else
 			return false
+		end
+	end
+	
+	# Generates a new authCookie for a user. authCookies are not used for local authentication --
+	# authCodes are. authCookies are simply a salt that must be used if someone attempts to get
+	# a user's authCode from remote. There's more to it than that though. See UserWebService.
+	def self.generateAuthCookie(uuid)
+		user = User.find(:first, :conditions => ["uuid = ?", uuid])
+		if user != nil
+			r1 = rand
+			r2 = rand
+			r3 = rand
+			authCookie = Digest::MD5::hexdigest("#{r1}:#{r2}:#{r3}")
+			if user.authcookie_set_time == nil
+				user.authcookie_set_time = 0
+				user.save!
+			end
+			if user.authcookie_set_time >= (Time.now.to_i - 60)
+				return nil
+			else
+				# the one minute security block hasn't been set off.
+				user.authcookie = authCookie
+				user.authcookie_set_time = Time.now.to_i
+				user.save!
+				return authCookie
+			end
+		else
+			return nil
 		end
 	end
 	
