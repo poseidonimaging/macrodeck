@@ -79,5 +79,4 @@ Services.startService "data_service"
 Services.startService "blog_service"
 Services.startService "user_service"
 # Start web services now
-require "services_controller"
 Services.startService "data_web_service"

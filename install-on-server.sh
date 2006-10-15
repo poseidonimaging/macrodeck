@@ -8,3 +8,6 @@ cd ~/macrodeck.com
 rm -rf ~/macrodeck.com/app/views/test
 rm -f ~/macrodeck.com/app/controllers/test_controller.rb
 rm -f ~/macrodeck.com/app/helpers/test_helper.rb
+
+# create a copy of services_controller.rb
+cp ~/macrodeck.com/vendor/plugins/services/lib/services_controller.rb ~/macrodeck.com/app/controllers/services_controller.rb
