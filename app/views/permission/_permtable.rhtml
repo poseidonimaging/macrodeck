@@ -1,4 +1,4 @@
-<table class="permissions">
+<table class="permissions" id="<%= "#{@kind}_permissions" %>">
 	<tr class="head">
 		<th class="usergroup">User/Group</th>
 		<th class="allow">Allow</th>
@@ -28,4 +28,7 @@
 		<% i = i + 1 %>
 	<% end %>
 </table>
-<a href="#">Add</a>
+<div id="<%= "#{@kind}" %>_add">
+<h2>Add a new permission</h2>
+</div>
+<a href="#<%= "#{@kind}" %>_add" rel="ibox">Add</a>
