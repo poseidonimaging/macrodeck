@@ -373,7 +373,7 @@ class UserService < BaseService
 		if user != nil
 			return user
 		else
-			reutrn nil
+			return nil
 		end
 	end
 	
