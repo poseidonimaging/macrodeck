@@ -2,6 +2,8 @@
 # functions to remote via ActionWebService.
 
 # The UserService API definition
+require 'digest/sha2'
+
 class UserServiceAPI < ActionWebService::API::Base
 	api_method :get_auth_cookie, {
 			:expects =>	[{ :userName	=> :string }],
@@ -9,7 +11,8 @@ class UserServiceAPI < ActionWebService::API::Base
 		}
 		
 	api_method :get_auth_code, {
-			:expects => [{ :authToken	=> :string }],
+			:expects => [{ :userName	=> :string },
+						 { :authToken	=> :string }],
 			:returns => [:string]
 		}
 end
@@ -41,6 +44,20 @@ class UserWebService < ActionWebService::Base
 	# long MD5. We also expect it in lowercase.
 	#
 	# The salt or lack thereof is set by the website running Services.
-	def get_auth_code(authToken)
+	def get_auth_code(userName, authToken)
+		uuid = UserService.lookupUserName(userName)
+		# build an authToken based on our data
+		user = User.find(:first, :conditions => ["uuid = ?", uuid])
+		if user != nil
+			our_token = Digest::SHA512::hexdigest(user.authcookie + ":" + user.password.split(":")[1])
+			if our_token.downcase == authToken.downcase
+				# All is well, the token is valid
+				return user.authcode
+			else
+				return nil
+			end
+		else
+			return nil
+		end
 	end
 end
