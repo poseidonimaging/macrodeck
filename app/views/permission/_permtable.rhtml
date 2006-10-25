@@ -27,7 +27,7 @@
 							<%= radio_button_tag "#{@kind}[#{i}][#{permission[:id]}]", "deny", false %>				
 						<% end %>
 					</td>
-					<td class="actions"><a href="#" onclick="$('<%= "#{@kind}[#{i}][#{permission[:id]}]" %>').value = 'delete'; new Effect.Fade('<%= "item_#{@kind}_#{i}" %>'); return false;">Delete</a></td>
+					<td class="actions"><div class="actions"><a href="#" onclick="$('<%= "#{@kind}[#{i}][#{permission[:id]}]" %>').value = 'delete'; new Effect.Fade('<%= "item_#{@kind}_#{i}" %>'); return false;" class="action delete">Delete</a></div></td>
 				</tr>
 				<% i = i + 1 %>
 			<% end %>
@@ -91,7 +91,10 @@
 		td_displayName.appendChild(text_displayName);
 		
 		// build actions
-		var strHTML = "<a href=\"#\" onclick=\"$('<%= @kind %>[" + <%= @kind %>_counter + "][" + uuid + "]').value = 'delete'; new Effect.Fade('item_<%= @kind %>_" + <%= @kind %>_counter + "'); return false;\">Delete</a>";
+		// this strHTML hack is needed because .onclick doesn't work correctly with what we need to do to it.
+		// we'd need to do some sort of overloading of the a tag (i.e. a.rel set to counter, a.title set to uuid, or something)
+		// and that sucks.
+		var strHTML = "<div class=\"actions\"><a href=\"#\" onclick=\"$('<%= @kind %>[" + <%= @kind %>_counter + "][" + uuid + "]').value = 'delete'; new Effect.Fade('item_<%= @kind %>_" + <%= @kind %>_counter + "'); return false;\" class=\"action delete\">Delete</a></div>";
 		td_actions.innerHTML = strHTML;
 		td_actions.className = "actions";
 		
@@ -117,5 +120,7 @@
 	}
 	// ]]>
 	</script>
-	<a href="#<%= @kind %>_addperm" rel="ibox?width=320&height=240">Add</a>
+	<div class="actions">
+		<a href="#<%= @kind %>_addperm" rel="ibox?width=320&height=240" class="action add">Add</a>
+	</div>
 </div>
