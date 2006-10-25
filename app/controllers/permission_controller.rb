@@ -1,13 +1,14 @@
 class PermissionController < ApplicationController
+	layout "lite", :except => :display_table
+	
 	# Display permission table
 	def display_table
-		if @params[:permissions] != nil
-			if @params[:kind] != nil
-				@kind = @params[:kind]
-			else
-				@kind = "permission"
-			end
-			render :partial => 'permission/permtable'
+
+	end
+	
+	# Find user
+	def find_user
+		if @user_loggedin
 		else
 			render :text => nil
 		end

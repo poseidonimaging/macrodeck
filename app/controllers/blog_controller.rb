@@ -284,6 +284,8 @@ class BlogController < ApplicationController
 				else
 					@name = @params[:username].downcase
 					@blogmetadata = BlogService.getBlogMetadata(BlogService.getBlogUUID(@uuid))
+					@readperms = DataService.getDefaultPermissions(BlogService.getBlogUUID(@uuid), :read)
+					@writeperms = DataService.getDefaultPermissions(BlogService.getBlogUUID(@uuid), :write)					
 					if DataService.canWrite?(BlogService.getBlogUUID(@uuid), @user_uuid)
 						render :template => "blog/post"
 					else

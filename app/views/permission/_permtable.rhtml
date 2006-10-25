@@ -1,34 +1,61 @@
-<table class="permissions" id="<%= "#{@kind}_permissions" %>">
-	<tr class="head">
-		<th class="usergroup">User/Group</th>
-		<th class="allow">Allow</th>
-		<th class="deny">Deny</th>
-		<th></th>
-	</tr>
-	<% i = 0 %>
-	<% @params[:permissions].each do |permission| %>
-		<tr class="<%= cycle "row1", "row2" %>" id="<%= "item_#{@kind}_#{i}" %>">
-			<td class="usergroup"><%= UUIDService.lookupUUID(permission[:id]) %></td>
-			<td class="allow">
-				<% if permission[:action] == :allow %>
-					<%= radio_button_tag "#{@kind}[#{i}][#{permission[:id]}]", "allow", true %>
-				<% else %>
-					<%= radio_button_tag "#{@kind}[#{i}][#{permission[:id]}]", "allow", false %>				
-				<% end %>
-			</td>
-			<td class="deny">
-				<% if permission[:action] == :deny %>
-					<%= radio_button_tag "#{@kind}[#{i}][#{permission[:id]}]", "deny", true %>
-				<% else %>
-					<%= radio_button_tag "#{@kind}[#{i}][#{permission[:id]}]", "deny", false %>				
-				<% end %>
-			</td>
-			<td class="actions"><a href="#" onclick="$('<%= "#{@kind}[#{i}][#{permission[:id]}]" %>').value = 'delete'; new Effect.Fade('<%= "item_#{@kind}_#{i}" %>'); return false;">Delete</a></td>
+<div class="compact">
+	<table class="permissions" id="<%= "#{@kind}_permissions" %>">
+		<tr class="head">
+			<th class="usergroup">User/Group</th>
+			<th class="allow">Allow</th>
+			<th class="deny">Deny</th>
+			<th></th>
 		</tr>
-		<% i = i + 1 %>
-	<% end %>
-</table>
-<div id="<%= "#{@kind}" %>_add">
-<h2>Add a new permission</h2>
+		<% i = 0 %>
+		<% @params[:permissions].each do |permission| %>
+			<tr class="<%= cycle "row1", "row2" %>" id="<%= "item_#{@kind}_#{i}" %>">
+				<td class="usergroup"><%= UUIDService.lookupUUID(permission[:id]) %></td>
+				<td class="allow">
+					<% if permission[:action] == :allow %>
+						<%= radio_button_tag "#{@kind}[#{i}][#{permission[:id]}]", "allow", true %>
+					<% else %>
+						<%= radio_button_tag "#{@kind}[#{i}][#{permission[:id]}]", "allow", false %>				
+					<% end %>
+				</td>
+				<td class="deny">
+					<% if permission[:action] == :deny %>
+						<%= radio_button_tag "#{@kind}[#{i}][#{permission[:id]}]", "deny", true %>
+					<% else %>
+						<%= radio_button_tag "#{@kind}[#{i}][#{permission[:id]}]", "deny", false %>				
+					<% end %>
+				</td>
+				<td class="actions"><a href="#" onclick="$('<%= "#{@kind}[#{i}][#{permission[:id]}]" %>').value = 'delete'; new Effect.Fade('<%= "item_#{@kind}_#{i}" %>'); return false;">Delete</a></td>
+			</tr>
+			<% i = i + 1 %>
+		<% end %>
+	</table>
+	<script type="text/javascript">
+	// <![CDATA[
+	//
+	// Add a Permission Helper Function:
+	// Creates a TR, adds it to the existing table, increments the counter.
+	
+	// This is partially specialized using Rails insertions. The point is that
+	// if you have more than one permission table on a page, they both require
+	// a different "kind". Otherwise, this will fail horribly.
+	var <%= @kind %>_counter = <%= i %>;
+	var <%= @kind %>_row1 = "<%= cycle "row1", "row2" %>"; // if the cycle ends on an odd, row1 will be row2 and vice-versa
+	var <%= @kind %>_row2 = "<%= cycle "row1", "row2" %>";
+	var <%= @kind %>_row = 0; // this _could_ be more efficiently stored as a boolean but it doesn't matter much really.
+	
+	// This function does the *real* DOM manipulation.
+	function <%= @kind %>_add_perm(uuid, displayName) {
+		// create radio buttons
+		radio_allow = document.createElement("input");
+		radio_deny = document.createElement("input");
+		// create TR and TDs
+		tr = document.createElement("tr");
+		td_displayName = document.createElement("td");
+		td_allow = document.createElement("td");
+		td_deny = document.createElement("td");
+		td_actions = document.createElement("td");
+	}
+	// ]]>
+	</script>
+	<%= link_to "Add", :controller => "permission", :action => "find_user", :kind => @kind %>
 </div>
-<a href="#<%= "#{@kind}" %>_add" rel="ibox">Add</a>

@@ -419,3 +419,17 @@ li.tab .tab-fill-active {
 	border: 1px solid #ccc;
 	background-color: #eee;
 }
+
+/* Lite */
+body.lite {
+	padding: 0;
+	margin: 3px;
+}
+.lite h2, .lite h3, .lite h3 {
+	border-bottom: 1px solid #ccc;
+}
+
+/* Compact */
+.compact, .compact h2, .compact h3, .compact h4, .compact h5, .compact th, .compact td {
+	font-size: 8pt;
+}
