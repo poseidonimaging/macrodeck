@@ -9,6 +9,27 @@ class PermissionController < ApplicationController
 	# Find user
 	def find_user
 		if @user_loggedin
+			if @params["step"] != nil && @params["step"] == "lookup"
+				# Currently we only care about exact username matches
+				usergroup = UserService.lookupUserName(@params["usergroup"].downcase)
+				if usergroup == nil
+					usergroup = UserService.lookupGroupName(@params["usergroup"].downcase)
+					if usergroup == nil
+						@errors << "Invalid user or group name"
+						@params["step"] = "home"
+					else
+						@uuid = usergroup
+						@name = UserService.lookupUUID(@uuid)
+						@uname = @params["usergroup"].downcase
+						@kind = @params["kind"]
+					end
+				else
+					@uuid = usergroup
+					@name = UserService.lookupUUID(@uuid)
+					@uname = @params["usergroup"].downcase
+					@kind = @params["kind"]
+				end
+			end
 		else
 			render :text => nil
 		end

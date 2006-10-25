@@ -25,6 +25,12 @@
 .actions .delete {
 	background-image: url(/images/actions/black/trash.gif);
 }
+.actions .yes {
+	background-image: url(/images/actions/black/check.gif);
+}
+.actions .no {
+	background-image: url(/images/actions/black/close.gif);
+}
 
 /* now :hover'ed */
 .actions .action:hover {
@@ -41,4 +47,10 @@
 }
 .actions .delete:hover {
 	background-image: url(/images/actions/blue/trash.gif);
+}
+.actions .yes:hover {
+	background-image: url(/images/actions/blue/check.gif);
+}
+.actions .no:hover {
+	background-image: url(/images/actions/blue/close.gif);
 }

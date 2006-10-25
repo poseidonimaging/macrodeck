@@ -1,8 +1,13 @@
 <%= form_tag :controller => "permission", :action => "find_user" %>
 <p>Please enter the username or groupname of the user
 or group you wish to add a permission for.</p>
-<%= hidden_field_tag "step", "addperm" %>
+<%= hidden_field_tag "step", "lookup" %>
+<%= hidden_field_tag "kind", @params[:kind] %>
 <%= text_field_tag "usergroup", nil, :size => "20" %> <%= submit_tag "Lookup" %>
 <%= end_form_tag %>
-<a href="#" onclick="parent.hideIbox(); return false;">Hide</a>
-<a href="#" onclick="top.read_add_perm('1234', 'Test');">Add Test</a>
+<p>Or, you can add a special group from the list below.</p>
+<div class="actions">
+	<p>
+		<a href="#" class="action add" onclick="top.<%= @params[:kind] %>_add_perm('everybody', 'everybody'); parent.hideIbox(); return false;">Add Everybody</a>
+	</p>
+</div>
