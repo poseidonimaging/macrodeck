@@ -1,34 +1,44 @@
 <div class="compact">
-	<table class="permissions" id="<%= "#{@kind}_permissions" %>">
-		<tr class="head">
-			<th class="usergroup">User/Group</th>
-			<th class="allow">Allow</th>
-			<th class="deny">Deny</th>
-			<th></th>
-		</tr>
-		<% i = 0 %>
-		<% @params[:permissions].each do |permission| %>
-			<tr class="<%= cycle "row1", "row2" %>" id="<%= "item_#{@kind}_#{i}" %>">
-				<td class="usergroup"><%= UUIDService.lookupUUID(permission[:id]) %></td>
-				<td class="allow">
-					<% if permission[:action] == :allow %>
-						<%= radio_button_tag "#{@kind}[#{i}][#{permission[:id]}]", "allow", true %>
-					<% else %>
-						<%= radio_button_tag "#{@kind}[#{i}][#{permission[:id]}]", "allow", false %>				
-					<% end %>
-				</td>
-				<td class="deny">
-					<% if permission[:action] == :deny %>
-						<%= radio_button_tag "#{@kind}[#{i}][#{permission[:id]}]", "deny", true %>
-					<% else %>
-						<%= radio_button_tag "#{@kind}[#{i}][#{permission[:id]}]", "deny", false %>				
-					<% end %>
-				</td>
-				<td class="actions"><a href="#" onclick="$('<%= "#{@kind}[#{i}][#{permission[:id]}]" %>').value = 'delete'; new Effect.Fade('<%= "item_#{@kind}_#{i}" %>'); return false;">Delete</a></td>
+	<table class="permissions">
+		<thead>
+			<tr class="head">
+				<th class="usergroup">User/Group</th>
+				<th class="allow">Allow</th>
+				<th class="deny">Deny</th>
+				<th></th>
 			</tr>
-			<% i = i + 1 %>
-		<% end %>
+		</thead>
+		<tbody id="<%= "#{@kind}_permissions" %>">
+			<% i = 0 %>
+			<% @params[:permissions].each do |permission| %>
+				<tr class="<%= cycle "row1", "row2" %>" id="<%= "item_#{@kind}_#{i}" %>">
+					<td class="usergroup"><%= UUIDService.lookupUUID(permission[:id]) %></td>
+					<td class="allow">
+						<% if permission[:action] == :allow %>
+							<%= radio_button_tag "#{@kind}[#{i}][#{permission[:id]}]", "allow", true %>
+						<% else %>
+							<%= radio_button_tag "#{@kind}[#{i}][#{permission[:id]}]", "allow", false %>				
+						<% end %>
+					</td>
+					<td class="deny">
+						<% if permission[:action] == :deny %>
+							<%= radio_button_tag "#{@kind}[#{i}][#{permission[:id]}]", "deny", true %>
+						<% else %>
+							<%= radio_button_tag "#{@kind}[#{i}][#{permission[:id]}]", "deny", false %>				
+						<% end %>
+					</td>
+					<td class="actions"><a href="#" onclick="$('<%= "#{@kind}[#{i}][#{permission[:id]}]" %>').value = 'delete'; new Effect.Fade('<%= "item_#{@kind}_#{i}" %>'); return false;">Delete</a></td>
+				</tr>
+				<% i = i + 1 %>
+			<% end %>
+		</tbody>
 	</table>
+	<div id="<%= @kind %>_addperm" class="hide">
+		<!-- ATTENTION STANDARDIZATION NAZIS:
+		I *know* frameborder is an evil sin. I have no other way to force MSIE to show no border!
+		-->
+		<iframe src="/permission/find_user?kind=<%= @kind %>" style="width: 100%; height: 100%; -width: 610px; -height: 480px; margin: 0; padding: 0; border: 0;" frameborder="0">Your browser doesn't support IFRAMEs or they're turned off. Turn them on or download something better.</iframe>
+	</div>
 	<script type="text/javascript">
 	// <![CDATA[
 	//
@@ -54,8 +64,58 @@
 		td_allow = document.createElement("td");
 		td_deny = document.createElement("td");
 		td_actions = document.createElement("td");
+		// create text nodes
+		text_displayName = document.createTextNode(displayName);
+		// find table
+		table = $('<%= @kind %>_permissions');
+		
+		// build deny
+		radio_deny.id = "<%= @kind %>[" + <%= @kind %>_counter + "][" + uuid + "]";
+		radio_deny.name = "<%= @kind %>[" + <%= @kind %>_counter + "][" + uuid + "]";
+		radio_deny.type = "radio";
+		radio_deny.value = "deny";
+		radio_deny.checked = "checked"; // default to deny
+		td_deny.className = "deny";
+		td_deny.appendChild(radio_deny);
+		
+		// build allow
+		radio_allow.id = "<%= @kind %>[" + <%= @kind %>_counter + "][" + uuid + "]";
+		radio_allow.name = "<%= @kind %>[" + <%= @kind %>_counter + "][" + uuid + "]";
+		radio_allow.type = "radio";
+		radio_allow.value = "allow";
+		td_allow.className = "allow";
+		td_allow.appendChild(radio_allow);
+		
+		// build displayName
+		td_displayName.className = "usergroup";
+		td_displayName.appendChild(text_displayName);
+		
+		// build actions
+		var strHTML = "<a href=\"#\" onclick=\"$('<%= @kind %>[" + <%= @kind %>_counter + "][" + uuid + "]').value = 'delete'; new Effect.Fade('item_<%= @kind %>_" + <%= @kind %>_counter + "'); return false;\">Delete</a>";
+		td_actions.innerHTML = strHTML;
+		td_actions.className = "actions";
+		
+		// build the row
+		if (<%= @kind %>_row == 0) {
+			tr.className = <%= @kind %>_row1;
+		} else {
+			tr.className = <%= @kind %>_row2;
+			<%= @kind %>_row = 0;
+		}
+		tr.id = "item_<%= @kind %>_" + <%= @kind %>_counter;
+		tr.appendChild(td_displayName);
+		tr.appendChild(td_allow);
+		tr.appendChild(td_deny);
+		tr.appendChild(td_actions);
+		
+		// insert into table
+		table.appendChild(tr);
+		
+		// increment counter
+		<%= @kind %>_counter = <%= @kind %>_counter + 1;
+		return <%= @kind %>_counter - 1;
 	}
 	// ]]>
 	</script>
-	<%= link_to "Add", :controller => "permission", :action => "find_user", :kind => @kind %>
+	<a href="#<%= @kind %>_addperm" rel="ibox?width=640&height=480">Add</a>
 </div>

@@ -227,6 +227,9 @@ input.offset {
 input.password {
 	font-style: italic;
 }
+fieldset {
+	padding: 5px;
+}
 
 /* generic */
 h3.postname, h3.comments, h3.section {
