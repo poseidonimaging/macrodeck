@@ -1,4 +1,8 @@
-<p>Please enter the username of the user you wish
-to add a permission rule for below.</p>
+<%= form_tag :controller => "permission", :action => "find_user" %>
+<p>Please enter the username or groupname of the user
+or group you wish to add a permission for.</p>
+<%= hidden_field_tag "step", "addperm" %>
+<%= text_field_tag "usergroup", nil, :size => "20" %> <%= submit_tag "Lookup" %>
+<%= end_form_tag %>
 <a href="#" onclick="parent.hideIbox(); return false;">Hide</a>
 <a href="#" onclick="top.read_add_perm('1234', 'Test');">Add Test</a>
