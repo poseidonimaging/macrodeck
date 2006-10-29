@@ -272,6 +272,9 @@ p.info {
 	/* used by things that need extra padding on the top */
 	padding-top: 5px;
 }
+.clear {
+	clear: both;
+}
 
 /* the top bar */
 div#useritems {

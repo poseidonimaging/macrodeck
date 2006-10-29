@@ -3,7 +3,6 @@ class PermissionController < ApplicationController
 	
 	# Display permission table
 	def display_table
-
 	end
 	
 	# Find user
@@ -33,5 +32,9 @@ class PermissionController < ApplicationController
 		else
 			render :text => nil
 		end
+	end
+	
+	# Parse permissions array
+	def self.parse_permissions
 	end
 end
