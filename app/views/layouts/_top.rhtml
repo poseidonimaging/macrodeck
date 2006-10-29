@@ -3,9 +3,11 @@
 		<div class="useritem"><%= link_to image_tag("icons/logout.png") + "<br />Log Out", { :controller => "account", :action => "logout" } %></div>
 		<div class="useritem"><%= link_to image_tag("icons/settings.png") + "<br />Settings", "/user/#{@user_username}/settings/" %></div>
 		<div class="useritem"><%= link_to image_tag("icons/my_home.png") + "<br />My Home", "/user/#{@user_username}/home/" %></div>
+		<div class="useritem"><%= link_to image_tag("icons/widgets.png") + "<br />Widgets", "/widgets/" %></div>
 	<% elsif @user_loggedin == false %>
 		<div class="useritem"><%= link_to image_tag("icons/login.png") + "<br />Log In", { :controller => "account", :action => "login" } %></div>	
 		<div class="useritem"><%= link_to image_tag("icons/register.png") + "<br />Register", { :controller => "account", :action => "register" } %></div>
+		<div class="useritem"><%= link_to image_tag("icons/widgets.png") + "<br />Widgets", "/widgets/" %></div>
 	<% else %>
 		Oh no!<br />
 		An internal error occured!

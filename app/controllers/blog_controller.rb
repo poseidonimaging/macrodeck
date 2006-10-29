@@ -296,7 +296,7 @@ class BlogController < ApplicationController
 				render :template => "errors/invalid_user_or_group"
 			end
 		elsif request.method == :post
-			raise "!"
+			PermissionController.parse_permissions(@params[:write])
 			if @params[:groupname] != nil
 				@uuid = UserService.lookupGroupName(@params[:groupname].downcase)
 				@type = "group"

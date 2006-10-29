@@ -35,6 +35,21 @@ class PermissionController < ApplicationController
 	end
 	
 	# Parse permissions array
-	def self.parse_permissions
+	def self.parse_permissions(perms)
+		# Sample:
+		# {
+		#   "0"=>{"everybody"=>"deny"},
+		#   "1"=>{"253d41a1-8b62-4ca8-9f8d-99bb42bc0dd8"=>"allow"}
+		# }
+		perm_array = Array.new
+		perms = perms.sort
+		perms.each do |perm|
+			perm[1].each_pair do |key, value|
+				if value == "deny" || value == "allow"
+					perm_array << { :id => key, :action => value }
+				end
+			end
+		end
+		raise perm_array.inspect
 	end
 end
