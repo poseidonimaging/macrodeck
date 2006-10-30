@@ -12,7 +12,16 @@
 	<a href="#" onclick="Effect.ExpandContractTree('groups', 'groups-expander'); return false;" class="expand" id="groups-expander">Groups I'm a Member Of</a>		
 </p>
 <div id="groups" class="expandcontent" style="display: none;">
-	<p>You are not a member of any groups.</p>
+	<% if @groups == nil || @groups.length == 0 %>
+		<p>You are not a member of any groups.</p>
+	<% else %>
+		<% @groups.each do |group| %>
+		<div class="actions">
+			<a href="#" class="action add" onclick="top.<%= @params[:kind] %>_add_perm('<%= group %>', '<%= escape_javascript(h(UUIDService.lookupUUID(group))) %>'); parent.hideIbox(); return false;">Add <%= h(UUIDService.lookupUUID(group)) %></a>
+		</div>
+		<div class="clear"></div>
+		<% end %>
+	<% end %>
 </div>
 <div class="clear"></div>
 <!-- special groups -->

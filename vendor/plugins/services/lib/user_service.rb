@@ -319,6 +319,17 @@ class UserService < BaseService
 		return members
 	end
 	
+	# Returns an array containing all of the UUIDs of the groups the user
+	# specified is a member of.
+	def self.getGroupsForMember(uuid)
+		groups = Array.new
+		groupmembers = GroupMember.find(:all, :conditions => ["userid = ?", uuid])
+		groupmembers.each do |groupmember|
+			groups << groupmember.groupid
+		end
+		return groups
+	end
+	
 	# Returns the UUID of the group name specified.
 	def self.lookupGroupName(groupName)
 		group = Group.find(:first, :conditions => ["name = ?", groupName.downcase])

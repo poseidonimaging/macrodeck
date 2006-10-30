@@ -8,6 +8,7 @@ class PermissionController < ApplicationController
 	# Find user
 	def find_user
 		if @user_loggedin
+			@groups = UserService.getGroupsForMember(@user_uuid)
 			if @params["step"] != nil && @params["step"] == "lookup"
 				# Currently we only care about exact username matches
 				usergroup = UserService.lookupUserName(@params["usergroup"].downcase)
@@ -34,7 +35,12 @@ class PermissionController < ApplicationController
 		end
 	end
 	
-	# Parse permissions array
+	# Reorder support
+	def reorder
+		raise "!!"
+	end
+	
+	# Parse permissions from webpage
 	def self.parse_permissions(perms)
 		# Sample:
 		# {
