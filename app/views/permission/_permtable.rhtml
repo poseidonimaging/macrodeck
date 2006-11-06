@@ -15,19 +15,22 @@
 					<td class="usergroup"><%= UUIDService.lookupUUID(permission[:id]) %></td>
 					<td class="allow">
 						<% if permission[:action] == :allow %>
-							<%= radio_button_tag "#{@kind}[#{i}][#{permission[:id]}]", "allow", true %>
+							<%= radio_button_tag "#{@kind}[#{i}][#{permission[:id]}]", "allow", true, :id => "#{@kind}_#{i}_#{permission[:id]}_allow" %>
 						<% else %>
-							<%= radio_button_tag "#{@kind}[#{i}][#{permission[:id]}]", "allow", false %>				
+							<%= radio_button_tag "#{@kind}[#{i}][#{permission[:id]}]", "allow", false, :id => "#{@kind}_#{i}_#{permission[:id]}_allow" %>				
 						<% end %>
 					</td>
 					<td class="deny">
 						<% if permission[:action] == :deny %>
-							<%= radio_button_tag "#{@kind}[#{i}][#{permission[:id]}]", "deny", true %>
+							<%= radio_button_tag "#{@kind}[#{i}][#{permission[:id]}]", "deny", true, :id => "#{@kind}_#{i}_#{permission[:id]}_deny" %>
 						<% else %>
-							<%= radio_button_tag "#{@kind}[#{i}][#{permission[:id]}]", "deny", false %>				
+							<%= radio_button_tag "#{@kind}[#{i}][#{permission[:id]}]", "deny", false, :id => "#{@kind}_#{i}_#{permission[:id]}_deny" %>				
 						<% end %>
 					</td>
-					<td class="actions"><div class="actions"><a href="#" onclick="$('<%= "#{@kind}[#{i}][#{permission[:id]}]" %>').value = 'delete'; new Effect.Fade('<%= "item_#{@kind}_#{i}" %>'); return false;" class="action delete">Delete</a></div></td>
+					<td class="actions">
+						<div class="actions"><a href="#" onclick="$('<%= "#{@kind}_#{i}_#{permission[:id]}_delete" %>').checked = true; new Effect.Fade('<%= "item_#{@kind}_#{i}" %>'); return false;" class="action delete">Delete</a></div>
+						<%= radio_button_tag "#{@kind}[#{i}][#{permission[:id]}]", "delete", false, :style => "display: none;", :id => "#{@kind}_#{i}_#{permission[:id]}_delete" %>
+					</td>
 				</tr>
 				<% i = i + 1 %>
 			<% end %>
@@ -55,9 +58,11 @@
 	
 	// This function does the *real* DOM manipulation.
 	function <%= @kind %>_add_perm(uuid, displayName) {
+		// IE sucks. We have to embed HTML using innerHTML. kill us.
 		// create radio buttons
-		radio_allow = document.createElement("input");
-		radio_deny = document.createElement("input");
+		var radio_allow = "<input id=\"<%= @kind %>_" + <%= @kind %>_counter + "_" + uuid + "_allow\" name=\"<%= @kind %>[" + <%= @kind %>_counter + "][" + uuid + "]\" type=\"radio\" value=\"allow\" />";
+		var radio_deny = "<input checked=\"checked\" id=\"<%= @kind %>_" + <%= @kind %>_counter + "_" + uuid + "_deny\" name=\"<%= @kind %>[" + <%= @kind %>_counter + "][" + uuid + "]\" type=\"radio\" value=\"deny\" />";
+		
 		// create TR and TDs
 		tr = document.createElement("tr");
 		td_displayName = document.createElement("td");
@@ -70,32 +75,23 @@
 		table = $('<%= @kind %>_permissions');
 		
 		// build deny
-		radio_deny.id = "<%= @kind %>[" + <%= @kind %>_counter + "][" + uuid + "]";
-		radio_deny.name = "<%= @kind %>[" + <%= @kind %>_counter + "][" + uuid + "]";
-		radio_deny.type = "radio";
-		radio_deny.value = "deny";
-		radio_deny.checked = "checked"; // default to deny
+		td_deny.innerHTML = radio_deny		
 		td_deny.className = "deny";
-		td_deny.appendChild(radio_deny);
 		
 		// build allow
-		radio_allow.id = "<%= @kind %>[" + <%= @kind %>_counter + "][" + uuid + "]";
-		radio_allow.name = "<%= @kind %>[" + <%= @kind %>_counter + "][" + uuid + "]";
-		radio_allow.type = "radio";
-		radio_allow.value = "allow";
+		td_allow.innerHTML = radio_allow
 		td_allow.className = "allow";
-		td_allow.appendChild(radio_allow);
 		
 		// build displayName
 		td_displayName.className = "usergroup";
 		td_displayName.appendChild(text_displayName);
 		
-		// build actions
-		// this strHTML hack is needed because .onclick doesn't work correctly with what we need to do to it.
-		// we'd need to do some sort of overloading of the a tag (i.e. a.rel set to counter, a.title set to uuid, or something)
-		// and that sucks.
-		var strHTML = "<div class=\"actions\"><a href=\"#\" onclick=\"$('<%= @kind %>[" + <%= @kind %>_counter + "][" + uuid + "]').value = 'delete'; new Effect.Fade('item_<%= @kind %>_" + <%= @kind %>_counter + "'); return false;\" class=\"action delete\">Delete</a></div>";
-		td_actions.innerHTML = strHTML;
+		// actions
+		var actions =	"<div class=\"actions\">" +
+						"<a href=\"#\" onclick=\"$('<%= @kind %>_" + <%= @kind %>_counter + "_" + uuid + "_delete').checked = true; new Effect.Fade('item_<%= @kind %>_" + <%= @kind %>_counter + "'); return false;\" class=\"action delete\">Delete</a>" +
+						"</div>\n" +
+						"<input id=\"<%= @kind %>_" + <%= @kind %>_counter + "_" + uuid + "_delete\" name=\"<%= @kind %>[" + <%= @kind %>_counter + "][" + uuid + "]\" style=\"display: none;\" type=\"radio\" value=\"delete\" />";
+		td_actions.innerHTML = actions;
 		td_actions.className = "actions";
 		
 		// build the row
