@@ -350,7 +350,6 @@ class BlogController < ApplicationController
 						# Validate the fields
 						if @params[:title].length > 0 && @params[:content].length > 0
 							# createBlogPost(blogID, creator, postTitle, postDescription, postContent, readPermissions, writePermissions)
-							raise "r=" + @readperms.inspect + " w=" + @writeperms.inspect
 							uuid = BlogService.createBlogPost(BlogService.getBlogUUID(@uuid), session[:uuid], @params[:title], @params[:description], @params[:content], nil, nil)
 							BlogService.setPostPermissions(uuid, :read, @readperms)
 							BlogService.setPostPermissions(uuid, :write, @writeperms)
