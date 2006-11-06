@@ -68,6 +68,15 @@ class BlogService < BaseService
 		write_perms = DataService.getPermissions(postID, :write)
 		DataService.setDefaultPermissions(commentsID, :read, read_perms)
 		DataService.setDefaultPermissions(commentsID, :write, write_perms)
+		return postID
+	end
+	
+	def self.setPostPermissions(postID, kind, value)
+		return DataService.setPermissions(postID, kind, value)
+	end
+	
+	def self.getPostPermissions(postID, kind)
+		return DataService.getPermissions(postID, kind)
 	end
 	
 	# Edits a post based on its postID.

@@ -153,6 +153,8 @@ class BlogController < ApplicationController
 						else
 							@postmetadata = BlogService.getPostMetadata(@params[:uuid])
 							@postuuid = @params[:uuid]
+							@readperms = BlogService.getPostPermissions(@params[:uuid], :read)
+							@writeperms = BlogService.getPostPermissions(@params[:uuid], :write)
 							render :template => "blog/edit"
 						end
 					else
@@ -174,6 +176,8 @@ class BlogController < ApplicationController
 						else
 							@postmetadata = BlogService.getPostMetadata(@params[:uuid])
 							@postuuid = @params[:uuid]
+							@readperms = BlogService.getPostPermissions(@params[:uuid], :read)
+							@writeperms = BlogService.getPostPermissions(@params[:uuid], :write)							
 							render :template => "blog/edit"
 						end
 					else
@@ -193,6 +197,9 @@ class BlogController < ApplicationController
 					# Any user can post on any blog. Solution until permissions are completed.
 					@name = @params[:groupname].downcase
 					@blogmetadata = BlogService.getBlogMetadata(BlogService.getBlogUUID(@uuid))
+					@readperms = PermissionController.parse_permissions(@params[:read])
+					@writeperms = PermissionController.parse_permissions(@params[:write])	
+					@postuuid = @params[:uuid]					
 					if DataService.canWrite?(@params[:uuid], @user_uuid)
 						# Validate the fields
 						@post = BlogService.getBlogPost(@params[:uuid])
@@ -200,7 +207,9 @@ class BlogController < ApplicationController
 							render :template => "errors/invalid_post"
 						else
 							if @params[:title].length > 0 && @params[:content].length > 0
-								BlogService.editBlogPost(@params[:uuid], @params[:title], @params[:description], @params[:content], nil, nil)
+								BlogService.editBlogPost(@postuuid, @params[:title], @params[:description], @params[:content], nil, nil)
+								BlogService.setPostPermissions(@postuuid, :read, @readperms)
+								BlogService.setPostPermissions(@postuuid, :write, @writeperms)								
 								redirect_to "/#{@type}/#{@name}/blog"
 							else
 								if @params[:title].length == 0
@@ -208,8 +217,7 @@ class BlogController < ApplicationController
 								else
 									@error = "Please enter content for your blog."
 								end
-								@postuuid = @params[:uuid]
-								@postmetadata = BlogService.getPostMetadata(@params[:uuid])
+								@postmetadata = BlogService.getPostMetadata(@postuuid)
 								render :template => "blog/edit"
 							end
 						end
@@ -226,6 +234,7 @@ class BlogController < ApplicationController
 					# Any user can post on any blog. Solution until permissions are completed.				
 					@name = @params[:username].downcase
 					@blogmetadata = BlogService.getBlogMetadata(BlogService.getBlogUUID(@uuid))
+					@postuuid = @params[:uuid]
 					if DataService.canWrite?(@params[:uuid], @user_uuid)
 						# Validate the fields
 						@post = BlogService.getBlogPost(@params[:uuid])
@@ -233,7 +242,9 @@ class BlogController < ApplicationController
 							render :template => "errors/invalid_post"
 						else
 							if @params[:title].length > 0 && @params[:content].length > 0
-								BlogService.editBlogPost(@params[:uuid], @params[:title], @params[:description], @params[:content], nil, nil)
+								BlogService.editBlogPost(@postuuid, @params[:title], @params[:description], @params[:content], nil, nil)
+								BlogService.setPostPermissions(@postuuid, :read, @readperms)
+								BlogService.setPostPermissions(@postuuid, :write, @writeperms)								
 								redirect_to "/#{@type}/#{@name}/blog"
 							else
 								if @params[:title].length == 0
@@ -241,8 +252,7 @@ class BlogController < ApplicationController
 								else
 									@error = "Please enter content for your blog."
 								end
-								@postuuid = @params[:uuid]
-								@postmetadata = BlogService.getPostMetadata(@params[:uuid])
+								@postmetadata = BlogService.getPostMetadata(@postuuid)
 								render :template => "blog/edit"
 							end
 						end
@@ -296,7 +306,6 @@ class BlogController < ApplicationController
 				render :template => "errors/invalid_user_or_group"
 			end
 		elsif request.method == :post
-			PermissionController.parse_permissions(@params[:write])
 			if @params[:groupname] != nil
 				@uuid = UserService.lookupGroupName(@params[:groupname].downcase)
 				@type = "group"
@@ -305,11 +314,15 @@ class BlogController < ApplicationController
 				else
 					@name = @params[:groupname].downcase
 					@blogmetadata = BlogService.getBlogMetadata(BlogService.getBlogUUID(@uuid))
+					@readperms = PermissionController.parse_permissions(@params[:read])
+					@writeperms = PermissionController.parse_permissions(@params[:write])					
 					if DataService.canWrite?(BlogService.getBlogUUID(@uuid), @user_uuid)
 						# Validate the fields
 						if @params[:title].length > 0 && @params[:content].length > 0
 							# createBlogPost(blogID, creator, postTitle, postDescription, postContent, readPermissions, writePermissions)
-							BlogService.createBlogPost(BlogService.getBlogUUID(@uuid), session[:uuid], @params[:title], @params[:description], @params[:content], nil, nil)
+							uuid = BlogService.createBlogPost(BlogService.getBlogUUID(@uuid), session[:uuid], @params[:title], @params[:description], @params[:content], nil, nil)
+							BlogService.setPostPermissions(uuid, :read, @readperms)
+							BlogService.setPostPermissions(uuid, :write, @writeperms)
 							redirect_to "/#{@type}/#{@name}/blog"
 						else
 							if @params[:title].length == 0
@@ -331,11 +344,16 @@ class BlogController < ApplicationController
 				else
 					@name = @params[:username].downcase
 					@blogmetadata = BlogService.getBlogMetadata(BlogService.getBlogUUID(@uuid))
+					@readperms = PermissionController.parse_permissions(@params[:read])
+					@writeperms = PermissionController.parse_permissions(@params[:write])					
 					if DataService.canWrite?(BlogService.getBlogUUID(@uuid), @user_uuid)
 						# Validate the fields
 						if @params[:title].length > 0 && @params[:content].length > 0
 							# createBlogPost(blogID, creator, postTitle, postDescription, postContent, readPermissions, writePermissions)
-							BlogService.createBlogPost(BlogService.getBlogUUID(@uuid), session[:uuid], @params[:title], @params[:description], @params[:content], nil, nil)
+							raise "r=" + @readperms.inspect + " w=" + @writeperms.inspect
+							uuid = BlogService.createBlogPost(BlogService.getBlogUUID(@uuid), session[:uuid], @params[:title], @params[:description], @params[:content], nil, nil)
+							BlogService.setPostPermissions(uuid, :read, @readperms)
+							BlogService.setPostPermissions(uuid, :write, @writeperms)
 							redirect_to "/#{@type}/#{@name}/blog"
 						else
 							if @params[:title].length == 0

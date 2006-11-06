@@ -3,6 +3,7 @@ class PermissionController < ApplicationController
 	
 	# Display permission table
 	def display_table
+		# Does nothing as far as computation goes
 	end
 	
 	# Find user
@@ -56,6 +57,6 @@ class PermissionController < ApplicationController
 				end
 			end
 		end
-		raise perm_array.inspect
+		return perm_array
 	end
 end
