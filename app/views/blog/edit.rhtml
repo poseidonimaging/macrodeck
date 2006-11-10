@@ -1,5 +1,5 @@
 <% @menu_content = "<a href=\"/#{@type}/#{@name}/blog/\">View Blog</a> <a href=\"/#{@type}/#{@name}/blog/post\">New Entry</a> <a href=\"/#{@type}/#{@name}/blog/settings\">Settings</a> <a href=\"/#{@type}/#{@name}/blog/permissions\">Permissions</a>" %>
-<% @summary = build_summary("Editing blog entry in " + @blogmetadata[:title] , "Edit Entry") %>
+<% @summary = build_summary("Editing blog entry in " + h(@blogmetadata[:title]), "Edit Entry") %>
 
 <% if @error != nil %>
 <p class="error"><%= @error %></p>

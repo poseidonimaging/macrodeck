@@ -71,6 +71,14 @@ class BlogService < BaseService
 		return postID
 	end
 	
+	def self.setBlogPermissions(blogID, kind, value)
+		return DataService.setDefaultPermissions(blogID, kind, value)
+	end
+	
+	def self.getBlogPermissions(blogID, kind)
+		return DataService.getDefaultPermissions(blogID, kind)
+	end
+	
 	def self.setPostPermissions(postID, kind, value)
 		return DataService.setPermissions(postID, kind, value)
 	end

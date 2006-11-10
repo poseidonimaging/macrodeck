@@ -388,10 +388,24 @@ class DataService < BaseService
 		if ditem != nil
 			case kind
 				when :write, "write"
+					value.each do |val|
+						if val[:action] == "allow"
+							val[:action] = :allow
+						elsif val[:action] == "deny"
+							val[:action] = :deny
+						end
+					end						
 					ditem.write_permissions = value.to_yaml
 					ditem.save!
 					return true
 				when :read, "read"
+					value.each do |val|
+						if val[:action] == "allow"
+							val[:action] = :allow
+						elsif val[:action] == "deny"
+							val[:action] = :deny
+						end
+					end				
 					ditem.read_permissions = value.to_yaml
 					ditem.save!
 					return true
@@ -410,11 +424,25 @@ class DataService < BaseService
 		if ditem != nil
 			case kind
 				when :write, "write"
-					p = YAML::load(ditem.write_permissions)
-					return p
+					perms = YAML::load(ditem.write_permissions)
+					perms.each do |perm|
+						if perm[:action] == "allow"
+							perm[:action] = :allow
+						elsif perm[:action] == "deny"
+							perm[:action] = :deny
+						end
+					end
+					return perms					
 				when :read, "read"
-					p = YAML::load(ditem.read_permissions)
-					return p
+					perms = YAML::load(ditem.read_permissions)
+					perms.each do |perm|
+						if perm[:action] == "allow"
+							perm[:action] = :allow
+						elsif perm[:action] == "deny"
+							perm[:action] = :deny
+						end
+					end
+					return perms
 				else
 					return nil
 			end
@@ -429,9 +457,25 @@ class DataService < BaseService
 		if dgroup != nil
 			case kind
 				when :write, "write"
-					return YAML::load(dgroup.default_write_permissions)
+					perms = YAML::load(dgroup.default_write_permissions)
+					perms.each do |perm|
+						if perm[:action] == "allow"
+							perm[:action] = :allow
+						elsif perm[:action] == "deny"
+							perm[:action] = :deny
+						end
+					end
+					return perms
 				when :read, "read"
-					return YAML::load(dgroup.default_read_permissions)
+					perms = YAML::load(dgroup.default_read_permissions)
+					perms.each do |perm|
+						if perm[:action] == "allow"
+							perm[:action] = :allow
+						elsif perm[:action] == "deny"
+							perm[:action] = :deny
+						end
+					end
+					return perms					
 				else
 					return false
 			end
@@ -447,10 +491,24 @@ class DataService < BaseService
 		if dgroup != nil
 			case kind
 				when :write, "write"
+					value.each do |val|
+						if val[:action] == "allow"
+							val[:action] = :allow
+						elsif val[:action] == "deny"
+							val[:action] = :deny
+						end
+					end
 					dgroup.default_write_permissions = value.to_yaml
 					dgroup.save!
 					return true
 				when :read, "read"
+					value.each do |val|
+						if val[:action] == "allow"
+							val[:action] = :allow
+						elsif val[:action] == "deny"
+							val[:action] = :deny
+						end
+					end				
 					dgroup.default_read_permissions = value.to_yaml
 					dgroup.save!
 					return true
