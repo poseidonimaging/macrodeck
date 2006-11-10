@@ -2,6 +2,11 @@ class WidgetController < ApplicationController
 	layout "default"
 	
 	def index
+		set_current_tab "directory"
+		@widget_pages, @widgets = paginate :widgets, :order => "descriptive_name ASC", :per_page => 50
+	end
+	
+	def view
 		if @params[:uuid] != nil
 			@widget = Widget.find(:first, :conditions => ["uuid = ?", @params[:uuid]])
 			if @widget != nil

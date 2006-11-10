@@ -457,6 +457,19 @@ class UserService < BaseService
 		# will be denied for security!
 		return false
 	end
+	
+	# Loads permissions from YAML.
+	def self.loadPermissions(permsYaml)
+		perms = YAML::load(permsYaml)
+		perms.each do |perm|
+			if perm[:action] == "allow"
+				perm[:action] = :allow
+			elsif perm[:action] == "deny"
+				perm[:action] = :deny
+			end
+		end
+		return perms
+	end
 end
 
 Services.registerService(UserService)

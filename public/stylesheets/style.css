@@ -425,6 +425,9 @@ li.tab .tab-fill-active {
 	border: 1px solid #ccc;
 	background-color: #eee;
 }
+.widgets .widget {
+	font-weight: bold;
+}
 
 /* Lite */
 body.lite {

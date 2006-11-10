@@ -1,0 +1,47 @@
+<% @menu_content = "<a href=\"/directory/widgets/\">Widget Directory</a>" %>
+<% @summary = build_summary(h(@widget.description), h(@widget.descriptive_name)) %>
+<% @widgets << @widget.uuid %>
+<% if @dependencies != nil %>
+	<% @dependencies.each do |dep| %>
+		<% @components << dep %>
+	<% end %>
+<% end %>
+
+<h3 class="section">Demo</h3>
+<div id="widgetdemo" class="widgetdemo"></div>
+<script type="text/javascript">
+	// <[CDATA[
+	
+	// The instance ID passed is 'widgetdemo' but it
+	// would really be a UUID.
+	w = new <%= @widget.internal_name %>('widgetdemo');
+	
+	// Tell the widget to display, passing a view ID of
+	// 'demo'.
+	w.display('demo');
+
+	// ]]>
+</script>
+
+<h3 class="section">Information</h3>
+<p><strong>Name:</strong> <span class="offset"><%= h(@widget.descriptive_name) %></span></p>
+<p><strong>Creator:</strong> <span class="offset"><%= UUIDService.lookupUUID(@widget.creator) %></span></p>
+<p><strong>Internal Name:</strong> <span class="offset"><span class="monospace"><%= h(@widget.internal_name) %></span></span></p>
+<p><strong>Version:</strong> <span class="offset"><%= h(@widget.version) %></span></p>
+<p><strong>Homepage:</strong> <span class="offset"><%= link_to truncate(@widget.homepage), @widget.homepage %></span></p>
+<p><strong>Creation:</strong> <span class="offset"><%= Time.at(@widget.creation).strftime("%B %d, %Y at %I:%M %p") %></span></p>
+<p><strong>Last Updated:</strong> <span class="offset"><%= Time.at(@widget.updated).strftime("%B %d, %Y at %I:%M %p") %></span></p>
+<p><strong>Dependencies:</strong> <span class="offset">
+<% @dependencies.each do |dep| %>
+	<span class="depname"><%= dep %></span>
+<% end %>
+</span></p>
+
+<h3 class="section">Actions</h3>
+<div class="actions padtop">
+	<a href="/widget/<%= @params[:uuid] %>/add_to_toolbox/" class="action add">Add To Toolbox</a>
+	<% if UserService.checkPermissions(YAML::load(@widget.write_permissions), @user_uuid) %>
+		<a href="/widget/<%= @params[:uuid] %>/edit/" class="action edit">Edit Widget</a>
+		<a href="/widget/<%= @params[:uuid] %>/delete/" class="action delete">Delete Widget</a>
+	<% end %>
+</div>
