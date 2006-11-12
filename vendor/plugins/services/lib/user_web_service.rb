@@ -45,7 +45,7 @@ class UserWebService < ActionWebService::Base
 	#
 	# The salt or lack thereof is set by the website running Services.
 	def get_auth_code(userName, authToken)
-		logger.info "UserWebService::getAuthCode called!"
+		@logger.info "UserWebService::getAuthCode called!"
 		uuid = UserService.lookupUserName(userName)
 		# build an authToken based on our data
 		user = User.find(:first, :conditions => ["uuid = ?", uuid])
