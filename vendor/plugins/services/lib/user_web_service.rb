@@ -45,6 +45,7 @@ class UserWebService < ActionWebService::Base
 	#
 	# The salt or lack thereof is set by the website running Services.
 	def get_auth_code(userName, authToken)
+		logger.info "UserWebService::getAuthCode called!"
 		uuid = UserService.lookupUserName(userName)
 		# build an authToken based on our data
 		user = User.find(:first, :conditions => ["uuid = ?", uuid])
@@ -52,8 +53,12 @@ class UserWebService < ActionWebService::Base
 			our_token = Digest::SHA512::hexdigest(user.authcookie + ":" + user.password.split(":")[1])
 			if our_token.downcase == authToken.downcase
 				# All is well, the token is valid
+				logger.info "#{userName} - Authentication OK! Cookie = \"#{user.authcookie}\" Token = \"#{our_token}\""
 				return user.authcode
 			else
+				logger.info "#{userName} - Authentication Failure :(."
+				logger.info "Recieved token = \"#{authToken}\" Expected token = \"#{our_token}\""
+				logger.info "Cookie = \"#{user.authcookie}\""
 				return nil
 			end
 		else
