@@ -194,6 +194,30 @@ class AccountController < ApplicationController
 			render :template => "errors/invalid_user_or_group"
 		end
 	end
+	def profile
+		if request.method == :get
+			if @params[:groupname] != nil
+				uuid = UserService.lookupGroupName(@params[:groupname].downcase)
+				if uuid == nil
+					render :template => "errors/invalid_user_or_group"
+				else
+					@type = "group"
+					@name = @params[:groupname].downcase
+					
+				end
+			elsif @params[:username] != nil
+				uuid = UserService.lookupUserName(@params[:username].downcase)
+				if uuid == nil
+					render :template => "errors/invalid_user_or_group"
+				else
+				end
+			else
+				render :template => "errors/invalid_user_or_group"
+			end
+		elsif request.method == :post
+			# edit profile.
+		end
+	end
 	def settings
 		# This could probably support groups quite easily...
 		if request.method == :post
