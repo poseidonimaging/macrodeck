@@ -56,6 +56,7 @@ ActionController::Routing::Routes.draw do |map|
   
   # Route misc.
   map.connect 'directory',							:controller => 'incomplete', :action => 'directory'
+  map.connect 'directory/groups',					:controller => 'incomplete', :action => 'directory'
   
   # Route / to the MacroDeck blog until pages are created.
   map.connect '', :controller => 'blog', :action => 'index', :groupname => 'macrodeck'

@@ -8,6 +8,16 @@ class AccountController < ApplicationController
 		reset_session
 		populate_user_variables
 	end
+	def create_group
+		if @params[:step] == nil
+			if @params[:groupname] == nil
+				@groupname = nil
+			else
+				@groupname = @params[:groupname].downcase.gsub(/[^0-9A-Za-z_\-\s]/, "").gsub(" ", "-")
+			end
+			render :template => "account/create_group1"
+		end
+	end
 	def register
 		# step 1 - username
 		# step 2 - password, secret question, secret answer
