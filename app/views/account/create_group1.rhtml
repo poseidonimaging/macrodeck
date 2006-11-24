@@ -5,7 +5,7 @@ creating a group for an interest, a local group, a club, or anything that might 
 you might want to check the <%= link_to "Group Directory", "/directory/groups/" %> before
 creating a new group.</p>
 <%= form_tag({ :action => "create_group" }) %>
-<%#= hidden_field_tag("step", "1") %>
+<%= hidden_field_tag("step", "1") %>
 	<% if @error != nil %>
 	<p class="error"><%= @error %></p>
 	<% end %>
@@ -13,6 +13,6 @@ creating a new group.</p>
 	<p class="steptext">The group "short name" is what you'll see in links to this group. For example, if you enter
 	<code>coolest-group-ever</code>, you'll be able to access this group by going to <code>http://www.macrodeck.com/group/coolest-group-ever/</code>.
 	Spaces are not permitted (they're converted to dashes), and it will be turned into all lowercase. Also, only alphanumeric characters and dashes
-	are allowed.</p>
+	are allowed. You'll be given the opportunity to pick a nicer looking name later.</p>
 	<p class="steptext"><%= text_field_tag "groupname", @groupname %> <%= submit_tag "Choose Short Name" %></p>
 <%= end_form_tag %>

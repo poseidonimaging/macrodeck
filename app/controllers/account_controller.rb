@@ -16,6 +16,20 @@ class AccountController < ApplicationController
 				@groupname = @params[:groupname].downcase.gsub(/[^0-9A-Za-z_\-\s]/, "").gsub(" ", "-")
 			end
 			render :template => "account/create_group1"
+		elsif @params[:step] == "1"
+			@groupname = @params[:groupname].downcase.gsub(/[^0-9A-Za-z_\-\s]/, "").gsub(" ", "-")
+			if @groupname.length > 0
+				if UserService.doesGroupExist?(@groupname) == false
+					@origgroupname = @params[:groupname]
+					render :template => "account/create_group2"
+				else
+					@error = "The group short name you picked is already in use."
+					render :template => "account/create_group1"
+				end
+			else
+				@error = "The group short name you picked is invalid."
+				render :template => "account/create_group1"
+			end
 		end
 	end
 	def register
