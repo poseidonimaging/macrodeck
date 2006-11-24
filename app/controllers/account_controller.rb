@@ -9,27 +9,31 @@ class AccountController < ApplicationController
 		populate_user_variables
 	end
 	def create_group
-		if @params[:step] == nil
-			if @params[:groupname] == nil
-				@groupname = nil
-			else
-				@groupname = @params[:groupname].downcase.gsub(/[^0-9A-Za-z_\-\s]/, "").gsub(" ", "-")
-			end
-			render :template => "account/create_group1"
-		elsif @params[:step] == "1"
-			@groupname = @params[:groupname].downcase.gsub(/[^0-9A-Za-z_\-\s]/, "").gsub(" ", "-")
-			if @groupname.length > 0
-				if UserService.doesGroupExist?(@groupname) == false
-					@origgroupname = @params[:groupname]
-					render :template => "account/create_group2"
+		if @user_loggedin
+			if @params[:step] == nil
+				if @params[:groupname] == nil
+					@groupname = nil
 				else
-					@error = "The group short name you picked is already in use."
+					@groupname = @params[:groupname].downcase.gsub(/[^0-9A-Za-z_\-\s]/, "").gsub(" ", "-")
+				end
+				render :template => "account/create_group1"
+			elsif @params[:step] == "1"
+				@groupname = @params[:groupname].downcase.gsub(/[^0-9A-Za-z_\-\s]/, "").gsub(" ", "-")
+				if @groupname.length > 0
+					if UserService.doesGroupExist?(@groupname) == false
+						@origgroupname = @params[:groupname]
+						render :template => "account/create_group2"
+					else
+						@error = "The group short name you picked is already in use."
+						render :template => "account/create_group1"
+					end
+				else
+					@error = "The group short name you picked is invalid."
 					render :template => "account/create_group1"
 				end
-			else
-				@error = "The group short name you picked is invalid."
-				render :template => "account/create_group1"
 			end
+		else
+			render :template => "errors/access_denied"
 		end
 	end
 	def register
