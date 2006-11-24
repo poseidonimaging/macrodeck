@@ -22,6 +22,7 @@ class AccountController < ApplicationController
 				if @groupname.length > 0
 					if UserService.doesGroupExist?(@groupname) == false
 						@origgroupname = @params[:groupname]
+						@grouplongname = @origgroupname
 						render :template => "account/create_group2"
 					else
 						@error = "The group short name you picked is already in use."

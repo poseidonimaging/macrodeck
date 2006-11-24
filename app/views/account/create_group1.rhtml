@@ -14,5 +14,5 @@ creating a new group.</p>
 	<code>coolest-group-ever</code>, you'll be able to access this group by going to <code>http://www.macrodeck.com/group/coolest-group-ever/</code>.
 	Spaces are not permitted (they're converted to dashes), and it will be turned into all lowercase. Also, only alphanumeric characters and dashes
 	are allowed. You'll be given the opportunity to pick a nicer looking name later.</p>
-	<p class="steptext"><%= text_field_tag "groupname", @groupname %> <%= submit_tag "Choose Short Name" %></p>
+	<p class="steptext"><%= text_field_tag "groupname", @groupname, :size => 40 %> <%= submit_tag "Choose Short Name" %></p>
 <%= end_form_tag %>
