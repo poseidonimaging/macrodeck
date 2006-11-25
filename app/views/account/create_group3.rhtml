@@ -1,20 +1,24 @@
 <% @menu_content = '<a href="/">Home</a>' %>
-<% @summary = build_summary("Step 2 of 3 - Choose a group name", "Create a group") %>
+<% @summary = build_summary("Step 3 of 3 - Describe your group", "Create a group") %>
 <p>MacroDeck is all about groups, and you're on your way to create a new group. If you're
 creating a group for an interest, a local group, a club, or anything that might already exist,
 you might want to check the <%= link_to "Group Directory", "/directory/groups/" %> before
 creating a new group.</p>
 <%= form_tag({ :action => "create_group" }) %>
-<%= hidden_field_tag("step", "2") %>
+<%= hidden_field_tag("step", "3") %>
 <%= hidden_field_tag("origgroupname", @origgroupname) %>
 <%= hidden_field_tag("groupname", @groupname) %>
+<%= hidden_field_tag("grouplongname", @grouplongname) %>
 	<% if @error != nil %>
 	<p class="error"><%= @error %></p>
 	<% end %>
 	<p class="stepname">1. Desired Group Short Name:</p>
 	<p class="steptext"><%= text_field_tag "groupname_ui", @groupname, :disabled => true, :size => 40 %> <a href="/account/create_group?groupname=<%= @groupname %>">Change</a></p>
 	<p class="stepname">2. Desired Group Name:</p>
-	<p class="steptext">This name is the long, descriptive name of your group. Feel free to use any characters you want.</p>
-	<p class="steptext"><%= text_field_tag "grouplongname", @grouplongname, :size => 40 %></p>
+	<p class="steptext"><%= text_field_tag "grouplongname_ui", @grouplongname, :disabled => true, :size => 40 %></p>
+	<p class="stepname">3. Describe Your Group:</p>
+	<p class="steptext">Please describe your group. This description will be displayed on your group pages, and you can change it later. You can be as detailed or not detailed as you want.
+	You might even choose to leave this blank.</p>
+	<p class="steptext"><%= text_area_tag "description", @description, :size => "40x8" %></p>
 	<p class="steptext"><%= submit_tag "Continue" %></p>
 <%= end_form_tag %>

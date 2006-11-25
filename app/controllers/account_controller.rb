@@ -32,6 +32,22 @@ class AccountController < ApplicationController
 					@error = "The group short name you picked is invalid."
 					render :template => "account/create_group1"
 				end
+			elsif @params[:step] == "2"
+				@groupname = @params[:groupname]
+				@grouplongname = @params[:grouplongname]
+				@origgroupname = @params[:origgroupname]
+				if @grouplongname.length > 0
+					if @groupname.length > 0
+						render :template => "account/create_group3"
+					else
+						# groupname len = 0
+						@error = "The group short name you picked is invalid."
+						render :template => "account/create_group2"
+					end
+				else
+					@error = "You did not enter a group name."
+					render :template => "account/create_group2"
+				end
 			end
 		else
 			render :template => "errors/access_denied"
