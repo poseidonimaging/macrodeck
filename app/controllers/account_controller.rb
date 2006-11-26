@@ -22,7 +22,11 @@ class AccountController < ApplicationController
 				if @groupname.length > 0
 					if UserService.doesGroupExist?(@groupname) == false
 						@origgroupname = @params[:groupname]
-						@grouplongname = @origgroupname
+						if @params[:grouplongname] != nil
+							@grouplongname = @params[:grouplongname]
+						else
+							@grouplongname = @origgroupname
+						end
 						render :template => "account/create_group2"
 					else
 						@error = "The group short name you picked is already in use."
@@ -48,11 +52,45 @@ class AccountController < ApplicationController
 					@error = "You did not enter a group name."
 					render :template => "account/create_group2"
 				end
+			elsif @params[:step] == "3"
+				@groupname = @params[:groupname]
+				@grouplongname = @params[:grouplongname]
+				@origgroupname = @params[:origgroupname]
+				@description = @params[:description]
+				if @groupname.length > 0
+					if @grouplongname.length > 0
+						if UserService.doesGroupExist?(@groupname) == false
+							uuid = UserService.createGroup(@groupname, @grouplongname)
+							if uuid != nil
+								UserService.setGroupProperty(uuid, :description, @description)
+								UserService.addUserToGroup(uuid, @user_uuid, :administrator)
+								# create blog for group
+								blog_uuid = BlogService.createBlog("#{@grouplongname}'s Blog", @description, CREATOR_MACRODECK, uuid)
+								BlogService.setBlogPermissions(blog_uuid, :read, [{ :id => "everyone", :action => :allow }])
+								BlogService.setBlogPermissions(blog_uuid, :write, [{ :id => @user_uuid, :action => :allow }, { :id => "everyone", :action => :deny }])
+								render :template => "account/create_group_finish"
+							else
+								@error = "Unable to create group. Please try again in a few seconds."
+								render :template => "account/create_group3"
+							end
+						else
+							@error = "The group short name you picked is already in use."
+							render :template => "account/create_group3"
+						end
+					else
+						@error = "The group long name you picked is invalid."
+						render :template => "account/create_group3"
+					end
+				else
+					@error = "The group short name you picked is invalid."
+					render :template => "account/create_group3"
+				end
 			end
 		else
 			render :template => "errors/access_denied"
 		end
 	end
+	
 	def register
 		# step 1 - username
 		# step 2 - password, secret question, secret answer
@@ -159,7 +197,9 @@ class AccountController < ApplicationController
 										# it checks out, boss!
 										uuid = UserService.createUser(@username, @password, @secretquestion, @secretanswer, @name, @displayname, @email)
 										if uuid != nil
-											BlogService.createBlog("#{@username}'s Blog", nil, CREATOR_MACRODECK, uuid)
+											blog_uuid = BlogService.createBlog("#{@username}'s Blog", nil, CREATOR_MACRODECK, uuid)
+											BlogService.setBlogPermissions(blog_uuid, :read, [{ :id => "everyone", :action => :allow }])
+											BlogService.setBlogPermissions(blog_uuid, :write, [{ :id => @user_uuid, :action => :allow }, { :id => "everyone", :action => :deny }])
 											render :template => "account/registerdone"
 										else
 											@error = "There was an error creating your user account. Please try again."

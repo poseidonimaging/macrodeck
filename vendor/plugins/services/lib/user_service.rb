@@ -176,7 +176,7 @@ class UserService < BaseService
 	def self.setUserProperty(uuid, authCode, property, value)
 		user = User.find(:first, :conditions => ["uuid = ? AND authcode = ?", uuid, authCode])
 		if user != nil
-			# get the property requested.
+			# set the property requested.
 			case property
 				when :secretquestion, "secretquestion"
 					user.secretquestion = value
@@ -205,7 +205,7 @@ class UserService < BaseService
 		end
 	end	
 	
-	# Creates a group with the information specified.
+	# Creates a group with the information specified. Returns the UUID of the newly created group or nil.
 	def self.createGroup(groupName, displayname)
 		if self.doesGroupExist?(groupName) == false
 			# Can create the group since it doesn't exist.
@@ -213,9 +213,55 @@ class UserService < BaseService
 			group.uuid = UUIDService.generateUUID
 			group.name = groupName.downcase
 			group.displayname = displayname
+			group.creation = Time.now.to_i
 			group.save!
+			return group.uuid
+		else
+			return nil
 		end
 	end
+	
+	# Gets the requested group property of the group specified.
+	# Valid properties are +displayname+ and +description+
+	def self.getGroupProperty(uuid, property)
+		group = Group.find(:first, :conditions => ["uuid = ?", uuid])
+		if group != nil
+			# get the property requested.
+			case property
+				when :displayname, "displayname"
+					return group.displayname
+				when :description, "description"
+					return group.description
+				else
+					return nil
+			end
+		else
+			# invalid information
+			return nil
+		end
+	end
+
+	# Sets the requested group property. Valid properties are +displayname+
+	# and +description+. Returns true if successful or false if unsuccessful.
+	def self.setGroupProperty(uuid, property, value)
+		group = Group.find(:first, :conditions => ["uuid = ?", uuid])
+		if group != nil
+			# set the property requested.
+			case property
+				when :displayname, "displayname"
+					group.displayname = value
+				when :description, "description"
+					group.description = value
+				else
+					return false
+			end
+			group.save!
+			return true
+		else
+			# invalid information
+			return false
+		end
+	end	
 	
 	# Adds a user to a group. Level may be
 	# :administrator, :moderator, or :user.

@@ -46,11 +46,11 @@ class BlogService < BaseService
 		return comments
 	end
 	
-	# Creates a new blog. This should be done when a user registers.
+	# Creates a new blog. This should be done when a user or group registers.
 	# *NOTE*! This method should NOT be used to create blog posts! This
 	# is for creating actual _blogs_.
 	def self.createBlog(title, description, creator, owner)
-		DataService.createDataGroup(DGROUP_BLOG, nil, nil, { :title => title, :description => description, :creator => creator, :owner => owner })
+		return DataService.createDataGroup(DGROUP_BLOG, nil, nil, { :title => title, :description => description, :creator => creator, :owner => owner })
 	end
 	
 	# Creates a new blog post within the blog specified. Blogs are specified
