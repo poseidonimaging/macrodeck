@@ -350,12 +350,41 @@ class DataWebService < ActionWebService::Base
 	def get_data_items(authCode, groupUUID)
 		user = UserService.userFromAuthCode(authCode)
 		if user != nil
-			if groupUUID != nil
+			if groupUUID != nil && groupUUID != ""
 				items = DataItem.find(:all, :conditions => ["grouping = ? AND (creator = ? OR owner = ?)", groupUUID, user.uuid, user.uuid])
 			else
-				items = DataItem.find(:all, :conditions => ["(creator = ? OR owner = ?)", user.uuid, user.uuid])
+				items = DataItem.find(:all, :conditions => ["creator = ? OR owner = ?", user.uuid, user.uuid])
 			end
-			
+			data_items = Array.new
+			items.each do |item|
+				# Initialize the return object
+				retval = DataServiceCustomTypes::ReturnItem.new
+				retval.data = DataServiceCustomTypes::ItemData.new
+				retval.data.objectData = DataServiceCustomTypes::YAML.new
+				retval.permissions = DataServiceCustomTypes::Permissions.new
+				retval.permissions.readPermissions = DataServiceCustomTypes::YAML.new
+				retval.permissions.writePermissions = DataServiceCustomTypes::YAML.new
+				# Okay, now set the values to the ones from the data items.
+				retval.uuid = item.dataid
+				retval.dataType = item.datatype
+				retval.groupUUID = item.grouping
+				retval.creator = item.creator
+				retval.owner = item.owner
+				retval.creation = item.creation
+				retval.creatorApp = item.datacreator
+				retval.tags = item.tags
+				retval.title = item.title
+				retval.description = item.description
+				retval.data.integerData = item.integerdata
+				retval.data.stringData = item.stringdata
+				retval.data.objectData.yamlContent = item.objectdata
+				retval.permissions.readPermissions.yamlContent = item.read_permissions
+				retval.permissions.writePermissions.yamlContent = item.write_permissions
+				retval.isRemoteData = item.remote_data
+				retval.remoteSourceId = item.sourceid
+				data_items << retval
+			end
+			return data_items
 		else
 			return nil
 		end
