@@ -33,6 +33,34 @@ module DataServiceCustomTypes
 		member :errorCode,		:int
 		member :uuid,			:string
 	end
+	
+	class ItemData < ActionWebService::Struct
+		member :stringData,		:string
+		member :integerData,	:int
+		member :objectData,		YAML
+	end
+	
+	class Permissions < ActionWebService::Struct
+		member :readPermissions,	YAML
+		member :writePermissions,	YAML
+	end
+	
+	class ReturnItem < ActionWebService::Struct
+		member :uuid,			:string # UUID	
+		member :dataType,		:string # UUID
+		member :groupUUID,		:string # UUID
+		member :creator,		:string # UUID
+		member :owner,			:string # UUID
+		member :creation,		:int # UNIX Time
+		member :creatorApp,		:string # UUID
+		member :tags,			:string
+		member :title,			:string
+		member :description,	:string
+		member :data,			ItemData
+		member :permissions,	Permissions
+		member :isRemoteData,	:bool
+		member :remoteSourceId,	:string # UUID
+	end
 end
 
 # The DataService API definition
@@ -40,7 +68,7 @@ class DataServiceAPI < ActionWebService::API::Base
 	# DataItem functions
 	api_method :create_data_item, {
 		:expects =>	[{ :authCode	=> :string },
-					 { :grouping	=> :string },
+					 { :groupUUID	=> :string },
 					 { :metadata	=> DataServiceCustomTypes::ItemMetadata }],
 		:returns => [{ :returnUUID	=> DataServiceCustomTypes::ReturnUUID }]
 	}
@@ -93,7 +121,13 @@ class DataServiceAPI < ActionWebService::API::Base
 		:expects => [{ :authCode		=> :string },
 					 { :groupUUID		=> :string }],
 		:returns => [:bool]
-	}	
+	}
+	# Listing functions
+	api_method :get_data_items, {
+		:expects => [{ :authCode	=> :string },
+					 { :groupUUID	=> :string }],
+		:returns => [{ :items		=> [DataServiceCustomTypes::ReturnItem] }]
+	}
 end
 
 # The Data Web Service. Provides SOAP/XML-RPC for DataService.
@@ -107,16 +141,16 @@ class DataWebService < ActionWebService::Base
 	web_service_api DataServiceAPI
 	
 	# Creates a data item but does not populate it with data.
-	# A grouping for the data must exist. Returns the UUID
+	# A groupUUID for the data must exist. Returns the UUID
 	# of the data item or nil/null if failure.
-	def create_data_item(authCode, grouping, metadata)
+	def create_data_item(authCode, groupUUID, metadata)
 		user = UserService.userFromAuthCode(authCode)
 		if user != nil
 			# The user exists! Hooray!
-			# Now we check to make sure they have permission to write to this grouping.
-			if DataService.canWrite?(grouping, user.uuid)
+			# Now we check to make sure they have permission to write to this groupUUID.
+			if DataService.canWrite?(groupUUID, user.uuid)
 				# They can write, create the data!
-				group_md = DataService.getDataGroupMetadata(grouping)
+				group_md = DataService.getDataGroupMetadata(groupUUID)
 				if metadata[:title] == ""
 					title = nil
 				else
@@ -132,7 +166,7 @@ class DataWebService < ActionWebService::Base
 				else
 					creatorapp = metadata[:creatorApp]
 				end
-				uuid = DataService.createData(metadata[:dataType], :nothing, nil, { :creator => user.uuid, :owner => group_md[:owner], :title => title, :description => description, :creatorapp => creatorapp, :grouping => grouping })
+				uuid = DataService.createData(metadata[:dataType], :nothing, nil, { :creator => user.uuid, :owner => group_md[:owner], :title => title, :description => description, :creatorapp => creatorapp, :grouping => groupUUID })
 				return { :errorCode => DATA_SERVICE_ERROR_OK, :uuid => uuid }
 			else
 				return { :errorCode => DATA_SERVICE_ERROR_NO_PERMISSION_TO_WRITE_ITEM, :uuid => nil }
@@ -308,5 +342,22 @@ class DataWebService < ActionWebService::Base
 		else
 			return false
 		end	
-	end	
+	end
+	
+	# Gets all or some of the data items for a particular user.
+	# +groupUUID+ is optional; if nil/null is passed in, we will
+	# return ALL data items.
+	def get_data_items(authCode, groupUUID)
+		user = UserService.userFromAuthCode(authCode)
+		if user != nil
+			if groupUUID != nil
+				items = DataItem.find(:all, :conditions => ["grouping = ? AND (creator = ? OR owner = ?)", groupUUID, user.uuid, user.uuid])
+			else
+				items = DataItem.find(:all, :conditions => ["(creator = ? OR owner = ?)", user.uuid, user.uuid])
+			end
+			
+		else
+			return nil
+		end
+	end
 end
