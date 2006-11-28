@@ -47,6 +47,11 @@ ActionController::Routing::Routes.draw do |map|
   map.connect 'user/:username/environments',		:controller => 'incomplete', :action => 'environments'
   map.connect 'user/:username/shared',				:controller => 'incomplete', :action => 'shareditems'
   map.connect 'user/:username/profile',				:controller => 'incomplete', :action => 'profile'
+  map.connect 'user/:username',						:controller => 'incomplete', :action => 'profile'
+  
+  # route other group stuff
+  map.connect 'group/:groupname/profile',			:controller => 'incomplete', :action => 'profile'
+  map.connect 'group/:groupname',					:controller => 'incomplete', :action => 'profile'
   
   # Widget Hierarchy Routing
   map.connect 'directory/widgets',					:controller => 'widget', :action => 'index'
