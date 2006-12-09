@@ -128,6 +128,11 @@ class DataServiceAPI < ActionWebService::API::Base
 					 { :groupUUID	=> :string }],
 		:returns => [{ :items		=> [DataServiceCustomTypes::ReturnItem] }]
 	}
+	api_method :get_data_groups, {
+		:expects => [{ :authCode	=> :string },
+					 { :groupUUID	=> :string }],
+		:returns => [{ :groups		=> [DataServiceCustomTypes::ReturnGroup] }]
+	}
 end
 
 # The Data Web Service. Provides SOAP/XML-RPC for DataService.
