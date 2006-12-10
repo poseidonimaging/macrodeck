@@ -61,6 +61,21 @@ module DataServiceCustomTypes
 		member :isRemoteData,	:bool
 		member :remoteSourceId,	:string # UUID
 	end
+	
+	class ReturnGroup < ActionWebService::Struct
+		member :uuid,			:string # UUID
+		member :groupType,		:string # UUID
+		member :creator,		:string # UUID
+		member :owner,			:string # UUID
+		member :tags,			:string
+		member :parent,			:string # UUID
+		member :title,			:string
+		member :description,	:string
+		member :permissions,	Permissions
+		member :isRemoteData,	:bool
+		member :remoteSourceId,	:string # UUID
+		member :remoteSourcesIncluded, YAML
+	end
 end
 
 # The DataService API definition
