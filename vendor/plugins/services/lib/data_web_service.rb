@@ -409,4 +409,37 @@ class DataWebService < ActionWebService::Base
 			return nil
 		end
 	end
+	# Gets all of the data groups for a particular user
+	def get_data_groups(authCode)
+		user = UserService.userFromAuthCode(authCode)
+		if user != nil
+			groups = DataGroup.find(:all, :conditions => ["creator = ? OR owner = ?", user.uuid, user.uuid])
+			data_groups = Array.new
+			groups.each do |group|
+				# Initialize the return object
+				retval = DataServiceCustomTypes::ReturnGroup.new
+				retval.permissions = DataServiceCustomTypes::Permissions.new
+				retval.permissions.readPermissions = DataServiceCustomTypes::YAML.new
+				retval.permissions.writePermissions = DataServiceCustomTypes::YAML.new
+				retval.remoteSourcesIncluded = DataServiceCustomTypes::YAML.new
+				# Okay, now set the values to the ones from the data items.
+				retval.uuid = group.groupingid
+				retval.groupType = group.groupingtype
+				retval.creator = group.creator
+				retval.owner = group.owner
+				retval.tags = group.tags
+				retval.title = group.title
+				retval.description = group.description
+				retval.permissions.readPermissions.yamlContent = group.default_read_permissions
+				retval.permissions.writePermissions.yamlContent = group.default_write_permissions
+				retval.isRemoteData = group.remote_data
+				retval.remoteSourceId = group.sourceid
+				retval.remoteSourcesIncluded.yamlContent = group.include_sources
+				data_groups << retval
+			end
+			return data_groups
+		else
+			return nil
+		end
+	end	
 end
