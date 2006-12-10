@@ -148,6 +148,33 @@ class DataServiceAPI < ActionWebService::API::Base
 					 { :groupUUID	=> :string }],
 		:returns => [{ :groups		=> [DataServiceCustomTypes::ReturnGroup] }]
 	}
+	# Metadata functions
+	api_method :get_data_item_metadata, {
+		:expects => [{ :authCode	=> :string },
+					 { :itemUUID	=> :string },
+					 { :mdProperty	=> :string }],
+		:returns => [{ :mdValue		=> :string }]
+	}
+	api_method :get_data_group_metadata, {
+		:expects => [{ :authCode	=> :string },
+					 { :groupUUID	=> :string },
+					 { :mdProperty	=> :string }],
+		:returns => [{ :mdValue		=> :string }]
+	}
+	api_method :set_data_item_metadata, {
+		:expects => [{ :authCode	=> :string },
+					 { :itemUUID	=> :string },
+					 { :mdProperty	=> :string },
+					 { :mdValue		=> :string }],
+		:returns => [:bool]
+	}
+	api_method :set_data_group_metadata, {
+		:expects => [{ :authCode	=> :string },
+					 { :groupUUID	=> :string },
+					 { :mdProperty	=> :string },
+					 { :mdValue		=> :string }],
+		:returns => [:bool]
+	}	
 end
 
 # The Data Web Service. Provides SOAP/XML-RPC for DataService.
