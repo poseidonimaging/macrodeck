@@ -21,6 +21,35 @@ class WidgetController < ApplicationController
 		end
 	end
 	
+	def edit
+		if @params[:uuid] != nil
+			@widget = Widget.find(:first, :conditions => ["uuid = ?", @params[:uuid]])
+			if @widget != nil
+				if UserService.checkPermissions(UserService.loadPermissions(@widget.write_permissions), @user_uuid)
+					if request.method == :get
+						@uuid = @widget.uuid
+						@descriptive_name = @widget.descriptive_name
+						@internal_name = @widget.internal_name
+						@description = @widget.description
+						@version = @widget.version
+						@homepage = @widget.homepage
+						@status = @widget.status
+						@dependencies = @widget.dependencies
+						@code = @widget.code
+						render :template => "widget/edit"
+					elsif request.method == :post
+					end
+				else
+					render :template => "errors/access_denied"
+				end
+			else
+				render :template => "errors/invalid_widget"
+			end
+		else
+			render :template => "errors/invalid_widget"
+		end
+	end
+	
 	def code
 		if @params[:uuid] != nil
 			@widget = Widget.find(:first, :conditions => ["uuid = ?", @params[:uuid]])

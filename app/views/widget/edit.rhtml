@@ -1,0 +1,19 @@
+<% @menu_content = "<a href=\"/directory/widgets/\">Widget Directory</a>" %>
+<% @summary = build_summary("", "Editing " + h(@descriptive_name)) %>
+
+<% if @error != nil %>
+<p class="error"><%= @error %></p>
+<% end %>
+
+<%= form_tag("/widget/#{@uuid}/edit/") %>
+	<fieldset>
+		<legend>General Information</legend>
+		<p>Name: <%= text_field_tag "name", @descriptive_name, :size => 30, :class => "offset" %><br /> 
+		<span class="block small subtext nomargin padtop standout">This is the name that will be displayed in the directory.</span></p>
+		<p>Internal Name: <%= text_field_tag "internal_name", @internal_name, :size => 30, :class => "offset" %><br />
+		<span class="block small subtext nomargin padtop standout">This is the name of your widget class in your code.</span></p>
+	</fieldset>
+	<fieldset>
+		<legend>Code</legend>
+	</fieldset>
+<%= end_form_tag %>

@@ -55,9 +55,10 @@ ActionController::Routing::Routes.draw do |map|
   
   # Widget Hierarchy Routing
   map.connect 'directory/widgets',					:controller => 'widget', :action => 'index'
-  map.connect 'widgets',							:controller => 'widget', :action => 'index'
+  # disconnected: no longer needed - map.connect 'widgets',							:controller => 'widget', :action => 'index'
   map.connect 'widget/:uuid',						:controller => 'widget', :action => 'view'
   map.connect 'widget/:uuid/code.js',				:controller => 'widget', :action => 'code'
+  map.connect 'widget/:uuid/edit',					:controller => 'widget', :action => 'edit'
   
   # Route misc.
   map.connect 'directory',							:controller => 'incomplete', :action => 'directory'
