@@ -1,0 +1,40 @@
+<% @menu_content = "<a href=\"/directory/components/\">Component Directory</a>" %>
+<% @summary = build_summary("Building a widget? Use these components to help you!", "MacroDeck Component Directory") %>
+<table class="widgets">
+	<thead>
+		<tr>
+			<th>Component</th>
+			<th>Status</th>
+			<th>Version</th>
+			<th>Author</th>
+			<th>Last Updated</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% @d_components.each do |component| %>
+			<% if UserService.checkPermissions(UserService.loadPermissions(component.read_permissions), @user_uuid) %>
+				<tr>
+					<td><span class="widget"><%= link_to component.descriptive_name, "/component/#{component.uuid}/" %></span><br />
+					<%= truncate(component.description, 100) %></td>
+					<td>
+						<% if widget.status == "alpha" %>
+							Alpha
+						<% elsif widget.status == "beta" %>
+							Beta
+						<% elsif widget.status == "testing" %>
+							Testing
+						<% elsif widget.status == "release" %>
+							Release
+						<% else %>
+							Unknown
+						<% end %>
+					</td>
+					<td><%= component.version %></td>
+					<td><%= UUIDService.lookupUUID(component.creator) %></td>
+					<td><%= Time.at(component.updated).strftime("%B %d, %Y at %I:%M %p") %></td>
+				</tr>
+			<% end %>
+		<% end %>
+	</tbody>
+</table>
+<%= pagination_links @d_component_pages %>

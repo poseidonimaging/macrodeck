@@ -11,7 +11,7 @@
 		</tr>
 	</thead>
 	<tbody>
-		<% @widgets.each do |widget| %>
+		<% @d_widgets.each do |widget| %>
 			<% if UserService.checkPermissions(UserService.loadPermissions(widget.read_permissions), @user_uuid) %>
 				<tr>
 					<td><span class="widget"><%= link_to widget.descriptive_name, "/widget/#{widget.uuid}/" %></span><br />
@@ -37,4 +37,4 @@
 		<% end %>
 	</tbody>
 </table>
-<%= pagination_links @widget_pages %>
+<%= pagination_links @d_widget_pages %>

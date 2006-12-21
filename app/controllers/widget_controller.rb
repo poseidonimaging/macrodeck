@@ -3,7 +3,7 @@ class WidgetController < ApplicationController
 	
 	def index
 		set_current_tab "directory"
-		@widget_pages, @widgets = paginate :widgets, :order => "descriptive_name ASC", :per_page => 50
+		@d_widget_pages, @d_widgets = paginate :widgets, :order => "descriptive_name ASC", :per_page => 50
 	end
 	
 	def view
