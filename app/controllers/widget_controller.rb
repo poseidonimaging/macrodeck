@@ -34,4 +34,14 @@ class WidgetController < ApplicationController
 			render :template => "errors/invalid_widget"
 		end
 	end
+	
+	# Returns a JavaScript fragment that will create a user info
+	# object and run the widget's setUserInfo function so that
+	# the widget knows the user's info.
+	#
+	#   @params[:objname] => the name of the object to run setUserInfo on
+	#
+	def set_user_info
+		render :partial => "set_user_info"
+	end
 end

@@ -10,11 +10,13 @@
 <h3 class="section">Demo</h3>
 <div id="widgetdemo" class="widgetdemo"></div>
 <script type="text/javascript">
-	// <[CDATA[
+	// <![CDATA[
 	
 	// The instance ID passed is 'widgetdemo' but it
 	// would really be a UUID.
 	w = new <%= @widget.internal_name %>('widgetdemo');
+	
+<%= render_component :controller => "widget", :action => "set_user_info", :params => { :objname => "w" } %>
 	
 	// Tell the widget to display, passing a view ID of
 	// 'demo'.

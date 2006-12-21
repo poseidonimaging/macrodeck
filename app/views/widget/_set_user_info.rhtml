@@ -1,0 +1,20 @@
+<% if @user_loggedin %>
+	var cuser = {
+		userName:		"<%= escape_javascript(@user_username) %>",
+		name:			"<%= escape_javascript(@user_name) %>",
+		uuid:			"<%= escape_javascript(@user_uuid) %>",
+		authCode:		"<%= escape_javascript(@user_authcode) %>",
+		displayName:	"<%= escape_javascript(@user_displayname) %>"
+	}
+<% else %>
+	var cuser = {
+		userName:		"anonymous",
+		name:			"Anonymous",
+		uuid:			"anonymous",
+		authCode:		null,
+		displayName:	"Anonymous"
+	}
+<% end %>
+
+	<%= @params[:objname] %>.setUserInfo(cuser);
+	cuser = null;

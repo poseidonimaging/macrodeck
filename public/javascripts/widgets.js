@@ -12,6 +12,9 @@ BaseWidget.prototype = {
 					},
 	getName:		function() {
 						return this.name;
+					},
+	setUserInfo:	function(userInfo) {
+						this.userInfo = userInfo;
 					}
 }
 
@@ -38,5 +41,3 @@ var Widgets = {
 							return $(instanceId);
 						}
 }
-
-// Example Widget.
