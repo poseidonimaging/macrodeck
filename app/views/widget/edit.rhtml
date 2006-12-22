@@ -12,8 +12,14 @@
 		<span class="block small subtext nomargin padtop standout">This is the name that will be displayed in the directory.</span></p>
 		<p>Internal Name: <%= text_field_tag "internal_name", @internal_name, :size => 30, :class => "offset" %><br />
 		<span class="block small subtext nomargin padtop standout">This is the name of your widget class in your code.</span></p>
+		<p>Version Number: <%= text_field_tag "version", @version, :size => 30, :class => "offset" %><br />
+		<span class="block small subtext nomargin padtop standout">This is the version number you declared in the widget.</span></p>
+		<p>Homepage: <%= text_field_tag "homepage", @homepage, :size => 30, :class => "offset" %><br />
+		<span class="block small subtext nomargin padtop standout">This is the URL where people can go to find out more about your widget.</span></p>
 	</fieldset>
 	<fieldset>
 		<legend>Code</legend>
+		<p><%= text_area_tag "code", @code, :size => "80x25" %></p>
 	</fieldset>
+	<%= submit_tag "Edit Widget" %>
 <%= end_form_tag %>
