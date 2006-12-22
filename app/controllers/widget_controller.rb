@@ -36,8 +36,8 @@ class WidgetController < ApplicationController
 						@status = @widget.status
 						@dependencies = YAML::load(@widget.dependencies)
 						@code = @widget.code
-						@readperms = YAML::load(@widget.read_permissions)
-						@writeperms = YAML::load(@widget.write_permissions)
+						@readperms = UserService.loadPermissions(@widget.read_permissions)
+						@writeperms = UserService.loadPermissions(@widget.write_permissions)
 						if @status == "alpha"
 							@status_tags = '<option selected="selected" value="alpha">Alpha</option>
 											<option value="beta">Beta</option>
@@ -77,6 +77,32 @@ class WidgetController < ApplicationController
 						@code = @params[:code]
 						@readperms = PermissionController.parse_permissions(@params[:read])
 						@writeperms = PermissionController.parse_permissions(@params[:write])
+						if @status == "alpha"
+							@status_tags = '<option selected="selected" value="alpha">Alpha</option>
+											<option value="beta">Beta</option>
+											<option value="testing">Testing</option>
+											<option value="release">Release</option>'
+						elsif @status == "beta"
+							@status_tags = '<option value="alpha">Alpha</option>
+											<option selected="selected" value="beta">Beta</option>
+											<option value="testing">Testing</option>
+											<option value="release">Release</option>'
+						elsif @status == "testing"
+							@status_tags = '<option value="alpha">Alpha</option>
+											<option value="beta">Beta</option>
+											<option selected="selected" value="testing">Testing</option>
+											<option value="release">Release</option>'
+						elsif @status == "release"
+							@status_tags = '<option value="alpha">Alpha</option>
+											<option value="beta">Beta</option>
+											<option value="testing">Testing</option>
+											<option selected="selected" value="release">Release</option>'
+						else
+							@status_tags = '<option value="alpha">Alpha</option>
+											<option value="beta">Beta</option>
+											<option value="testing">Testing</option>
+											<option value="release">Release</option>'
+						end						
 					end
 				else
 					render :template => "errors/access_denied"

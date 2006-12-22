@@ -52,8 +52,10 @@ class PermissionController < ApplicationController
 		perms = perms.sort
 		perms.each do |perm|
 			perm[1].each_pair do |key, value|
-				if value == "deny" || value == "allow"
-					perm_array << { :id => key, :action => value }
+				if value == "deny"
+					perm_array << { :id => key, :action => :deny }
+				elsif value == "allow"
+					perm_array << { :id => key, :action => :allow }
 				end
 			end
 		end
