@@ -34,10 +34,23 @@ class WidgetController < ApplicationController
 						@version = @widget.version
 						@homepage = @widget.homepage
 						@status = @widget.status
-						@dependencies = @widget.dependencies
+						@dependencies = YAML::load(@widget.dependencies)
 						@code = @widget.code
+						@readperms = YAML::load(@widget.read_permissions)
+						@writeperms = YAML::load(@widget.write_permissions)
 						render :template => "widget/edit"
 					elsif request.method == :post
+						@uuid = @params[:uuid]
+						@descriptive_name = @params[:descriptive_name]
+						@internal_name = @params[:internal_name]
+						@description = @params[:description]
+						@version = @params[:version]
+						@homepage = @params[:homepage]
+						@status = @params[:status]
+						@dependencies = @params[:dependencies]
+						@code = @params[:code]
+						@readperms = PermissionController.parse_permissions(@params[:read])
+						@writeperms = PermissionController.parse_permissions(@params[:write])
 					end
 				else
 					render :template => "errors/access_denied"

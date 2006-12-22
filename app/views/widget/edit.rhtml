@@ -8,7 +8,7 @@
 <%= form_tag("/widget/#{@uuid}/edit/") %>
 	<fieldset>
 		<legend>General Information</legend>
-		<p>Name: <%= text_field_tag "name", @descriptive_name, :size => 30, :class => "offset" %><br /> 
+		<p>Name: <%= text_field_tag "descriptive_name", @descriptive_name, :size => 30, :class => "offset" %><br /> 
 		<span class="block small subtext nomargin padtop standout">This is the name that will be displayed in the directory.</span></p>
 		<p>Internal Name: <%= text_field_tag "internal_name", @internal_name, :size => 30, :class => "offset" %><br />
 		<span class="block small subtext nomargin padtop standout">This is the name of your widget class in your code.</span></p>
@@ -20,6 +20,17 @@
 	<fieldset>
 		<legend>Code</legend>
 		<p><%= text_area_tag "code", @code, :size => "80x25" %></p>
+	</fieldset>
+	<fieldset>
+		<legend>Permissions</legend>
+		<fieldset>
+			<legend>Read Permissions</legend>
+			<%= render_component :controller => "permission", :action => "display_table", :params => { :permissions => @readperms, :kind => "read" } %>
+		</fieldset>
+		<fieldset>
+			<legend>Write Permissions</legend>
+			<%= render_component :controller => "permission", :action => "display_table", :params => { :permissions => @writeperms, :kind => "write" } %>
+		</fieldset>
 	</fieldset>
 	<%= submit_tag "Edit Widget" %>
 <%= end_form_tag %>
