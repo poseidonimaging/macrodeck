@@ -10,6 +10,8 @@
 		<legend>General Information</legend>
 		<p>Name: <%= text_field_tag "descriptive_name", @descriptive_name, :size => 30, :class => "offset" %><br /> 
 		<span class="block small subtext nomargin padtop standout">This is the name that will be displayed in the directory.</span></p>
+		<p>Description:<br />
+		<%= text_area_tag "description", @description, :size => "40x5" %></p>
 		<p>Internal Name: <%= text_field_tag "internal_name", @internal_name, :size => 30, :class => "offset" %><br />
 		<span class="block small subtext nomargin padtop standout">This is the name of your widget class in your code.</span></p>
 		<p>Version Number: <%= text_field_tag "version", @version, :size => 30, :class => "offset" %><br />

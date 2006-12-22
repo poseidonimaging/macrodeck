@@ -102,7 +102,49 @@ class WidgetController < ApplicationController
 											<option value="beta">Beta</option>
 											<option value="testing">Testing</option>
 											<option value="release">Release</option>'
-						end						
+						end
+						if @descriptive_name.length > 0
+							if @internal_name.length > 0
+								if @description.length > 0
+									if @version.length > 0
+										if @homepage.length > 0
+											if @status.length > 0
+												if @status == "alpha" || @status == "beta" || @status == "testing" || @status == "release"
+													if @code.length > 0
+														@error = "Success!"
+														render :template => "widget/edit"
+													else
+														@error = "Please enter some code."
+														render :template => "widget/edit"
+													end
+												else
+													@error = "You have somehow picked an invalid release status."
+													render :template => "widget/edit"
+												end
+											else
+												@error = "You have somehow picked an invalid release status."
+												render :template => "widget/edit"
+											end
+										else
+											@error = "You must enter a homepage. If you don't have one, use your widget's info page."
+											render :template => "widget/edit"
+										end
+									else
+										@error = "Please enter a version number."
+										render :template => "widget/edit"
+									end
+								else
+									@error = "Please enter a description."
+									render :template => "widget/edit"
+								end
+							else
+								@error = "Please enter your widget's internal name (the JavaScript class object name)."
+								render :template => "widget/edit"
+							end
+						else
+							@error = "Please enter a descriptive name for people browsing."
+							render :template => "widget/edit"
+						end
 					end
 				else
 					render :template => "errors/access_denied"
