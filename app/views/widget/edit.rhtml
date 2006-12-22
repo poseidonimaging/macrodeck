@@ -14,6 +14,8 @@
 		<span class="block small subtext nomargin padtop standout">This is the name of your widget class in your code.</span></p>
 		<p>Version Number: <%= text_field_tag "version", @version, :size => 30, :class => "offset" %><br />
 		<span class="block small subtext nomargin padtop standout">This is the version number you declared in the widget.</span></p>
+		<p>Release Status: <%= select_tag "status", @status_tags, :class => "offset" %><br />
+		<span class="block small subtext nomargin padtop standout">This is how stable you rate your widget. Alpha is least stable, Release is most stable. ("Testing" means "Release Testing".. i.e. a pre-release)</span></p>
 		<p>Homepage: <%= text_field_tag "homepage", @homepage, :size => 30, :class => "offset" %><br />
 		<span class="block small subtext nomargin padtop standout">This is the URL where people can go to find out more about your widget.</span></p>
 	</fieldset>

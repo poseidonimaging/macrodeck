@@ -220,7 +220,7 @@ p.steptext {
 }
 
 /* forms */
-input.offset {
+input.offset, select.offset {
 	position: absolute;
 	left: 140px;
 }

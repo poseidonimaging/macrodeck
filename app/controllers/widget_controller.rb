@@ -38,6 +38,32 @@ class WidgetController < ApplicationController
 						@code = @widget.code
 						@readperms = YAML::load(@widget.read_permissions)
 						@writeperms = YAML::load(@widget.write_permissions)
+						if @status == "alpha"
+							@status_tags = '<option selected="selected" value="alpha">Alpha</option>
+											<option value="beta">Beta</option>
+											<option value="testing">Testing</option>
+											<option value="release">Release</option>'
+						elsif @status == "beta"
+							@status_tags = '<option value="alpha">Alpha</option>
+											<option selected="selected" value="beta">Beta</option>
+											<option value="testing">Testing</option>
+											<option value="release">Release</option>'
+						elsif @status == "testing"
+							@status_tags = '<option value="alpha">Alpha</option>
+											<option value="beta">Beta</option>
+											<option selected="selected" value="testing">Testing</option>
+											<option value="release">Release</option>'
+						elsif @status == "release"
+							@status_tags = '<option value="alpha">Alpha</option>
+											<option value="beta">Beta</option>
+											<option value="testing">Testing</option>
+											<option selected="selected" value="release">Release</option>'
+						else
+							@status_tags = '<option value="alpha">Alpha</option>
+											<option value="beta">Beta</option>
+											<option value="testing">Testing</option>
+											<option value="release">Release</option>'
+						end
 						render :template => "widget/edit"
 					elsif request.method == :post
 						@uuid = @params[:uuid]
