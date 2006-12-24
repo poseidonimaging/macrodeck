@@ -12,7 +12,7 @@ class WidgetController < ApplicationController
 			if @widget != nil
 				# just aggregating the metadata -- no processing needed
 				set_current_tab "directory"
-				@dependencies = YAML::load(@widget.dependencies)
+				@required_components = YAML::load(@widget.required_components)
 			else
 				render :template => "errors/invalid_widget"
 			end

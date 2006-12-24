@@ -1,8 +1,8 @@
 <% @menu_content = "<a href=\"/directory/widgets/\">Widget Directory</a>" %>
 <% @summary = build_summary(h(@widget.description), h(@widget.descriptive_name)) %>
 <% @widgets << @widget.uuid %>
-<% if @dependencies != nil %>
-	<% @dependencies.each do |dep| %>
+<% if @required_components != nil %>
+	<% @required_components.each do |dep| %>
 		<% @components << dep %>
 	<% end %>
 <% end %>
@@ -33,8 +33,8 @@
 <p><strong>Homepage:</strong> <span class="offset"><%= link_to truncate(@widget.homepage), @widget.homepage %></span></p>
 <p><strong>Creation:</strong> <span class="offset"><%= Time.at(@widget.creation).strftime("%B %d, %Y at %I:%M %p") %></span></p>
 <p><strong>Last Updated:</strong> <span class="offset"><%= Time.at(@widget.updated).strftime("%B %d, %Y at %I:%M %p") %></span></p>
-<p><strong>Dependencies:</strong> <span class="offset">
-<% @dependencies.each do |dep| %>
+<p><strong>Required Components:</strong> <span class="offset">
+<% @required_components.each do |dep| %>
 	<span class="depname"><%= dep %></span>
 <% end %>
 </span></p>
