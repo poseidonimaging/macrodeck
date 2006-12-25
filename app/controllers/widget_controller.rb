@@ -73,7 +73,8 @@ class WidgetController < ApplicationController
 						@version = @params[:version]
 						@homepage = @params[:homepage]
 						@status = @params[:status]
-						@required_components = @params[:required_components]
+						#@required_components = @params[:required_components]
+						raise @params[:components].inspect
 						@code = @params[:code]
 						@readperms = PermissionController.parse_permissions(@params[:read])
 						@writeperms = PermissionController.parse_permissions(@params[:write])
