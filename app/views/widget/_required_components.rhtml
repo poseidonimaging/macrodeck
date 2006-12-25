@@ -1,0 +1,33 @@
+<div class="compact">
+	<table>
+		<thead>
+			<tr class="head">
+				<th>Component Identifier</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody id="required-components">
+			<% i = 0 %>
+			<% @required_components.each do |rcomp| %>
+				<tr class="<%= cycle "row1", "row2" %>" id="<%= "component_#{i}" %>">
+					<td class="component"><%= rcomp %>
+					<%= hidden_field_tag "components[#{i}][#{rcomp}]", "enabled", :id => "component_#{i}_value" %>
+					</td>
+					<td class="actions"><div class="actions">
+					<a href="#" onclick="$('<%= "component_#{i}_value" %>').value = 'delete'; new Effect.Fade('<%= "component_#{i}" %>'); return false;" class="action delete">Delete</a>
+					</div></td>
+				</tr>
+			<% end %>
+		</tbody>
+	</table>
+	<script type="text/javascript">
+	// <![CDATA[[
+	
+	// Adds the component specified to the list of required components
+	function add_component_to_list(compname) {
+		// currently unfinished.
+	}
+	// ]]>
+	</script>
+	<%= text_field_tag "component_add", nil, :size => 30 %> <input type="button" name="component_add_button" value="Add Required Component" />
+</div>

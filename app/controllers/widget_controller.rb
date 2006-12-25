@@ -34,7 +34,7 @@ class WidgetController < ApplicationController
 						@version = @widget.version
 						@homepage = @widget.homepage
 						@status = @widget.status
-						@dependencies = YAML::load(@widget.dependencies)
+						@required_components = YAML::load(@widget.required_components)
 						@code = @widget.code
 						@readperms = UserService.loadPermissions(@widget.read_permissions)
 						@writeperms = UserService.loadPermissions(@widget.write_permissions)
@@ -73,7 +73,7 @@ class WidgetController < ApplicationController
 						@version = @params[:version]
 						@homepage = @params[:homepage]
 						@status = @params[:status]
-						@dependencies = @params[:dependencies]
+						@required_components = @params[:required_components]
 						@code = @params[:code]
 						@readperms = PermissionController.parse_permissions(@params[:read])
 						@writeperms = PermissionController.parse_permissions(@params[:write])
