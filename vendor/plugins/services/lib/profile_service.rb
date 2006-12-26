@@ -75,7 +75,7 @@ def ProfileService < BaseService
 
     # Modifies a profile field metadata.
     # 
-    def self.modifyProfileItem(item_id, metadata)
+    def self.modifyProfileItemMetadata(item_id, metadata)
         if DataService.doesDataItemExist?(item_id)
             metadata.each { |name,value|
                 DataService.modifyDataItemMetadata(item_id, name, value)            
