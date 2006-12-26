@@ -72,9 +72,17 @@ class WidgetController < ApplicationController
 						@description = @params[:description]
 						@version = @params[:version]
 						@homepage = @params[:homepage]
-						@status = @params[:status]
-						#@required_components = @params[:required_components]
-						raise @params[:components].inspect
+						@status = @params[:status]					
+						rcomp_array = Array.new
+						rcomps = @params[:components].sort
+						rcomps.each do |rcomp|
+							rcomp[1].each_pair do |key, value|
+								if value == "enabled"
+									rcomp_array << key
+								end
+							end
+						end
+						@required_components = rcomp_array
 						@code = @params[:code]
 						@readperms = PermissionController.parse_permissions(@params[:read])
 						@writeperms = PermissionController.parse_permissions(@params[:write])
@@ -112,8 +120,19 @@ class WidgetController < ApplicationController
 											if @status.length > 0
 												if @status == "alpha" || @status == "beta" || @status == "testing" || @status == "release"
 													if @code.length > 0
-														@error = "Success!"
-														render :template => "widget/edit"
+														# Save widget
+														@widget.descriptive_name = @descriptive_name
+														@widget.internal_name = @internal_name
+														@widget.description = @description
+														@widget.version = @version
+														@widget.homepage = @homepage
+														@widget.status = @status
+														@widget.code = @code
+														@widget.read_permissions = @readperms.to_yaml
+														@widget.write_permissions = @writeperms.to_yaml
+														@widget.required_components = @required_components.to_yaml
+														@widget.save!
+														redirect_to "/widget/#{@uuid}/"
 													else
 														@error = "Please enter some code."
 														render :template => "widget/edit"
