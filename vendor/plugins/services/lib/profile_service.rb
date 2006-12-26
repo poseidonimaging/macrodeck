@@ -14,7 +14,7 @@ def ProfileService < BaseService
     # Creates a new profile. You should use createProfileItem to add 
     # some data here. Parameter's format is {:owner => "...", etc.}
     def self.createProfile(metadata)
-        return DataService.createDataGrouping(DGROUP_PROFILE, nil, nil, metadata)
+        return DataService.createDataGroup(DGROUP_PROFILE, nil, nil, metadata)
     end
     
     # Deletes profile by its profileId. 
