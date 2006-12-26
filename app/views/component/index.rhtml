@@ -17,13 +17,13 @@
 					<td><span class="widget"><%= link_to component.descriptive_name, "/component/#{component.uuid}/" %></span><br />
 					<%= truncate(component.description, 100) %></td>
 					<td>
-						<% if widget.status == "alpha" %>
+						<% if component.status == "alpha" %>
 							Alpha
-						<% elsif widget.status == "beta" %>
+						<% elsif component.status == "beta" %>
 							Beta
-						<% elsif widget.status == "testing" %>
+						<% elsif component.status == "testing" %>
 							Testing
-						<% elsif widget.status == "release" %>
+						<% elsif component.status == "release" %>
 							Release
 						<% else %>
 							Unknown
