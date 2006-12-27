@@ -55,10 +55,20 @@ ActionController::Routing::Routes.draw do |map|
   
   # Widget Hierarchy Routing
   map.connect 'directory/widgets',					:controller => 'widget', :action => 'index'
-  # disconnected: no longer needed - map.connect 'widgets',							:controller => 'widget', :action => 'index'
+  map.connect 'widget/new',							:controller => 'widget', :action => 'new'
   map.connect 'widget/:uuid',						:controller => 'widget', :action => 'view'
   map.connect 'widget/:uuid/code.js',				:controller => 'widget', :action => 'code'
   map.connect 'widget/:uuid/edit',					:controller => 'widget', :action => 'edit'
+  map.connect 'widget/:uuid/delete',				:controller => 'widget', :action => 'delete'
+  
+  # Component Hierarchy Routing
+  map.connect 'directory/components',				:controller => 'component', :action => 'index'
+  map.connect 'component/new',						:controller => 'component', :action => 'new'
+  # component URLs look like this: /component/com.macrodeck.InputButtonComponent/ rather than by UUID.
+  map.connect 'component/:internal_name',			:controller => 'component', :action => 'view'
+  map.connect 'component/:internal_name/code.js',	:controller => 'component', :action => 'code'
+  map.connect 'component/:internal_name/edit',		:controller => 'component', :action => 'edit'
+  map.connect 'component/:internal_name/delete',	:controller => 'component', :action => 'delete'
   
   # Route misc.
   map.connect 'directory',							:controller => 'incomplete', :action => 'directory'

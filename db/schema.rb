@@ -2,11 +2,11 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 34) do
+ActiveRecord::Schema.define(:version => 35) do
 
   create_table "components", :force => true do |t|
     t.column "uuid", :string
-    t.column "name", :string
+    t.column "descriptive_name", :string
     t.column "description", :text
     t.column "version", :string
     t.column "homepage", :string
@@ -14,9 +14,8 @@ ActiveRecord::Schema.define(:version => 34) do
     t.column "creator", :string
     t.column "owner", :string
     t.column "status", :string
-    t.column "dependencies", :text
     t.column "code", :text
-    t.column "configuration_fields", :text
+    t.column "internal_name", :string
   end
 
   create_table "data_groups", :force => true do |t|
