@@ -1,0 +1,11 @@
+<% if UserService.doesGroupMemberExist?(GROUP_DEVELOPERS, @user_uuid) %>
+	<% @menu_content = "<a href=\"/directory/widgets/\">Widget Directory</a> <a href=\"/widget/new/\">New Widget</a>" %>
+<% else %>
+	<% @menu_content = "<a href=\"/directory/widgets/\">Widget Directory</a>" %>
+<% end %>
+<% @summary = build_summary("", "Deleting " + h(@widget.descriptive_name)) %>
+
+<p>Are you sure you wish to delete <%= @widget.descriptive_name %>?</p>
+<%= form_tag "/widget/#{@widget.uuid}/delete/" %>
+<%= submit_tag 'Yes' %> <%= link_to "No", "/widget/#{@widget.uuid}/" %>
+<%= end_form_tag %>

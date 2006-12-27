@@ -20,6 +20,28 @@ class WidgetController < ApplicationController
 			render :template => "errors/invalid_widget"
 		end
 	end
+	
+	def delete
+		if @params[:uuid] != nil
+			@widget = Widget.find(:first, :conditions => ["uuid = ?", @params[:uuid]])
+			if @widget != nil
+				if UserService.checkPermissions(UserService.loadPermissions(@widget.write_permissions), @user_uuid)
+					if request.method == :get
+						render :template => 'widget/delete'
+					elsif request.method == :post
+						@widget.destroy
+						redirect_to '/directory/widgets/'
+					end
+				else
+					render :template => 'errors/access_denied'
+				end
+			else
+				render :template => 'errors/invalid_widget'
+			end
+		else
+			render :template => 'errors/invalid_widget'
+		end
+	end
 
 	def new
 		if @params[:uuid] != nil
