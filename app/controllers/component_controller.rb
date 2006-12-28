@@ -25,6 +25,7 @@ class ComponentController < ApplicationController
 		if @component != nil
 			# They can only add components if they're members of the MacroDeck Certified Developers group.
 			if UserService.doesGroupMemberExist?(GROUP_DEVELOPERS, @user_uuid)
+				set_current_tab "directory"
 				if request.method == :get
 					@descriptive_name = ""
 					@internal_name = ""

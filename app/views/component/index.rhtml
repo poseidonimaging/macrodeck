@@ -1,4 +1,8 @@
-<% @menu_content = "<a href=\"/directory/components/\">Component Directory</a>" %>
+<% if UserService.doesGroupMemberExist?(GROUP_DEVELOPERS, @user_uuid) %>
+	<% @menu_content = "<a href=\"/directory/components/\">Component Directory</a> <a href=\"/component/new/\">New Component</a>" %>
+<% else %>
+	<% @menu_content = "<a href=\"/directory/components/\">Component Directory</a>" %>
+<% end %>
 <% @summary = build_summary("Building a widget? Use these components to help you!", "MacroDeck Component Directory") %>
 <table class="widgets">
 	<thead>

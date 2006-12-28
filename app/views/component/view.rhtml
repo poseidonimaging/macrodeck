@@ -1,0 +1,23 @@
+<% if UserService.doesGroupMemberExist?(GROUP_DEVELOPERS, @user_uuid) %>
+	<% @menu_content = "<a href=\"/directory/components/\">Component Directory</a> <a href=\"/component/new/\">New Component</a>" %>
+<% else %>
+	<% @menu_content = "<a href=\"/directory/components/\">Component Directory</a>" %>
+<% end %>
+<% @summary = build_summary(h(@component.description), h(@component.descriptive_name)) %>
+
+<h3 class="section">Information</h3>
+<p><strong>Name:</strong> <span class="offset"><%= h(@component.descriptive_name) %></span></p>
+<p><strong>Creator:</strong> <span class="offset"><%= UUIDService.lookupUUID(@component.creator) %></span></p>
+<p><strong>Internal Name:</strong> <span class="offset"><span class="monospace"><%= h(@component.internal_name) %></span></span></p>
+<p><strong>Version:</strong> <span class="offset"><%= h(@component.version) %></span></p>
+<p><strong>Homepage:</strong> <span class="offset"><%= link_to truncate(@component.homepage), @component.homepage %></span></p>
+<p><strong>Creation:</strong> <span class="offset"><%= Time.at(@component.creation).strftime("%B %d, %Y at %I:%M %p") %></span></p>
+<p><strong>Last Updated:</strong> <span class="offset"><%= Time.at(@component.updated).strftime("%B %d, %Y at %I:%M %p") %></span></p>
+
+<% if @component.owner == @user_uuid || @component.creator == @user_uuid || UserService.checkPermissions(UserService.loadPermissions(@component.write_permissions), @user_uuid) %>
+	<h3 class="section">Actions</h3>
+	<div class="actions padtop">
+		<a href="/component/<%= @params[:internal_name] %>/edit/" class="action edit">Edit Component</a>
+		<a href="/component/<%= @params[:internal_name] %>/delete/" class="action delete">Delete Component</a>
+	</div>
+<% end %>

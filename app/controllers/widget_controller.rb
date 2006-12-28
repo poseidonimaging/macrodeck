@@ -26,6 +26,7 @@ class WidgetController < ApplicationController
 			@widget = Widget.find(:first, :conditions => ["uuid = ?", @params[:uuid]])
 			if @widget != nil
 				if @widget.owner == @user_uuid || @widget.creator == @user_uuid || UserService.checkPermissions(UserService.loadPermissions(@widget.write_permissions), @user_uuid)
+					set_current_tab "directory"
 					if request.method == :get
 						render :template => 'widget/delete'
 					elsif request.method == :post
@@ -48,6 +49,7 @@ class WidgetController < ApplicationController
 		if @widget != nil
 			# They can only add widgets if they're members of the MacroDeck Certified Developers group.
 			if UserService.doesGroupMemberExist?(GROUP_DEVELOPERS, @user_uuid)
+				set_current_tab "directory"
 				if request.method == :get
 					@descriptive_name = ""
 					@internal_name = ""
@@ -207,6 +209,7 @@ class WidgetController < ApplicationController
 			@widget = Widget.find(:first, :conditions => ["uuid = ?", @params[:uuid]])
 			if @widget != nil
 				if @widget.owner == @user_uuid || @widget.creator == @user_uuid || UserService.checkPermissions(UserService.loadPermissions(@widget.write_permissions), @user_uuid)
+					set_current_tab "directory"
 					if request.method == :get
 						@uuid = @widget.uuid
 						@descriptive_name = @widget.descriptive_name
