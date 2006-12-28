@@ -25,7 +25,7 @@ class WidgetController < ApplicationController
 		if @params[:uuid] != nil
 			@widget = Widget.find(:first, :conditions => ["uuid = ?", @params[:uuid]])
 			if @widget != nil
-				if UserService.checkPermissions(UserService.loadPermissions(@widget.write_permissions), @user_uuid)
+				if @widget.owner == @user_uuid || @widget.creator == @user_uuid || UserService.checkPermissions(UserService.loadPermissions(@widget.write_permissions), @user_uuid)
 					if request.method == :get
 						render :template => 'widget/delete'
 					elsif request.method == :post
@@ -95,11 +95,13 @@ class WidgetController < ApplicationController
 					@homepage = @params[:homepage]
 					@status = @params[:status]					
 					rcomp_array = Array.new
-					rcomps = @params[:components].sort
-					rcomps.each do |rcomp|
-						rcomp[1].each_pair do |key, value|
-							if value == "enabled"
-								rcomp_array << key
+					if @params[:components] != nil
+						rcomps = @params[:components].sort
+						rcomps.each do |rcomp|
+							rcomp[1].each_pair do |key, value|
+								if value == "enabled"
+									rcomp_array << key
+								end
 							end
 						end
 					end
@@ -141,27 +143,24 @@ class WidgetController < ApplicationController
 										if @status.length > 0
 											if @status == "alpha" || @status == "beta" || @status == "testing" || @status == "release"
 												if @code.length > 0
-													if @uuid.length > 0
-														# Save widget
-														@widget.uuid = @uuid
-														@widget.descriptive_name = @descriptive_name
-														@widget.internal_name = @internal_name
-														@widget.description = @description
-														@widget.version = @version
-														@widget.homepage = @homepage
-														@widget.status = @status
-														@widget.code = @code
-														@widget.read_permissions = @readperms.to_yaml
-														@widget.write_permissions = @writeperms.to_yaml
-														@widget.required_components = @required_components.to_yaml
-														@widget.owner = @user_uuid
-														@widget.creator = @user_uuid
-														@widget.save!
-														redirect_to "/widget/#{@uuid}/"
-													else
-														@error = "Invalid UUID. Please check your firewall's settings."
-														render :template => "widget/new"
-													end
+													# Save widget
+													@widget.uuid = @uuid
+													@widget.descriptive_name = @descriptive_name
+													@widget.internal_name = @internal_name
+													@widget.description = @description
+													@widget.version = @version
+													@widget.homepage = @homepage
+													@widget.status = @status
+													@widget.code = @code
+													@widget.read_permissions = @readperms.to_yaml
+													@widget.write_permissions = @writeperms.to_yaml
+													@widget.required_components = @required_components.to_yaml
+													@widget.owner = @user_uuid
+													@widget.creator = @user_uuid
+													@widget.creation = Time.now.to_i
+													@widget.updated = Time.now.to_i
+													@widget.save!
+													redirect_to "/widget/#{@uuid}/"
 												else
 													@error = "Please enter some code."
 													render :template => "widget/new"
@@ -207,7 +206,7 @@ class WidgetController < ApplicationController
 		if @params[:uuid] != nil
 			@widget = Widget.find(:first, :conditions => ["uuid = ?", @params[:uuid]])
 			if @widget != nil
-				if UserService.checkPermissions(UserService.loadPermissions(@widget.write_permissions), @user_uuid)
+				if @widget.owner == @user_uuid || @widget.creator == @user_uuid || UserService.checkPermissions(UserService.loadPermissions(@widget.write_permissions), @user_uuid)
 					if request.method == :get
 						@uuid = @widget.uuid
 						@descriptive_name = @widget.descriptive_name

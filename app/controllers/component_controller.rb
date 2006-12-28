@@ -26,7 +26,6 @@ class ComponentController < ApplicationController
 			# They can only add components if they're members of the MacroDeck Certified Developers group.
 			if UserService.doesGroupMemberExist?(GROUP_DEVELOPERS, @user_uuid)
 				if request.method == :get
-					@uuid = UUIDService.generateUUID()
 					@descriptive_name = ""
 					@internal_name = ""
 					@description = ""
@@ -63,6 +62,43 @@ class ComponentController < ApplicationController
 										<option value="release">Release</option>'
 					end
 					render :template => "component/new"
+				elsif request.method == :post
+					@uuid = UUIDService.generateUUID()
+					@descriptive_name = @params[:descriptive_name]
+					@internal_name = @params[:internal_name]
+					@description = @params[:description]
+					@version = @params[:version]
+					@homepage = @params[:homepage]
+					@status = @params[:status]
+					@code = @params[:code]
+					@readperms = PermissionController.parse_permissions(@params[:read])
+					@writeperms = PermissionController.parse_permissions(@params[:write])
+					if @status == "alpha"
+						@status_tags = '<option selected="selected" value="alpha">Alpha</option>
+										<option value="beta">Beta</option>
+										<option value="testing">Testing</option>
+										<option value="release">Release</option>'
+					elsif @status == "beta"
+						@status_tags = '<option value="alpha">Alpha</option>
+										<option selected="selected" value="beta">Beta</option>
+										<option value="testing">Testing</option>
+										<option value="release">Release</option>'
+					elsif @status == "testing"
+						@status_tags = '<option value="alpha">Alpha</option>
+										<option value="beta">Beta</option>
+										<option selected="selected" value="testing">Testing</option>
+										<option value="release">Release</option>'
+					elsif @status == "release"
+						@status_tags = '<option value="alpha">Alpha</option>
+										<option value="beta">Beta</option>
+										<option value="testing">Testing</option>
+										<option selected="selected" value="release">Release</option>'
+					else
+						@status_tags = '<option value="alpha">Alpha</option>
+										<option value="beta">Beta</option>
+										<option value="testing">Testing</option>
+										<option value="release">Release</option>'
+					end
 				end
 			else
 				render :template => "errors/access_denied"
