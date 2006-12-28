@@ -18,5 +18,5 @@ class ComponentController < ApplicationController
 		else
 			render :template => "errors/invalid_component"
 		end	
-	end
+	end	
 end
