@@ -49,7 +49,6 @@ class WidgetController < ApplicationController
 			# They can only add widgets if they're members of the MacroDeck Certified Developers group.
 			if UserService.doesGroupMemberExist?(GROUP_DEVELOPERS, @user_uuid)
 				if request.method == :get
-					@uuid = UUIDService.generateUUID()
 					@descriptive_name = ""
 					@internal_name = ""
 					@description = ""
@@ -88,7 +87,7 @@ class WidgetController < ApplicationController
 					end
 					render :template => "widget/new"
 				elsif request.method == :post
-					@uuid = @params[:uuid]
+					@uuid = UUIDService.generateUUID()
 					@descriptive_name = @params[:descriptive_name]
 					@internal_name = @params[:internal_name]
 					@description = @params[:description]
