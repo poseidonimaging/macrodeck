@@ -174,7 +174,7 @@ class WidgetController < ApplicationController
 											render :template => "widget/new"
 										end
 									else
-										@error = "You must enter a homepage. If you don't have one, use your widget's info page."
+										@error = "You must enter a homepage. If you don't have one, use http://www.macrodeck.com/directory/widgets/."
 										render :template => "widget/new"
 									end
 								else

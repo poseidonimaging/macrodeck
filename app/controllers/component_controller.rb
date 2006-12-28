@@ -99,6 +99,70 @@ class ComponentController < ApplicationController
 										<option value="testing">Testing</option>
 										<option value="release">Release</option>'
 					end
+					
+					# Check values
+					if @descriptive_name.length > 0
+						if @internal_name.length > 0
+							if @internal_name.split(".").length > 2 # If there are at least something.something.something, we're okay.
+								if @description.length > 0
+									if @version.length > 0
+										if @homepage.length > 0
+											if @status.length > 0
+												if @status == "alpha" || @status == "beta" || @status == "testing" || @status == "release"
+													if @code.length > 0
+														# Save component!
+														@component.uuid = @uuid
+														@component.descriptive_name = @descriptive_name
+														@component.internal_name = @internal_name
+														@component.description = @description
+														@component.version = @version
+														@component.homepage = @homepage
+														@component.status = @status
+														@component.code = @code
+														@component.read_permissions = @readperms.to_yaml
+														@component.write_permissions = @writeperms.to_yaml
+														@component.owner = @user_uuid
+														@component.creator = @user_uuid
+														@component.creation = Time.now.to_i
+														@component.updated = Time.now.to_i
+														@component.save!
+														redirect_to "/component/#{@internal_name}/"
+													else
+														@error = "Please enter some code."
+														render :template => "component/new"
+													end
+												else
+													@error = "Please choose a valid release status."
+													render :template => "component/new"
+												end
+											else
+												@error = "Please select a release status."
+												render :template => "component/new"
+											end
+										else
+											@error = "Please enter a homepage (if you don't have one, use http://www.macrodeck.com/directory/components/)."
+											render :template => "component/new"
+										end
+									else
+										@error = "Please enter a version number."
+										render :template => "component/new"
+									end
+								else
+									@error = "Please enter a description."
+									render :template => "component/new"
+								end
+							else
+								@error = "You specified an invalid internal name. Something like com.yourname.ComponentName is what we want here."
+								render :template => "component/new"
+							end
+						else
+							@error = "Please enter an internal name for your component."
+							render :template => "component/new"
+						end
+					else
+						@error = "Please enter a name for your component."
+						render :template => "component/new"
+					end
 				end
 			else
 				render :template => "errors/access_denied"
