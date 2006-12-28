@@ -14,7 +14,12 @@ BaseWidget.prototype = {
 						return this.name;
 					},
 	setUserInfo:	function(userInfo) {
-						this.userInfo = userInfo;
+						var uinfo = $H(userInfo);
+						this.userInfo = uinfo;
+					},
+	setConfig:		function(configuration) {
+						var config = $H(configuration);
+						this.config = config;
 					}
 }
 

@@ -71,7 +71,7 @@ ActionController::Routing::Routes.draw do |map|
   map.connect 'component/:internal_name/delete',	:controller => 'component', :action => 'delete'
   
   # Route misc.
-  map.connect 'directory',							:controller => 'incomplete', :action => 'directory'
+  map.connect 'directory',							:controller => 'directory', :action => 'index'
   map.connect 'directory/groups',					:controller => 'incomplete', :action => 'directory'
   
   # Route / to the MacroDeck blog until pages are created.

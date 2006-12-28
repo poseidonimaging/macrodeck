@@ -96,11 +96,6 @@ h1 span {
 	padding-right: 5px;
 }
 
-/* Generic */
-.hide {
-	display: none;
-}
-
 /* The Magic Expander! */
 .expand {
 	display: block;
@@ -243,7 +238,7 @@ h3.postname, h3.comments, h3.section {
 }
 span.offset {
 	position: absolute;
-	left: 140px;
+	left: 150px;
 }
 div.center {
 	padding: 5px;
@@ -296,6 +291,9 @@ p.info {
 }
 .standout {
 	padding-left: 5px;
+}
+.hide {
+	display: none;
 }
 
 /* the top bar */
@@ -463,4 +461,20 @@ body.lite {
 /* Compact */
 .compact, .compact h2, .compact h3, .compact h4, .compact h5, .compact th, .compact td {
 	font-size: 8pt;
+}
+h4.compact {
+	padding: 0;
+	margin: 0;
+}
+p.compact {
+	padding: 0;
+	margin: 0;
+}
+
+/* icons */
+.lefticon {
+	float: left;
+	width: 32px;
+	height: 64px;
+	margin: 5px;
 }
