@@ -111,23 +111,30 @@ class ComponentController < ApplicationController
 											if @status.length > 0
 												if @status == "alpha" || @status == "beta" || @status == "testing" || @status == "release"
 													if @code.length > 0
-														# Save component!
-														@component.uuid = @uuid
-														@component.descriptive_name = @descriptive_name
-														@component.internal_name = @internal_name
-														@component.description = @description
-														@component.version = @version
-														@component.homepage = @homepage
-														@component.status = @status
-														@component.code = @code
-														@component.read_permissions = @readperms.to_yaml
-														@component.write_permissions = @writeperms.to_yaml
-														@component.owner = @user_uuid
-														@component.creator = @user_uuid
-														@component.creation = Time.now.to_i
-														@component.updated = Time.now.to_i
-														@component.save!
-														redirect_to "/component/#{@internal_name}/"
+														# Check to see if the destination internal name exists.
+														tmp_cmp = Component.find(:first, :conditions => ["internal_name = ?", @internal_name])
+														if tmp_cmp == nil
+															# Save component!
+															@component.uuid = @uuid
+															@component.descriptive_name = @descriptive_name
+															@component.internal_name = @internal_name
+															@component.description = @description
+															@component.version = @version
+															@component.homepage = @homepage
+															@component.status = @status
+															@component.code = @code
+															@component.read_permissions = @readperms.to_yaml
+															@component.write_permissions = @writeperms.to_yaml
+															@component.owner = @user_uuid
+															@component.creator = @user_uuid
+															@component.creation = Time.now.to_i
+															@component.updated = Time.now.to_i
+															@component.save!
+															redirect_to "/component/#{@internal_name}/"
+														else
+															@error = "The internal name you picked is already in use."
+															render :template => "component/new"
+														end
 													else
 														@error = "Please enter some code."
 														render :template => "component/new"
@@ -263,21 +270,40 @@ class ComponentController < ApplicationController
 												if @status.length > 0
 													if @status == "alpha" || @status == "beta" || @status == "testing" || @status == "release"
 														if @code.length > 0
-															# Save component!
-															@component.descriptive_name = @descriptive_name
-															@component.internal_name = @internal_name
-															@component.description = @description
-															@component.version = @version
-															@component.homepage = @homepage
-															@component.status = @status
-															@component.code = @code
-															@component.read_permissions = @readperms.to_yaml
-															@component.write_permissions = @writeperms.to_yaml
-															@component.owner = @user_uuid
-															@component.creator = @user_uuid
-															@component.updated = Time.now.to_i
-															@component.save!
-															redirect_to "/component/#{@internal_name}/"
+															can_save = false
+															if @component.internal_name == @internal_name
+																# We're not changing the internal name
+																can_save = true
+															else
+																# we are changing the internal name
+																# see if a component already exists with this internal name.
+																tmp_cmp = Component.find(:first, :conditions => ["internal_name = ?", @internal_name])
+																if tmp_cmp == nil
+																	# the destination component doesn't exist
+																	can_save = true
+																else
+																	can_save = false
+																	@error = "The internal name you picked is already in use."
+																	render :template => "component/edit"
+																end
+															end
+															if can_save
+																# Save component!
+																@component.descriptive_name = @descriptive_name
+																@component.internal_name = @internal_name
+																@component.description = @description
+																@component.version = @version
+																@component.homepage = @homepage
+																@component.status = @status
+																@component.code = @code
+																@component.read_permissions = @readperms.to_yaml
+																@component.write_permissions = @writeperms.to_yaml
+																@component.owner = @user_uuid
+																@component.creator = @user_uuid
+																@component.updated = Time.now.to_i
+																@component.save!
+																redirect_to "/component/#{@internal_name}/"
+															end
 														else
 															@error = "Please enter some code."
 															render :template => "component/edit"
@@ -325,4 +351,41 @@ class ComponentController < ApplicationController
 			render :template => "errors/invalid_component"
 		end
 	end	
+	
+	def code
+		if @params[:internal_name] != nil
+			@component = Component.find(:first, :conditions => ["internal_name = ?", @params[:internal_name]])
+			if @widget != nil
+				response.headers['Content-Type'] = 'text/javascript'
+				render :partial => "code"
+			else
+				render :template => "errors/invalid_component"
+			end
+		else
+			render :template => "errors/invalid_component"
+		end
+	end	
+	
+	def delete
+		if @params[:internal_name] != nil
+			@component = Component.find(:first, :conditions => ["internal_name = ?", @params[:internal_name]])
+			if @component != nil
+				if @component.owner == @user_uuid || @component.creator == @user_uuid || UserService.checkPermissions(UserService.loadPermissions(@component.write_permissions), @user_uuid)
+					set_current_tab "directory"
+					if request.method == :get
+						render :template => 'component/delete'
+					elsif request.method == :post
+						@component.destroy
+						redirect_to '/directory/components/'
+					end
+				else
+					render :template => 'errors/access_denied'
+				end
+			else
+				render :template => 'errors/invalid_component'
+			end
+		else
+			render :template => 'errors/invalid_component'
+		end	
+	end
 end

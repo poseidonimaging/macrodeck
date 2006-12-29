@@ -37,7 +37,7 @@
 <p><strong>Homepage:</strong> <span class="offset"><%= link_to truncate(@widget.homepage), @widget.homepage %></span></p>
 <p><strong>Creation:</strong> <span class="offset"><%= Time.at(@widget.creation).strftime("%B %d, %Y at %I:%M %p") %></span></p>
 <p><strong>Last Updated:</strong> <span class="offset"><%= Time.at(@widget.updated).strftime("%B %d, %Y at %I:%M %p") %></span></p>
-<p><strong>Required Components:</strong> <span class="offset">
+<p><strong>Required <br />Components:</strong> <span class="offset">
 <% @required_components.each do |dep| %>
 	<span class="depname"><%= dep %></span>
 <% end %>
