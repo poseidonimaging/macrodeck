@@ -13,5 +13,9 @@ BaseComponent.prototype = {
 					},
 	getAuthor:		function() {
 						return this.author;
-					}
+					},
+	setUserInfo:	function(userInfo) {
+						var uinfo = $H(userInfo);
+						this.userInfo = uinfo;
+					}					
 }

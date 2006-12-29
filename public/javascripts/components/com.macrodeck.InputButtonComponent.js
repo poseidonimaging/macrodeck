@@ -22,8 +22,8 @@ var InputButtonComponent = Class.create();
 
 InputButtonComponent.prototype = {
 	initialize:function (caption) {
-		this.caption = caption;
-		this.version = "0.1.20060814";
+		this._caption = caption;
+		this.version = "0.1.20061228";
 		this.author = "Keith Gable <ziggy@ignition-project.com>";
 		
 		// internal variables.
@@ -36,7 +36,7 @@ InputButtonComponent.prototype = {
 		// create the button object
 		button = document.createElement("input");
 		button.type = "button";
-		button.value = this.caption;
+		button.value = this._caption;
 		button.style.width = this._width;
 		button.style.height = this._height;
 		
@@ -56,6 +56,15 @@ InputButtonComponent.prototype = {
 			return true;
 		}
 	},
+	getWidth:function() {
+		if (this._buttonObj) {
+			// return the button's actual width.
+			return this._buttonObj.style.width;
+		} else {
+			// return what the width will be
+			return this._width;
+		}
+	},
 	setHeight:function (newHeight) {
 		if (this._buttonObj) {
 			this._buttonObj.style.height = newHeight;
@@ -64,6 +73,30 @@ InputButtonComponent.prototype = {
 		} else {
 			this._height = newHeight;
 			return true;
+		}
+	},
+	getHeight:function () {
+		if (this._buttonObj) {
+			return this._buttonObj.style.height;
+		} else {
+			return this._height;
+		}
+	},
+	setCaption:function (newCaption) {
+		if (this._buttonObj) {
+			// button exists, we set the caption on the button.
+			this._buttonObj.value = newCaption;
+			this._caption = newCaption;
+		} else {
+			// button has not been painted yet.
+			this._caption = newCaption;
+		}
+	},
+	getCaption:function () {
+		if (this._buttonObj) {
+			return this._buttonObj.value;
+		} else {
+			return this._caption;
 		}
 	}
 }

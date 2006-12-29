@@ -315,6 +315,7 @@ class WidgetController < ApplicationController
 														@widget.read_permissions = @readperms.to_yaml
 														@widget.write_permissions = @writeperms.to_yaml
 														@widget.required_components = @required_components.to_yaml
+														@widget.updated = Time.now.to_i
 														@widget.save!
 														redirect_to "/widget/#{@uuid}/"
 													else
