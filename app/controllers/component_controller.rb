@@ -355,7 +355,7 @@ class ComponentController < ApplicationController
 	def code
 		if @params[:internal_name] != nil
 			@component = Component.find(:first, :conditions => ["internal_name = ?", @params[:internal_name]])
-			if @widget != nil
+			if @component != nil
 				response.headers['Content-Type'] = 'text/javascript'
 				render :partial => "code"
 			else
