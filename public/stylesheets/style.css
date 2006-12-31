@@ -11,21 +11,6 @@ h1 span {
 }
 
 /* Top of Page */
-#topmenu {
-	position: absolute;
-	top: 0;
-	left: 0;
-	color: #fff;
-	text-align: left;
-	padding: 3px;
-	font-size: 8pt;
-	font-weight: bold;
-	padding-left: 8px;
-}
-#topmenu a {
-	color: #fff;
-	font-weight: normal;
-}
 #top {
 	background-color: #000000;
 }
@@ -57,6 +42,8 @@ h1 span {
 #menu {
 	background-image: url(/images/longbar.png);
 	background-position: bottom;
+	background-repeat: repeat-x;
+	background-color: #e1e1e1;
 	border-bottom: 1px solid #8B8B8B;
 	font-size: 8pt;
 	font-weight: bold;
@@ -78,6 +65,7 @@ h1 span {
 	font-weight: normal;
 	padding: 5px;
 	border-bottom: 1px solid #E0E0E0;
+	background-color: #e1e1e1;
 	/* border-bottom: 1px solid #8B8B8B; -- bottom of titlebar */
 }
 #summary h2 {

@@ -11,6 +11,7 @@
 	<%= stylesheet_link_tag "style", :title => "MacroDeck" %>
 	<%= stylesheet_link_tag "actions", :title => "MacroDeck" %>
 	<%= stylesheet_link_tag "ibox" %>
+	<%= stylesheet_link_tag "yui-ext" %>
 	<script src="http://www.google-analytics.com/urchin.js" type="text/javascript"></script>
 	<script type="text/javascript">
 	_uacct = "UA-172892-3";
@@ -31,7 +32,7 @@
 	<% if @components != nil %>
 		<% @components.uniq! %>
 		<% @components.each do |component| %>
-			<%= javascript_include_tag "components/#{component}.js" %>
+			<%= javascript_include_tag "/component/#{component}/code.js" %>
 		<% end %>
 	<% end %>
 	<% if @widgets != nil %>
@@ -39,4 +40,42 @@
 		<% @widgets.each do |widget| %>
 			<%= javascript_include_tag "/widget/#{widget}/code.js" %>
 		<% end %>
-	<% end %>	
+	<% end %>
+
+	<!-- yui-ext panels -->
+	<script type="text/javascript">
+	//<![CDATA[[
+	MacroDeck = function(){
+	        return {
+	            init : function(){
+	               var layout = new YAHOO.ext.BorderLayout(document.body, {
+	                    north: {
+	                        split:false,
+	                        /*initialSize: 110,*/
+							minSize:100,
+							maxSize:200
+	                    },
+	                    west: {
+	                        split:true,
+	                        initialSize: 200,
+	                        titlebar: true,
+	                        collapsible: true,
+	                        minSize: 100,
+	                        maxSize: 400
+	                    },
+	                    center: {
+	                        autoScroll: true
+	                    }
+	                });
+	                layout.beginUpdate();
+	                layout.add('north', new YAHOO.ext.ContentPanel('ypanel-header', {fitToFrame:true}));
+	                //layout.add('west', new YAHOO.ext.ContentPanel('menu', {title: 'Toolbox', fitToFrame:true, closable:false}));
+	                layout.add('center', new YAHOO.ext.ContentPanel('ypanel-content'));
+	                layout.endUpdate();
+	           }
+	     }
+	       
+	}();
+	YAHOO.ext.EventManager.onDocumentReady(MacroDeck.init, MacroDeck, true);
+	//]]>
+	</script>
