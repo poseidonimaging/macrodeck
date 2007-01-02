@@ -16,7 +16,7 @@ class UserService < BaseService
 	@serviceName = "UserService"	
 	@serviceVersionMajor = 0
 	@serviceVersionMinor = 3
-	@serviceVersionRevision = 20060813
+	@serviceVersionRevision = 20070101
 	@serviceUUID = "8d6e8d29-55b0-4d74-bf71-84b2d653ba1f"
 	
 	# Creates a new user in the database, first checking to see if the user exists or not.
@@ -88,6 +88,18 @@ class UserService < BaseService
 			return true
 		end
 	end
+	
+	# Returns the level of a user in a group.
+	# Will be "administrator", "moderator", "user", or
+	# nil (only if the user doesn't exist)
+	def self.getGroupMemberLevel(groupID, userID)
+		groupmember = GroupMember.find(:first, :conditions => ["groupid = ? AND userid = ?", groupID, userID])
+		if groupmember == nil
+			return nil
+		else
+			return groupmember.level
+		end
+	end	
 	
 	# Returns true if a group exists, false if one
 	# does not.
@@ -309,6 +321,18 @@ class UserService < BaseService
 		if groupmember != nil
 			groupmember.isbanned = false
 			groupmember.save!
+		end
+	end
+	
+	# Returns true if a group member is banned, false
+	# if a group member isn't banned, or nil if the
+	# user could not be found.
+	def self.isGroupMemberBanned?(groupID, userID)
+		groupmember = GroupMember.find(:first, :conditions => ["groupid = ? AND userid = ?", groupID, userID])
+		if groupmember != nil
+			return groupmember.isbanned
+		else
+			return nil
 		end
 	end
 	

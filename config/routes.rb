@@ -36,20 +36,21 @@ ActionController::Routing::Routes.draw do |map|
   map.connect 'user/:username/blog/permissions',	:controller => 'blog', :action => 'permissions'
   
   # Route group/:groupname/environment
-  map.connect 'group/:groupname/environment/:envname',	:controller => 'environment', :action => 'index'
+  map.connect 'group/:groupname/environment/:envname',	:controller => 'environment', :action => 'view'
   
   # Route user/:username/environment
-  map.connect 'user/:username/environment/:envname',	:controller => 'environment', :action => 'index'
+  map.connect 'user/:username/environment/:envname',	:controller => 'environment', :action => 'view'
   
   # Route user other stuff
   map.connect 'user/:username/home',				:controller => 'account', :action => 'home'
   map.connect 'user/:username/settings',			:controller => 'account', :action => 'settings'
-  map.connect 'user/:username/environments',		:controller => 'incomplete', :action => 'environments'
+  map.connect 'user/:username/environments',		:controller => 'environment', :action => 'index'
   map.connect 'user/:username/shared',				:controller => 'incomplete', :action => 'shareditems'
   map.connect 'user/:username/profile',				:controller => 'incomplete', :action => 'profile'
   map.connect 'user/:username',						:controller => 'incomplete', :action => 'profile'
   
   # route other group stuff
+  map.connect 'group/:groupname/environments',		:controller => 'environment', :action => 'index'
   map.connect 'group/:groupname/profile',			:controller => 'incomplete', :action => 'profile'
   map.connect 'group/:groupname',					:controller => 'incomplete', :action => 'profile'
   

@@ -9,20 +9,11 @@ ImageWidget.prototype = {
 	},
 	display:function(displayMode) {
 		this._surface = Widgets.getPaintingSurface(this._instanceId);
-		ok = Widgets.createContainer(this._instanceId, "ok", false);
-		cancel = Widgets.createContainer(this._instanceId,
-			"cancel", false);
-		ok_btn = new InputButtonComponent('OK');
-		cancel_btn = new InputButtonComponent('Cancel');
+		i = Widgets.createContainer(this._instanceId, "img", false);
 		
 		// Demo
 		if (displayMode == "demo") {
-			ok_btn.click = function() {
-				alert("You pressed OK!");
-			}
-			cancel_btn.click = function() {
-				alert("You pressed Cancel.");
-			}
+			i_img = new ImageComponent('/images/logo/logo-glass.png');
 		} else {
 			ok_btn.click = this.okClick;
 			cancel_btn.click = this.cancelClick;

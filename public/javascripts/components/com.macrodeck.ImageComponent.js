@@ -19,7 +19,7 @@ var ImageComponent = Class.create();
 ImageComponent.prototype = {
 	initialize:function (url) {
 		this._image = url;
-		this.version = "0.1.20061230";
+		this.version = "0.1.20061231";
 		this.author = "Keith Gable <ziggy@ignition-project.com>";
 		
 		// internal variables.
@@ -29,7 +29,6 @@ ImageComponent.prototype = {
 	display:function (where) {
 		// get the object to paint
 		paintobj = $(where);
-		// create the text box object
 		img = document.createElement("img");
 		img.style.width = this._width;
 		img.style.height = this._height;
@@ -49,7 +48,7 @@ ImageComponent.prototype = {
 	},
 	getWidth:function() {
 		if (this._imgObj) {
-			// return the box's actual width.
+			// return the img's actual width.
 			return this._imgObj.style.width;
 		} else {
 			// return what the width will be
@@ -75,11 +74,11 @@ ImageComponent.prototype = {
 	},
 	setImage:function (newImage) {
 		if (this._imgObj) {
-			// button exists, we set the caption on the button.
-			this._imgObj.src = newValue;
+			// change image.
+			this._imgObj.src = newImage;
 			this._image = newImage;
 		} else {
-			// button has not been painted yet.
+			// image not painted yet
 			this._image = newImage;
 		}
 	},

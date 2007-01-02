@@ -3,6 +3,56 @@ class EnvironmentController < ApplicationController
 	
 	def index
 		if @params[:groupname] != nil
+			@uuid = UserService.lookupGroupName(@params[:groupname].downcase)
+			if @uuid == nil
+				render :template => "errors/invalid_user_or_group"
+			else
+				@type = "group"
+				@name = @params[:groupname].downcase
+				i_envs = Environment.find(:all, :conditions => ["owner = ?", @uuid])
+				@envs = Array.new
+				
+				if i_envs != nil
+					i_envs.each do |env|
+						if env.owner == @user_uuid || env.creator == @user_uuid || UserService.checkPermissions(UserService.loadPermissions(env.read_permissions), @user_uuid)
+							# User can read this environment
+							@envs << env
+						end
+					end
+				end
+			end
+		elsif @params[:username] != nil
+			@uuid = UserService.lookupUserName(@params[:username].downcase)
+			if @uuid == nil
+				render :template => "errors/invalid_user_or_group"
+			else
+				@type = "user"
+				@name = @params[:username].downcase
+				if @uuid == @user_uuid
+					set_tabs_for_user @user_username, true
+					set_current_tab "environments"
+				else
+					set_tabs_for_user @name, false
+					set_current_tab "environments"
+				end
+				i_envs = Environment.find(:all, :conditions => ["owner = ?", @uuid])
+				@envs = Array.new
+				if i_envs != nil
+					i_envs.each do |env|
+						if env.owner == @user_uuid || env.creator == @user_uuid || UserService.checkPermissions(UserService.loadPermissions(env.read_permissions), @user_uuid)
+							# User can read this environment
+							@envs << env
+						end
+					end
+				end			
+			end
+		else
+			render :template => "errors/invalid_user_or_group"
+		end
+	end	
+	
+	def view
+		if @params[:groupname] != nil
 			uuid = UserService.lookupGroupName(@params[:groupname].downcase)
 			if uuid == nil
 				render :template => "errors/invalid_user_or_group"
@@ -33,6 +83,13 @@ class EnvironmentController < ApplicationController
 				if @params[:envname] != nil
 					@type = "user"
 					@name = @params[:username].downcase
+					if uuid == @user_uuid
+						set_tabs_for_user @user_username, true
+						set_current_tab "environments"
+					else
+						set_tabs_for_user @name, false
+						set_current_tab "environments"
+					end					
 					@envname = @params[:envname].downcase
 					@env = Environment.find(:first, :conditions => ["short_name = ? AND owner = ?", @envname, uuid])
 					if @env != nil

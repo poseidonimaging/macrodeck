@@ -1,0 +1,47 @@
+<% if @type == "group" %>
+	<% if UserService.getGroupMemberLevel(@uuid, @user_uuid) == "administrator" && UserService.isGroupMemberBanned?(@uuid, @user_uuid) == false %>
+		<% @menu_content = "<a href=\"/#{@type}/#{@name}/environments/\">View Environments</a> <a href=\"/#{@type}/#{@name}/environments/new/\">New Environment</a>" %>
+	<% else %>
+		<% @menu_content = "<a href=\"/#{@type}/#{@name}/environments/\">View Environments</a>" %>
+	<% end %>
+<% else %>
+	<% if @uuid == @user_uuid %>
+		<% @menu_content = "<a href=\"/#{@type}/#{@name}/environments/\">View Environments</a> <a href=\"/#{@type}/#{@name}/environments/new/\">New Environment</a>" %>
+	<% else %>
+		<% @menu_content = "<a href=\"/#{@type}/#{@name}/environments/\">View Environments</a>" %>
+	<% end %>
+<% end %>
+
+<p>Environments are places where you can place <%= link_to "widgets", "/directory/widgets/" %> and have them readily accessible and interactive.
+<% if @type == "user" && @uuid != @user_uuid %>Since you are not viewing your environments, you can only see environments that this user has made
+publically available. If you would like to try out the environment system, please see
+<%= link_to "your environments page", "/user/#{@user_username}/environments/" %>.<% end %>
+<% if @type == "group" && UserService.isGroupMember?(@uuid, @user_uuid) == false %>Since you are not a member of this group, you will only see
+environments that the administrators of this group have made publically available. If you would like to try out the environment system, please see
+<%= link_to "your environments page", "/user/#{@user_username}/environments/" %>.<% end %>
+
+<% if @envs == nil || @envs.length == 0 %>
+	<% if @type == "group" %>
+		<% if UserService.getGroupMemberLevel(@uuid, @user_uuid) == "administrator" && UserService.isGroupMemberBanned?(@uuid, @user_uuid) == false %>
+			<p>Your group has no environments. You can create one by going to <%= link_to "New Environment", "/group/#{@name}/environments/new/" %>.</p>
+		<% else %>
+			<% if UserService.isGroupMember?(@uuid, @user_uuid) == false || UserService.isGroupMemberBanned?(@uuid, @user_uuid) %>
+				<p>This group either has no environments or has chosen not to make them publically available.</p>
+			<% else %>
+				<p>Your group has no environments. Tell your group administrator(s) to create some!</p>
+			<% end %>
+		<% end %>
+	<% else %>
+		<% if @uuid == @user_uuid %>
+			<p>You have no environments. You can create one by going to <%= link_to "New Environment", "/user/#{@name}/environments/new/" %>.</p>
+		<% else %>
+			<p>This user either has no environments or has chosen not to make them publically available.</p>
+		<% end %>
+	<% end %>
+<% else %>
+	<ul>
+	<% @envs.each do |env| %>
+		<li><%= link_to env.title, "/#{@type}/#{@name}/environment/#{env.short_name}/" %><% if env.description != nil && env.description.length > 0 %>: <%= env.description %><% end %></li>
+	<% end %>
+	</ul>
+<% end %>

@@ -6,7 +6,7 @@
 			widget = Widget.find(:first, :conditions => ["uuid = ?", winst.widgetid])
 			if widget != nil
 				@widgets << winst.widgetid
-				deps = YAML::load(widget.dependencies)
+				deps = YAML::load(widget.required_components)
 				deps.each do |dep|
 					@components << dep
 				end
@@ -31,7 +31,7 @@
 			widget = Widget.find(:first, :conditions => ["uuid = ?", winst.widgetid])
 			if widget != nil
 				@widgets << winst.widgetid
-				deps = YAML::load(widget.dependencies)
+				deps = YAML::load(widget.required_components)
 				deps.each do |dep|
 					@components << dep
 				end
@@ -56,7 +56,7 @@
 			widget = Widget.find(:first, :conditions => ["uuid = ?", winst.widgetid])
 			if widget != nil
 				@widgets << winst.widgetid
-				deps = YAML::load(widget.dependencies)
+				deps = YAML::load(widget.required_components)
 				deps.each do |dep|
 					@components << dep
 				end
