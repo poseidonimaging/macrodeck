@@ -1,10 +1,10 @@
 # This service requires DataService to work.
 # It provides some functions to work with profiles.
 
-require "profile"       # profile virtual model
-require "profile_item"  # profile item virtual model
+require 'profile'       # profile virtual model
+require 'profile_item'  # profile item virtual model
 
-def ProfileService < BaseService
+class ProfileService < BaseService
   	@serviceAuthor = "Eugene Hlyzov <ehlyzov@issart.com>"
 	@serviceID = "com.macrodeck.ProfileService"
 	@serviceName = "ProfileService"	
@@ -14,19 +14,17 @@ def ProfileService < BaseService
     # Creates a new profile. You should use createProfileItem to add 
     # some data here. Parameter's format is {:owner => "...", etc.}
     def self.createProfile(metadata)
-        return DataService.createDataGroup(DGROUP_PROFILE, nil, nil, metadata)
+        Profile.createNewProfile(metadata)
     end
     
     # Deletes profile by its profileId. 
     # *NOTE*! This method also removes all profile items which have 
     # this profileId as parent. 
     def self.deleteProfile(profile_id)
-        if Profile.exist?(profile_id)
-            items = DataService.getDataGroupItems(profile_id, nil)
-            items.each { |item|
-                DataService.deleteDataItem(item.dataid)
-            }
-            return DataService.deleteDataGroup(profile_id)
+        profile = Profile.find(profile_id)
+        if profile
+            profile.items.each { |item| item.destroy }
+            return profile.destroy
          else
             return false
          end
@@ -34,30 +32,40 @@ def ProfileService < BaseService
     
     # Modifies the metadata for the specified profile.
     def self.modifyProfileMetadata(profile_id, name, value)
-        if DataService.doesDataGroupExist?(profileID)
-            return DataService.modifyDataGroupMetadata(profile_id,name,value)
-        else
-            return false
-        end
+        profile = Profile.find(profile_id)
+        return profile.updateMetadata(name,value) if profile
+        false
+#        if Profile.exist?(profile_id)
+#            # FIXME: this should be implement via Profile model
+#            return DataService.modifyDataGroupMetadata(profile_id,name,value)    
+#        else
+#            return false
+#        end
     end
     
     # Creates a new profile's item within given profile.
-    def self.addProfileItem(profile_id, item_type, item_value, item_metadata)
-		profile_meta = DataService.getDataGroupMetadata(profile_id)
-		item_metadata.update(
-		  {
-		    :owner => profile_meta[:owner],
-		    :creatorapp => @serviceUUID,
-		    :grouping => profile_id		    
-          })
-		item_id = DataService.createData(DTYPE_PROFILE_FIELD, item_type, item_value, item_metadata)
-		return item_id
+    def self.addProfileItem(profile_id, type, value, metadata)        
+        profile = Profile.find(profile_id)
+        return false unless profile
+        metadata.update(
+            :creatorapp => @serviceUUID            
+        )                
+        profile.add_new_item(type,value,metadata)        
+#		profile_meta = DataService.getDataGroupMetadata(profile_id)
+#		item_metadata.update(
+#		  {
+#		    :owner => profile_meta[:owner],
+#		    :creatorapp => @serviceUUID,
+#		    :grouping => profile_id		    
+#          })
+#		item_id = ProfileItem.new_item(type, value, item_metadata)
+#		return item_id
     end
     
     # Deletes a specified profile field.
     # 
-    def self.deleteProfileItem(item_id)
-        return DataService.deleteDataItem(item_id)
+    def self.deleteProfileItem(item_id)        
+        DataService.deleteDataItem(item_id)
     end
     
     # Modifies a profile field type and value.
@@ -65,9 +73,6 @@ def ProfileService < BaseService
     def self.modifyProfileItem(item_id, item_type, item_value)
         if DataService.doesDataItemExist?(item_id)
             DataService.modifyDataItem(item_id, item_type, item_value)
-            item_meta.each { |name,value|
-                DataService.modifyDataItemMetadata(item_id, name, value)            
-            }
         else
             return false                
         end
@@ -88,11 +93,19 @@ def ProfileService < BaseService
     # Returns a list of all fileds of specified profile
     #
     def self.getProfileItems(profile_id)
-        if Profile.exist?(profile_id) 
-            return DataService.getDataGroupItems(profile_id, nil)    
-        else
-            return false
-        end   
+        profile = Profile.find(profile_id)
+        return profile.items if profile
+        false
+#        if Profile.exist?(profile_id) 
+#            return DataService.getDataGroupItems(profile_id, nil)    
+#        else
+#            return false
+#        end   
     end
 
+    def getProfile(user_or_group_id)
+        return Profile.find_by_owner(user_or_group_id)
+    end
 end
+
+Services.registerService(ProfileService)
