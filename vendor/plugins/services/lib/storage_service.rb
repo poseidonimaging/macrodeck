@@ -9,7 +9,7 @@ class StorageService < BaseService
     @serviceUUID = "???"    
     
     # Creates a file (of course, folder is a file too)
-    # type is a symbol, may be :file or :folder for now
+    # +type+ is a symbol, may be :file or :folder for now
     # Example: 
     #   StorageService.createFile("test.txt", :file, {:owner => ...})
     #   StorageService.createFile("eugene.storage", :folder, {:owner => ...})
@@ -26,7 +26,7 @@ class StorageService < BaseService
     def StorageService.modifyFileMetadata(file_id, metadata)
     end
     
-    # Modifies the file metadata by specified name. 
+    # Modifies the file metadata by specified +name+. 
     # This is a just proxy to modifyFileMetadata method
     def StorageService.modifyFileMetadata(file_id, name, value)
         return modifyFileMetadata(file_id,Hash[name,value])
