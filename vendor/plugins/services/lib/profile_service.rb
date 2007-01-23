@@ -35,12 +35,6 @@ class ProfileService < BaseService
         profile = Profile.find(profile_id)
         return profile.updateMetadata(name,value) if profile
         false
-#        if Profile.exist?(profile_id)
-#            # FIXME: this should be implement via Profile model
-#            return DataService.modifyDataGroupMetadata(profile_id,name,value)    
-#        else
-#            return false
-#        end
     end
     
     # Creates a new profile's item within given profile.
@@ -50,7 +44,7 @@ class ProfileService < BaseService
         metadata.update(
             :creatorapp => @serviceUUID            
         )                
-        profile.add_new_item(type,value,metadata)        
+        profile.addNewItem(type,value,metadata)        
 #		profile_meta = DataService.getDataGroupMetadata(profile_id)
 #		item_metadata.update(
 #		  {
@@ -93,17 +87,15 @@ class ProfileService < BaseService
     # Returns a list of all fileds of specified profile
     #
     def self.getProfileItems(profile_id)
-        profile = Profile.find(profile_id)
-        return profile.items if profile
-        false
-#        if Profile.exist?(profile_id) 
-#            return DataService.getDataGroupItems(profile_id, nil)    
-#        else
-#            return false
-#        end   
+        if Profile.Exist?(profile_id)
+            profile = Profile.find(profile_id)
+            return profile.items
+        else
+            return false         
+        end
     end
 
-    def getProfile(user_or_group_id)
+    def self.getProfile(user_or_group_id)
         return Profile.find_by_owner(user_or_group_id)
     end
 end

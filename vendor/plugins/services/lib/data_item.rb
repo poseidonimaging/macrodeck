@@ -7,6 +7,17 @@
 # Rails. At least not without some hack.
 
 class DataItem < ActiveRecord::Base
+    
+    # write time of item's creation to updated field
+    def after_create
+        updated = Time.new.to_i
+    end
+
+    # write time of item's update to updated field
+    def after_update
+        updated = Time.new.to_i
+    end
+
 	# Finds a group of data based on the grouping
 	# UUID specified. Can limit to a certain data
 	# type if desired. The order the data is returned

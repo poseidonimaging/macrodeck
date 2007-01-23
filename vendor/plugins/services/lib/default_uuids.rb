@@ -22,5 +22,9 @@ module ServicesModule
 		# Default creator/owner constants
 		NOBODY			= "574ecd0f-afb1-40e4-a71b-1e66622db0de"
 		ANONYMOUS		= "00000000-0000-0000-0000-000000000000"
+		
+		# Constants for storages
+		STYPE_FOLDER    = "438754d6-227b-4a06-9400-79e941d2fd45" # A folder
+		STYPE_FILE      = "00000000-227b-4a06-9400-79e941d2fd45" # A file
 	end
 end

@@ -4,6 +4,18 @@
 # similar to DataItem.
 
 class DataGroup < ActiveRecord::Base
+
+    # write time of group's creation to updated field
+    def after_create
+        updated = Time.new.to_i
+    end
+
+    # write time of group's update to updated field
+    def after_update
+        updated = Time.new.to_i
+    end
+ 
+
 	# Finds groupings by their type
 	def self.findGroupings(dataType, resultsToReturn = :all)
 		return self::find(resultsToReturn, :conditions => ["groupingtype = ?", dataType])

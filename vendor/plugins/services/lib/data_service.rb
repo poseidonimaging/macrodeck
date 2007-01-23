@@ -201,7 +201,17 @@ class DataService < BaseService
 			return false
 		end
 	end
-	
+
+	# Returns true if a data group exists, false if not.
+	def self.doesDataGroupExist?(grouping_id)
+		dataObj = DataGroup.find(:first, :conditions => ["groupingid = ?", grouping_id])
+		if dataObj != nil
+			return true
+		else
+			return false
+		end
+	end
+		
 	# Creates a new data grouping with the specified parameters.
 	# +groupingID+ may be nil, if so, it will be generated in
 	# this function.
