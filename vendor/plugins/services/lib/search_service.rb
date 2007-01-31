@@ -4,9 +4,6 @@ class SearchService < BaseService
   def SearchService.search(items,query,where=['title'])
       fields = parse_where(where)
       lfunc, keywords = parse_query(query)
-      itbl = Hash.new
-      inv_search_table = Hash.new
-      search_table = Hash.new
       inv_search_table, search_table = prepare_search_tables
        
   end
@@ -57,6 +54,8 @@ class SearchService < BaseService
   end
 
   def prepare_search_tables(items,fields)
+      inv_search_table = Hash.new
+      search_table = Hash.new
       items.each {|item|
           item.attributes(:only=>fields).each {|attr, value|
               value.to_s.split.each {|keyword|
