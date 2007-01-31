@@ -3,27 +3,11 @@ class SearchService < BaseService
 
   def SearchService.search(items,query,where=['title'])
       fields = parse_where(where)
-      keywords = parse_query(query)
+      lfunc, keywords = parse_query(query)
       itbl = Hash.new
       inv_search_table = Hash.new
       search_table = Hash.new
-      items.each {|item|
-          item.attributes(:only=>fields).each {|attr, value|
-              search_table[items.index(item)] = Hash.new
-              search_table[items.index(item)][attr] = Hash.new
-              value.to_s.split.each {|keyword|
-                  if !inv_search_table.has_key?(keyword)
-                      inv_search_table[keyword] = Hash.new
-                      inv_search_table[keyword][attr] = Array.new
-                  elsif !inv_search_table[keyword].has_key?(attr)
-                      inv_search_table[keyword][attr] = Array.new
-                  end
-                  inv_search_table[keyword][attr].push(items.index(item))
-                  search_table[items.index(item)][attr][keyword] = 0
-              }
-              
-          }       
-      }
+      inv_search_table, search_table = prepare_search_tables
        
   end
   
@@ -46,7 +30,7 @@ class SearchService < BaseService
       [lambda_gen(ops),terms]
   end
   
-  def parse_where
+  def parse_where(where)
       where
   end
 
@@ -71,4 +55,23 @@ class SearchService < BaseService
   def relevent_of(data,keywords)
       data.split
   end
+
+  def prepare_search_tables(items,fields)
+      items.each {|item|
+          item.attributes(:only=>fields).each {|attr, value|
+              value.to_s.split.each {|keyword|
+                  if !inv_search_table.has_key?(keyword)
+                      inv_search_table[keyword] = Hash.new
+                      inv_search_table[keyword][attr] = Array.new
+                  elsif !inv_search_table[keyword].has_key?(attr)
+                      inv_search_table[keyword][attr] = Array.new
+                  end
+                  inv_search_table[keyword][attr].push(items.index(item))
+                  search_table[items.index(item)][attr][keyword] = 0
+              }
+          }
+      }
+      [inv_search_table, search_table]
+  end
+  
 end
