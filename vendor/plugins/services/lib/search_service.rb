@@ -2,10 +2,28 @@
 class SearchService < BaseService
 
   def SearchService.search(items,query,where=['title'])
+      case items[0].instance_of?
+        when DataItem, ProfileItem
+          metadata_method = lambda {|i| DataService.getDataItemMetadata(i.id) }
+        when DataGroup, Profile
+          metadata_method = lambda {|i| DataService.getDataGroupMetadata(i.id) }
+        when Storage
+          metadata_method = lambda {|i| StorageService.getFileMetadata(i.id) }
+        else
+          metadata_method = lambda {|i| i.attributes}
+      end
       fields = parse_where(where)
       lfunc, keywords = parse_query(query)
       inv_search_table, search_table = prepare_search_tables
-       
+      res = Hash.new
+      where.each {|field|
+          col = keywords.collect {|word| inv_search_table[word][field]}
+          res[field] = Array.new
+          lfunc.call(col).each { |i|
+              res[field].push(Hash[:item =>fields[i], :relevance=> 50.0,
+              :metadata => metadata_method.call(field[i])])
+          }
+      }
   end
   
   private
