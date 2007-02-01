@@ -24,6 +24,7 @@ class SearchService < BaseService
               :metadata => metadata_method.call(field[i])])
           }
       }
+      res
   end
   
   private
