@@ -80,6 +80,3 @@ Services.startService "blog_service"
 Services.startService "user_service"
 # Start web services now
 Services.startService "data_web_service"
-
-# Support for Authorize::NET
-require 'payment/authorize_net'
