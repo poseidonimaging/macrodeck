@@ -54,7 +54,7 @@ class SubscriptionService < BaseService
     
     def SubscriptionService.deleteSubscriptionService(uuid)
         sub_srv = SubscriptionSrv.find_by_uuid(uuid)
-        raise_no_record(uuid)
+        raise_no_record(uuid) unless sub_srv
         if sub_srv.subscriptions.empty?
             sub_srv.destroy
         else
@@ -70,13 +70,13 @@ class SubscriptionService < BaseService
 
     def SubscriptionService.editSubscriptionService(uuid,updated_attributes)
         sub_srv = SubscriptionSrv.find_by_uuid(uuid)
-        raise_no_record(uuid) 
+        raise_no_record(uuid) unless sub_srv
         sub_srv.update_attributes(updated_attributes)       
     end
     
     def SubscriptionService.editSubscription(uuid,updated_attributes)
         sub = SubscriptionSrv.find_by_uuid(uuid)
-        SubscriptionSrv.raise_no_record(uuid,1) 
+        SubscriptionSrv.raise_no_record(uuid,1) unless sub
         sub.update_attributes(updated_attributes)       
     end
     
@@ -84,7 +84,7 @@ class SubscriptionService < BaseService
         user = User.find_by_uuid(user_uuid)
         User.raise_no_record(uuid)
         
-        # FIXME: test and update this fragment
+        # TODO: test and update this fragment
         transaction = Payment::AuthorizeNet.new(
           :login       => auth_data[:username],
           :password    => auth_data[:password],
@@ -98,31 +98,12 @@ class SubscriptionService < BaseService
         rescue
           return false
         end
-    end
-    
-#    Is this method really useful?
-#
-#    def SubscriptionService.encryptCardForSubscription(subscription_uuid,last_four_digits,password)                
-#        sub = Subscription.find_by_uuid(subscription_uuid)
-#        Subscription.raise_no_record(subscription_uuid)
-#        billing_data = YAML::load(sub.billing_data)             
-#        random_string_of_characters = (1..20).collect { (i = Kernel.rand(62); i += ((i < 10) ? 48 : ((i < 36) ? 55 : 61 ))).chr }.join
-#        billing_data[:entropy] = random_string_of_characters
-#        digest = SHA512.hexdigest(billing_data[:entropy] + ":" + last_four_of_card + ":" + password)
-#        cipher = OpenSSL::Cipher::Cipher.new("aes-256-cbc")
-#        cipher.encrypt
-#        cipher.key = digest
-#        cipher.iv = billing_data[:iv] = cipher.random_iv
-#        card_number = c.update(billing_data[:plain_card_number])
-#        billing_data[:card_number] = card_number << cipher.final
-#        sub.billing_data = billing_data.to_yaml
-#        sub.save
-#        
-#    end
+    end    
  
+    # TODO: Tests OK, but need to be processed
     def SubscriptionService.decryptCard(subscription_uuid, last_four_digits,password)
         sub = Subscription.find_by_uuid(subscription_uuid)
-        Subscription.raise_no_record(subscription_uuid)
+        Subscription.raise_no_record(subscription_uuid) unless sub
         billing_data = YAML::load(sub.billing_data)
         digest = SHA512.hexdigest(billing_data[:entropy] + ":" + last_four_of_card + ":" + password)
         cipher = OpenSSL::Cipher::Cipher.new("aes-256-cbc")
@@ -152,20 +133,63 @@ class SubscriptionService < BaseService
         }
     end
     
-    def SubscriptionService.changeSubscriptionPassword(last4,oldpassword,newpassword)
-      # testing - in progress 
+    # TODO: Write tests    
+    def SubscriptionService.changeSubscriptionPassword(user_uuid, last4, oldpassword,newpassword)
+      subs = Subscription.by_user(user_uuid)
+      subs.each {|sub|
+          billing_data = YAML::load(sub.billing_data)
+          card_number = SubscriptionService.decryptCard(sub_uuid, last4,oldpassword)[:card_number]
+          raise "wrong password" if !card_number
+          raise "last 4 digits are incorrect" if last4.to_s !=card_number[card_number.length-4 .. card_number.length]          
+      }
+      subs.each {|sub|                    
+          Subsciption.update_billing_data(
+            sub.uuid,     # subscription uuid
+            encryptCardForSubscription(
+              card_number, #! plain credit card number
+              sub.uuid,   # subscription uuid
+              newpassword    # password
+          ))    
+      }
     end
     
-    def SubscriptionService.viewInvoice
-      # return PDF Invoice (in progress) or simple hash? 
+    # XXX: Question: YAML or XML or something else?
+    def SubscriptionService.viewInvoice(user_uuid,sub_uuid = nil)
+      
     end
     
     # use rubygem creditcard
     def SubscriptionService.checkCard(card_number)
         {
-          card_number.creditcard?,
-          card_number.creditcard_type
+          :card_number => card_number.creditcard? ? card_number.to_s : nil,
+          :type => card_number.creditcard_type
         }
     end
+
+    # guard time - days before payment due date to e-mail out notices that money is due   
+    def SubscriptionService.setGuardTimeForSubscription(sub_uuid,number_of_days)
+        sub = Subscription.find_by_uuid(subscription_uuid)
+        Subscription.raise_no_record(subscription_uuid)  unless sub
+        Subscription.update_billing_data({:guard_time => number_of_days})    
+    end
+    
+    private
+    
+    def SubscriptionService.encryptCardNumber(card_number,password)        
+        random_string_of_characters = (1..20).collect { (i = Kernel.rand(62); i += ((i < 10) ? 48 : ((i < 36) ? 55 : 61 ))).chr }.join
+        card_number = card_number.to_s unless card_number.kind_of? String
+        last4 = card_number[card_number.length-4 .. card_number.length]
+        digest = SHA512.hexdigest(random_string_of_characters + ":" + last4 + ":" + password)
+        cipher = OpenSSL::Cipher::Cipher.new("aes-256-cbc")
+        cipher.encrypt
+        cipher.key = digest
+        cipher.iv = cipher.random_iv
+        enc_card_number = cipher.final
+        {
+          :entropy => random_string_of_characters,
+          :iv => cipher.iv,
+          :card_number => cipher.final          
+        }
+    end    
         
 end
