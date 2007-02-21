@@ -7,8 +7,12 @@ class Subscription < ActiveRecord::Base
       SubscriptionSrv.find_by_uuid(self.sub_service_uuid)
   end
   
-  def Subscription.check(user,service)
-      find_by_user_uuid_and_sub_service_uuid(user,service)
+  def Subscription.check!(user,service=nil)
+      if service
+          return find_by_user_uuid_and_sub_service_uuid(user,service)
+      else
+          return find_by_user_uuid(user)
+      end
   end
   
   def Subscription.by_user(user)

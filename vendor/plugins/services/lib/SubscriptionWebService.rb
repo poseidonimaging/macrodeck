@@ -5,3 +5,4 @@ class SubscriptionWebService < ActionWebService::Base
 	web_service_api SubscriptionServiceAPI
 	
 end	
+

@@ -24,6 +24,14 @@ class SubscriptionSrv < ActiveRecord::Base
       !find_by_uuid(uuid).nil? rescue false
   end  
   
+  def SubscriptionSrv.check!(uuid)
+      find_by_uuid(uuid)
+  end
+  
+  def SubscriptionSrv.subscribed_by(user_uuid)
+      Subscription.find_all
+  end
+  
   def raise_no_record(id)
       raise ActiveRecord::RecordNotFound, "Can't find subscription service with UUID: " + id
   end

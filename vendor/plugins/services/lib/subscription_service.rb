@@ -7,6 +7,30 @@ require 'yaml'
 # we will use SHA512 function
 include Digest
 
+# include own utils module
+include Utils
+
+# TODO: mask all raise calls! Create subscription's own exceptions. 
+
+class Invoice
+
+    def initialize(subscriptions)    
+    end
+    
+    def to_hash    
+    end
+    
+    def to_yaml
+    end
+    
+    def to_xml
+    end
+    
+    def to_json
+    end
+    
+end
+
 class SubscriptionService < BaseService   
     
     STATUSPAID              = 10
@@ -117,12 +141,12 @@ class SubscriptionService < BaseService
     
     # Include a method for seeing if a user is subscribed to a particular subscription service
     def SubscriptionService.isUserSubscribedTo?(user_uuid, service_uuid)   
-        sub = Subscription.check(user_uuid, service_uuid)
+        sub = Subscription.check!(user_uuid, service_uuid)
         !sub.nil?
     end
     
     def SubscriptionService.isUserPaidFor?(user_uuid,service_uuid)
-        sub = Subscription.check(user_uuid, service_uuid)
+        sub = Subscription.check!(user_uuid, service_uuid)
         billing_data = YAML::load(sub.billing_data)
         last_payment = SubscriptionPayment.lastPaymentFor(user_uuid,sub.uuid)
         {
@@ -154,8 +178,56 @@ class SubscriptionService < BaseService
     end
     
     # XXX: Question: YAML or XML or something else?
-    def SubscriptionService.viewInvoice(user_uuid,sub_uuid = nil)
-      
+    def SubscriptionService.viewInvoice(user_uuid,options={:selection=>'all'})
+        user = User.check!(user_uuid)        
+        with_history = options[:history]
+        assign_when_undef(with_history,true)
+        
+        selection = options[:selection]
+        if selection        
+            case selection
+                when 'sub'
+                    sub = Subscription.check!(options[:sub_uuid])
+                    raise "unknown subscription" unless sub
+                    subscriptions = [sub]                    
+                when 'multi'
+                    subs_range = :multi                    
+                    subscriptions = options[:subscriptions]
+                    subscriptions.collect! {|sub_uuid|
+                        Subscription.check!(sub_uuid)
+                    }.compact
+                when 'all'
+                    subs_range = :all
+                    subscriptions = Subscription.by_user(user_uuid)
+                when 'sub_srv'
+                    subscriptions = Subscription.check!(user_uuid, options[:sub_srv])
+                when 'seller'
+                    sub_srv = SubscriptionSrv.find_by_provider_uuid(options[:seller])
+                    subscriptions = Subscription.check!(user_uuid, sub_srv.uuid)                    
+                when 'group'
+                # XXX: I'm unknown what is need to do in this case :-(
+                # Probably we need to specify an responsible for each group.
+            end
+        else
+            raise "You have to specify either seller or group or service or subscription"
+        end
+                
+        report = Invoice.new(subscriptions)
+                        
+        report_type = options[:type]
+        assign_when_undef(report_type,'hash')        
+        case report_type
+            when 'hash'
+                return report.to_hash
+            when 'xml'
+                return report.to_xml
+            when 'json'
+                return report.to_json
+            when 'yaml'
+                return report.to_yaml
+            when 'object'
+                return report
+        end
     end
     
     # use rubygem creditcard
