@@ -6,6 +6,8 @@ require 'data_item'
 
 class Profile < ActiveRecord::Base
     
+    acts_as_ferret :fields => [:tags, :description, :title] 
+    
     set_table_name "data_groups"
     attr_protected :groupingtype
   #  has_many :items, :class_name=>"DataItem", :foreign_key=>"grouping"

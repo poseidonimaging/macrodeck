@@ -8,6 +8,8 @@
 
 class DataItem < ActiveRecord::Base
     
+    acts_as_ferret :fields => [:tags, :description, :title]        
+    
     # write time of item's creation to updated field
     def after_create
         updated = Time.new.to_i

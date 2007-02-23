@@ -1,6 +1,8 @@
 class Storage < ActiveRecord::Base
      # validates_presence_of :creator, :title
     
+    acts_as_ferret :fields => [:tags, :description, :title] 
+    
      # write time of storage's creation to updated field
     def after_create
         updated = Time.new.to_i
@@ -46,6 +48,6 @@ class Storage < ActiveRecord::Base
     
     def Storage.find_file(file_uuid)
         Storage.find_by_objectid_and_objecttype(file_uuid,STYPE_FILE)            
-    end 
+    end  
    
 end

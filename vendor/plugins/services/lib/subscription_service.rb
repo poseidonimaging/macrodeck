@@ -12,26 +12,7 @@ include Utils
 
 # TODO: mask all raise calls! Create subscription's own exceptions. 
 
-class Invoice
-
-    def initialize(subscriptions)    
-    end
-    
-    def to_hash    
-    end
-    
-    def to_yaml
-    end
-    
-    def to_xml
-    end
-    
-    def to_json
-    end
-    
-end
-
-class SubscriptionService < BaseService   
+class SubscriptionManagementService < BaseService   
     
     STATUSPAID              = 10
     STATUSPAYMENTDUE        = 20
@@ -42,8 +23,8 @@ class SubscriptionService < BaseService
          
     # Create/edit/delete subscriptions
     # Create/edit/delete subscription services (i.e. things that users can subscribe to) 
-    def SubscriptionService.createSubscriptionService(recurrence_info,sub_type,metadata,template)
-        sub_service = SubscriptionSrv.new(metadata)
+    def SubscriptionManagementService.createSubscriptionService(recurrence_info,sub_type,metadata,template)
+        sub_service = SubscriptionService.new(metadata)
         sub_service.uuid = UUIDService.generateUUID
         
         sub_service.creation = Time.now.to_i
@@ -61,9 +42,9 @@ class SubscriptionService < BaseService
         
     end
     
-    def SubscriptionService.createSubscription(user_uuid, sub_service_uuid, billing_data, status)
+    def SubscriptionManagementService.createSubscription(user_uuid, sub_service_uuid, billing_data, status)
         raise "User not found" unless User.checkUuid(user_uuid)
-        raise "Subscription Service not found" unless SubscriptionSrv.checkUuid(user_uuid)
+        raise "Subscription Service not found" unless SubscriptionService.checkUuid(user_uuid)
         sub = Subscription.new do
             self.creation = Time.new.to_i
             self.user_uuid = user_uuid
@@ -76,8 +57,8 @@ class SubscriptionService < BaseService
         sub.uuid        
     end
     
-    def SubscriptionService.deleteSubscriptionService(uuid)
-        sub_srv = SubscriptionSrv.find_by_uuid(uuid)
+    def SubscriptionManagementService.deleteSubscriptionService(uuid)
+        sub_srv = SubscriptionService.find_by_uuid(uuid)
         raise_no_record(uuid) unless sub_srv
         if sub_srv.subscriptions.empty?
             sub_srv.destroy
@@ -86,25 +67,25 @@ class SubscriptionService < BaseService
         end
     end
     
-    def SubscriptionService.deleteSubscription(uuid)
+    def SubscriptionManagementService.deleteSubscription(uuid)
         sub = Subscription.find_by_uuid(uuid)
         raise_no_record(uuid,1)
         sub.destroy
     end
 
-    def SubscriptionService.editSubscriptionService(uuid,updated_attributes)
-        sub_srv = SubscriptionSrv.find_by_uuid(uuid)
+    def SubscriptionManagementService.editSubscriptionService(uuid,updated_attributes)
+        sub_srv = SubscriptionService.find_by_uuid(uuid)
         raise_no_record(uuid) unless sub_srv
         sub_srv.update_attributes(updated_attributes)       
     end
     
-    def SubscriptionService.editSubscription(uuid,updated_attributes)
-        sub = SubscriptionSrv.find_by_uuid(uuid)
-        SubscriptionSrv.raise_no_record(uuid,1) unless sub
+    def SubscriptionManagementService.editSubscription(uuid,updated_attributes)
+        sub = SubscriptionService.find_by_uuid(uuid)
+        SubscriptionService.raise_no_record(uuid,1) unless sub
         sub.update_attributes(updated_attributes)       
     end
     
-    def SubscriptionService.makePayment(user_uuid, auth_data, amount, card_number, expiration)
+    def SubscriptionManagementService.makePayment(user_uuid, auth_data, amount, card_number, expiration)
         user = User.find_by_uuid(user_uuid)
         User.raise_no_record(uuid)
         
@@ -125,7 +106,7 @@ class SubscriptionService < BaseService
     end    
  
     # TODO: Tests OK, but need to be processed
-    def SubscriptionService.decryptCard(subscription_uuid, last_four_digits,password)
+    def SubscriptionManagementService.decryptCard(subscription_uuid, last_four_digits,password)
         sub = Subscription.find_by_uuid(subscription_uuid)
         Subscription.raise_no_record(subscription_uuid) unless sub
         billing_data = YAML::load(sub.billing_data)
@@ -140,12 +121,12 @@ class SubscriptionService < BaseService
     end
     
     # Include a method for seeing if a user is subscribed to a particular subscription service
-    def SubscriptionService.isUserSubscribedTo?(user_uuid, service_uuid)   
+    def SubscriptionManagementService.isUserSubscribedTo?(user_uuid, service_uuid)   
         sub = Subscription.check!(user_uuid, service_uuid)
         !sub.nil?
     end
     
-    def SubscriptionService.isUserPaidFor?(user_uuid,service_uuid)
+    def SubscriptionManagementService.isUserPaidFor?(user_uuid,service_uuid)
         sub = Subscription.check!(user_uuid, service_uuid)
         billing_data = YAML::load(sub.billing_data)
         last_payment = SubscriptionPayment.lastPaymentFor(user_uuid,sub.uuid)
@@ -158,11 +139,11 @@ class SubscriptionService < BaseService
     end
     
     # TODO: Write tests    
-    def SubscriptionService.changeSubscriptionPassword(user_uuid, last4, oldpassword,newpassword)
+    def SubscriptionManagementService.changeSubscriptionPassword(user_uuid, last4, oldpassword,newpassword)
       subs = Subscription.by_user(user_uuid)
       subs.each {|sub|
           billing_data = YAML::load(sub.billing_data)
-          card_number = SubscriptionService.decryptCard(sub_uuid, last4,oldpassword)[:card_number]
+          card_number = SubscriptionManagementService.decryptCard(sub_uuid, last4,oldpassword)[:card_number]
           raise "wrong password" if !card_number
           raise "last 4 digits are incorrect" if last4.to_s !=card_number[card_number.length-4 .. card_number.length]          
       }
@@ -178,10 +159,10 @@ class SubscriptionService < BaseService
     end
     
     # XXX: Question: YAML or XML or something else?
-    def SubscriptionService.viewInvoice(user_uuid,options={:selection=>'all'})
+    def SubscriptionManagementService.getInvoice(user_uuid,options={:selection=>'all'})
         user = User.check!(user_uuid)        
         with_history = options[:history]
-        assign_when_undef(with_history,true)
+        assign_when_undef(with_history,true) # Utils::assign_when_undef
         
         selection = options[:selection]
         if selection        
@@ -202,7 +183,7 @@ class SubscriptionService < BaseService
                 when 'sub_srv'
                     subscriptions = Subscription.check!(user_uuid, options[:sub_srv])
                 when 'seller'
-                    sub_srv = SubscriptionSrv.find_by_provider_uuid(options[:seller])
+                    sub_srv = SubscriptionService.find_by_provider_uuid(options[:seller])
                     subscriptions = Subscription.check!(user_uuid, sub_srv.uuid)                    
                 when 'group'
                 # XXX: I'm unknown what is need to do in this case :-(
@@ -212,7 +193,7 @@ class SubscriptionService < BaseService
             raise "You have to specify either seller or group or service or subscription"
         end
                 
-        report = Invoice.new(subscriptions)
+        report = Invoice.new(subscriptions,with_history)
                         
         report_type = options[:type]
         assign_when_undef(report_type,'hash')        
@@ -231,7 +212,7 @@ class SubscriptionService < BaseService
     end
     
     # use rubygem creditcard
-    def SubscriptionService.checkCard(card_number)
+    def SubscriptionManagementService.checkCard(card_number)
         {
           :card_number => card_number.creditcard? ? card_number.to_s : nil,
           :type => card_number.creditcard_type
@@ -239,7 +220,7 @@ class SubscriptionService < BaseService
     end
 
     # guard time - days before payment due date to e-mail out notices that money is due   
-    def SubscriptionService.setGuardTimeForSubscription(sub_uuid,number_of_days)
+    def SubscriptionManagementService.setGuardTimeForSubscription(sub_uuid,number_of_days)
         sub = Subscription.find_by_uuid(subscription_uuid)
         Subscription.raise_no_record(subscription_uuid)  unless sub
         Subscription.update_billing_data({:guard_time => number_of_days})    
@@ -247,7 +228,7 @@ class SubscriptionService < BaseService
     
     private
     
-    def SubscriptionService.encryptCardNumber(card_number,password)        
+    def SubscriptionManagementService.encryptCardNumber(card_number,password)        
         random_string_of_characters = (1..20).collect { (i = Kernel.rand(62); i += ((i < 10) ? 48 : ((i < 36) ? 55 : 61 ))).chr }.join
         card_number = card_number.to_s unless card_number.kind_of? String
         last4 = card_number[card_number.length-4 .. card_number.length]

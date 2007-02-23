@@ -7,7 +7,7 @@ class Recurrence
     end
 end
 
-class SubscriptionSrv < ActiveRecord::Base
+class SubscriptionService < ActiveRecord::Base
   composed_of :recurrence_info,
               :name => Recurrence,
               :mapping =>
@@ -15,20 +15,22 @@ class SubscriptionSrv < ActiveRecord::Base
                   %w(recurrence_day recurrence_day),
                   %w(recurrence_notify recurrence_notify)
                 ]
+  acts_as_ferret :fields => [:description, :title] 
+                  
   # analog of has_many but it's using uuid field instead id
   def subscriptions
       Subscription.find_all_by_sub_service_uuid(self.uuid)
   end
   
-  def SubscriptionSrv.checkUuid(uuid)  
+  def SubscriptionService.checkUuid(uuid)  
       !find_by_uuid(uuid).nil? rescue false
   end  
   
-  def SubscriptionSrv.check!(uuid)
+  def SubscriptionService.check!(uuid)
       find_by_uuid(uuid)
   end
   
-  def SubscriptionSrv.subscribed_by(user_uuid)
+  def SubscriptionService.subscribed_by(user_uuid)
       Subscription.find_all
   end
   

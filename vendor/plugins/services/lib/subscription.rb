@@ -1,10 +1,15 @@
+# TODO: Rewrite any method has access to billing_data to use with "serialize"
+
 class Subscription < ActiveRecord::Base
+
+  serialize :billing_data
+
   def user
       User.find_by_uuid(self.user_uuid)
   end
   
   def service
-      SubscriptionSrv.find_by_uuid(self.sub_service_uuid)
+      SubscriptionService.find_by_uuid(self.sub_service_uuid)
   end
   
   def Subscription.check!(user,service=nil)
