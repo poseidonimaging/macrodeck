@@ -18,12 +18,7 @@ class Invoice
             data[:purchaser_email] = user.email
             data[:sub_status] = sub.status
             data[:sub_created] = Time.at(sub.created).to_s
-            # XXX: should be approve
-            if sub.service.subscription_type == ONETIME_PAYMENT
-                data[:sub_due] = sub.billing_data[:amount]                
-            else 
-                data[:sub_due] = sub.service.amount
-            end            
+            data[:sub_due] = sub.billing_data[:amount]                
             if detail == :full
                 history=SubscriptionPayment.get_history(user.uuid,sub.uuid)
                 data[:history] = history
