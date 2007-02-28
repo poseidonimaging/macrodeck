@@ -1,7 +1,7 @@
 require 'test_helper'
 require 'profile'
 
-class StorageTest < Test::Unit::TestCase
+class StorageServiceTest < Test::Unit::TestCase
     fixtures :storages, :quotas, :users
     
     def test_createFile

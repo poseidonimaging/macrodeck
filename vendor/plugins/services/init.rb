@@ -2,3 +2,4 @@
 # "real" library.
 
 require "services"
+require "acts_as_ferret"

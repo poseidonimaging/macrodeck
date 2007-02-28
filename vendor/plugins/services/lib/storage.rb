@@ -1,3 +1,4 @@
+
 class Storage < ActiveRecord::Base
      # validates_presence_of :creator, :title
     

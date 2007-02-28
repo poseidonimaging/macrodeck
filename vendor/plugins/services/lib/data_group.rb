@@ -17,6 +17,9 @@ class DataGroup < ActiveRecord::Base
         updated = Time.new.to_i
     end
  
+    def uuid
+        self.groupingid 
+    end
 
 	# Finds groupings by their type
 	def self.findGroupings(dataType, resultsToReturn = :all)

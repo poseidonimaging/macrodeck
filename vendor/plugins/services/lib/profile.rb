@@ -33,6 +33,10 @@ class Profile < ActiveRecord::Base
         read_attribute :groupingid
     end
     
+    def uuid
+        read_attribute :groupingid
+    end
+    
     # writing accessor for groupingid attribute    
     def profile_id=(id)
         write_attribute :groupingid, id
