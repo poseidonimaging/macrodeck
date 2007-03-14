@@ -56,24 +56,24 @@ end
 # Constants for UUIDs
 # This moved to services/lib/local_uuids.rb.
 # FIXME: See if we still need these! If not, remove them from here.
-USER_CSAKON				= "9add1be8-a635-49d7-aa0f-91b6638e9dd0"
-USER_ZIGGYTHEHAMSTER	= "c4a038aa-372a-4f5c-81b7-351660f7049b"
-GROUP_MACRODECK			= "253d41a1-8b62-4ca8-9f8d-99bb42bc0dd8"
-BLOG_MACRODECK			= "9a9fc352-89d4-4b92-a94b-45a8cac106bb"
-CREATOR_MACRODECK		= "7b7e7c62-0a56-4785-93d5-6e689c9793c9"
+USER_CSAKON       = "9add1be8-a635-49d7-aa0f-91b6638e9dd0"
+USER_ZIGGYTHEHAMSTER  = "c4a038aa-372a-4f5c-81b7-351660f7049b"
+GROUP_MACRODECK     = "253d41a1-8b62-4ca8-9f8d-99bb42bc0dd8"
+BLOG_MACRODECK      = "9a9fc352-89d4-4b92-a94b-45a8cac106bb"
+CREATOR_MACRODECK   = "7b7e7c62-0a56-4785-93d5-6e689c9793c9"
 
 # E-mail validation regex
 #EMAIL_VALIDATION   = /^[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/
 EMAIL_VALIDATION    = /^([a-zA-Z0-9&_?\/`!|#*$^%=~{}+'-]+|"([\x00-\x0C\x0E-\x21\x23-\x5B\x5D-\x7F]|\\[\x00-\x7F])*")(\.([a-zA-Z0-9&_?\/`!|#*$^%=~{}+'-]+|"([\x00-x0C\x0E-\x21\x23-\x5B\x5D-\x7F]|\\[\x00-\x7F])*"))*@([a-zA-Z0-9&_?\/`!|#*$^%=~{}+'-]+|\[([\x00-\x0C\x0E-\x5A\x5E-\x7F]|\\[\x00-\x7F])*\])(\.([a-zA-Z0-9&_?\/`!|#*$^%=~{}+'-]+|\[([\x00-\x0C\x0E-\x5A\x5E-\x7F]|\\[\x00-\x7F])*\]))*$/
 
 # User Password Salt
-PASSWORD_SALT		= "giomullyoxonoind" # Random character generator
+PASSWORD_SALT   = "giomullyoxonoind" # Random character generator
 
 # Default tabs
-DEFAULT_TABS		= [ { :url => "/",								:text => "Home",			:id => "home" },
-						{ :url => "/group/macrodeck/blog/",			:text => "Development Blog",:id => "devblog" },
-						{ :url => "/directory/",					:text => "Directory",		:id => "directory" },
-						{ :url => "http://developer.macrodeck.com/",:text => "Developers",		:id => "developers" }]
+DEFAULT_TABS    = [ { :url => "/",                :text => "Home",      :id => "home" },
+            { :url => "/group/macrodeck/blog/",     :text => "Development Blog",:id => "devblog" },
+            { :url => "/directory/",          :text => "Directory",   :id => "directory" },
+            { :url => "http://developer.macrodeck.com/",:text => "Developers",    :id => "developers" }]
 
 # Start services we need
 Services.startService "uuid_service"
@@ -82,3 +82,5 @@ Services.startService "blog_service"
 Services.startService "user_service"
 # Start web services now
 Services.startService "data_web_service"
+
+require 'acts_as_ferret'

@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 40) do
+ActiveRecord::Schema.define(:version => 43) do
 
   create_table "components", :force => true do |t|
     t.column "uuid",              :string
@@ -129,6 +129,39 @@ ActiveRecord::Schema.define(:version => 40) do
     t.column "read_permissions",  :text
     t.column "write_permissions", :text
     t.column "updated",           :integer
+  end
+
+  create_table "subscription_payments", :force => true do |t|
+    t.column "uuid",              :string
+    t.column "subscription_uuid", :string
+    t.column "amount_paid",       :float
+    t.column "date_paid",         :integer
+  end
+
+  create_table "subscription_services", :force => true do |t|
+    t.column "uuid",              :string
+    t.column "subscription_type", :string
+    t.column "provider_uuid",     :string
+    t.column "title",             :string
+    t.column "description",       :text
+    t.column "creator",           :string
+    t.column "creation",          :integer
+    t.column "updated",           :integer
+    t.column "amount",            :float
+    t.column "recurrence",        :integer
+    t.column "recurrence_day",    :integer
+    t.column "recurrence_notify", :integer
+    t.column "notify_template",   :text
+  end
+
+  create_table "subscriptions", :force => true do |t|
+    t.column "uuid",             :string
+    t.column "user_uuid",        :string
+    t.column "sub_service_uuid", :string
+    t.column "billing_data",     :string
+    t.column "creation",         :integer
+    t.column "updated",          :integer
+    t.column "status",           :integer
   end
 
   create_table "user_sources", :force => true do |t|

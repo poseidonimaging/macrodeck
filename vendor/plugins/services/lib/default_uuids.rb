@@ -32,5 +32,12 @@ module ServicesModule
         OFFLINE_SUB			= "21a2ed06-f315-4941-9af8-a678dbed8858" # Offline subscription (for something offline)
         WIDGET_SUB			= "666ce30b-2a44-469b-ab29-42a65bfcc337" # Widget subscription
         ONETIME_PAYMENT		= "6ea5818d-dbdf-4d96-95f7-f52a36234ecc" # One-time payment
+
+        # Constants for ForumService
+        FORUM_BOARD         = "7cc68ffa-56c4-4c6e-b5ab-4319418e0856"
+        FORUM_CATEGORY      = "ed194950-ee23-4e0a-aea3-6bbdb80eb23c"
+        FORUM               = "1c1723c3-715b-45c2-bdea-d550493d80e5" 
+        FORUM_POST          = "5e9fbdf5-36d9-4eb3-86bf-577da5b9c28e"
+        FORUM_REPLY         = "36402248-8f92-4d87-8039-d4a04a05f65d"
 	end
 end

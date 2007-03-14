@@ -31,4 +31,8 @@ class TestController < ApplicationController
 			redirect_to :action => "index"
 		end
 	end
+	
+	def getUUID
+	   @uuid = UUIDService.generateUUID
+	end
 end
