@@ -72,10 +72,21 @@ class ForumService < BaseService
   
   # returns last post's reply
   def ForumService.getLastReply(post_uuid)
+    post = ForumPost.checkUUID(post_uuid)
+    return nil unless post    
+    replys = post.replys    
+    return nil if replys.empty?
+    return replys[0].uuid
   end
   
   # returns true if post had been changed since given date
-  def ForumService.isPostChanged?(since=nil)
+  def ForumService.isPostChanged?(post_uuid, since=nil)    
+    post = ForumPost.checkUUID(post_uuid)
+    return nil unless post    
+    replys = post.replys    
+    return false if replys.empty? 
+    return true if since.nil?        
+    return (replys[0].date > since)
   end
   
 
