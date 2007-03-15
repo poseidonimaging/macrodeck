@@ -8,11 +8,11 @@ class ActiveRecord::Base
 
   def self.checkUUID(uuid)
     case self.to_s
-      when 'ForumPost': class_uuid = FORUM_POST
-      when 'ForumReply': class_uuid = FORUM_REPLY
-      when 'Forum': class_uuid = FORUM                        
-      when 'ForumCategory': class_uuid = FORUM_CATEGORY
-      when 'ForumBoard': class_uuid = FORUM_BOARD
+      when 'ForumPost': 
+      when 'ForumReply': 
+      when 'Forum':                         
+      when 'ForumCategory': 
+      when 'ForumBoard': class_uuid = self::UUID
       else return nil        
     end
     obj = find_by_uuid(uuid)

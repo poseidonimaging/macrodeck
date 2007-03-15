@@ -7,6 +7,11 @@ class ForumService < BaseService
     @serviceUUID = "110920b4-c110-4f54-8b86-fdda9daf08c7"
     
   def ForumService.createBoard(metadata)
+    obj = ForumBoard.new do
+      groupingid = UUIDService.generateUUID
+      groupingtype = FORUM_BOARD
+    end
+    
   end
   def ForumService.updateBoardMetadata(board_uuid,metadata)
   end

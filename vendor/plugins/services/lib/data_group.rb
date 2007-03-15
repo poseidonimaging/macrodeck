@@ -22,7 +22,7 @@ class DataGroup < ActiveRecord::Base
     end
     
     # It's just a alias to make this model close to DataItem 
-    def grouping
+    def type
         self.groupingtype
     end
 

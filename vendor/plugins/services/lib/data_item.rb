@@ -19,6 +19,10 @@ class DataItem < ActiveRecord::Base
         self.dataid
     end
 
+    def type
+        self.datatype
+    end
+    
     # write time of item's update to updated field
     def after_update
         updated = Time.new.to_i
