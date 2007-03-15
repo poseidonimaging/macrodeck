@@ -20,6 +20,11 @@ class DataGroup < ActiveRecord::Base
     def uuid
         self.groupingid 
     end
+    
+    # It's just a alias to make this model close to DataItem 
+    def grouping
+        self.groupingtype
+    end
 
 	# Finds groupings by their type
 	def self.findGroupings(dataType, resultsToReturn = :all)

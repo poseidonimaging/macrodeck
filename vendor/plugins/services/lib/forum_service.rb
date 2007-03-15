@@ -51,13 +51,13 @@ class ForumService < BaseService
   
   # Deletes a post and all its replies (!)
   def ForumService.deletePost(post_uuid)
-      post = Post.find_by_uuid(post_uuid)
+      post = ForumPost.checkUUID(post_uuid)
       post ? post.destroy : nil
   end
   
   # Get post by given uuid
   def ForumService.getPost(post_uuid)
-      post = Post.find_by_uuid(post_uuid)
+      post = ForumPost.checkUUID(post_uuid)
       post ? post : nil
   end
   
