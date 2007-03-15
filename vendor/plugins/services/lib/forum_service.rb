@@ -46,7 +46,7 @@ class ForumService < BaseService
           update_attributes(metadata)
           datacreator = @serviceUUID unless post.datacreator
       end
-      return post.save                 
+      post.save ? dataid : nil                 
   end
   
   # Deletes a post and all its replies (!)
@@ -82,14 +82,32 @@ class ForumService < BaseService
   # reply's methods' meaning are very similar to corresponding post's methods  
   
   def ForumService.createReply(post_uuid,msg,metadata)
+      post = ForumPost.checkUUID(forum_uuid)
+      return nil unless post           
+      reply = ForumReply.new do              
+          owner = post.uuid
+          grouping = post.grouping
+          stringdata = msg
+          dataid = UUIDService.generateUUID
+          datatype = FORUM_REPLY
+          update_attributes(metadata)
+          datacreator = @serviceUUID unless post.datacreator
+      end
+      reply.save ? dataid : nil      
   end
   
   def ForumService.deleteReply(reply_uuid)
+      reply = ForumReply.checkUUID(reply_uuid)
+      reply ? reply.destroy : nil  
   end
   
   def ForumService.getReply(reply_uuid)
+      reply = ForumReply.checkUUID(reply_uuid)
+      reply ? reply : nil    
   end
   def ForumService.updateReply(reply_uuid,values)
+      reply = ForumReply.checkUUID(reply_uuid)
+      reply ? reply.update_attrbutes(values) : nil      
   end
     
 end
