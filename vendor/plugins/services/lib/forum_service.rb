@@ -9,27 +9,58 @@ class ForumService < BaseService
   def ForumService.createBoard(metadata)
     obj = ForumBoard.new do
       groupingid = UUIDService.generateUUID
-      groupingtype = FORUM_BOARD
+      groupingtype = ForumBoard::UUID
+      update_attributes(metadata)
+      datacreator = @serviceUUID unless post.datacreator
     end
-    
+    obj.save ? obj.uuid : nil
   end
+  
   def ForumService.updateBoardMetadata(board_uuid,metadata)
   end
+  
   def ForumService.deleteBoard(board_uuid)
+    obj = ForumBoard.check(uuid)
+    # TODO: have to verify this action.  
+    obj ? obj.destroy : nil
   end  
   
   def ForumService.createCategory(board_uuid,metadata)
+    obj = ForumCategory.new do
+      groupingid = UUIDService.generateUUID
+      groupingtype = ForumCategory::UUID
+      update_attributes(metadata)
+      datacreator = @serviceUUID unless post.datacreator
+    end  
+    obj.save ? obj.uuid : nil
   end
+  
   def ForumService.updateCategoryMetadata(category_uuid,metadata)
   end
+  
   def ForumService.deleteCategory(category_uuid)
+    obj = ForumCategory.check(uuid)
+    # TODO: have to verify this action.  
+    obj ? obj.destroy : nil  
   end
 
   
   def ForumService.createForum(category_uuid,metadata)
+    obj = Forum.new do
+      groupingid = UUIDService.generateUUID
+      groupingtype = Forum::UUID
+      update_attributes(metadata)
+      datacreator = @serviceUUID unless post.datacreator
+    end  
+    obj.save ? obj.uuid : nil
   end
+  
   def ForumService.deleteForum(forum_uuid)
+    obj = Forum.check(uuid)
+    # TODO: have to verify this action.  
+    obj ? obj.destroy : nil  
   end
+  
   def ForumService.updateForumMetadata(forum_uuid,metadata)
   end
   
