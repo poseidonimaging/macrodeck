@@ -29,6 +29,7 @@ class ForumService < BaseService
     obj = ForumCategory.new do
       groupingid = UUIDService.generateUUID
       groupingtype = ForumCategory::UUID
+      board = board_uuid
       update_attributes(metadata)
       datacreator = @serviceUUID unless post.datacreator
     end  
@@ -46,13 +47,22 @@ class ForumService < BaseService
 
   
   def ForumService.createForum(category_uuid,metadata)
+    return nil unless ForumCategory.checkUUID(category_uuid)
     obj = Forum.new do
       groupingid = UUIDService.generateUUID
       groupingtype = Forum::UUID
+      parent = category_uuid
       update_attributes(metadata)
       datacreator = @serviceUUID unless post.datacreator
     end  
     obj.save ? obj.uuid : nil
+  end
+  
+  def ForumService.moveForumToCategory(forum_uuid,category_uuid)
+    forum = Forum.checkUUID(forum_uuid)    
+    return nil unless forum     
+    return nil if (forum.category = category_uuid).nil?
+    forum.save    
   end
   
   def ForumService.deleteForum(forum_uuid)
@@ -72,13 +82,21 @@ class ForumService < BaseService
   # ForumService.createPost(@crazy_forum_uuid, 'I need few nuts.. khe..khe',{:author=>"Joe White", :title=>"I am a squirrel!" }
   def ForumService.createPost(forum_uuid,msg,metadata)     
       forum = Forum.checkUUID(forum_uuid)
-      return nil unless forum           
+      return nil unless forum
+      
+      post_group = ForumPostGroup.new do
+          parent = forum_uuid
+          groupingid = UUIDService.generateUUID
+          datatype = ForumPostGroup::UUID
+          datacreator = metadatd.has_key?(:datacreator) ? metadata[:datacreator] : @serviceUUID
+      end
+      post_group.save
+                       
       post = ForumPost.new do              
-          owner = forum.uuid
-          grouping = UUIDService.generateUUID
+          grouping = post_group.uuid
           stringdata = msg
           dataid = UUIDService.generateUUID
-          datatype = FORUM_POST
+          datatype = ForumPost::UUID
           update_attributes(metadata)
           datacreator = @serviceUUID unless post.datacreator
       end
@@ -89,6 +107,13 @@ class ForumService < BaseService
   def ForumService.deletePost(post_uuid)
       post = ForumPost.checkUUID(post_uuid)
       post ? post.destroy : nil
+  end
+  
+  def ForumService.movePostToForum(post_uuid, forum_uuid)
+    post = ForumPost.checkUUID(post_uuid)    
+    return nil unless post     
+    return nil if (post.forum = forum_uuid).nil?
+    post.save    
   end
   
   # Get post by given uuid
@@ -152,6 +177,7 @@ class ForumService < BaseService
       reply = ForumReply.checkUUID(reply_uuid)
       reply ? reply : nil    
   end
+  
   def ForumService.updateReply(reply_uuid,values)
       reply = ForumReply.checkUUID(reply_uuid)
       reply ? reply.update_attrbutes(values) : nil      

@@ -4,5 +4,6 @@ class ForumReply < ActiveRecord::Base
 #    def checkUUID(uuid)
 #      data_group = find_by_uuid(uuid)
 #      data_group.groupingtype == FORUM_REPLY ? data_group : false
-#    end     
+#    end
+
 end
