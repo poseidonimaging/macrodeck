@@ -12,7 +12,7 @@ class ActiveRecord::Base
       when 'ForumReply': 
       when 'Forum':                         
       when 'ForumCategory': 
-      when 'ForumBoard': class_uuid = self::UUID
+      when 'ForumBoard': class_uuid = self::UUID          
       else return nil        
     end
     obj = find_by_uuid(uuid)
@@ -20,4 +20,14 @@ class ActiveRecord::Base
     return obj.grouping == class_uuid ? true : false 
   end
   
+end
+
+# This is a method from Ruby Cookbook. It initializes the instance variables for us. 
+class Object
+  private
+  def set_instance_variables(binding, *variables)
+    variables.each do |var|
+      instance_variable_set("@#{var}", eval(var, binding))
+    end
+  end
 end
