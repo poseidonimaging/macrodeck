@@ -6,10 +6,10 @@ require 'profile_item'  # profile item virtual model
 
 class ProfileService < BaseService
   	@serviceAuthor = "Eugene Hlyzov <ehlyzov@issart.com>"
-	@serviceID = "com.macrodeck.ProfileService"
-	@serviceName = "ProfileService"	
-	@serviceVersionMajor = 0
-	@serviceVersionMinor = 1	
+    @serviceID = "com.macrodeck.ProfileService"
+    @serviceName = "ProfileService"	
+    @serviceVersionMajor = 0
+    @serviceVersionMinor = 1	
     @serviceUUID = "c38837a2-25dc-4ba3-8b7d-4c3a6afa828c"
     # Creates a new profile. You should use createProfileItem to add 
     # some data here. Parameter's format is {:owner => "...", etc.}

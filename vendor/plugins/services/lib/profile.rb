@@ -7,14 +7,14 @@ require 'data_item'
 class Profile < ActiveRecord::Base
     
     acts_as_ferret :fields => [:tags, :description, :title] 
-    
     set_table_name "data_groups"
     attr_protected :groupingtype
   #  has_many :items, :class_name=>"DataItem", :foreign_key=>"grouping"
+    UUID = DGROUP_PROFILE
 
     # we should be sure that we create exactly Profile element
     def before_create        
-        write_attribute :groupingtype, DGROUP_PROFILE
+        write_attribute :groupingtype, self::UUID
         write_attribute :groupingid, UUIDService.generateUUID
     end
     

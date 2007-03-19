@@ -102,13 +102,13 @@ class DataService < BaseService
 		# figure out permissions
 		dgroup = DataGroup.find(:first, :conditions => ["groupingid = ?", grouping])
 		if dgroup != nil
-			if dgroup.default_read_permissions != nil
-				read_perms = YAML::load(dgroup.default_read_permissions)
+			if dgroup.read_permissions != nil
+				read_perms = YAML::load(dgroup.read_permissions)
 			else
 				read_perms = DEFAULT_READ_PERMISSIONS
 			end
-			if dgroup.default_write_permissions != nil
-				write_perms = YAML::load(dgroup.default_write_permissions)
+			if dgroup.write_permissions != nil
+				write_perms = YAML::load(dgroup.write_permissions)
 			else
 				write_perms = DEFAULT_WRITE_PERMISSIONS
 			end
@@ -453,10 +453,10 @@ class DataService < BaseService
 		if dgroup != nil
 			case kind
 				when :write, "write"
-					perms = UserService.loadPermissions(dgroup.default_write_permissions)
+					perms = UserService.loadPermissions(dgroup.write_permissions)
 					return perms
 				when :read, "read"
-					perms = UserService.loadPermissions(dgroup.default_read_permissions)
+					perms = UserService.loadPermissions(dgroup.read_permissions)
 					return perms					
 				else
 					return false
@@ -480,7 +480,7 @@ class DataService < BaseService
 							val[:action] = :deny
 						end
 					end
-					dgroup.default_write_permissions = value.to_yaml
+					dgroup.write_permissions = value.to_yaml
 					dgroup.save!
 					return true
 				when :read, "read"
@@ -491,7 +491,7 @@ class DataService < BaseService
 							val[:action] = :deny
 						end
 					end				
-					dgroup.default_read_permissions = value.to_yaml
+					dgroup.read_permissions = value.to_yaml
 					dgroup.save!
 					return true
 				else
@@ -524,7 +524,7 @@ class DataService < BaseService
 				elsif dgroup.owner == userID
 					return true
 				else
-					return UserService.checkPermissions(YAML::load(dgroup.default_read_permissions), userID)
+					return UserService.checkPermissions(YAML::load(dgroup.read_permissions), userID)
 				end
 			else
 				return false
@@ -554,7 +554,7 @@ class DataService < BaseService
 				elsif dgroup.owner == userID
 					return true
 				else
-					return UserService.checkPermissions(YAML::load(dgroup.default_write_permissions), userID)
+					return UserService.checkPermissions(YAML::load(dgroup.write_permissions), userID)
 				end
 			else
 				return false

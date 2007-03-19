@@ -457,8 +457,8 @@ class DataWebService < ActionWebService::Base
 				retval.tags = group.tags
 				retval.title = group.title
 				retval.description = group.description
-				retval.permissions.readPermissions.yamlContent = group.default_read_permissions
-				retval.permissions.writePermissions.yamlContent = group.default_write_permissions
+				retval.permissions.readPermissions.yamlContent = group.read_permissions
+				retval.permissions.writePermissions.yamlContent = group.write_permissions
 				retval.isRemoteData = group.remote_data
 				retval.remoteSourceId = group.sourceid
 				retval.remoteSourcesIncluded.yamlContent = group.include_sources

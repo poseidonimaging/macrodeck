@@ -6,6 +6,7 @@
 class DataGroup < ActiveRecord::Base
 
     acts_as_ferret :fields => [:tags, :description, :title] 
+    UUID = 
 
     # write time of group's creation to updated field
     def after_create
