@@ -43,7 +43,7 @@ class SubscriptionManagementService < BaseService
     end
     
     def SubscriptionManagementService.createSubscription(user_uuid, sub_service_uuid, billing_data, status)
-        raise "User not found" unless User.checkUuid(user_uuid)
+        raise "User not found" unless User.checkUUID(user_uuid)
         raise "Subscription Service not found" unless SubscriptionService.checkUuid(user_uuid)
         sub = Subscription.new do
             self.creation = Time.new.to_i

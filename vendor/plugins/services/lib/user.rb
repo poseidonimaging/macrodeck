@@ -2,9 +2,9 @@
 # with users in the database.
 
 class User < ActiveRecord::Base
-    def User.checkUuid(uuid)
-        !find_by_uuid(uuid).nil? rescue false
-    end
+   # def User.checkUuid(uuid)
+   #     !find_by_uuid(uuid).nil? rescue false
+   # end
     
     # XXX: Is this name OK?
     def User.check!(uuid)
