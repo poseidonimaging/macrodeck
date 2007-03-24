@@ -10,7 +10,10 @@
 	<meta name="Generator" content="Ruby on Rails" />
 	<%= stylesheet_link_tag "style", :title => "MacroDeck" %>
 	<%= stylesheet_link_tag "actions", :title => "MacroDeck" %>
+	<%= stylesheet_link_tag "account", :title => "MacroDeck" %>
 	<%= stylesheet_link_tag "ibox" %>
+	<%= stylesheet_link_tag "yui" %>
+	<%= stylesheet_link_tag "yui-tree" %>
 	<%= stylesheet_link_tag "yui-ext" %>
 	<script src="http://www.google-analytics.com/urchin.js" type="text/javascript"></script>
 	<script type="text/javascript">
@@ -27,6 +30,7 @@
 	<%= javascript_include_tag "widgets" %>
 	<%= javascript_include_tag "ibox" %>
 	<%= javascript_include_tag "yui-utilities" %>
+	<%= javascript_include_tag "yui-treeview" %>
 	<%= javascript_include_tag "yui-ext" %>
 	
 	<% if @components != nil %>
@@ -44,7 +48,7 @@
 
 	<!-- yui-ext panels -->
 	<script type="text/javascript">
-	//<![CDATA[[
+	//<![CDATA[
 	MacroDeck = function(){
 	        return {
 	            init : function(){

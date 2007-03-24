@@ -27,6 +27,22 @@ class DataGroup < ActiveRecord::Base
         self.groupingtype
     end
 
+	# Returns true if there are data items in this grouping.
+	def items?
+		ditems = DataItem.find(:all, :conditions => ["grouping = ?", groupingid])
+		if ditems != nil && ditems.length > 0
+			return true
+		else
+			return false
+		end
+	end
+
+	# Returns data items in this grouping
+	def items
+		ditems = DataItem.find(:all, :conditions => ["grouping = ?", groupingid])
+		return ditems
+	end
+
 	# Finds groupings by their type
 	def self.findGroupings(dataType, resultsToReturn = :all)
 		return self::find(resultsToReturn, :conditions => ["groupingtype = ?", dataType])

@@ -424,4 +424,29 @@ class AccountController < ApplicationController
 			end
 		end
 	end
+
+	def get_data
+		if @params[:username] != nil
+			uuid = UserService.lookupUserName(@params[:username].downcase)
+			if uuid == nil
+				render :template => "errors/invalid_user_or_group"
+			else
+				if session != nil
+					if session[:authcode] != nil && session[:uuid] != nil
+						if UserService.verifyAuthCode(@session[:uuid], @session[:authcode])
+							@rootnodes = DataGroup.find(:all, :conditions => ["parent IS NULL AND (creator = ? OR owner = ?)", uuid, uuid])
+						else
+							render :template => "errors/access_denied"
+						end
+					else
+						render :template => "errors/access_denied"
+					end
+				else
+					render :template => "errors/access_denied"
+				end
+			end
+		else
+			render :template => "errors/invalid_user_or_group"
+		end
+	end
 end

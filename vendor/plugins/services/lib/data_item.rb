@@ -28,6 +28,24 @@ class DataItem < ActiveRecord::Base
         updated = Time.new.to_i
     end
 
+	# Returns true if there are children DataGroups.
+	# A child DataGroup is one whose `parent` field is
+	# set to the UUID of this item.
+	def children?
+		dgroups = DataGroup.find(:all, :conditions => ["parent = ?", dataid])
+		if dgroups != nil && dgroups.length > 0
+			return true
+		else
+			return false
+		end
+	end
+
+	# Returns children DataGroups
+	def children
+		dgroups = DataGroup.find(:all, :conditions => ["parent = ?", dataid])
+		return dgroups
+	end
+
 	# Finds a group of data based on the grouping
 	# UUID specified. Can limit to a certain data
 	# type if desired. The order the data is returned
@@ -47,7 +65,7 @@ class DataItem < ActiveRecord::Base
 		end
 	end
 	
-	# Finds a specific data item based on its ID
+	# Finds a specific data item based on its UUID
 	def self.findDataItem(dataID)
 		return self.find(:first, :conditions => ["dataid = ?", dataID])
 	end

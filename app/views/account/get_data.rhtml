@@ -1,0 +1,27 @@
+<% @menu_content = "<a href=\"/user/#{@username}/home/\">My Home</a> <a href=\"/user/#{@username}/blog/\">My Blog</a>" %>
+<% @summary = build_summary("", "My Data") %>
+<div id="data-box">
+	<div id="data-nodes">
+		<div id="data-tree" class="tree">&nbsp;</div>
+	</div>
+	<div id="data-info">Placeholder for data information</div>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+var DataTree = new YAHOO.widget.TreeView('data-tree');
+
+function treeInit() {
+		// append items
+		var root = DataTree.getRoot();
+		var meta = { };
+
+		<% @rootnodes.each do |node| %>
+			<%= get_javascript_for_node node %>
+		<% end %>
+}
+
+// now call treeInit().
+treeInit();
+DataTree.draw();
+//]]>
+</script>
