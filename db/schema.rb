@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 43) do
+ActiveRecord::Schema.define(:version => 45) do
 
   create_table "components", :force => true do |t|
     t.column "uuid",              :string
@@ -23,20 +23,21 @@ ActiveRecord::Schema.define(:version => 43) do
   end
 
   create_table "data_groups", :force => true do |t|
-    t.column "groupingtype",              :string
-    t.column "creator",                   :string
-    t.column "groupingid",                :string
-    t.column "owner",                     :string
-    t.column "tags",                      :text
-    t.column "parent",                    :string
-    t.column "title",                     :string
-    t.column "description",               :text
-    t.column "default_read_permissions",  :text
-    t.column "default_write_permissions", :text
-    t.column "remote_data",               :boolean, :default => false, :null => false
-    t.column "sourceid",                  :string
-    t.column "include_sources",           :text
-    t.column "updated",                   :integer
+    t.column "groupingtype",      :string
+    t.column "creator",           :string
+    t.column "groupingid",        :string
+    t.column "owner",             :string
+    t.column "tags",              :text
+    t.column "parent",            :string
+    t.column "title",             :string
+    t.column "description",       :text
+    t.column "read_permissions",  :text
+    t.column "write_permissions", :text
+    t.column "remote_data",       :boolean, :default => false, :null => false
+    t.column "sourceid",          :string
+    t.column "include_sources",   :text
+    t.column "updated",           :integer
+    t.column "creation",          :integer
   end
 
   create_table "data_items", :force => true do |t|
@@ -133,6 +134,7 @@ ActiveRecord::Schema.define(:version => 43) do
 
   create_table "subscription_payments", :force => true do |t|
     t.column "uuid",              :string
+    t.column "user_uuid",         :string
     t.column "subscription_uuid", :string
     t.column "amount_paid",       :float
     t.column "date_paid",         :integer

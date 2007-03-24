@@ -2,9 +2,20 @@
 <% @summary = build_summary("", "My Data") %>
 <div id="data-box">
 	<div id="data-nodes">
-		<div id="data-tree" class="tree">&nbsp;</div>
+		<div class="hd">Data Items</div>
+		<div class="bd">
+			<div id="data-tree" class="tree">&nbsp;</div>
+		</div>
+		<div class="ft"></div>
 	</div>
-	<div id="data-info">Placeholder for data information</div>
+	<div id="data-info">
+		<div class="hd">Information</div>
+		<div class="bd">
+			<div id="data-indicator">Loading...</div>
+			<div id="data-info-content">There is no content to show.</div>
+		</div>
+		<div class="ft"></div>
+	</div>
 </div>
 <script type="text/javascript">
 //<![CDATA[
@@ -18,6 +29,10 @@ function treeInit() {
 		<% @rootnodes.each do |node| %>
 			<%= get_javascript_for_node node %>
 		<% end %>
+
+		DataTree.subscribe('labelClick', function (node) {
+				new Ajax.Updater('data-info-content', '/user/<%= @user_username %>/get_data_node/' + node.data.id, {asynchronous:true, evalScripts:true, onComplete:function(request){$('data-indicator').hide();}, onLoading:function(request){$('data-indicator').show();}})
+		});
 }
 
 // now call treeInit().

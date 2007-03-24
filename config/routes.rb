@@ -47,7 +47,8 @@ ActionController::Routing::Routes.draw do |map|
   map.connect 'user/:username/environments',		:controller => 'environment', :action => 'index'
   map.connect 'user/:username/shared',				:controller => 'incomplete', :action => 'shareditems'
   map.connect 'user/:username/profile',				:controller => 'incomplete', :action => 'profile'
-  map.connect 'user/:username/data',				:controller => "account", :action => "get_data"
+  map.connect 'user/:username/data',				:controller => "account", :action => "get_data" #FIXME: This should probably be in a DataController or something.
+  map.connect 'user/:username/get_data_node/:uuid',	:controller => "account", :action => "get_data_node" #FIXME: This should probably be in a DataController or something.
   map.connect 'user/:username',						:controller => 'incomplete', :action => 'profile'
   
   # route other group stuff

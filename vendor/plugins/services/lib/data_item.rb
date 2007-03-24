@@ -46,6 +46,24 @@ class DataItem < ActiveRecord::Base
 		return dgroups
 	end
 
+	# Returns a human-readable version of the creation
+	def human_creation
+		if creation != nil
+			return Time.at(creation).strftime("%B %d, %Y at %I:%M %p")
+		else
+			return "Unknown"
+		end
+	end
+
+	# Returns a human-readable version of the updated time.
+	def human_updated
+		if updated != nil
+			return Time.at(updated).strftime("%B %d, %Y at %I:%M %p")
+		else
+			return "Unknown"
+		end
+	end
+
 	# Finds a group of data based on the grouping
 	# UUID specified. Can limit to a certain data
 	# type if desired. The order the data is returned

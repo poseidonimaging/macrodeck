@@ -43,6 +43,24 @@ class DataGroup < ActiveRecord::Base
 		return ditems
 	end
 
+	# Returns a human-readable version of the creation
+	def human_creation
+		if creation != nil
+			return Time.at(creation).strftime("%B %d, %Y at %I:%M %p")
+		else
+			return "Unknown"
+		end
+	end
+
+	# Returns a human-readable version of the updated time.
+	def human_updated
+		if updated != nil
+			return Time.at(updated).strftime("%B %d, %Y at %I:%M %p")
+		else
+			return "Unknown"
+		end
+	end
+
 	# Finds groupings by their type
 	def self.findGroupings(dataType, resultsToReturn = :all)
 		return self::find(resultsToReturn, :conditions => ["groupingtype = ?", dataType])

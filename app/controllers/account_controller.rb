@@ -449,4 +449,48 @@ class AccountController < ApplicationController
 			render :template => "errors/invalid_user_or_group"
 		end
 	end
+
+	# returns a partial that contains a table that shows the contents
+	# of a data item/group
+	def get_data_node
+		if @params[:username] != nil
+			uuid = UserService.lookupUserName(params[:username].downcase)
+			if uuid == nil
+				render :template => "errors/invalid_user_or_group"
+			else
+				if session != nil
+					if session[:authcode] != nil && session[:uuid] != nil
+						if UserService.verifyAuthCode(@session[:uuid], @session[:authcode])
+							# Now, we figure out what the hell they're trying to look at.
+							if DataService.doesDataGroupExist?(params[:uuid])
+								if DataService.canRead?(params[:uuid], @user_uuid)
+									@dgroup = DataGroup.find(:first, :conditions => ["groupingid = ?", params[:uuid]])
+									render :partial => "get_data_group"
+								else
+									render :text => "You do not have permission to access that resource."
+								end
+							elsif DataService.doesDataItemExist?(params[:uuid])
+								if DataService.canRead?(params[:uuid], @user_uuid)
+									@ditem = DataItem.find(:first, :conditions => ["dataid = ?", params[:uuid]])
+									render :partial => "get_data_item"
+								else
+									render :text => "You do not have permission to access that resource."
+								end
+							else
+								render :text => "Invalid data node. Perhaps it was deleted."
+							end
+						else
+							render :text => "You do not have permission to access that resource."
+						end
+					else
+						render :text => "You do not have permission to access that resource."
+					end
+				else
+					render :text => "You do not have permission to access that resource."
+				end
+			end
+		else
+			render :text => "You have specified an illegal user or group name."
+		end
+	end
 end
