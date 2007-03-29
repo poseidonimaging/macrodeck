@@ -68,7 +68,7 @@ class DataService < BaseService
 	# and that grouping has default permissions, those will be applied.
 	#
 	# Returns the data item's UUID if successful, raises an exception if not.
-	def self.createData(dataType, valueType, dataValue, metadata = nil)
+	def self.createData_old(dataType, valueType, dataValue, metadata = nil)
 		dataObj = DataItem.new
 		if metadata != nil
 			creator = metadata[:creator]
@@ -146,6 +146,26 @@ class DataService < BaseService
 		
 		return dataObj.dataid
 	end
+  
+  def self.createData(type, value, objMetadata = Metadata.new)
+    item = DataItem.new do |i| 
+      i.update_attributes(objMetadata.to_hash)
+      i.datacreator = @serviceUUID unless i.datacreator
+      i.uuid = UUIDService.generateUUID
+      i.grouping = UUIDService.generateUUID unless i.grouping
+      i.creation = Time.now.to_i # XXX: it should be replaced by creation_at
+      if group = DataGroup.checkUUID(i.grouping)
+        i.read_permissions = group.read_permission
+        i.write_permissions = group.write_permission
+      else
+        i.read_permissions = DEFAULT_READ_PERMISSIONS
+        i.write_permissions = DEFAULT_WRITE_PERMISSIONS     
+      end     
+      i.loadValue(type,value)
+    end
+    item.save!    
+    return item.uuid
+  end
 
 	# Modifies a data item of the type and ID
 	# specified. Type can be :string, :integer,
@@ -215,7 +235,7 @@ class DataService < BaseService
 	# Creates a new data grouping with the specified parameters.
 	# +groupingID+ may be nil, if so, it will be generated in
 	# this function.
-	def self.createDataGroup(groupType, groupingID, parent, metadata = nil)
+	def self.createDataGroup_old(groupType, groupingID, parent, metadata = nil)
 	#(dataType, valueType, dataValue, metadata = nil)
 		if groupingID == nil
 			groupingID = UUIDService.generateUUID
@@ -251,6 +271,19 @@ class DataService < BaseService
 		group.save!
 		return groupingID
 	end
+
+  def self.createDataGroup(uuid, parent_uuid, objMetadata = Metadata.new)        
+    group = DataGroup.new do |g|       
+      g.uuid = uuid ? uuid : UUIDService.generateUUID
+      g.creation = Time.now.to_i # XXX: it should be replaced by creation_at
+      g.loadMetadata(objMetadata)
+      raise ArgumentError unless DataGroup.checkUUID(parent_uuid) if parent_uuid
+      g.parent = parent_uuid
+    end
+    group.save!
+    return group.uuid
+  end
+
 	
 	# Gets a group of data and returns an array containing all of the data.
 	# To only get a certain type of data in the group, you can specify
@@ -301,10 +334,9 @@ class DataService < BaseService
 	# so types, creators, and owners can be converted into
 	# English.
 	def self.getDataGroupMetadata(groupingID)
-		dgroup = DataGroup.find(:first, :conditions => ["groupingid = ?", groupingID])
-		if dgroup != nil
-			h = { :type => dgroup.groupingtype, :creator => dgroup.creator, :owner => dgroup.owner, :tags => dgroup.tags, :title => dgroup.title, :description => dgroup.description }
-			return h
+		dgroup = DataGroup.checkUUID(groupingID)
+		if dgroup != nil			
+			return Metadata.fetch(self)
 		else
 			return nil
 		end

@@ -5,8 +5,7 @@
 
 class DataGroup < ActiveRecord::Base
 
-    acts_as_ferret :fields => [:tags, :description, :title] 
-    UUID = 
+    acts_as_ferret :fields => [:tags, :description, :title]     
 
     # write time of group's creation to updated field
     def after_create
@@ -27,6 +26,26 @@ class DataGroup < ActiveRecord::Base
         self.groupingtype
     end
 
+    # update attibutes from metaData object
+    def loadMetadata(objMeta)
+        update_attributes(objMeta.to_hash)
+    end
+    
+    # fake proxy
+    def datacreator=(uuid)
+      nil
+    end
+    
+    # fake proxy
+    def creation=(value)
+      nil
+    end
+    
+    # fake proxy
+    def grouping=(uuid)
+      nil
+    end
+    
 	# Returns true if there are data items in this grouping.
 	def items?
 		ditems = DataItem.find(:all, :conditions => ["grouping = ?", groupingid])

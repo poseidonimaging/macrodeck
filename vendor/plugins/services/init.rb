@@ -3,6 +3,8 @@
 
 require "services"
 require "acts_as_ferret"
+#require "rubygems"
+#require_gem "activemerchant"
 
 class ActiveRecord::Base
 
@@ -12,12 +14,20 @@ class ActiveRecord::Base
       when 'ForumReply': 
       when 'Forum':                         
       when 'ForumCategory': 
-      when 'ForumBoard': class_uuid = self::UUID          
+      when 'ForumBoard':         
+        obj = find_by_uuid(uuid)
+        return nil unless obj
+        return obj.grouping == self::UUID ? obj : false 
+      
+      when 'DataItem':
+        return find_by_dataid(uuid)
+      when 'DataGroup':      
+      when 'Profile':
+        return find_by_groupingid(uuid)
+      when 'DataItem':
+        return find_by_uuid(uuid)              
       else return nil        
     end
-    obj = find_by_uuid(uuid)
-    return nil unless obj
-    return obj.grouping == class_uuid ? true : false 
   end
   
 end
@@ -31,3 +41,26 @@ class Object
     end
   end
 end
+
+#module ActiveMerchant
+#  module Billing
+#    class AuthorizeNetGateway < Gateway
+#      ARB_LIVE_URL = "https://api.authorize.net/xml/v1/request.api"
+#      ARB_TEST_URL = "https://apitest.authorize.net/xml/v1/request.api"
+#          
+#      def arb_commit(api_login, trns_key, options)
+#        
+#      end
+#      
+#      def add_subscription(request,options)        
+#      end
+#      
+#      def add_payment(request,options)
+#      end
+#      
+#      def 
+#             
+#    end
+#  end
+#end
+#    end

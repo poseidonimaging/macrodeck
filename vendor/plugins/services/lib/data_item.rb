@@ -23,11 +23,42 @@ class DataItem < ActiveRecord::Base
         self.datatype
     end
     
+    def type=(type_uuid)
+        self.datatype = type_uuid
+    end
+    
+    def context(&block)
+        instance_eval(&block)       
+    end
+    
+    def uuid=(item_uuid)
+        self.dataid = item_uuid
+    end
+    
     # write time of item's update to updated field
     def after_update
         updated = Time.new.to_i
     end
 
+    # update attibutes from metaData object
+    def loadMetadata(objMeta)
+        update_attributes(objMeta.to_hash)
+    end
+    # update value
+    def loadValue(type,value)
+      case type
+        when :string, "string"
+          self.stringdata = value
+        when :integer, "integer"
+          self.integerdata = value
+        when :object, "object"
+          self.objectdata = value.to_yaml
+        when :nothing, "nothing"
+        else
+          raise ArgumentError
+      end
+    end
+    
 	# Returns true if there are children DataGroups.
 	# A child DataGroup is one whose `parent` field is
 	# set to the UUID of this item.

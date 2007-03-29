@@ -50,7 +50,15 @@ class BlogService < BaseService
 	# *NOTE*! This method should NOT be used to create blog posts! This
 	# is for creating actual _blogs_.
 	def self.createBlog(title, description, creator, owner)
-		return DataService.createDataGroup(DGROUP_BLOG, nil, nil, { :title => title, :description => description, :creator => creator, :owner => owner })
+    objMeta = Metadata.new do |m|
+      m.title = title
+      m.description = description
+      m.creator = creator
+      m.owner = owner
+      m.type = DGROUP_BLOG
+    end
+    
+		return DataService.createDataGroup(nil, nil, objMeta)
 	end
 	
 	# Creates a new blog post within the blog specified. Blogs are specified
@@ -59,11 +67,16 @@ class BlogService < BaseService
 	# FIXME: Make this method's signature more sane.
 	def self.createBlogPost(blogID, creator, postTitle, postDescription, postContent, readPermissions, writePermissions)
 		# The owner is retrieved from the blog itself.
-		blog_meta = DataService.getDataGroupMetadata(blogID)
-		owner = blog_meta[:owner]
-		postID = DataService.createData(DTYPE_POST, :string, postContent, { :creatorapp => @serviceUUID, :creator => creator, :grouping => blogID, :owner => owner, :title => postTitle, :description => postDescription })
-		# now create comments group
-		commentsID = DataService.createDataGroup(DGROUP_COMMENTS, nil, postID, { :title => postTitle, :description => postDescription, :creator => creator, :owner => owner })
+		blog_meta = DataService.getDataGroupMetadata(blogID)		
+    objMeta = Metadata.new do |m|
+      m.owner = blog_meta.owner
+      m.creator = creator
+      m.title = postTitle
+      m.description = postDescription
+    end
+		postID = DataService.createData(:string, postContent, objMeta)
+		# now create comments group    
+		commentsID = DataService.createDataGroup(nil, postID, Metadata.makeFromHash({ :title => postTitle, :description => postDescription, :creator => creator, :owner => owner, :type=>DGROUP_COMMENTS }))
 		read_perms = DataService.getPermissions(postID, :read)
 		write_perms = DataService.getPermissions(postID, :write)
 		DataService.setDefaultPermissions(commentsID, :read, read_perms)
@@ -123,11 +136,11 @@ class BlogService < BaseService
 		post_meta = DataService.getDataGroupMetadata(commentsGrouping.groupingid)
 		owner = post_meta[:owner]
 		if creator == ANONYMOUS
-			commentid = DataService.createData(DTYPE_COMMENT, :string, commentContent, { :creatorapp => @serviceUUID, :grouping => commentsGrouping.groupingid, :creator => creator, :owner => owner })
+			commentid = DataService.createData(:string, commentContent, Metadata.makeFromHash({ :creatorapp => @serviceUUID, :grouping => commentsGrouping.groupingid, :creator => creator, :owner => owner, :type=>DTYPE_COMMENT }))
 			# add the extra meta stuff
 			DataService.modifyDataItem(commentid, :object, { :username => username, :user => nil, :loggedin => false })
 		else
-			DataService.createData(DTYPE_COMMENT, :string, commentContent, { :creatorapp => @serviceUUID, :grouping => commentsGrouping.groupingid, :creator => creator, :owner => owner })
+			DataService.createData(:string, commentContent, Metadata.makeFromHash({ :type=>DTYPE_COMMENT, :creatorapp => @serviceUUID, :grouping => commentsGrouping.groupingid, :creator => creator, :owner => owner }))
 		end
 	end
 	
