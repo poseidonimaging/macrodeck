@@ -190,7 +190,7 @@ class DataWebService < ActionWebService::Base
 	# Creates a data item but does not populate it with data.
 	# A groupUUID for the data must exist. Returns the UUID
 	# of the data item or nil/null if failure.
-	def create_data_item(authCode, groupUUID, metadata)
+	def create_data_item_OLD(authCode, groupUUID, metadata)
 		user = UserService.userFromAuthCode(authCode)
 		if user != nil
 			# The user exists! Hooray!
@@ -214,6 +214,34 @@ class DataWebService < ActionWebService::Base
 					creatorapp = metadata[:creatorApp]
 				end
 				uuid = DataService.createData(metadata[:dataType], :nothing, nil, { :creator => user.uuid, :owner => group_md[:owner], :title => title, :description => description, :creatorapp => creatorapp, :grouping => groupUUID })
+				return { :errorCode => DATA_SERVICE_ERROR_OK, :uuid => uuid }
+			else
+				return { :errorCode => DATA_SERVICE_ERROR_NO_PERMISSION_TO_WRITE_ITEM, :uuid => nil }
+			end
+		else
+			return { :errorCode => DATA_SERVICE_ERROR_INVALID_AUTHCODE, :uuid => nil }
+		end
+	end
+
+	def create_data_item(authCode, groupUUID, objMeta)
+		user = UserService.userFromAuthCode(authCode)
+		if user != nil
+			# The user exists! Hooray!
+			# Now we check to make sure they have permission to write to this groupUUID.
+			if DataService.canWrite?(groupUUID, user.uuid)
+				# They can write, create the data!
+				group_md = DataService.getDataGroupMetadata(groupUUID)
+				new_meta = Metadata.new do |m|
+    				m.title = objMeta.title == "" ? nil : objMeta.title
+    				m.description = objMeta.description == "" ? nil : objMeta.description
+    				m.datacreator = objMeta.datacreator == "" ? nil : objMeta.datacreator
+    				m.creator = user.uuid
+    				m.owner = group_md.owner
+    				m.grouping = groupUUID
+    				m.type = objMeta.type				
+				end
+
+				uuid = DataService.createData(:nothing, nil, objMeta)
 				return { :errorCode => DATA_SERVICE_ERROR_OK, :uuid => uuid }
 			else
 				return { :errorCode => DATA_SERVICE_ERROR_NO_PERMISSION_TO_WRITE_ITEM, :uuid => nil }
@@ -341,7 +369,7 @@ class DataWebService < ActionWebService::Base
 	
 	# Creates a data group that should be populated with data items. +parent+
 	# is optional and can be nil/null. Returns a fresh UUID if successful.
-	def create_data_group(authCode, parent, metadata)
+	def create_data_group_old(authCode, parent, metadata)
 		user = UserService.userFromAuthCode(authCode)
 		if user != nil
 			# The user exists! Hooray!
@@ -367,6 +395,40 @@ class DataWebService < ActionWebService::Base
 					description = metadata[:description]
 				end
 				uuid = DataService.createDataGroup(metadata[:groupType], nil, parent, { :creator => user.uuid, :owner => owner, :title => title, :description => description})
+				return { :errorCode => DATA_SERVICE_ERROR_OK, :uuid => uuid }
+			else
+				return { :errorCode => DATA_SERVICE_ERROR_NO_PERMISSION_TO_WRITE_GROUP, :uuid => nil }
+			end
+		else
+			return { :errorCode => DATA_SERVICE_ERROR_INVALID_AUTHCODE, :uuid => nil }
+		end
+	end
+
+	def create_data_group(authCode, parent, objMeta)
+		user = UserService.userFromAuthCode(authCode)
+		if user != nil
+			# The user exists! Hooray!
+			
+			# If: 1) No parent was specified, or 2) A parent was specified and they can write to it,
+			# Then: They can get in.
+			if (parent != nil && DataService.canWrite?(parent, user.uuid)) || (parent == nil)
+				# They can write, create the data!
+				if parent != nil
+					parent_md = DataService.getDataGroupMetadata(parent)
+					owner = parent_md.owner
+				else
+					owner = user.uuid
+				end				
+				new_meta = Metadata.new do |m|
+    				m.title = objMeta.title == "" ? nil : objMeta.title
+    				m.description = objMeta.description == "" ? nil : objMeta.description
+    				m.datacreator = objMeta.datacreator == "" ? nil : objMeta.datacreator
+    				m.creator = user.uuid
+    				m.owner = owner
+    				m.type = objMeta.type				
+				end
+				
+				uuid = DataService.createDataGroup(nil, parent, objMeta)
 				return { :errorCode => DATA_SERVICE_ERROR_OK, :uuid => uuid }
 			else
 				return { :errorCode => DATA_SERVICE_ERROR_NO_PERMISSION_TO_WRITE_GROUP, :uuid => nil }
