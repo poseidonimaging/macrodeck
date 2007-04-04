@@ -11,7 +11,7 @@
 # form the root of the application path.
 
 set :application, "macrodeck"
-set :repository, "http://svn.macrodeck.com/#{application}/trunk"
+set :repository, "file:///var/svn/macrodeck/#{application}/trunk"
 
 # =============================================================================
 # ROLES
@@ -23,8 +23,9 @@ set :repository, "http://svn.macrodeck.com/#{application}/trunk"
 # :primary => true.
 
 role :web, "www.macrodeck.com"
-role :web_beta, "beta.macrodeck.com"
-role :app, "localhost:8000", "localhost:8001", "localhost:8002", "localhost:8003", "localhost:8004", "localhost:8005", "localhost:8006", "localhost:8007", "localhost:8008", "localhost:8009"
+#role :web_beta, "beta.macrodeck.com"
+#role :app, "localhost:8000", "localhost:8001", "localhost:8002", "localhost:8003", "localhost:8004", "localhost:8005", "localhost:8006", "localhost:8007", "localhost:8008", "localhost:8009"
+role :app, "localhost"
 role :db,  "localhost", :primary => true
 
 # =============================================================================

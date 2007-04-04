@@ -1,6 +1,6 @@
 --- 
 user: railsapps
-cwd: /home/railsapps/macrodeck
+cwd: /home/railsapps/macrodeck/current
 port: "8000"
 environment: production
 group: railsapps
