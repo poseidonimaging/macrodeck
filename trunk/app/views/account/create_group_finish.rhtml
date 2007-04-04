@@ -1,0 +1,7 @@
+<% @menu_content = '<a href="/">Home</a>' %>
+<% @summary = build_summary("Group created successfully!", "Create a group") %>
+<p>Congratulations! You have created the group "<%= h(@grouplongname) %>" successfully. You have been set as the group's administrator,
+Users can view information about your group at <code>http://www.macrodeck.com/group/<%= h(@groupname) %>/</code> or by browsing the
+Groups Directory. You'll see this group in "My Groups", and you'll be able to invite users to this group, as well as open it up for
+everybody to join as they please.</p>
+<p><%= link_to "Take me to my group information page", "/group/#{@groupname}/" %>.</p>

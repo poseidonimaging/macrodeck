@@ -1,0 +1,31 @@
+<% @menu_content = '<a href="/">Home</a>' %>
+<% @summary = build_summary("Change account settings", "My Account") %>
+
+<% if @error != nil %>
+<p class="error"><%= @error %></p>
+<% end %>
+
+<% if @info != nil %>
+<p class="info"><%= @info %></p>
+<% end %>
+
+<%= form_tag("/user/#{@username}/settings") %>
+<fieldset>
+	<legend>Change Password</legend>
+	<p>Type in a new password twice to change your current password.</p>
+	<p><%= password_field_tag "password1" %><br />
+	<%= password_field_tag "password2" %> (type again to confirm)</p>
+</fieldset>
+<fieldset>
+	<legend>General Information</legend>
+	<p>Real Name: <%= text_field_tag "name", @name, { :class => "offset", :size => 40 } %></p>
+	<p>Display Name: <%= text_field_tag "displayname", @displayname, { :class => "offset", :size => 40 } %></p>
+	<p class="padbottom">E-Mail Address: <%= text_field_tag "email", @email, { :class => "offset", :size => 40 } %></p>
+</fieldset>
+<fieldset>
+	<legend>Secret Question and Answer</legend>
+	<p>Secret Question: <%= text_field_tag "secretquestion", @secretquestion, { :class => "offset", :size => 40 } %></p>
+	<p class="padbottom">Secret Answer: <%= text_field_tag "secretanswer", @secretanswer, { :class => "offset", :size => 40 } %></p>
+</fieldset>
+<p><%= submit_tag "Save Changes" %></p>
+<%= end_form_tag %>

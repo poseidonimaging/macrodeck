@@ -1,0 +1,46 @@
+<% if UserService.doesGroupMemberExist?(GROUP_DEVELOPERS, @user_uuid) %>
+	<% @menu_content = "<a href=\"/directory/components/\">Component Directory</a> <a href=\"/component/new/\">New Component</a>" %>
+<% else %>
+	<% @menu_content = "<a href=\"/directory/components/\">Component Directory</a>" %>
+<% end %>
+<% @summary = build_summary("", "Editing " + @descriptive_name) %>
+
+<% if @error != nil %>
+<p class="error"><%= @error %></p>
+<% end %>
+
+<%= form_tag("/component/#{@internal_name}/edit/") %>
+	<fieldset>
+		<legend>General Information</legend>
+		<p>Name: <%= text_field_tag "descriptive_name", @descriptive_name, :size => 30, :class => "offset" %><br /> 
+		<span class="block small subtext nomargin padtop standout">This is the name that will be displayed in the directory.</span></p>
+		<p>Description:<br />
+		<%= text_area_tag "description", @description, :size => "40x5" %></p>
+		<p>Internal Name: <%= text_field_tag "internal_name", @internal_name, :size => 30, :class => "offset" %><br />
+		<span class="block small subtext nomargin padtop standout">This is a fully-qualified Java-style identifier, like <em>com.macrodeck.ButtonComponent</em>. You must use your own
+		domain name. For example, if you own stuff.com, and this is RandomComponent, this name will be <em>com.stuff.RandomComponent</em>.</span></p>
+		<p>Version Number: <%= text_field_tag "version", @version, :size => 30, :class => "offset" %><br />
+		<span class="block small subtext nomargin padtop standout">This is the version number you declared in the component.</span></p>
+		<p>Release Status: <%= select_tag "status", @status_tags, :class => "offset" %><br />
+		<span class="block small subtext nomargin padtop standout">This is how stable you rate your component. Alpha is least stable, Release is most stable. 
+		("Testing" means "Release Testing".. i.e. a pre-release)</span></p>
+		<p>Homepage: <%= text_field_tag "homepage", @homepage, :size => 30, :class => "offset" %><br />
+		<span class="block small subtext nomargin padtop standout">This is the URL where people can go to find out more about your component.</span></p>
+	</fieldset>
+	<fieldset>
+		<legend>Code</legend>
+		<p><%= text_area_tag "code", @code, :size => "80x25" %></p>
+	</fieldset>
+	<fieldset>
+		<legend>Permissions</legend>
+		<fieldset>
+			<legend>Read Permissions</legend>
+			<%= render_component :controller => "permission", :action => "display_table", :params => { :permissions => @readperms, :kind => "read" } %>
+		</fieldset>
+		<fieldset>
+			<legend>Write Permissions</legend>
+			<%= render_component :controller => "permission", :action => "display_table", :params => { :permissions => @writeperms, :kind => "write" } %>
+		</fieldset>
+	</fieldset>
+	<%= submit_tag "Edit Component" %>
+<%= end_form_tag %>

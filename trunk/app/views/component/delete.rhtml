@@ -1,0 +1,11 @@
+<% if UserService.doesGroupMemberExist?(GROUP_DEVELOPERS, @user_uuid) %>
+	<% @menu_content = "<a href=\"/directory/components/\">Component Directory</a> <a href=\"/component/new/\">New Component</a>" %>
+<% else %>
+	<% @menu_content = "<a href=\"/directory/components/\">Component Directory</a>" %>
+<% end %>
+<% @summary = build_summary("", "Deleting " + h(@component.descriptive_name)) %>
+
+<p>Are you sure you wish to delete <%= @component.descriptive_name %>?</p>
+<%= form_tag "/component/#{@component.internal_name}/delete/" %>
+<%= submit_tag 'Yes' %> <%= link_to "No", "/component/#{@component.internal_name}/" %>
+<%= end_form_tag %>

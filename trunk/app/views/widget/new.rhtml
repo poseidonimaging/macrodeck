@@ -1,0 +1,48 @@
+<% if UserService.doesGroupMemberExist?(GROUP_DEVELOPERS, @user_uuid) %>
+	<% @menu_content = "<a href=\"/directory/widgets/\">Widget Directory</a> <a href=\"/widget/new/\">New Widget</a>" %>
+<% else %>
+	<% @menu_content = "<a href=\"/directory/widgets/\">Widget Directory</a>" %>
+<% end %>
+<% @summary = build_summary("", "Adding a Widget") %>
+
+<% if @error != nil %>
+<p class="error"><%= @error %></p>
+<% end %>
+
+<%= form_tag("/widget/new/") %>
+	<fieldset>
+		<legend>General Information</legend>
+		<p>Name: <%= text_field_tag "descriptive_name", @descriptive_name, :size => 30, :class => "offset" %><br /> 
+		<span class="block small subtext nomargin padtop standout">This is the name that will be displayed in the directory.</span></p>
+		<p>Description:<br />
+		<%= text_area_tag "description", @description, :size => "40x5" %></p>
+		<p>Internal Name: <%= text_field_tag "internal_name", @internal_name, :size => 30, :class => "offset" %><br />
+		<span class="block small subtext nomargin padtop standout">This is the name of your widget class in your code.</span></p>
+		<p>Version Number: <%= text_field_tag "version", @version, :size => 30, :class => "offset" %><br />
+		<span class="block small subtext nomargin padtop standout">This is the version number you declared in the widget.</span></p>
+		<p>Release Status: <%= select_tag "status", @status_tags, :class => "offset" %><br />
+		<span class="block small subtext nomargin padtop standout">This is how stable you rate your widget. Alpha is least stable, Release is most stable. ("Testing" means "Release Testing".. i.e. a pre-release)</span></p>
+		<p>Homepage: <%= text_field_tag "homepage", @homepage, :size => 30, :class => "offset" %><br />
+		<span class="block small subtext nomargin padtop standout">This is the URL where people can go to find out more about your widget.</span></p>
+	</fieldset>
+	<fieldset>
+		<legend>Code</legend>
+		<p><%= text_area_tag "code", @code, :size => "80x25" %></p>
+	</fieldset>
+	<fieldset>
+		<legend>Required Components</legend>
+		<%= render :partial => "required_components" %>
+	</fieldset>
+	<fieldset>
+		<legend>Permissions</legend>
+		<fieldset>
+			<legend>Read Permissions</legend>
+			<%= render_component :controller => "permission", :action => "display_table", :params => { :permissions => @readperms, :kind => "read" } %>
+		</fieldset>
+		<fieldset>
+			<legend>Write Permissions</legend>
+			<%= render_component :controller => "permission", :action => "display_table", :params => { :permissions => @writeperms, :kind => "write" } %>
+		</fieldset>
+	</fieldset>
+	<%= submit_tag "New Widget" %>
+<%= end_form_tag %>

@@ -1,0 +1,67 @@
+<h2>Widget Test</h2>
+<h3>InputButtonComponent</h3>
+<div id='input-button-component'>
+<script type="text/javascript">
+	// create element to insert into
+	ok_container = document.createElement('div');
+	ok_container.id = 'ok-button';
+	ok_container.style.display = 'inline';
+	ok_container.style.padding = '5px';
+	$('input-button-component').appendChild(ok_container);
+	
+	// create OK button
+	ok_button = new InputButtonComponent('OK');
+	ok_button.click =	function() {
+							alert('Clicked OK! Version: ' + ok_button.getVersion());
+						}
+	ok_button.display('ok-button');
+	
+	// create cancel button container
+	cancel_container = document.createElement('div');
+	cancel_container.id = 'cancel-button';
+	cancel_container.style.display = 'inline';
+	cancel_container.style.padding = '5px';
+	$('input-button-component').appendChild(cancel_container);
+	
+	// create Cancel button
+	cancel_button = new InputButtonComponent('Cancel');
+	cancel_button.click =	function() {
+								alert("You pressed Cancel. Congratulations!");
+							}
+	cancel_button.display('cancel-button');
+	
+	// create big button container.
+	big_container = document.createElement('div');
+	big_container.id = 'big-button';
+	big_container.style.padding = '5px';
+	$('input-button-component').appendChild(big_container);
+	
+	// create the button.
+	big_button = new InputButtonComponent('BIG BUTTON!');
+	big_button.click =	function() {
+							alert("BIG BUTTON!");
+						}
+	big_button.display('big-button');
+	big_button.setWidth('20em');
+	big_button.setHeight('20em');
+	
+	// create another one.
+	c1 = document.createElement('div');
+	c1.id = 'b1';
+	c1.style.padding = '5px';
+	$('input-button-component').appendChild(c1);
+	
+	// ..duh
+	c1_button = new InputButtonComponent('Another Button!');
+	c1_button.click = function() { }
+	c1_button.setWidth('20em');
+	c1_button.display('b1');
+</script>
+</div>
+<h3>OkayCancelWidget</h3>
+<div id="okaycancelwidget">
+</div>
+<script type="text/javascript">
+	w = new OkayCancelWidget('okaycancelwidget');
+	w.display('default');
+</script>

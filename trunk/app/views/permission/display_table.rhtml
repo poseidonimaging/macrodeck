@@ -1,0 +1,12 @@
+<%=		
+		if @params[:permissions] != nil
+			if @params[:kind] != nil
+				@kind = @params[:kind]
+			else
+				@kind = "permission"
+			end
+			render :partial => 'permission/permtable'
+		else
+			render :text => 'Error'
+		end
+%>

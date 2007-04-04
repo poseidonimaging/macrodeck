@@ -1,0 +1,23 @@
+<% @menu_content = "<a href=\"/#{@type}/#{@name}/blog/\">View Blog</a> <a href=\"/#{@type}/#{@name}/blog/post\">New Entry</a> <a href=\"/#{@type}/#{@name}/blog/settings\">Settings</a> <a href=\"/#{@type}/#{@name}/blog/permissions\">Permissions</a>" %>
+<% @summary = build_summary("Changing permissions of " + h(@blogmetadata[:title]), "Blog Permissions") %>
+
+<% if @error != nil %>
+<p class="error"><%= @error %></p>
+<% end %>
+
+<%= form_tag("/#{@type}/#{@name}/blog/permissions/") %>
+<fieldset>
+	<legend>Blog Permissions</legend>
+	<p>These permissions are the permissions that will be applied to newly created entries as well as
+	the permissions for accessing this blog.</p>
+	<fieldset>
+		<legend>Read Permissions</legend>
+		<%= render_component :controller => "permission", :action => "display_table", :params => { :permissions => @readperms, :kind => "read" } %>
+	</fieldset>
+	<fieldset>
+		<legend>Write Permissions</legend>
+		<%= render_component :controller => "permission", :action => "display_table", :params => { :permissions => @writeperms, :kind => "write" } %>
+	</fieldset>
+	<p><%= submit_tag "Update Permissions" %> <%= link_to "Cancel", "/#{@type}/#{@name}/blog/" %></p>
+</fieldset>
+<%= end_form_tag %>
