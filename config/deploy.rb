@@ -22,7 +22,7 @@ set :repository, "file:///var/svn/macrodeck/#{application}/trunk"
 # be used to single out a specific subset of boxes in a particular role, like
 # :primary => true.
 
-role :web, "www.macrodeck.com"
+role :web, "localhost"
 #role :web_beta, "beta.macrodeck.com"
 #role :app, "localhost:8000", "localhost:8001", "localhost:8002", "localhost:8003", "localhost:8004", "localhost:8005", "localhost:8006", "localhost:8007", "localhost:8008", "localhost:8009"
 role :app, "localhost"
