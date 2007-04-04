@@ -89,3 +89,9 @@ end
 #   it will be treated as the contents of the template to render. Any other keys
 #   are treated as local variables, which are made available to the (ERb)
 #   template.
+
+# Override restart
+desc "Restart the Mongrel process."
+task :restart, :roles => :web do
+	sudo "/etc/init.d/mongrel.macrodeck restart"
+end
