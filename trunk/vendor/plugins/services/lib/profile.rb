@@ -4,17 +4,16 @@ require 'services'
 require 'data_group'
 require 'data_item'
 
-class Profile < ActiveRecord::Base
-    
-    acts_as_ferret :fields => [:tags, :description, :title] 
-    set_table_name "data_groups"
+class Profile < DataGroup
+            
     attr_protected :groupingtype
+    
   #  has_many :items, :class_name=>"DataItem", :foreign_key=>"grouping"
     UUID = DGROUP_PROFILE
 
     # we should be sure that we create exactly Profile element
     def before_create        
-        write_attribute :groupingtype, self::UUID
+        write_attribute :groupingtype, UUID
         write_attribute :groupingid, UUIDService.generateUUID
     end
     
@@ -48,8 +47,11 @@ class Profile < ActiveRecord::Base
     end
         
     # create new profile with given metdata    
-    def Profile.createNewProfile(metadata={})
-        DataService.createDataGroup(DGROUP_PROFILE,nil,nil,metadata) 
+    def Profile.createNewProfile(objMetadata=Metadata.new)
+         profile = new
+         profile.loadMetadata(objMetadata)
+         profile.save
+         profile.uuid
     end
 
     # additional accessor for groupingid
@@ -66,14 +68,16 @@ class Profile < ActiveRecord::Base
     end
     
     # add new item to the profile
-    def addNewItem(type,value,metadata = {})
-        metadata.update(
-            {
-                :owner => owner,
-                :grouping => profile_id
-            }
-        )        
-        DataService.createData(DTYPE_PROFILE_FIELD,type,value,metadata)
+    def addNewItem(type,value,objMetadata = Metadata.new)
+        objMetadata.owner = self.owner
+        objMetadata.grouping = self.uuid
+        DataService.createData(type,value,objMetadata)  
+#        profile_item = ProfileItem.new do |i|
+#          i.loadValue(type,value)
+#          i.loadMetadata(objMetadata)          
+#        end
+#        profile_item.save
+#        profile_item.uuid                                       
     end
   
     # update exist metadata or create one  

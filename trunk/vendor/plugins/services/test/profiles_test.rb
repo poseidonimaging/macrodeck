@@ -39,7 +39,8 @@ class ProfilesTest < Test::Unit::TestCase
       assert_equal Profile.find('00000000-1111-2222-3333-444444444444'), Profile.find(1)
     
       # addNewItem
-      assert profile.addNewItem('string','test string',{})
+      assert profile.addNewItem('string','test string')
+      #p profile.items
       assert_equal profile.items[0].stringdata,'test string'
       
       # updateMetadata

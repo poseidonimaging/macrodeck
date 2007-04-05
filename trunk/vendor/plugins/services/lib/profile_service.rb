@@ -14,7 +14,16 @@ class ProfileService < BaseService
     # Creates a new profile. You should use createProfileItem to add 
     # some data here. Parameter's format is {:owner => "...", etc.}
     def self.createProfile(metadata)
-        Profile.createNewProfile(metadata)
+        case metadata.class.name
+          when 'Metadata'
+            objMetadata = metadata
+          when 'Hash'
+            objMetadata = Metadata.makeFromHash(metadata)
+          else
+            raise ArgumentError
+        end
+        Profile.createNewProfile(objMetadata)              
+        #DataService.createDataGroup(nil,nil,objMetadata) 
     end
     
     # Deletes profile by its profileId. 
@@ -38,22 +47,19 @@ class ProfileService < BaseService
     end
     
     # Creates a new profile's item within given profile.
-    def self.addProfileItem(profile_id, type, value, metadata)        
-        profile = Profile.find(profile_id)
-        return false unless profile
-        metadata.update(
-            :creatorapp => @serviceUUID            
-        )                
-        profile.addNewItem(type,value,metadata)        
-#		profile_meta = DataService.getDataGroupMetadata(profile_id)
-#		item_metadata.update(
-#		  {
-#		    :owner => profile_meta[:owner],
-#		    :creatorapp => @serviceUUID,
-#		    :grouping => profile_id		    
-#          })
-#		item_id = ProfileItem.new_item(type, value, item_metadata)
-#		return item_id
+    def self.addProfileItem(profile_id, type, value, metadata)
+        profile = Profile.checkUUID(profile_id)
+        raise ArgumentError unless profile        
+        case metadata.class.name
+          when 'Metadata'
+            objMetadata = metadata
+          when 'Hash'
+            objMetadata = Metadata.makeFromHash(metadata)
+          else
+            raise ArgumentError
+        end
+        objMetadata.datacreator = @serviceUUID
+        profile.addNewItem(type,value,objMetadata)
     end
     
     # Deletes a specified profile field.

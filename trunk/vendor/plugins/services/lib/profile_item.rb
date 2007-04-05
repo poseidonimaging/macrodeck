@@ -1,15 +1,12 @@
 
-class ProfileItem < ActiveRecord::Base
-    set_table_name "data_items"   
+class ProfileItem < DataItem
+     
     belongs_to :parent, :class_name=>"Profile", :foreign_key=>"grouping"
     
+    UUID = DTYPE_PROFILE_FIELD
     def before_create
-        write_attribute :owner, DTYPE_PROFILE_FIELD        
+        write_attribute :owner, UUID        
     end 
-    
-    def new_item(type, value, metadata)
-        DataService.createDataItem(DGROUP_PROFILE_FIELD, type, value, metadata) 
-    end
     
     private
     

@@ -3,6 +3,7 @@ require 'creditcard'
 require 'digest/sha2'
 require 'openssl'
 require 'yaml'
+require 'ArpApiLib'
 
 # we will use SHA512 function
 include Digest
@@ -20,6 +21,9 @@ class SubscriptionManagementService < BaseService
     STATUSCANCELED          = 40
     STATUSPARTIALPAYMENT    = 50
 
+    API_LOGIN               = '4CuQ34ap'
+    TRNS_KEY                = '6p23q4DE6DC9EVsx'
+    API_URL                 = 'https://apitest.authorize.net/xml/v1/request.api'
          
     # Create/edit/delete subscriptions
     # Create/edit/delete subscription services (i.e. things that users can subscribe to) 
@@ -104,7 +108,22 @@ class SubscriptionManagementService < BaseService
           return false
         end
     end    
- 
+        
+    def SubscriptionManagementService.makeRecurrencePayment(user_uuid, subscription_uuid, payment_info)
+        user = User.checkUUID(user_uuid)        
+        sub = Subscription.checkUUID(subscription_uuid)
+        raise ArgumentError unless (subs & user)
+        subname = sub.service.title
+        interval = IntervalType.new(payment_info.length, payment_info.unit)
+        schedule = PaymentScheduleType.new(interval, payment_info.start_date, payment_info.total_acc, payment_info.trial_acc)        
+        cinfo = CreditCardType.new(payment_info.credit_card, payment_info.month)
+        binfo = NameAndAddressType.new(payment_info.first_name,payment_info.last_name)
+        xmlout = req.CreateSubscription(auth,subname,schedule,payment_info.amount, payment_info.trial_amount, cinfo,binfo)
+        xmlresp = HttpTransport.TransmitRequest(xmlout, ARGV_0)
+        aReq.ProcessResponse(xmlresp)       
+    end  
+    
+    
     # TODO: Tests OK, but need to be processed
     def SubscriptionManagementService.decryptCard(subscription_uuid, last_four_digits,password)
         sub = Subscription.find_by_uuid(subscription_uuid)
