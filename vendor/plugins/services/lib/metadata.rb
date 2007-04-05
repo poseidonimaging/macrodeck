@@ -12,8 +12,7 @@ class Metadata
     end 
   end
   
-  def [](key)
-    puts key.to_s
+  def [](key)    
     return instance_variable_get("@#{key.to_s}") if instance_variables.include?("@#{key.to_s}")
     nil
   end
