@@ -10,20 +10,20 @@ class AccountController < ApplicationController
 	end
 	def create_group
 		if @user_loggedin
-			if @params[:step] == nil
-				if @params[:groupname] == nil
+			if params[:step] == nil
+				if params[:groupname] == nil
 					@groupname = nil
 				else
-					@groupname = @params[:groupname].downcase.gsub(/[^0-9A-Za-z_\-\s]/, "").gsub(" ", "-")
+					@groupname = params[:groupname].downcase.gsub(/[^0-9A-Za-z_\-\s]/, "").gsub(" ", "-")
 				end
 				render :template => "account/create_group1"
-			elsif @params[:step] == "1"
-				@groupname = @params[:groupname].downcase.gsub(/[^0-9A-Za-z_\-\s]/, "").gsub(" ", "-")
+			elsif params[:step] == "1"
+				@groupname = params[:groupname].downcase.gsub(/[^0-9A-Za-z_\-\s]/, "").gsub(" ", "-")
 				if @groupname.length > 0
 					if UserService.doesGroupExist?(@groupname) == false
-						@origgroupname = @params[:groupname]
-						if @params[:grouplongname] != nil
-							@grouplongname = @params[:grouplongname]
+						@origgroupname = params[:groupname]
+						if params[:grouplongname] != nil
+							@grouplongname = params[:grouplongname]
 						else
 							@grouplongname = @origgroupname
 						end
@@ -36,10 +36,10 @@ class AccountController < ApplicationController
 					@error = "The group short name you picked is invalid."
 					render :template => "account/create_group1"
 				end
-			elsif @params[:step] == "2"
-				@groupname = @params[:groupname]
-				@grouplongname = @params[:grouplongname]
-				@origgroupname = @params[:origgroupname]
+			elsif params[:step] == "2"
+				@groupname = params[:groupname]
+				@grouplongname = params[:grouplongname]
+				@origgroupname = params[:origgroupname]
 				if @grouplongname.length > 0
 					if @groupname.length > 0
 						render :template => "account/create_group3"
@@ -52,11 +52,11 @@ class AccountController < ApplicationController
 					@error = "You did not enter a group name."
 					render :template => "account/create_group2"
 				end
-			elsif @params[:step] == "3"
-				@groupname = @params[:groupname]
-				@grouplongname = @params[:grouplongname]
-				@origgroupname = @params[:origgroupname]
-				@description = @params[:description]
+			elsif params[:step] == "3"
+				@groupname = params[:groupname]
+				@grouplongname = params[:grouplongname]
+				@origgroupname = params[:origgroupname]
+				@description = params[:description]
 				if @groupname.length > 0
 					if @grouplongname.length > 0
 						if UserService.doesGroupExist?(@groupname) == false
@@ -95,19 +95,19 @@ class AccountController < ApplicationController
 		# step 1 - username
 		# step 2 - password, secret question, secret answer
 		# step 3 - email, name, display name
-		if @params[:step] == nil
-			if @params[:username] == nil
+		if params[:step] == nil
+			if params[:username] == nil
 				@username = nil
 			else
-				@username = @params[:username].downcase.gsub(/\W/, "").gsub(" ", "")
+				@username = params[:username].downcase.gsub(/\W/, "").gsub(" ", "")
 			end
 			render :template => "account/register1"
-		elsif @params[:step] == "1"
+		elsif params[:step] == "1"
 			# validate username
-			@username = @params[:username].downcase.gsub(/\W/, "").gsub(" ", "") # should remove all non-word characters and remove spaces in case \W didn't catch them
+			@username = params[:username].downcase.gsub(/\W/, "").gsub(" ", "") # should remove all non-word characters and remove spaces in case \W didn't catch them
 			if @username.length > 0
 				if UserService.doesUserExist?(@username) == false
-					@origusername = @params[:username]
+					@origusername = params[:username]
 					render :template => "account/register2"
 				else
 					@error = "The username you picked is already in use."
@@ -117,31 +117,31 @@ class AccountController < ApplicationController
 				@error = "The username you picked is invalid."
 				render :template => "account/register1"
 			end
-		elsif @params[:step] == "2"
+		elsif params[:step] == "2"
 			if request.method == :post
 				# don't parse GET requests for sanity
-				@username = @params[:username].downcase.gsub(/\W/, "").gsub(" ", "") # in case someone tries to trick their way into the system with a bad username
-				@origusername = @params[:origusername] # this is for their "display name" which will be displayed on step 3.
-				@secretquestion = @params[:secretquestion]
-				@secretanswer = @params[:secretanswer]
+				@username = params[:username].downcase.gsub(/\W/, "").gsub(" ", "") # in case someone tries to trick their way into the system with a bad username
+				@origusername = params[:origusername] # this is for their "display name" which will be displayed on step 3.
+				@secretquestion = params[:secretquestion]
+				@secretanswer = params[:secretanswer]
 				# validate password
-				if @params[:password1] != @params[:password2]
+				if params[:password1] != params[:password2]
 					@error = "Your passwords don't match."
 					render :template => "account/register2"
 				else
 					# passwords match, are they long enough?
-					@password = @params[:password1]
+					@password = params[:password1]
 					if @password.length < 5
 						@error = "Your password is too short (must be at least 5 characters long)."
 						render :template => "account/register2"
 					else
 						# okay, they're long enough. what about the secret question?
-						if @params[:secretquestion].length == 0
+						if params[:secretquestion].length == 0
 							@error = "You must enter a secret question."
 							render :template => "account/register2"
 						else
 							# and what about the secret answer?
-							if @params[:secretanswer].length == 0
+							if params[:secretanswer].length == 0
 								@error = "You must enter a secret answer."
 								render :template => "account/register2"
 							else
@@ -154,16 +154,16 @@ class AccountController < ApplicationController
 			else
 				raise "Accessing account/register#2 via unsupported HTTP method!"
 			end
-		elsif @params[:step] == "3"
+		elsif params[:step] == "3"
 			if request.method == :post
-				@username = @params[:username].downcase.gsub(/\W/, "").gsub(" ", "") # wise guy, eh?
-				@origusername = @params[:displayname]
-				@secretquestion = @params[:secretquestion]
-				@secretanswer = @params[:secretanswer]
-				@password = @params[:password]
-				@email = @params[:email]
-				@displayname = @params[:displayname]
-				@name = @params[:name]
+				@username = params[:username].downcase.gsub(/\W/, "").gsub(" ", "") # wise guy, eh?
+				@origusername = params[:displayname]
+				@secretquestion = params[:secretquestion]
+				@secretanswer = params[:secretanswer]
+				@password = params[:password]
+				@email = params[:email]
+				@displayname = params[:displayname]
+				@name = params[:name]
 				# Validate e-mail address
 				if email_valid?(@email) == false
 					@error = "Please enter a valid e-mail address."
@@ -221,8 +221,8 @@ class AccountController < ApplicationController
 	def login
 		if request.method == :post
 			# The form was POSTed. We're going to do a login.
-			@authcode = UserService.authenticate(@params[:username].downcase.gsub(/\W/, "").gsub(" ", ""), @params[:password], request.remote_ip)
-			@username = @params[:username].downcase.gsub(/\W/, "").gsub(" ", "")
+			@authcode = UserService.authenticate(params[:username].downcase.gsub(/\W/, "").gsub(" ", ""), params[:password], request.remote_ip)
+			@username = params[:username].downcase.gsub(/\W/, "").gsub(" ", "")
 			if @authcode == nil
 				# Error authenticating
 				@error = "Invalid username or password."
@@ -252,15 +252,15 @@ class AccountController < ApplicationController
 		end
 	end
 	def home
-		if @params[:username] != nil
-			uuid = UserService.lookupUserName(@params[:username].downcase)
+		if params[:username] != nil
+			uuid = UserService.lookupUserName(params[:username].downcase)
 			if uuid == nil
 				render :template => "errors/invalid_user_or_group"
 			else
 				if session != nil
 					if session[:authcode] != nil && session[:uuid] != nil
-						verify_authcode = UserService.verifyAuthCode(@session[:uuid], @session[:authcode])
-						@username = @params[:username].downcase
+						verify_authcode = UserService.verifyAuthCode(session[:uuid], session[:authcode])
+						@username = params[:username].downcase
 						if verify_authcode == true
 							# there's no real data put on the homepage yet.
 							set_tabs_for_user(@username, true)
@@ -281,17 +281,17 @@ class AccountController < ApplicationController
 	end
 	def profile
 		if request.method == :get
-			if @params[:groupname] != nil
-				uuid = UserService.lookupGroupName(@params[:groupname].downcase)
+			if params[:groupname] != nil
+				uuid = UserService.lookupGroupName(params[:groupname].downcase)
 				if uuid == nil
 					render :template => "errors/invalid_user_or_group"
 				else
 					@type = "group"
-					@name = @params[:groupname].downcase
+					@name = params[:groupname].downcase
 					
 				end
-			elsif @params[:username] != nil
-				uuid = UserService.lookupUserName(@params[:username].downcase)
+			elsif params[:username] != nil
+				uuid = UserService.lookupUserName(params[:username].downcase)
 				if uuid == nil
 					render :template => "errors/invalid_user_or_group"
 				else
@@ -306,23 +306,23 @@ class AccountController < ApplicationController
 	def settings
 		# This could probably support groups quite easily...
 		if request.method == :post
-			if @params[:username] != nil
-				uuid = UserService.lookupUserName(@params[:username].downcase)
+			if params[:username] != nil
+				uuid = UserService.lookupUserName(params[:username].downcase)
 				if uuid == nil
 					render :template => "errors/invalid_user_or_group"
 				else
 					if session != nil
 						if session[:authcode] != nil && session[:uuid] != nil
-							verify_authcode = UserService.verifyAuthCode(@session[:uuid], @session[:authcode])
+							verify_authcode = UserService.verifyAuthCode(session[:uuid], session[:authcode])
 							if verify_authcode == true
-								@username = @params[:username].downcase.gsub(/\W/, "").gsub(" ", "") # wise guy, eh?
-								@displayname = @params[:displayname]
-								@secretquestion = @params[:secretquestion]
-								@secretanswer = @params[:secretanswer]
-								@password1 = @params[:password1]
-								@password2 = @params[:password2]
-								@email = @params[:email]
-								@name = @params[:name]
+								@username = params[:username].downcase.gsub(/\W/, "").gsub(" ", "") # wise guy, eh?
+								@displayname = params[:displayname]
+								@secretquestion = params[:secretquestion]
+								@secretanswer = params[:secretanswer]
+								@password1 = params[:password1]
+								@password2 = params[:password2]
+								@email = params[:email]
+								@name = params[:name]
 								set_tabs_for_user(@username, true)
 								set_current_tab "settings"
 								
@@ -392,21 +392,21 @@ class AccountController < ApplicationController
 				render :template => "errors/invalid_user_or_group"
 			end			
 		elsif request.method == :get
-			if @params[:username] != nil
-				uuid = UserService.lookupUserName(@params[:username].downcase)
+			if params[:username] != nil
+				uuid = UserService.lookupUserName(params[:username].downcase)
 				if uuid == nil
 					render :template => "errors/invalid_user_or_group"
 				else
 					if session != nil
 						if session[:authcode] != nil && session[:uuid] != nil
-							verify_authcode = UserService.verifyAuthCode(@session[:uuid], @session[:authcode])
+							verify_authcode = UserService.verifyAuthCode(session[:uuid], session[:authcode])
 							if verify_authcode == true
-								@displayname = UserService.getUserProperty(@session[:uuid], @session[:authcode], :displayname)
-								@name = UserService.getUserProperty(@session[:uuid], @session[:authcode], :name)
-								@secretquestion = UserService.getUserProperty(@session[:uuid], @session[:authcode], :secretquestion)
-								@secretanswer = UserService.getUserProperty(@session[:uuid], @session[:authcode], :secretanswer)
-								@email = UserService.getUserProperty(@session[:uuid], @session[:authcode], :email)
-								@username = @params[:username].downcase
+								@displayname = UserService.getUserProperty(session[:uuid], session[:authcode], :displayname)
+								@name = UserService.getUserProperty(session[:uuid], session[:authcode], :name)
+								@secretquestion = UserService.getUserProperty(session[:uuid], session[:authcode], :secretquestion)
+								@secretanswer = UserService.getUserProperty(session[:uuid], session[:authcode], :secretanswer)
+								@email = UserService.getUserProperty(session[:uuid], session[:authcode], :email)
+								@username = params[:username].downcase
 								set_tabs_for_user(@username, true)
 								set_current_tab "settings"								
 							else
@@ -426,14 +426,14 @@ class AccountController < ApplicationController
 	end
 
 	def get_data
-		if @params[:username] != nil
-			uuid = UserService.lookupUserName(@params[:username].downcase)
+		if params[:username] != nil
+			uuid = UserService.lookupUserName(params[:username].downcase)
 			if uuid == nil
 				render :template => "errors/invalid_user_or_group"
 			else
 				if session != nil
 					if session[:authcode] != nil && session[:uuid] != nil
-						if UserService.verifyAuthCode(@session[:uuid], @session[:authcode])
+						if UserService.verifyAuthCode(session[:uuid], session[:authcode])
 							@rootnodes = DataGroup.find(:all, :conditions => ["parent IS NULL AND (creator = ? OR owner = ?)", uuid, uuid])
 						else
 							render :template => "errors/access_denied"
@@ -453,14 +453,14 @@ class AccountController < ApplicationController
 	# returns a partial that contains a table that shows the contents
 	# of a data item/group
 	def get_data_node
-		if @params[:username] != nil
+		if params[:username] != nil
 			uuid = UserService.lookupUserName(params[:username].downcase)
 			if uuid == nil
 				render :template => "errors/invalid_user_or_group"
 			else
 				if session != nil
 					if session[:authcode] != nil && session[:uuid] != nil
-						if UserService.verifyAuthCode(@session[:uuid], @session[:authcode])
+						if UserService.verifyAuthCode(session[:uuid], session[:authcode])
 							# Now, we figure out what the hell they're trying to look at.
 							if DataService.doesDataGroupExist?(params[:uuid])
 								if DataService.canRead?(params[:uuid], @user_uuid)

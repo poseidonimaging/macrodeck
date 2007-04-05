@@ -7,8 +7,8 @@ class WidgetController < ApplicationController
 	end
 	
 	def view
-		if @params[:uuid] != nil
-			@widget = Widget.find(:first, :conditions => ["uuid = ?", @params[:uuid]])
+		if params[:uuid] != nil
+			@widget = Widget.find(:first, :conditions => ["uuid = ?", params[:uuid]])
 			if @widget != nil
 				# just aggregating the metadata -- no processing needed
 				set_current_tab "directory"
@@ -22,8 +22,8 @@ class WidgetController < ApplicationController
 	end
 	
 	def delete
-		if @params[:uuid] != nil
-			@widget = Widget.find(:first, :conditions => ["uuid = ?", @params[:uuid]])
+		if params[:uuid] != nil
+			@widget = Widget.find(:first, :conditions => ["uuid = ?", params[:uuid]])
 			if @widget != nil
 				if @widget.owner == @user_uuid || @widget.creator == @user_uuid || UserService.checkPermissions(UserService.loadPermissions(@widget.write_permissions), @user_uuid)
 					set_current_tab "directory"
@@ -90,15 +90,15 @@ class WidgetController < ApplicationController
 					render :template => "widget/new"
 				elsif request.method == :post
 					@uuid = UUIDService.generateUUID()
-					@descriptive_name = @params[:descriptive_name]
-					@internal_name = @params[:internal_name]
-					@description = @params[:description]
-					@version = @params[:version]
-					@homepage = @params[:homepage]
-					@status = @params[:status]					
+					@descriptive_name = params[:descriptive_name]
+					@internal_name = params[:internal_name]
+					@description = params[:description]
+					@version = params[:version]
+					@homepage = params[:homepage]
+					@status = params[:status]					
 					rcomp_array = Array.new
-					if @params[:components] != nil
-						rcomps = @params[:components].sort
+					if params[:components] != nil
+						rcomps = params[:components].sort
 						rcomps.each do |rcomp|
 							rcomp[1].each_pair do |key, value|
 								if value == "enabled"
@@ -108,9 +108,9 @@ class WidgetController < ApplicationController
 						end
 					end
 					@required_components = rcomp_array
-					@code = @params[:code]
-					@readperms = PermissionController.parse_permissions(@params[:read])
-					@writeperms = PermissionController.parse_permissions(@params[:write])
+					@code = params[:code]
+					@readperms = PermissionController.parse_permissions(params[:read])
+					@writeperms = PermissionController.parse_permissions(params[:write])
 					if @status == "alpha"
 						@status_tags = '<option selected="selected" value="alpha">Alpha</option>
 										<option value="beta">Beta</option>
@@ -205,8 +205,8 @@ class WidgetController < ApplicationController
 	end	
 	
 	def edit
-		if @params[:uuid] != nil
-			@widget = Widget.find(:first, :conditions => ["uuid = ?", @params[:uuid]])
+		if params[:uuid] != nil
+			@widget = Widget.find(:first, :conditions => ["uuid = ?", params[:uuid]])
 			if @widget != nil
 				if @widget.owner == @user_uuid || @widget.creator == @user_uuid || UserService.checkPermissions(UserService.loadPermissions(@widget.write_permissions), @user_uuid)
 					set_current_tab "directory"
@@ -250,15 +250,15 @@ class WidgetController < ApplicationController
 						end
 						render :template => "widget/edit"
 					elsif request.method == :post
-						@uuid = @params[:uuid]
-						@descriptive_name = @params[:descriptive_name]
-						@internal_name = @params[:internal_name]
-						@description = @params[:description]
-						@version = @params[:version]
-						@homepage = @params[:homepage]
-						@status = @params[:status]					
+						@uuid = params[:uuid]
+						@descriptive_name = params[:descriptive_name]
+						@internal_name = params[:internal_name]
+						@description = params[:description]
+						@version = params[:version]
+						@homepage = params[:homepage]
+						@status = params[:status]					
 						rcomp_array = Array.new
-						rcomps = @params[:components].sort
+						rcomps = params[:components].sort
 						rcomps.each do |rcomp|
 							rcomp[1].each_pair do |key, value|
 								if value == "enabled"
@@ -267,9 +267,9 @@ class WidgetController < ApplicationController
 							end
 						end
 						@required_components = rcomp_array
-						@code = @params[:code]
-						@readperms = PermissionController.parse_permissions(@params[:read])
-						@writeperms = PermissionController.parse_permissions(@params[:write])
+						@code = params[:code]
+						@readperms = PermissionController.parse_permissions(params[:read])
+						@writeperms = PermissionController.parse_permissions(params[:write])
 						if @status == "alpha"
 							@status_tags = '<option selected="selected" value="alpha">Alpha</option>
 											<option value="beta">Beta</option>
@@ -363,8 +363,8 @@ class WidgetController < ApplicationController
 	end
 	
 	def code
-		if @params[:uuid] != nil
-			@widget = Widget.find(:first, :conditions => ["uuid = ?", @params[:uuid]])
+		if params[:uuid] != nil
+			@widget = Widget.find(:first, :conditions => ["uuid = ?", params[:uuid]])
 			if @widget != nil
 				response.headers['Content-Type'] = 'text/javascript'
 				render :partial => "code"
@@ -380,7 +380,7 @@ class WidgetController < ApplicationController
 	# object and run the widget's setUserInfo function so that
 	# the widget knows the user's info.
 	#
-	#   @params[:objname] => the name of the object to run setUserInfo on
+	#   params[:objname] => the name of the object to run setUserInfo on
 	#
 	def set_user_info
 		render :partial => "set_user_info"

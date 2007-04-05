@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
 
 	# If a session is present, renew it. 
 	def update_session
-		if @session
+		if session
 			::ActionController::CgiRequest::DEFAULT_SESSION_OPTIONS.update(:session_expires => 3.days.from_now )
 		end
 		return true
@@ -13,9 +13,9 @@ class ApplicationController < ActionController::Base
 	
 	# Checks a client's authcode against our records
 	def check_authcode
-		if @session
-			if @session[:authcode] != nil && @session[:uuid] != nil
-				validcode = UserService.verifyAuthCode(@session[:uuid], @session[:authcode])
+		if session
+			if session[:authcode] != nil && session[:uuid] != nil
+				validcode = UserService.verifyAuthCode(session[:uuid], session[:authcode])
 				if validcode == false
 					# you dirty dirty man you!
 					reset_session
@@ -77,20 +77,20 @@ class ApplicationController < ActionController::Base
 		@user_uuid = nil
 		@user_authcode = nil
 		
-		if @session
-			if @session[:authcode] != nil && @session[:uuid] != nil
-				if UserService.getUserProperty(@session[:uuid], @session[:authcode], :username) != nil
+		if session
+			if session[:authcode] != nil && session[:uuid] != nil
+				if UserService.getUserProperty(session[:uuid], session[:authcode], :username) != nil
 					@user_loggedin = true
-					@user_username = UserService.getUserProperty(@session[:uuid], @session[:authcode], :username)
-					@user_name = UserService.getUserProperty(@session[:uuid], @session[:authcode], :name)
-					@user_displayname = UserService.getUserProperty(@session[:uuid], @session[:authcode], :displayname)
-					@user_authcode = @session[:authcode]
+					@user_username = UserService.getUserProperty(session[:uuid], session[:authcode], :username)
+					@user_name = UserService.getUserProperty(session[:uuid], session[:authcode], :name)
+					@user_displayname = UserService.getUserProperty(session[:uuid], session[:authcode], :displayname)
+					@user_authcode = session[:authcode]
 					if @user_name != nil
 						@user_firstname = @user_name.split(" ")[0]
 					else
 						@user_firstname = nil
 					end
-					@user_uuid = @session[:uuid]
+					@user_uuid = session[:uuid]
 				else
 					@user_uuid = "anonymous"
 					@user_loggedin = false

@@ -3,13 +3,13 @@ class BlogController < ApplicationController
 	layout "default"
 	
 	def index
-		if @params[:groupname] != nil
-			uuid = UserService.lookupGroupName(@params[:groupname].downcase)
+		if params[:groupname] != nil
+			uuid = UserService.lookupGroupName(params[:groupname].downcase)
 			if uuid == nil
 				render :template => "errors/invalid_user_or_group"
 			else
 				@type = "group"
-				@name = @params[:groupname].downcase
+				@name = params[:groupname].downcase
 				@blogmetadata = BlogService.getBlogMetadata(BlogService.getBlogUUID(uuid))
 				@guuid = BlogService.getBlogUUID(uuid)
 				@posts = BlogService.getBlogPosts(uuid)
@@ -17,13 +17,13 @@ class BlogController < ApplicationController
 					set_current_tab "devblog"
 				end
 			end
-		elsif @params[:username] != nil
-			uuid = UserService.lookupUserName(@params[:username].downcase)
+		elsif params[:username] != nil
+			uuid = UserService.lookupUserName(params[:username].downcase)
 			if uuid == nil
 				render :template => "errors/invalid_user_or_group"
 			else
 				@type = "user"
-				@name = @params[:username].downcase
+				@name = params[:username].downcase
 				@blogmetadata = BlogService.getBlogMetadata(BlogService.getBlogUUID(uuid))
 				@guuid = BlogService.getBlogUUID(uuid)				
 				@posts = BlogService.getBlogPosts(uuid)
@@ -45,42 +45,42 @@ class BlogController < ApplicationController
 		# for security purposes (i.e. so people don't post images linking to the delete link),
 		# you can only actually delete via POST
 		if request.method == :get
-			if @params[:groupname] != nil
-				uuid = UserService.lookupGroupName(@params[:groupname].downcase)
+			if params[:groupname] != nil
+				uuid = UserService.lookupGroupName(params[:groupname].downcase)
 				if uuid == nil
 					render :template => "errors/invalid_user_or_group"
 				else
 					@type = "group"
-					@name = @params[:groupname].downcase
+					@name = params[:groupname].downcase
 					@blogmetadata = BlogService.getBlogMetadata(BlogService.getBlogUUID(uuid))
-					if DataService.canWrite?(@params[:uuid], @user_uuid)
-						@post = BlogService.getBlogPost(@params[:uuid])
+					if DataService.canWrite?(params[:uuid], @user_uuid)
+						@post = BlogService.getBlogPost(params[:uuid])
 						if @post == nil
 							render :template => "errors/invalid_post"
 						else
-							@postmetadata = BlogService.getPostMetadata(@params[:uuid])
-							@postuuid = @params[:uuid]
+							@postmetadata = BlogService.getPostMetadata(params[:uuid])
+							@postuuid = params[:uuid]
 							render :template => "blog/delete"
 						end
 					else
 						render :template => "errors/access_denied"
 					end
 				end
-			elsif @params[:username] != nil
-				uuid = UserService.lookupUserName(@params[:username].downcase)
+			elsif params[:username] != nil
+				uuid = UserService.lookupUserName(params[:username].downcase)
 				if uuid == nil
 					render :template => "errors/invalid_user_or_group"
 				else
 					@type = "user"
-					@name = @params[:username].downcase
+					@name = params[:username].downcase
 					@blogmetadata = BlogService.getBlogMetadata(BlogService.getBlogUUID(uuid))
-					if DataService.canWrite?(@params[:uuid], @user_uuid)
-						@post = BlogService.getBlogPost(@params[:uuid])
+					if DataService.canWrite?(params[:uuid], @user_uuid)
+						@post = BlogService.getBlogPost(params[:uuid])
 						if @post == nil
 							render :template => "errors/invalid_post"
 						else
-							@postmetadata = BlogService.getPostMetadata(@params[:uuid])
-							@postuuid = @params[:uuid]
+							@postmetadata = BlogService.getPostMetadata(params[:uuid])
+							@postuuid = params[:uuid]
 							render :template => "blog/delete"
 						end
 					else
@@ -91,19 +91,19 @@ class BlogController < ApplicationController
 				render :template => "errors/invalid_user_or_group"
 			end
 		elsif request.method == :post
-			if @params[:groupname] != nil
-				uuid = UserService.lookupGroupName(@params[:groupname].downcase)
+			if params[:groupname] != nil
+				uuid = UserService.lookupGroupName(params[:groupname].downcase)
 				if uuid == nil
 					render :template => "errors/invalid_user_or_group"
 				else
 					@type = "group"
-					@name = @params[:groupname].downcase
-					if DataService.canWrite?(@params[:uuid], @user_uuid)
-						@post = BlogService.getBlogPost(@params[:uuid])
+					@name = params[:groupname].downcase
+					if DataService.canWrite?(params[:uuid], @user_uuid)
+						@post = BlogService.getBlogPost(params[:uuid])
 						if @post == nil
 							render :template => "errors/invalid_post"
 						else
-							@postuuid = @params[:uuid]
+							@postuuid = params[:uuid]
 							BlogService.deleteBlogPost(@postuuid)
 							redirect_to "/#{@type}/#{@name}/blog"
 						end
@@ -111,19 +111,19 @@ class BlogController < ApplicationController
 						render :template => "errors/access_denied"
 					end
 				end
-			elsif @params[:username] != nil
-				uuid = UserService.lookupUserName(@params[:username].downcase)
+			elsif params[:username] != nil
+				uuid = UserService.lookupUserName(params[:username].downcase)
 				if uuid == nil
 					render :template => "errors/invalid_user_or_group"
 				else
 					@type = "user"
-					@name = @params[:username].downcase
-					if DataService.canWrite?(@params[:uuid], @user_uuid)
-						@post = BlogService.getBlogPost(@params[:uuid])
+					@name = params[:username].downcase
+					if DataService.canWrite?(params[:uuid], @user_uuid)
+						@post = BlogService.getBlogPost(params[:uuid])
 						if @post == nil
 							render :template => "errors/invalid_post"
 						else
-							@postuuid = @params[:uuid]
+							@postuuid = params[:uuid]
 							BlogService.deleteBlogPost(@postuuid)
 							redirect_to "/#{@type}/#{@name}/blog"
 						end
@@ -139,46 +139,46 @@ class BlogController < ApplicationController
 	
 	def edit
 		if request.method == :get
-			if @params[:groupname] != nil
-				uuid = UserService.lookupGroupName(@params[:groupname].downcase)
+			if params[:groupname] != nil
+				uuid = UserService.lookupGroupName(params[:groupname].downcase)
 				if uuid == nil
 					render :template => "errors/invalid_user_or_group"
 				else
 					@type = "group"
-					@name = @params[:groupname].downcase
+					@name = params[:groupname].downcase
 					@blogmetadata = BlogService.getBlogMetadata(BlogService.getBlogUUID(uuid))
-					if DataService.canWrite?(@params[:uuid], @user_uuid)
-						@post = BlogService.getBlogPost(@params[:uuid])
+					if DataService.canWrite?(params[:uuid], @user_uuid)
+						@post = BlogService.getBlogPost(params[:uuid])
 						if @post == nil
 							render :template => "errors/invalid_post"
 						else
-							@postmetadata = BlogService.getPostMetadata(@params[:uuid])
-							@postuuid = @params[:uuid]
-							@readperms = BlogService.getPostPermissions(@params[:uuid], :read)
-							@writeperms = BlogService.getPostPermissions(@params[:uuid], :write)
+							@postmetadata = BlogService.getPostMetadata(params[:uuid])
+							@postuuid = params[:uuid]
+							@readperms = BlogService.getPostPermissions(params[:uuid], :read)
+							@writeperms = BlogService.getPostPermissions(params[:uuid], :write)
 							render :template => "blog/edit"
 						end
 					else
 						render :template => "errors/access_denied"
 					end
 				end
-			elsif @params[:username] != nil
-				uuid = UserService.lookupUserName(@params[:username].downcase)
+			elsif params[:username] != nil
+				uuid = UserService.lookupUserName(params[:username].downcase)
 				if uuid == nil
 					render :template => "errors/invalid_user_or_group"
 				else
 					@type = "user"
-					@name = @params[:username].downcase
+					@name = params[:username].downcase
 					@blogmetadata = BlogService.getBlogMetadata(BlogService.getBlogUUID(uuid))
-					if DataService.canWrite?(@params[:uuid], @user_uuid)
-						@post = BlogService.getBlogPost(@params[:uuid])
+					if DataService.canWrite?(params[:uuid], @user_uuid)
+						@post = BlogService.getBlogPost(params[:uuid])
 						if @post == nil
 							render :template => "errors/invalid_post"
 						else
-							@postmetadata = BlogService.getPostMetadata(@params[:uuid])
-							@postuuid = @params[:uuid]
-							@readperms = BlogService.getPostPermissions(@params[:uuid], :read)
-							@writeperms = BlogService.getPostPermissions(@params[:uuid], :write)							
+							@postmetadata = BlogService.getPostMetadata(params[:uuid])
+							@postuuid = params[:uuid]
+							@readperms = BlogService.getPostPermissions(params[:uuid], :read)
+							@writeperms = BlogService.getPostPermissions(params[:uuid], :write)							
 							render :template => "blog/edit"
 						end
 					else
@@ -189,31 +189,31 @@ class BlogController < ApplicationController
 				render :template => "errors/invalid_user_or_group"
 			end
 		elsif request.method == :post
-			if @params[:groupname] != nil
-				@uuid = UserService.lookupGroupName(@params[:groupname].downcase)
+			if params[:groupname] != nil
+				@uuid = UserService.lookupGroupName(params[:groupname].downcase)
 				@type = "group"
 				if @uuid == nil
 					render :template => "errors/invalid_user_or_group"
 				else				
 					# Any user can post on any blog. Solution until permissions are completed.
-					@name = @params[:groupname].downcase
+					@name = params[:groupname].downcase
 					@blogmetadata = BlogService.getBlogMetadata(BlogService.getBlogUUID(@uuid))
-					@readperms = PermissionController.parse_permissions(@params[:read])
-					@writeperms = PermissionController.parse_permissions(@params[:write])	
-					@postuuid = @params[:uuid]					
-					if DataService.canWrite?(@params[:uuid], @user_uuid)
+					@readperms = PermissionController.parse_permissions(params[:read])
+					@writeperms = PermissionController.parse_permissions(params[:write])	
+					@postuuid = params[:uuid]					
+					if DataService.canWrite?(params[:uuid], @user_uuid)
 						# Validate the fields
-						@post = BlogService.getBlogPost(@params[:uuid])
+						@post = BlogService.getBlogPost(params[:uuid])
 						if @post == nil
 							render :template => "errors/invalid_post"
 						else
-							if @params[:title].length > 0 && @params[:content].length > 0
-								BlogService.editBlogPost(@postuuid, @params[:title], @params[:description], @params[:content], nil, nil)
+							if params[:title].length > 0 && params[:content].length > 0
+								BlogService.editBlogPost(@postuuid, params[:title], params[:description], params[:content], nil, nil)
 								BlogService.setPostPermissions(@postuuid, :read, @readperms)
 								BlogService.setPostPermissions(@postuuid, :write, @writeperms)								
 								redirect_to "/#{@type}/#{@name}/blog"
 							else
-								if @params[:title].length == 0
+								if params[:title].length == 0
 									@error = "Please enter a title for your blog."
 								else
 									@error = "Please enter content for your blog."
@@ -226,29 +226,29 @@ class BlogController < ApplicationController
 						render :template => "errors/access_denied"
 					end
 				end
-			elsif @params[:username] != nil
-				@uuid = UserService.lookupUserName(@params[:username].downcase)
+			elsif params[:username] != nil
+				@uuid = UserService.lookupUserName(params[:username].downcase)
 				@type = "user"
 				if @uuid == nil
 					render :template => "errors/invalid_user_or_group"
 				else
 					# Any user can post on any blog. Solution until permissions are completed.				
-					@name = @params[:username].downcase
+					@name = params[:username].downcase
 					@blogmetadata = BlogService.getBlogMetadata(BlogService.getBlogUUID(@uuid))
-					@postuuid = @params[:uuid]
-					if DataService.canWrite?(@params[:uuid], @user_uuid)
+					@postuuid = params[:uuid]
+					if DataService.canWrite?(params[:uuid], @user_uuid)
 						# Validate the fields
-						@post = BlogService.getBlogPost(@params[:uuid])
+						@post = BlogService.getBlogPost(params[:uuid])
 						if @post == nil
 							render :template => "errors/invalid_post"
 						else
-							if @params[:title].length > 0 && @params[:content].length > 0
-								BlogService.editBlogPost(@postuuid, @params[:title], @params[:description], @params[:content], nil, nil)
+							if params[:title].length > 0 && params[:content].length > 0
+								BlogService.editBlogPost(@postuuid, params[:title], params[:description], params[:content], nil, nil)
 								BlogService.setPostPermissions(@postuuid, :read, @readperms)
 								BlogService.setPostPermissions(@postuuid, :write, @writeperms)								
 								redirect_to "/#{@type}/#{@name}/blog"
 							else
-								if @params[:title].length == 0
+								if params[:title].length == 0
 									@error = "Please enter a title for your blog."
 								else
 									@error = "Please enter content for your blog."
@@ -271,13 +271,13 @@ class BlogController < ApplicationController
 	
 	def post
 		if request.method == :get
-			if @params[:groupname] != nil
-				@uuid = UserService.lookupGroupName(@params[:groupname].downcase)
+			if params[:groupname] != nil
+				@uuid = UserService.lookupGroupName(params[:groupname].downcase)
 				@type = "group"
 				if @uuid == nil
 					render :template => "errors/invalid_user_or_group"
 				else
-					@name = @params[:groupname].downcase
+					@name = params[:groupname].downcase
 					@blogmetadata = BlogService.getBlogMetadata(BlogService.getBlogUUID(@uuid))
 					@readperms = DataService.getDefaultPermissions(BlogService.getBlogUUID(@uuid), :read)
 					@writeperms = DataService.getDefaultPermissions(BlogService.getBlogUUID(@uuid), :write)
@@ -287,13 +287,13 @@ class BlogController < ApplicationController
 						render :template => "errors/access_denied"
 					end			
 				end
-			elsif @params[:username] != nil
-				@uuid = UserService.lookupUserName(@params[:username].downcase)
+			elsif params[:username] != nil
+				@uuid = UserService.lookupUserName(params[:username].downcase)
 				@type = "user"
 				if @uuid == nil
 					render :template => "errors/invalid_user_or_group"
 				else
-					@name = @params[:username].downcase
+					@name = params[:username].downcase
 					@blogmetadata = BlogService.getBlogMetadata(BlogService.getBlogUUID(@uuid))
 					@readperms = DataService.getDefaultPermissions(BlogService.getBlogUUID(@uuid), :read)
 					@writeperms = DataService.getDefaultPermissions(BlogService.getBlogUUID(@uuid), :write)					
@@ -307,26 +307,26 @@ class BlogController < ApplicationController
 				render :template => "errors/invalid_user_or_group"
 			end
 		elsif request.method == :post
-			if @params[:groupname] != nil
-				@uuid = UserService.lookupGroupName(@params[:groupname].downcase)
+			if params[:groupname] != nil
+				@uuid = UserService.lookupGroupName(params[:groupname].downcase)
 				@type = "group"
 				if @uuid == nil
 					render :template => "errors/invalid_user_or_group"
 				else
-					@name = @params[:groupname].downcase
+					@name = params[:groupname].downcase
 					@blogmetadata = BlogService.getBlogMetadata(BlogService.getBlogUUID(@uuid))
-					@readperms = PermissionController.parse_permissions(@params[:read])
-					@writeperms = PermissionController.parse_permissions(@params[:write])					
+					@readperms = PermissionController.parse_permissions(params[:read])
+					@writeperms = PermissionController.parse_permissions(params[:write])					
 					if DataService.canWrite?(BlogService.getBlogUUID(@uuid), @user_uuid)
 						# Validate the fields
-						if @params[:title].length > 0 && @params[:content].length > 0
+						if params[:title].length > 0 && params[:content].length > 0
 							# createBlogPost(blogID, creator, postTitle, postDescription, postContent, readPermissions, writePermissions)
-							uuid = BlogService.createBlogPost(BlogService.getBlogUUID(@uuid), session[:uuid], @params[:title], @params[:description], @params[:content], nil, nil)
+							uuid = BlogService.createBlogPost(BlogService.getBlogUUID(@uuid), session[:uuid], params[:title], params[:description], params[:content], nil, nil)
 							BlogService.setPostPermissions(uuid, :read, @readperms)
 							BlogService.setPostPermissions(uuid, :write, @writeperms)
 							redirect_to "/#{@type}/#{@name}/blog"
 						else
-							if @params[:title].length == 0
+							if params[:title].length == 0
 								@error = "Please enter a title for your blog."
 							else
 								@error = "Please enter content for your blog."
@@ -337,26 +337,26 @@ class BlogController < ApplicationController
 						render :template => "errors/access_denied"
 					end			
 				end
-			elsif @params[:username] != nil
-				@uuid = UserService.lookupUserName(@params[:username].downcase)
+			elsif params[:username] != nil
+				@uuid = UserService.lookupUserName(params[:username].downcase)
 				@type = "user"
 				if @uuid == nil
 					render :template => "errors/invalid_user_or_group"
 				else
-					@name = @params[:username].downcase
+					@name = params[:username].downcase
 					@blogmetadata = BlogService.getBlogMetadata(BlogService.getBlogUUID(@uuid))
-					@readperms = PermissionController.parse_permissions(@params[:read])
-					@writeperms = PermissionController.parse_permissions(@params[:write])					
+					@readperms = PermissionController.parse_permissions(params[:read])
+					@writeperms = PermissionController.parse_permissions(params[:write])					
 					if DataService.canWrite?(BlogService.getBlogUUID(@uuid), @user_uuid)
 						# Validate the fields
-						if @params[:title].length > 0 && @params[:content].length > 0
+						if params[:title].length > 0 && params[:content].length > 0
 							# createBlogPost(blogID, creator, postTitle, postDescription, postContent, readPermissions, writePermissions)
-							uuid = BlogService.createBlogPost(BlogService.getBlogUUID(@uuid), session[:uuid], @params[:title], @params[:description], @params[:content], nil, nil)
+							uuid = BlogService.createBlogPost(BlogService.getBlogUUID(@uuid), session[:uuid], params[:title], params[:description], params[:content], nil, nil)
 							BlogService.setPostPermissions(uuid, :read, @readperms)
 							BlogService.setPostPermissions(uuid, :write, @writeperms)
 							redirect_to "/#{@type}/#{@name}/blog"
 						else
-							if @params[:title].length == 0
+							if params[:title].length == 0
 								@error = "Please enter a title for your blog."
 							else
 								@error = "Please enter content for your blog."
@@ -375,44 +375,44 @@ class BlogController < ApplicationController
 
 	def view
 		if request.method == :get
-			if @params[:groupname] != nil
-				uuid = UserService.lookupGroupName(@params[:groupname].downcase)
+			if params[:groupname] != nil
+				uuid = UserService.lookupGroupName(params[:groupname].downcase)
 				if uuid == nil
 					render :template => "errors/invalid_user_or_group"
 				else
 					@type = "group"
-					@name = @params[:groupname].downcase
+					@name = params[:groupname].downcase
 					@blogmetadata = BlogService.getBlogMetadata(BlogService.getBlogUUID(uuid))
-					if DataService.canRead?(@params[:uuid], @user_uuid)
-						@post = BlogService.getBlogPost(@params[:uuid])
+					if DataService.canRead?(params[:uuid], @user_uuid)
+						@post = BlogService.getBlogPost(params[:uuid])
 						if @post == nil
 							render :template => "errors/invalid_post"
 						else
-							@postmetadata = BlogService.getPostMetadata(@params[:uuid])
-							@postuuid = @params[:uuid]
-							@comments = BlogService.getBlogComments(@params[:uuid])
+							@postmetadata = BlogService.getPostMetadata(params[:uuid])
+							@postuuid = params[:uuid]
+							@comments = BlogService.getBlogComments(params[:uuid])
 							render :template => "blog/view"
 						end
 					else
 						render :template => "errors/access_denied"
 					end
 				end
-			elsif @params[:username] != nil
-				uuid = UserService.lookupUserName(@params[:username].downcase)
+			elsif params[:username] != nil
+				uuid = UserService.lookupUserName(params[:username].downcase)
 				if uuid == nil
 					render :template => "errors/invalid_user_or_group"
 				else
 					@type = "user"
-					@name = @params[:username].downcase
+					@name = params[:username].downcase
 					@blogmetadata = BlogService.getBlogMetadata(BlogService.getBlogUUID(uuid))
-					if DataService.canRead?(@params[:uuid], @user_uuid)
-						@post = BlogService.getBlogPost(@params[:uuid])
+					if DataService.canRead?(params[:uuid], @user_uuid)
+						@post = BlogService.getBlogPost(params[:uuid])
 						if @post == nil
 							render :template => "errors/invalid_post"
 						else
-							@postmetadata = BlogService.getPostMetadata(@params[:uuid])
-							@postuuid = @params[:uuid]
-							@comments = BlogService.getBlogComments(@params[:uuid])
+							@postmetadata = BlogService.getPostMetadata(params[:uuid])
+							@postuuid = params[:uuid]
+							@comments = BlogService.getBlogComments(params[:uuid])
 							render :template => "blog/view"
 						end
 					else
@@ -423,38 +423,38 @@ class BlogController < ApplicationController
 				render :template => "errors/invalid_user_or_group"
 			end
 		elsif request.method == :post
-			if @params[:groupname] != nil
-				@uuid = UserService.lookupGroupName(@params[:groupname].downcase)
+			if params[:groupname] != nil
+				@uuid = UserService.lookupGroupName(params[:groupname].downcase)
 				@type = "group"
 				if @uuid == nil
 					render :template => "errors/invalid_user_or_group"
 				else				
 					# Any user can post on any blog. Solution until permissions are completed.
-					@name = @params[:groupname].downcase
+					@name = params[:groupname].downcase
 					@blogmetadata = BlogService.getBlogMetadata(BlogService.getBlogUUID(@uuid))
-					if DataService.canWrite?(BlogService.getCommentsUUID(@params[:uuid]), @user_uuid)
+					if DataService.canWrite?(BlogService.getCommentsUUID(params[:uuid]), @user_uuid)
 						# Validate the fields
-						@post = BlogService.getBlogPost(@params[:uuid])
+						@post = BlogService.getBlogPost(params[:uuid])
 						if @post == nil
 							render :template => "errors/invalid_post"
 						else
-							@postuuid = @params[:uuid]
-							if (@user_loggedin == false && @params[:uname].length > 0 && @params[:content].length > 0) || (@user_loggedin == true && @params[:content].length > 0)
-								#BlogService.editBlogPost(@params[:uuid], @params[:title], @params[:description], @params[:content], nil, nil)
+							@postuuid = params[:uuid]
+							if (@user_loggedin == false && params[:uname].length > 0 && params[:content].length > 0) || (@user_loggedin == true && params[:content].length > 0)
+								#BlogService.editBlogPost(params[:uuid], params[:title], params[:description], params[:content], nil, nil)
 								if @user_loggedin == false
-									BlogService.createBlogComment(@postuuid, ANONYMOUS, @params[:uname], @params[:content])
+									BlogService.createBlogComment(@postuuid, ANONYMOUS, params[:uname], params[:content])
 								else
-									BlogService.createBlogComment(@postuuid, @user_uuid, nil, @params[:content])
+									BlogService.createBlogComment(@postuuid, @user_uuid, nil, params[:content])
 								end
 								redirect_to "/#{@type}/#{@name}/blog/view/#{@postuuid}/"
 							else
-								if @params[:content].length == 0
+								if params[:content].length == 0
 									@error = "Please enter a comment."
-								elsif @user_loggedin == false && @params[:uname].length == 0
+								elsif @user_loggedin == false && params[:uname].length == 0
 									@error = "Please enter a username."
 								end
-								@postmetadata = BlogService.getPostMetadata(@params[:uuid])
-								@comments = BlogService.getBlogComments(@params[:uuid])
+								@postmetadata = BlogService.getPostMetadata(params[:uuid])
+								@comments = BlogService.getBlogComments(params[:uuid])
 								render :template => "blog/view"
 							end
 						end
@@ -462,38 +462,38 @@ class BlogController < ApplicationController
 						render :template => "errors/access_denied"
 					end
 				end
-			elsif @params[:username] != nil
-				@uuid = UserService.lookupUserName(@params[:username].downcase)
+			elsif params[:username] != nil
+				@uuid = UserService.lookupUserName(params[:username].downcase)
 				@type = "user"
 				if @uuid == nil
 					render :template => "errors/invalid_user_or_group"
 				else				
 					# Any user can post on any blog. Solution until permissions are completed.
-					@name = @params[:username].downcase
+					@name = params[:username].downcase
 					@blogmetadata = BlogService.getBlogMetadata(BlogService.getBlogUUID(@uuid))
-					if DataService.canWrite?(BlogService.getCommentsUUID(@params[:uuid]), @user_uuid)
+					if DataService.canWrite?(BlogService.getCommentsUUID(params[:uuid]), @user_uuid)
 						# Validate the fields
-						@post = BlogService.getBlogPost(@params[:uuid])
+						@post = BlogService.getBlogPost(params[:uuid])
 						if @post == nil
 							render :template => "errors/invalid_post"
 						else
-							@postuuid = @params[:uuid]
-							if (@user_loggedin == false && @params[:uname].length > 0 && @params[:content].length > 0) || (@user_loggedin == true && @params[:content].length > 0)
-								#BlogService.editBlogPost(@params[:uuid], @params[:title], @params[:description], @params[:content], nil, nil)
+							@postuuid = params[:uuid]
+							if (@user_loggedin == false && params[:uname].length > 0 && params[:content].length > 0) || (@user_loggedin == true && params[:content].length > 0)
+								#BlogService.editBlogPost(params[:uuid], params[:title], params[:description], params[:content], nil, nil)
 								if @user_loggedin == false
-									BlogService.createBlogComment(@postuuid, ANONYMOUS, @params[:uname], @params[:content])
+									BlogService.createBlogComment(@postuuid, ANONYMOUS, params[:uname], params[:content])
 								else
-									BlogService.createBlogComment(@postuuid, @user_uuid, nil, @params[:content])
+									BlogService.createBlogComment(@postuuid, @user_uuid, nil, params[:content])
 								end								
 								redirect_to "/#{@type}/#{@name}/blog/view/#{@postuuid}/"
 							else
-								if @params[:content].length == 0
+								if params[:content].length == 0
 									@error = "Please enter a comment."
-								elsif @user_loggedin == false && @params[:uname].length == 0
+								elsif @user_loggedin == false && params[:uname].length == 0
 									@error = "Please enter a username."
 								end
-								@postmetadata = BlogService.getPostMetadata(@params[:uuid])
-								@comments = BlogService.getBlogComments(@params[:uuid])
+								@postmetadata = BlogService.getPostMetadata(params[:uuid])
+								@comments = BlogService.getBlogComments(params[:uuid])
 								render :template => "blog/view"
 							end
 						end
@@ -511,13 +511,13 @@ class BlogController < ApplicationController
 	
 	def settings
 		if request.method == :get
-			if @params[:groupname] != nil
-				@uuid = UserService.lookupGroupName(@params[:groupname].downcase)
+			if params[:groupname] != nil
+				@uuid = UserService.lookupGroupName(params[:groupname].downcase)
 				@type = "group"
 				if @uuid == nil
 					render :template => "errors/invalid_user_or_group"
 				else
-					@name = @params[:groupname].downcase
+					@name = params[:groupname].downcase
 					@blogmetadata = BlogService.getBlogMetadata(BlogService.getBlogUUID(@uuid))
 					if DataService.canWrite?(BlogService.getBlogUUID(@uuid), @user_uuid)
 						render :template => "blog/settings"
@@ -525,13 +525,13 @@ class BlogController < ApplicationController
 						render :template => "errors/access_denied"
 					end			
 				end
-			elsif @params[:username] != nil
-				@uuid = UserService.lookupUserName(@params[:username].downcase)
+			elsif params[:username] != nil
+				@uuid = UserService.lookupUserName(params[:username].downcase)
 				@type = "user"
 				if @uuid == nil
 					render :template => "errors/invalid_user_or_group"
 				else
-					@name = @params[:username].downcase
+					@name = params[:username].downcase
 					@blogmetadata = BlogService.getBlogMetadata(BlogService.getBlogUUID(@uuid))
 					if DataService.canWrite?(BlogService.getBlogUUID(@uuid), @user_uuid)
 						render :template => "blog/settings"
@@ -543,22 +543,22 @@ class BlogController < ApplicationController
 				render :template => "errors/invalid_user_or_group"
 			end
 		elsif request.method == :post
-			if @params[:groupname] != nil
-				@uuid = UserService.lookupGroupName(@params[:groupname].downcase)
+			if params[:groupname] != nil
+				@uuid = UserService.lookupGroupName(params[:groupname].downcase)
 				@type = "group"
 				if @uuid == nil
 					render :template => "errors/invalid_user_or_group"
 				else
-					@name = @params[:groupname].downcase
+					@name = params[:groupname].downcase
 					@blogmetadata = BlogService.getBlogMetadata(BlogService.getBlogUUID(@uuid))
 					if DataService.canWrite?(BlogService.getBlogUUID(@uuid), @user_uuid)
 						# Validate the fields
-						if @params[:title].length > 0
-							DataService.modifyDataGroupMetadata(BlogService.getBlogUUID(@uuid), :title, @params[:title])
-							DataService.modifyDataGroupMetadata(BlogService.getBlogUUID(@uuid), :description, @params[:description])
+						if params[:title].length > 0
+							DataService.modifyDataGroupMetadata(BlogService.getBlogUUID(@uuid), :title, params[:title])
+							DataService.modifyDataGroupMetadata(BlogService.getBlogUUID(@uuid), :description, params[:description])
 							redirect_to "/#{@type}/#{@name}/blog"
 						else
-							if @params[:title].length == 0
+							if params[:title].length == 0
 								@error = "Please enter a title for your blog."
 							end
 							render :template => "blog/settings"
@@ -567,22 +567,22 @@ class BlogController < ApplicationController
 						render :template => "errors/access_denied"
 					end			
 				end
-			elsif @params[:username] != nil
-				@uuid = UserService.lookupUserName(@params[:username].downcase)
+			elsif params[:username] != nil
+				@uuid = UserService.lookupUserName(params[:username].downcase)
 				@type = "user"
 				if @uuid == nil
 					render :template => "errors/invalid_user_or_group"
 				else
-					@name = @params[:username].downcase
+					@name = params[:username].downcase
 					@blogmetadata = BlogService.getBlogMetadata(BlogService.getBlogUUID(@uuid))
 					if DataService.canWrite?(BlogService.getBlogUUID(@uuid), @user_uuid)
 						# Validate the fields
-						if @params[:title].length > 0 
-							DataService.modifyDataGroupMetadata(BlogService.getBlogUUID(@uuid), :title, @params[:title])
-							DataService.modifyDataGroupMetadata(BlogService.getBlogUUID(@uuid), :description, @params[:description])
+						if params[:title].length > 0 
+							DataService.modifyDataGroupMetadata(BlogService.getBlogUUID(@uuid), :title, params[:title])
+							DataService.modifyDataGroupMetadata(BlogService.getBlogUUID(@uuid), :description, params[:description])
 							redirect_to "/#{@type}/#{@name}/blog"
 						else
-							if @params[:title].length == 0
+							if params[:title].length == 0
 								@error = "Please enter a title for your blog."
 							end
 							render :template => "blog/settings"
@@ -598,13 +598,13 @@ class BlogController < ApplicationController
 	end	
 	def permissions
 		if request.method == :get
-			if @params[:groupname] != nil
-				@uuid = UserService.lookupGroupName(@params[:groupname].downcase)
+			if params[:groupname] != nil
+				@uuid = UserService.lookupGroupName(params[:groupname].downcase)
 				@type = "group"
 				if @uuid == nil
 					render :template => "errors/invalid_user_or_group"
 				else
-					@name = @params[:groupname].downcase
+					@name = params[:groupname].downcase
 					@blogmetadata = BlogService.getBlogMetadata(BlogService.getBlogUUID(@uuid))
 					@readperms = DataService.getDefaultPermissions(BlogService.getBlogUUID(@uuid), :read)
 					@writeperms = DataService.getDefaultPermissions(BlogService.getBlogUUID(@uuid), :write)						
@@ -614,13 +614,13 @@ class BlogController < ApplicationController
 						render :template => "errors/access_denied"
 					end			
 				end
-			elsif @params[:username] != nil
-				@uuid = UserService.lookupUserName(@params[:username].downcase)
+			elsif params[:username] != nil
+				@uuid = UserService.lookupUserName(params[:username].downcase)
 				@type = "user"
 				if @uuid == nil
 					render :template => "errors/invalid_user_or_group"
 				else
-					@name = @params[:username].downcase
+					@name = params[:username].downcase
 					@blogmetadata = BlogService.getBlogMetadata(BlogService.getBlogUUID(@uuid))
 					@readperms = DataService.getDefaultPermissions(BlogService.getBlogUUID(@uuid), :read)
 					@writeperms = DataService.getDefaultPermissions(BlogService.getBlogUUID(@uuid), :write)						
@@ -634,16 +634,16 @@ class BlogController < ApplicationController
 				render :template => "errors/invalid_user_or_group"
 			end
 		elsif request.method == :post
-			if @params[:groupname] != nil
-				@uuid = UserService.lookupGroupName(@params[:groupname].downcase)
+			if params[:groupname] != nil
+				@uuid = UserService.lookupGroupName(params[:groupname].downcase)
 				@type = "group"
 				if @uuid == nil
 					render :template => "errors/invalid_user_or_group"
 				else
-					@name = @params[:groupname].downcase
+					@name = params[:groupname].downcase
 					@blogmetadata = BlogService.getBlogMetadata(BlogService.getBlogUUID(@uuid))
-					@readperms = PermissionController.parse_permissions(@params[:read])
-					@writeperms = PermissionController.parse_permissions(@params[:write])					
+					@readperms = PermissionController.parse_permissions(params[:read])
+					@writeperms = PermissionController.parse_permissions(params[:write])					
 					if DataService.canWrite?(BlogService.getBlogUUID(@uuid), @user_uuid)
 						BlogService.setBlogPermissions(BlogService.getBlogUUID(@uuid), :read, @readperms)
 						BlogService.setBlogPermissions(BlogService.getBlogUUID(@uuid), :write, @writeperms)
@@ -652,16 +652,16 @@ class BlogController < ApplicationController
 						render :template => "errors/access_denied"
 					end			
 				end
-			elsif @params[:username] != nil
-				@uuid = UserService.lookupUserName(@params[:username].downcase)
+			elsif params[:username] != nil
+				@uuid = UserService.lookupUserName(params[:username].downcase)
 				@type = "user"
 				if @uuid == nil
 					render :template => "errors/invalid_user_or_group"
 				else
-					@name = @params[:username].downcase
+					@name = params[:username].downcase
 					@blogmetadata = BlogService.getBlogMetadata(BlogService.getBlogUUID(@uuid))
-					@readperms = PermissionController.parse_permissions(@params[:read])
-					@writeperms = PermissionController.parse_permissions(@params[:write])					
+					@readperms = PermissionController.parse_permissions(params[:read])
+					@writeperms = PermissionController.parse_permissions(params[:write])					
 					if DataService.canWrite?(BlogService.getBlogUUID(@uuid), @user_uuid)
 						BlogService.setBlogPermissions(BlogService.getBlogUUID(@uuid), :read, @readperms)
 						BlogService.setBlogPermissions(BlogService.getBlogUUID(@uuid), :write, @writeperms)

@@ -7,8 +7,8 @@ class ComponentController < ApplicationController
 	end
 	
 	def view
-		if @params[:internal_name] != nil
-			@component = Component.find(:first, :conditions => ["internal_name = ?", @params[:internal_name]])
+		if params[:internal_name] != nil
+			@component = Component.find(:first, :conditions => ["internal_name = ?", params[:internal_name]])
 			if @component != nil
 				# just aggregating the metadata -- no processing needed
 				set_current_tab "directory"
@@ -65,15 +65,15 @@ class ComponentController < ApplicationController
 					render :template => "component/new"
 				elsif request.method == :post
 					@uuid = UUIDService.generateUUID()
-					@descriptive_name = @params[:descriptive_name]
-					@internal_name = @params[:internal_name]
-					@description = @params[:description]
-					@version = @params[:version]
-					@homepage = @params[:homepage]
-					@status = @params[:status]
-					@code = @params[:code]
-					@readperms = PermissionController.parse_permissions(@params[:read])
-					@writeperms = PermissionController.parse_permissions(@params[:write])
+					@descriptive_name = params[:descriptive_name]
+					@internal_name = params[:internal_name]
+					@description = params[:description]
+					@version = params[:version]
+					@homepage = params[:homepage]
+					@status = params[:status]
+					@code = params[:code]
+					@readperms = PermissionController.parse_permissions(params[:read])
+					@writeperms = PermissionController.parse_permissions(params[:write])
 					if @status == "alpha"
 						@status_tags = '<option selected="selected" value="alpha">Alpha</option>
 										<option value="beta">Beta</option>
@@ -179,8 +179,8 @@ class ComponentController < ApplicationController
 	end
 	
 	def edit
-		if @params[:internal_name] != nil
-			@component = Component.find(:first, :conditions => ["internal_name = ?", @params[:internal_name]])
+		if params[:internal_name] != nil
+			@component = Component.find(:first, :conditions => ["internal_name = ?", params[:internal_name]])
 			if @component != nil
 				if @component.owner == @user_uuid || @component.creator == @user_uuid || UserService.checkPermissions(UserService.loadPermissions(@component.write_permissions), @user_uuid)
 					set_current_tab "directory"
@@ -223,16 +223,16 @@ class ComponentController < ApplicationController
 						end
 						render :template => "component/edit"
 					elsif request.method == :post
-						@uuid = @params[:uuid]
-						@descriptive_name = @params[:descriptive_name]
-						@internal_name = @params[:internal_name]
-						@description = @params[:description]
-						@version = @params[:version]
-						@homepage = @params[:homepage]
-						@status = @params[:status]
-						@code = @params[:code]
-						@readperms = PermissionController.parse_permissions(@params[:read])
-						@writeperms = PermissionController.parse_permissions(@params[:write])
+						@uuid = params[:uuid]
+						@descriptive_name = params[:descriptive_name]
+						@internal_name = params[:internal_name]
+						@description = params[:description]
+						@version = params[:version]
+						@homepage = params[:homepage]
+						@status = params[:status]
+						@code = params[:code]
+						@readperms = PermissionController.parse_permissions(params[:read])
+						@writeperms = PermissionController.parse_permissions(params[:write])
 						if @status == "alpha"
 							@status_tags = '<option selected="selected" value="alpha">Alpha</option>
 											<option value="beta">Beta</option>
@@ -353,8 +353,8 @@ class ComponentController < ApplicationController
 	end	
 	
 	def code
-		if @params[:internal_name] != nil
-			@component = Component.find(:first, :conditions => ["internal_name = ?", @params[:internal_name]])
+		if params[:internal_name] != nil
+			@component = Component.find(:first, :conditions => ["internal_name = ?", params[:internal_name]])
 			if @component != nil
 				response.headers['Content-Type'] = 'text/javascript'
 				render :partial => "code"
@@ -367,8 +367,8 @@ class ComponentController < ApplicationController
 	end	
 	
 	def delete
-		if @params[:internal_name] != nil
-			@component = Component.find(:first, :conditions => ["internal_name = ?", @params[:internal_name]])
+		if params[:internal_name] != nil
+			@component = Component.find(:first, :conditions => ["internal_name = ?", params[:internal_name]])
 			if @component != nil
 				if @component.owner == @user_uuid || @component.creator == @user_uuid || UserService.checkPermissions(UserService.loadPermissions(@component.write_permissions), @user_uuid)
 					set_current_tab "directory"

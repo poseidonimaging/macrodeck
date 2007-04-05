@@ -2,13 +2,13 @@ class EnvironmentController < ApplicationController
 	layout "default"
 	
 	def index
-		if @params[:groupname] != nil
-			@uuid = UserService.lookupGroupName(@params[:groupname].downcase)
+		if params[:groupname] != nil
+			@uuid = UserService.lookupGroupName(params[:groupname].downcase)
 			if @uuid == nil
 				render :template => "errors/invalid_user_or_group"
 			else
 				@type = "group"
-				@name = @params[:groupname].downcase
+				@name = params[:groupname].downcase
 				i_envs = Environment.find(:all, :conditions => ["owner = ?", @uuid])
 				@envs = Array.new
 				
@@ -21,13 +21,13 @@ class EnvironmentController < ApplicationController
 					end
 				end
 			end
-		elsif @params[:username] != nil
-			@uuid = UserService.lookupUserName(@params[:username].downcase)
+		elsif params[:username] != nil
+			@uuid = UserService.lookupUserName(params[:username].downcase)
 			if @uuid == nil
 				render :template => "errors/invalid_user_or_group"
 			else
 				@type = "user"
-				@name = @params[:username].downcase
+				@name = params[:username].downcase
 				if @uuid == @user_uuid
 					set_tabs_for_user @user_username, true
 					set_current_tab "environments"
@@ -52,15 +52,15 @@ class EnvironmentController < ApplicationController
 	end	
 	
 	def view
-		if @params[:groupname] != nil
-			uuid = UserService.lookupGroupName(@params[:groupname].downcase)
+		if params[:groupname] != nil
+			uuid = UserService.lookupGroupName(params[:groupname].downcase)
 			if uuid == nil
 				render :template => "errors/invalid_user_or_group"
 			else
-				if @params[:envname] != nil
+				if params[:envname] != nil
 					@type = "group"
-					@name = @params[:groupname].downcase
-					@envname = @params[:envname].downcase
+					@name = params[:groupname].downcase
+					@envname = params[:envname].downcase
 					@env = Environment.find(:first, :conditions => ["short_name = ? AND owner = ?", @envname, uuid])
 					if @env != nil
 						if UserService.checkPermissions(YAML::load(@env.read_permissions), @user_uuid)
@@ -75,14 +75,14 @@ class EnvironmentController < ApplicationController
 					render :template => "errors/invalid_environment"
 				end
 			end
-		elsif @params[:username] != nil
-			uuid = UserService.lookupUserName(@params[:username].downcase)
+		elsif params[:username] != nil
+			uuid = UserService.lookupUserName(params[:username].downcase)
 			if uuid == nil
 				render :template => "errors/invalid_user_or_group"
 			else
-				if @params[:envname] != nil
+				if params[:envname] != nil
 					@type = "user"
-					@name = @params[:username].downcase
+					@name = params[:username].downcase
 					if uuid == @user_uuid
 						set_tabs_for_user @user_username, true
 						set_current_tab "environments"
@@ -90,7 +90,7 @@ class EnvironmentController < ApplicationController
 						set_tabs_for_user @name, false
 						set_current_tab "environments"
 					end					
-					@envname = @params[:envname].downcase
+					@envname = params[:envname].downcase
 					@env = Environment.find(:first, :conditions => ["short_name = ? AND owner = ?", @envname, uuid])
 					if @env != nil
 						if UserService.checkPermissions(YAML::load(@env.read_permissions), @user_uuid)

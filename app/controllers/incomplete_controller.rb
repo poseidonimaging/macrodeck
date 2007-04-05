@@ -10,22 +10,22 @@ class IncompleteController < ApplicationController
 	end
 	
 	def environments
-		if @params[:groupname] != nil
-			uuid = UserService.lookupGroupName(@params[:groupname].downcase)
+		if params[:groupname] != nil
+			uuid = UserService.lookupGroupName(params[:groupname].downcase)
 			if uuid == nil
 				render :template => "errors/invalid_user_or_group"
 			else
 				@type = "group"
-				@name = @params[:groupname].downcase
+				@name = params[:groupname].downcase
 				# no tabs to set yet!
 			end
-		elsif @params[:username] != nil
-			uuid = UserService.lookupUserName(@params[:username].downcase)
+		elsif params[:username] != nil
+			uuid = UserService.lookupUserName(params[:username].downcase)
 			if uuid == nil
 				render :template => "errors/invalid_user_or_group"
 			else
 				@type = "user"
-				@name = @params[:username].downcase
+				@name = params[:username].downcase
 				if @user_username != nil && @name == @user_username.downcase
 					set_tabs_for_user(@name, true)
 					set_current_tab "environments"
@@ -40,22 +40,22 @@ class IncompleteController < ApplicationController
 	end
 	
 	def shareditems
-		if @params[:groupname] != nil
-			uuid = UserService.lookupGroupName(@params[:groupname].downcase)
+		if params[:groupname] != nil
+			uuid = UserService.lookupGroupName(params[:groupname].downcase)
 			if uuid == nil
 				render :template => "errors/invalid_user_or_group"
 			else
 				@type = "group"
-				@name = @params[:groupname].downcase
+				@name = params[:groupname].downcase
 				# no tabs to set yet!
 			end
-		elsif @params[:username] != nil
-			uuid = UserService.lookupUserName(@params[:username].downcase)
+		elsif params[:username] != nil
+			uuid = UserService.lookupUserName(params[:username].downcase)
 			if uuid == nil
 				render :template => "errors/invalid_user_or_group"
 			else
 				@type = "user"
-				@name = @params[:username].downcase
+				@name = params[:username].downcase
 				if @user_username != nil && @name == @user_username.downcase
 					set_tabs_for_user(@name, true)
 					set_current_tab "shareditems"
@@ -70,22 +70,22 @@ class IncompleteController < ApplicationController
 	end
 	
 	def profile
-		if @params[:groupname] != nil
-			uuid = UserService.lookupGroupName(@params[:groupname].downcase)
+		if params[:groupname] != nil
+			uuid = UserService.lookupGroupName(params[:groupname].downcase)
 			if uuid == nil
 				render :template => "errors/invalid_user_or_group"
 			else
 				@type = "group"
-				@name = @params[:groupname].downcase
+				@name = params[:groupname].downcase
 				# no tabs to set yet!
 			end
-		elsif @params[:username] != nil
-			uuid = UserService.lookupUserName(@params[:username].downcase)
+		elsif params[:username] != nil
+			uuid = UserService.lookupUserName(params[:username].downcase)
 			if uuid == nil
 				render :template => "errors/invalid_user_or_group"
 			else
 				@type = "user"
-				@name = @params[:username].downcase
+				@name = params[:username].downcase
 				if @user_username != nil && @name == @user_username.downcase
 					set_tabs_for_user(@name, true)
 					set_current_tab "profile"
