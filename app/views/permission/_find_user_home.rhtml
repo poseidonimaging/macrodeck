@@ -17,7 +17,7 @@
 	<% else %>
 		<% @groups.each do |group| %>
 		<div class="actions">
-			<a href="#" class="action add" onclick="top.<%= @params[:kind] %>_add_perm('<%= group %>', '<%= escape_javascript(h(UUIDService.lookupUUID(group))) %>'); parent.hideIbox(); return false;">Add <%= h(UUIDService.lookupUUID(group)) %></a>
+			<a href="#" class="action add" onclick="top.<%= params[:kind] %>_add_perm('<%= group %>', '<%= escape_javascript(h(UUIDService.lookupUUID(group))) %>'); parent.hideIbox(); return false;">Add <%= h(UUIDService.lookupUUID(group)) %></a>
 		</div>
 		<div class="clear"></div>
 		<% end %>
@@ -32,7 +32,7 @@
 	<div class="actions">
 		<p>Groups in this list have a special purpose or meaning, such as everybody that views this item, every user that isn't logged in that views this item, and so on.</p>
 		<p>
-			<a href="#" class="action add" onclick="top.<%= @params[:kind] %>_add_perm('everybody', 'everybody'); parent.hideIbox(); return false;">Add Everybody</a>
+			<a href="#" class="action add" onclick="top.<%= params[:kind] %>_add_perm('everybody', 'everybody'); parent.hideIbox(); return false;">Add Everybody</a>
 		</p>
 	</div>
 </div>
@@ -46,7 +46,7 @@
 	<p>Please enter the username or groupname of the user
 	or group you wish to add a permission for.</p>
 	<%= hidden_field_tag "step", "lookup" %>
-	<%= hidden_field_tag "kind", @params[:kind] %>
+	<%= hidden_field_tag "kind", params[:kind] %>
 	<%= text_field_tag "usergroup", nil, :size => "20" %> <%= submit_tag "Lookup" %>
 	<%= end_form_tag %>
 </div>

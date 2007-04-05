@@ -17,7 +17,7 @@
 <% if @component.owner == @user_uuid || @component.creator == @user_uuid || UserService.checkPermissions(UserService.loadPermissions(@component.write_permissions), @user_uuid) %>
 	<h3 class="section">Actions</h3>
 	<div class="actions padtop">
-		<a href="/component/<%= @params[:internal_name] %>/edit/" class="action edit">Edit Component</a>
-		<a href="/component/<%= @params[:internal_name] %>/delete/" class="action delete">Delete Component</a>
+		<a href="/component/<%= params[:internal_name] %>/edit/" class="action edit">Edit Component</a>
+		<a href="/component/<%= params[:internal_name] %>/delete/" class="action delete">Delete Component</a>
 	</div>
 <% end %>

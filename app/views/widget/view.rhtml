@@ -45,9 +45,9 @@
 
 <h3 class="section">Actions</h3>
 <div class="actions padtop">
-	<a href="/widget/<%= @params[:uuid] %>/add_to_toolbox/" class="action add">Add To Toolbox</a>
+	<a href="/widget/<%= params[:uuid] %>/add_to_toolbox/" class="action add">Add To Toolbox</a>
 	<% if @widget.owner == @user_uuid || @widget.creator == @user_uuid || UserService.checkPermissions(UserService.loadPermissions(@widget.write_permissions), @user_uuid) %>
-		<a href="/widget/<%= @params[:uuid] %>/edit/" class="action edit">Edit Widget</a>
-		<a href="/widget/<%= @params[:uuid] %>/delete/" class="action delete">Delete Widget</a>
+		<a href="/widget/<%= params[:uuid] %>/edit/" class="action edit">Edit Widget</a>
+		<a href="/widget/<%= params[:uuid] %>/delete/" class="action delete">Delete Widget</a>
 	<% end %>
 </div>

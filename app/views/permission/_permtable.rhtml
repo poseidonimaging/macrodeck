@@ -10,7 +10,7 @@
 		</thead>
 		<tbody id="<%= "#{@kind}_permissions" %>">
 			<% i = 0 %>
-			<% @params[:permissions].each do |permission| %>
+			<% params[:permissions].each do |permission| %>
 				<tr class="<%= cycle "row1", "row2" %>" id="<%= "item_#{@kind}_#{i}" %>">
 					<td class="usergroup"><%= UUIDService.lookupUUID(permission[:id]) %></td>
 					<td class="allow">
@@ -120,3 +120,4 @@
 		<a href="#<%= @kind %>_addperm" rel="ibox?width=320&height=240" class="action add">Add</a>
 	</div>
 </div>
+

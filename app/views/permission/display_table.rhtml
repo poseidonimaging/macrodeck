@@ -1,7 +1,7 @@
 <%=		
-		if @params[:permissions] != nil
-			if @params[:kind] != nil
-				@kind = @params[:kind]
+		if params[:permissions] != nil
+			if params[:kind] != nil
+				@kind = params[:kind]
 			else
 				@kind = "permission"
 			end
