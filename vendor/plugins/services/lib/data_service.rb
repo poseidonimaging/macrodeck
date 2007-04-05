@@ -333,13 +333,11 @@ class DataService < BaseService
 	# Functions will be provided in the future to lookup UUIDs
 	# so types, creators, and owners can be converted into
 	# English.
-	def self.getDataGroupMetadata(groupingID)
+	def self.getDataGroupMetadata(groupingID)	  
 		dgroup = DataGroup.checkUUID(groupingID)
-		if dgroup != nil			
-			return Metadata.fetch(self)
-		else
-			return nil
-		end
+		return nil unless dgroup
+		objMeta = Metadata.new	
+		return objMeta.fetch(dgroup)
 	end
 	
 	# Modifies the metadata for the specified data group.

@@ -163,6 +163,7 @@ class BlogService < BaseService
 	# has more than one blog, it'll return the first blog in the database. This
 	# should not happen, and therefore we don't care.
 	def self.getBlogUUID(userOrGroupUUID)
+	    #puts userOrGroupUUID
 		blog = DataService.findDataGrouping(DGROUP_BLOG, :owner, userOrGroupUUID, :first)
 		if blog != nil
 			return blog.groupingid
