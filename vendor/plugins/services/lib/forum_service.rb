@@ -17,26 +17,32 @@ class ForumService < BaseService
   end
   
   def ForumService.updateBoardMetadata(board_uuid,metadata)
+      board = ForumCategory.checkUUID(board_uuid)
+      raise unless board
+      board.update_attrubutes(metadata.to_hash)
   end
   
   def ForumService.deleteBoard(board_uuid)
-    obj = ForumBoard.check(uuid)
+    obj = ForumBoard.checkUUID(uuid)
     # TODO: have to verify this action.  
     obj ? obj.destroy : nil
   end  
   
-  def ForumService.createCategory(board_uuid,metadata)
+  def ForumService.createCategory(board_uuid,objMetadata)
     obj = ForumCategory.new do
       groupingid = UUIDService.generateUUID
       groupingtype = ForumCategory::UUID
       board = board_uuid
-      update_attributes(metadata)
+      update_attributes(objMetadata.to_hash)
       datacreator = @serviceUUID unless post.datacreator
     end  
     obj.save ? obj.uuid : nil
   end
   
   def ForumService.updateCategoryMetadata(category_uuid,metadata)
+    category = ForumCategory.check(category_uuid)
+    raise unless category
+    category.update_attrubutes(metadata.to_hash)
   end
   
   def ForumService.deleteCategory(category_uuid)
@@ -52,7 +58,7 @@ class ForumService < BaseService
       groupingid = UUIDService.generateUUID
       groupingtype = Forum::UUID
       parent = category_uuid
-      update_attributes(metadata)
+      update_attributes(metadata.to_hash)
       datacreator = @serviceUUID unless post.datacreator
     end  
     obj.save ? obj.uuid : nil
@@ -66,12 +72,15 @@ class ForumService < BaseService
   end
   
   def ForumService.deleteForum(forum_uuid)
-    obj = Forum.check(uuid)
+    obj = Forum.checkUUID(uuid)
     # TODO: have to verify this action.  
     obj ? obj.destroy : nil  
   end
   
   def ForumService.updateForumMetadata(forum_uuid,metadata)
+      board = ForumCategory.checkUUID(board_uuid)
+      raise unless board
+      board.update_attrubutes(metadata.to_hash)  
   end
   
   # Create a new post in the given forum
@@ -88,7 +97,7 @@ class ForumService < BaseService
           parent = forum_uuid
           groupingid = UUIDService.generateUUID
           datatype = ForumPostGroup::UUID
-          datacreator = metadatd.has_key?(:datacreator) ? metadata[:datacreator] : @serviceUUID
+          datacreator = metadata[:datacreator] ? metadata[:datacreator] : @serviceUUID
       end
       post_group.save
                        
@@ -97,7 +106,7 @@ class ForumService < BaseService
           stringdata = msg
           dataid = UUIDService.generateUUID
           datatype = ForumPost::UUID
-          update_attributes(metadata)
+          update_attributes(metadata.to_hash)
           datacreator = @serviceUUID unless post.datacreator
       end
       post.save ? dataid : nil                 
@@ -162,7 +171,7 @@ class ForumService < BaseService
           stringdata = msg
           dataid = UUIDService.generateUUID
           datatype = FORUM_REPLY
-          update_attributes(metadata)
+          update_attributes(metadata.to_hash)
           datacreator = @serviceUUID unless post.datacreator
       end
       reply.save ? dataid : nil      

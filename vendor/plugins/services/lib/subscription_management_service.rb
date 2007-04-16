@@ -28,7 +28,7 @@ class SubscriptionManagementService < BaseService
     # Create/edit/delete subscriptions
     # Create/edit/delete subscription services (i.e. things that users can subscribe to) 
     def SubscriptionManagementService.createSubscriptionService(recurrence_info,sub_type,metadata,template)
-        sub_service = SubscriptionService.new(metadata)
+        sub_service = SubscriptionService.new(metadata.to_hash)
         sub_service.uuid = UUIDService.generateUUID
         
         sub_service.creation = Time.now.to_i

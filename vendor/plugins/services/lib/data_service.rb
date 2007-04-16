@@ -343,7 +343,7 @@ class DataService < BaseService
 	# Modifies the metadata for the specified data group.
 	# Valid metadata names are: :type, :creator, :owner,
 	# :tags, :title, and :description
-	def self.modifyDataGroupMetadata(groupID, name, value)
+	def self.modifyDataGroupMetadata_old(groupID, name, value)
 		dgroup = DataGroup.find(:first, :conditions => ["groupingid = ?", groupID])
 		if dgroup != nil
 			case name
@@ -368,6 +368,29 @@ class DataService < BaseService
 			return false
 		end
 	end	
+
+	def self.modifyDataGroupMetadata(groupID, name, value)
+		dgroup = DataGroup.checkUUID(groupID)
+		return false unless dgroup
+    	case name
+			when :type, "type"
+				dgroup.groupingtype = value
+			when :creator, "creator"
+				dgroup.creator = value
+			when :owner, "owner"
+				dgroup.owner = value
+			when :tags, "tags"
+				dgroup.tags = value
+			when :title, "title"
+				dgroup.title = value
+			when :description, "description"
+				dgroup.description = value
+			else
+				return false
+		end
+		dgroup.save!
+		return true
+	end	
 	
 	# Gets the metadata associated with a particular data
 	# item, in a hash. The data that is returned should
@@ -378,20 +401,17 @@ class DataService < BaseService
 	# Functions will be provided in the future to lookup UUIDs
 	# so that this kind of thing can be looked up.
 	def self.getDataItemMetadata(dataID)
-		ditem = DataItem.find(:first, :conditions => ["dataid = ?", dataID])
-		if ditem != nil
-			h = { :type => ditem.datatype, :creator => ditem.creator, :owner => ditem.owner, :tags => ditem.tags, :creation => ditem.creation, :title => ditem.title, :description => ditem.description, :datacreator => ditem.datacreator }
-			return h
-		else
-			return nil
-		end
+		ditem = DataItem.checkUUID(dataID)
+		return nil unless ditem
+		metadata = Metadata.new
+		metadata.fetch(ditem)		
 	end
 	
 	# Modifies the data item metadata specified in name.
 	# Name may be :type, :creator, :owner, :tags, :title,
 	# :datacreator, or :description.
 	def self.modifyDataItemMetadata(dataID, name, value)
-		dataObj = DataItem.find(:first, :conditions => ["dataid = ?", dataID])
+		dataObj = DataItem.checkUUID(dataID)
 		if dataObj != nil
 			case name
 				when :type, "type"
@@ -596,8 +616,8 @@ class DataService < BaseService
 	# Keep in mind that this is only a helper function so you don't
 	# have to play with the models. Remote data is still accessed
 	# like normal data.
-	def self.createRemoteDataItem(dataType, valueType, dataValue, metadata, sourceId)
-		uuid = self.createData(dataType, valueType, dataValue, metadata)
+	def self.createRemoteDataItem(valueType, dataValue, metadata, sourceId)
+		uuid = self.createData(valueType, dataValue, metadata)
 		if uuid != nil
 			ditem = DataItem.find(:first, :conditions => ["dataid = ?", uuid])
 			if ditem != nil
@@ -611,8 +631,8 @@ class DataService < BaseService
 	
 	# Creates remote data groups with the sourceid specified.
 	# You still access it like normal data groups.
-	def self.createRemoteDataGroup(groupType, groupingID, parent, metadata, sourceId)
-		uuid = self.createDataGroup(groupType, groupingID, parent, metadata)
+	def self.createRemoteDataGroup(groupingID, parent, metadata, sourceId)
+		uuid = self.createDataGroup(groupingID, parent, metadata)
 		if uuid != nil
 			dgroup = DataGroup.find(:first, :conditions => ["groupingid = ?", uuid])
 			if dgroup != nil

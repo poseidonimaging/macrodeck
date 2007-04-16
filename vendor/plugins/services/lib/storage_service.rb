@@ -22,7 +22,7 @@ class StorageService < BaseService
 			storage.creatorapp = metadata[:creatorapp]
 			storage.description = metadata[:description]
 			# creator is owner by default
-			storage.owner = metadata.key?("owner") ? metadata[:owner] : storage.creator
+			storage.owner = metadata[:owner] ? metadata[:owner] : storage.creator
 			storage.tags = metadata[:tags]
 			storage.title = metadata[:title]
         end
@@ -86,17 +86,21 @@ class StorageService < BaseService
     def StorageService.addTagToFile(file_id, tag)
     end
 
-    # Modifies the file metadata. Second param is a hash.
+    # Modifies the file metadata. Second param is a hash or Metadata object.
     def StorageService.modifyFileMetadata(file_id, metadata)
         file = Storage.find_by_objectid(file_id)
         raise_no_record(file_id) unless file
-        metadata.each { |name, value|            
-            if file.has_attribute?(name)
-                file.update_attribute(name,value)
-            else 
-                raise ArgumentError, "can't update attribute: " + name.to_s                
-            end
-        }
+        if metadata.instance_of? Metadata
+            file.update_attribute(metadata.to_hash)
+        else
+            metadata.each { |name, value|            
+                if file.has_attribute?(name)
+                    file.update_attribute(name,value)
+                else 
+                    raise ArgumentError, "can't update attribute: " + name.to_s                
+                end
+            }
+        end
     end
     
     # Modifies the file metadata by specified +name+. 
@@ -187,10 +191,9 @@ class StorageService < BaseService
     def StorageService.getFileMetadata(file_id)
         storage = Storage.find_by_objectid(file_id)
         raise_no_record(folder_id) unless storage
-        return Hash[:objecttype => storage.objecttype, :creator => storage.creator,
-                    :owner => storage.owner, :description => storage.description,
-                    :tags => storage.tags, :title => storage.title,
-                    :creatorapp => storage.creatorapp, :updated => storage.updated]
+        meta = Metadata.new
+        meta.fetch(storage)
+        return meta
     end
     
     def StorageService.getFileData(file_id)
