@@ -18,8 +18,8 @@ ActionController::Routing::Routes.draw do |map|
   map.connect ':controller/service.wsdl', :action => 'wsdl'
 
   # Places
-  map.fbplaces '', :controller => 'facebook_places', :conditions => { :subdomain => "places" }
-  map.fbplaces ':action/:country/:state/:city/:place', :controller => 'facebook_places',
+  map.fbplaces 'facebook', :controller => 'facebook_places', :conditions => { :subdomain => "places" }
+  map.fbplaces 'facebook/:action/:country/:state/:city/:place', :controller => 'facebook_places',
 	  :conditions => { :subdomain => "places" },
 	  :defaults => { :action => "view", :country => "us", :state => nil, :city => nil, :place => nil }
   
