@@ -15,6 +15,10 @@ class ApplicationController < ActionController::Base
 		"8564bcd16141d4c650dd4dc55725b291"
 	end
 
+	def finish_facebook_login
+		redirect_to fbplaces_url
+	end
+
 	# Is the e-mail address specified a valid address?
 	def email_valid?(email)
 		if email =~ EMAIL_VALIDATION
