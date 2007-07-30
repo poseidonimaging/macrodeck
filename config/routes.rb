@@ -24,7 +24,7 @@ ActionController::Routing::Routes.draw do |map|
 	  :defaults => { :action => "view", :country => "us", :state => nil, :city => nil, :place => nil }
   
   # Route / to the MacroDeck Places homepage until we get a real one.
-  map.connect '', :controller => 'places', :action => 'index'
+  map.connect '', :controller => 'home', :action => 'index'
   
   # Install the default route as the lowest priority.
   map.connect ':controller/:action/:id'
