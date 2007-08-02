@@ -5,17 +5,15 @@
 	<%= render :partial => "layouts/header" %>
 </head>
 <body>
-	<div id="ypanel-header" class="ylayout-inactive-content">
+	<div id="header">
 		<%= render :partial => "layouts/top" %>
 	</div>
-	<div id="ypanel-content" class="ylayout-inactive-content">
-		<div id="main">
-			<div id="content-container">
-				<div id="content">
-					<%= @content_for_layout %>
-					<br />
-					<%= render :partial => "layouts/footer" %>				
-				</div>
+	<div id="main">
+		<div id="content-container">
+			<div id="content">
+				<%= @content_for_layout %>
+				<br />
+				<%= render :partial => "layouts/footer" %>				
 			</div>
 		</div>
 	</div>
