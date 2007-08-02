@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
 	end
 
 	def finish_facebook_login
-		redirect_to fbplaces_url
+		redirect_to "http://places.macrodeck.com/facebook/"
 	end
 
 	# Is the e-mail address specified a valid address?

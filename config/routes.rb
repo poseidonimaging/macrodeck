@@ -17,12 +17,18 @@ ActionController::Routing::Routes.draw do |map|
   # instead of a file named 'wsdl'
   map.connect ':controller/service.wsdl', :action => 'wsdl'
 
-  # Places
-  map.fbplaces 'facebook', :controller => 'facebook_places', :conditions => { :subdomain => "places" }
-  map.fbplaces 'facebook/:action/:country/:state/:city/:place', :controller => 'facebook_places',
+  # Facebook Places
+  map.fbplaces 'facebook', :controller => "facebook_places", :action => "index", :conditions => { :subdomain => "places" }
+  map.fbplaces 'facebook/:action/:country/:state/:city/:place', :controller => "facebook_places",
 	  :conditions => { :subdomain => "places" },
-	  :defaults => { :action => "view", :country => "us", :state => nil, :city => nil, :place => nil }
+	  :defaults => { :action => "index", :country => "us", :state => nil, :city => nil, :place => nil }
   
+  # Places
+  map.places '', :controller => "places", :conditions => { :subdomain => "places" }
+  map.places ':action/:country/:state/:city/:place', :controller => 'places',
+	  :conditions => { :subdomain => "places" },
+	  :defaults => { :action => "index", :country => "us", :state => nil, :city => nil, :place => nil }
+
   # Route / to the MacroDeck Places homepage until we get a real one.
   map.connect '', :controller => 'home', :action => 'index'
   
