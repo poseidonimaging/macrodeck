@@ -11,7 +11,7 @@
 # form the root of the application path.
 
 set :application, "macrodeck"
-set :repository, "file:///var/svn/macrodeck/#{application}/trunk"
+set :repository, "file:///var/svn/macrodeck/#{application}/branches/places-20070719"
 
 # =============================================================================
 # ROLES
