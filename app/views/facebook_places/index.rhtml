@@ -3,8 +3,8 @@
 <% if fbsession.is_valid? %>
 	Userid: <%= fbsession.session_user_id %><br />
 	<%
-	xml = fbsession.users_getInfo(:uids => [fbsession.session_user_id], :fields => [¿first_name¿, ¿last_name¿])
-	@firstName = xml.at(¿first_name¿).inner_html
-	@lastName = xml.at(¿last_name¿).inner_html %>
+	xml = fbsession.users_getInfo(:uids => [fbsession.session_user_id], :fields => ["first_name", "last_name"])
+	@firstName = xml.at("first_name").inner_html
+	@lastName = xml.at("last_name").inner_html %>
 	Your name is probably: <%= @firstName %> <%= @lastName %>
 <% end %>
