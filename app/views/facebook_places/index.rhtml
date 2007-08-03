@@ -1,3 +1,11 @@
 <fb:header>MacroDeck Places</fb:header>
 <p>Welcome to MacroDeck Places. This page renders inside Facebook.</p>
 
+<% if fbsession.is_valid? %>
+	Userid: <%= fbsession.session_user_id %><br />
+	<%
+	xml = fbsession.users_getInfo(:uids => [fbsession.session_user_id], :fields => ["first_name", "last_name"])
+	@firstName = xml.at("first_name").inner_html
+	@lastName = xml.at("last_name").inner_html %>
+	Your name is probably: <%= @firstName %> <%= @lastName %>
+<% end %>
