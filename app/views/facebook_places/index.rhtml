@@ -1,11 +1,21 @@
-<fb:header>MacroDeck Places</fb:header>
-<p>Welcome to MacroDeck Places. This page renders inside Facebook.</p>
+<fb:fbml>
+	<fb:dashboard>
+		<fb:action href="/">Home</fb:action>
+		<fb:action href="/browse">Browse Places</fb:action>
+		<fb:action href="/popular">Popular Places</fb:action>
+		<fb:create-button href="/create">Create a Place</fb:create-button>
+	</fb:dashboard>
 
-<% if @fbsession.is_valid? %>
-	Userid: <%= @fbsession.session_user_id %><br />
-	<%
-	xml = @fbsession.users_getInfo(:uids => [@fbsession.session_user_id], :fields => ["first_name", "last_name"])
-	@firstName = xml.at("first_name").inner_html
-	@lastName = xml.at("last_name").inner_html %>
-	Your name is probably: <%= @firstName %> <%= @lastName %>
-<% end %>
+	<fb:header>MacroDeck Places</fb:header>
+
+	<p>
+	<% if @fbsession.is_valid? %>
+		Userid: <%= @fbsession.session_user_id %><br />
+		<%
+		xml = @fbsession.users_getInfo(:uids => [@fbsession.session_user_id], :fields => ["first_name", "last_name"])
+		@firstName = xml.at("first_name").inner_html
+		@lastName = xml.at("last_name").inner_html %>
+		Your name is probably: <%= @firstName %> <%= @lastName %>
+		<% end %>
+	</p>
+</fb:fbml>
