@@ -2,10 +2,6 @@
 class FacebookPlacesController < ApplicationController
 	before_filter :require_facebook_login
 
-	# the main page!
-	def index
-	end
-
 	# view takes parameters like this:
 	# view/:country/:state/:city/:place
 	# If a parameter isn't specified, it is nil.
@@ -23,6 +19,10 @@ class FacebookPlacesController < ApplicationController
 	# browse URLs look like view URLs presently. when browsing
 	# by tags happens they might look different.
 	def browse
+		case params[:country]
+			when "summary"
+				render :template => "facebook/browse_summary"
+		end
 	end
 
 	# create URLs are like view but different in one way:

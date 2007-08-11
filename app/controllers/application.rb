@@ -1,6 +1,10 @@
 # Filters added to this controller will be run for all controllers in the application.
 # Likewise, all the methods added will be available for all controllers.
 
+# FIXME: Since RFacebook 0.8.0, all of this stuff here is no longer needed, and in fact
+# *BREAKS* the application! Waiting for RubyGems to update their database so I can get on
+# with life.
+
 require "facebook_rails_controller_extensions"
 
 class ApplicationController < ActionController::Base

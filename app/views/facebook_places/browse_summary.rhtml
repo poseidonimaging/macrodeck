@@ -1,15 +1,8 @@
 <fb:fbml>
-	<fb:dashboard>
-		<fb:action href="/macrodeckplaces/">Home</fb:action>
-		<fb:action href="/macrodeckplaces/browse">Browse Places</fb:action>
-		<fb:action href="/macrodeckplaces/popular">Popular Places</fb:action>
-		<fb:create-button href="/macrodeckplaces/create">Create a Place</fb:create-button>
-	</fb:dashboard>
 
-	<fb:tabs>
-		<fb:tab-item href="/macrodeckplaces/browse/summary/" selected="true">Places Home</fb:tab-item>
-		<fb:tab-item href="/macrodeckplaces/browse/favorites/">Favorite Places</fb:tab-item>
-		<fb:tab-item href="/macrodeckplaecs/browse/favorites/friends/">Friends' Favorite Places</fb:tab-item>
-		<fb:tab-item href="/macrodeckplaces/browse/network/">$NETWORK Places</fb:tab-item>
-	</fb:tabs>
+	<%= render :partial => "dashboard" %>
+
+	<%= render :partial => "tabs" %>
+
+	
 </fb:fbml>

@@ -1,0 +1,23 @@
+<%
+# Figure out what page we're on so we activate tabs as needed...
+
+# Initialize to default value
+@tab_my_places = fb_tab_not_selected
+@tab_friends = fb_tab_not_selected
+@tab_network = fb_tab_not_selected
+
+case params[:country]
+	when "my_places"
+		@tab_my_places = fb_tab_selected
+	when "friends"
+		@tab_friends = fb_tab_selected
+	when "network"
+		@tab_network = fb_tab_selected
+end
+%>
+
+	<fb:tabs>
+		<fb:tab-item href="/macrodeckplaces/browse/my_places/" <%= @tab_my_places %>>My Places</fb:tab-item>
+		<fb:tab-item href="/macrodeckplaecs/browse/friends/" <%= @tab_friends %>>Friends' Places</fb:tab-item>
+		<fb:tab-item href="/macrodeckplaces/browse/network/" <%= @tab_network %>>$NETWORK Places</fb:tab-item>
+	</fb:tabs>
