@@ -20,8 +20,8 @@ class FacebookPlacesController < ApplicationController
 	# by tags happens they might look different.
 	def browse
 		case params[:country]
-			when "summary"
-				render :template => "facebook/browse_summary"
+			when "my_places"
+				render :template => "facebook/browse_my_places"
 		end
 	end
 
