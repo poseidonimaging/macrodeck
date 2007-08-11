@@ -6,14 +6,10 @@
 		<fb:create-button href="/macrodeckplaces/create">Create a Place</fb:create-button>
 	</fb:dashboard>
 
-	<p>
-	<% if @fbsession.is_valid? %>
-		Userid: <%= @fbsession.session_user_id %><br />
-		<%
-		xml = @fbsession.users_getInfo(:uids => [@fbsession.session_user_id], :fields => ["first_name", "last_name"])
-		@firstName = xml.at("first_name").inner_html
-		@lastName = xml.at("last_name").inner_html %>
-		Your name is probably: <%= @firstName %> <%= @lastName %>
-		<% end %>
-	</p>
+	<fb:tabs>
+		<fb:tab-item href="/macrodeckplaces/browse/summary/" selected="true">Places Home</fb:tab-item>
+		<fb:tab-item href="/macrodeckplaces/browse/favorites/">Favorite Places</fb:tab-item>
+		<fb:tab-item href="/macrodeckplaecs/browse/favorites/friends/">Friends' Favorite Places</fb:tab-item>
+		<fb:tab-item href="/macrodeckplaces/browse/network/">$NETWORK Places</fb:tab-item>
+	</fb:tabs>
 </fb:fbml>
