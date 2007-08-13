@@ -1,20 +1,41 @@
 <fb:fbml>
 
+	<%= render :partial => "style" %>
+	
 	<%= render :partial => "dashboard" %>
 
 	<%= render :partial => "tabs" %>
 
-	<div class="column left_column">
-		<h2 class="module_header clearfix"><strong>Upcoming Activities</strong> <span class="module_header_aux"><a href="#">See All</a></span></h2>
-		<div class="clearfix first">
-			Content
-		</div>
+	<!-- Tables suck! <sarcasm>Hooray Facebook!</sarcasm> -->
+	<div>
+		 <table class="lists" cellspacing="0" border="0">
+			  <tr>
+				   <th>
+						<h4>Upcoming Activities</h4>
+						<a href="#">See All</a>
+				   </th>
+				   <th class="spacer"></th>
+				   <th>
+						<h4>Recently Updated</h4>
+						<a href="#">See All</a>
+				   </th>
+			  </tr>
+			  <tr>
+				   <td class="list">
+						<div class="list_item clearfix">Upcoming #1</div>
+						<div class="list_item clearfix">Upcoming #2</div>
+				   </td>
+				   <td class="spacer"></td>
+				   <td class="list">
+						<div class="list_item clearfix">Updated #1</div>
+						<div class="list_item clearfix">Updated #2</div>						
+				   </td>
+			  </tr>
+			  <tr>
+				   <td class="see_all"><div><a href="#">See all upcoming activities</a></div></td>
+				   <td class="spacer"></td>
+				   <td class="see_all"><div><a href="#">See all recently updated places</a></div></td>
+			  </tr>
+		 </table>
 	</div>
-
-	<div class="column right_column">
-		<h2 class="module_header clearfix"><strong>Recently Updated</strong> <span class="module_header_aux"><a href="#">See All</a></span></h2>
-		<div class="clearfix first">
-			Content
-		</div>
-	</div>	
 </fb:fbml>
