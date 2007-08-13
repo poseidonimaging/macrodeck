@@ -5,37 +5,25 @@
 	<%= render :partial => "dashboard" %>
 
 	<%= render :partial => "tabs" %>
-	
-	<!-- Tables suck! <sarcasm>Hooray Facebook!</sarcasm> -->
-	<div class="lists">
-		 <table class="lists" cellspacing="0">
-			  <tr>
-				   <th>
-						<h4>Upcoming Activities</h4>
-						<a href="#">See All</a>
-				   </th>
-				   <th class="spacer"></th>
-				   <th>
-						<h4>Recently Updated</h4>
-						<a href="#">See All</a>
-				   </th>
-			  </tr>
-			  <tr>
-				   <td class="list">
-						<div class="list_item clearfix">Upcoming #1</div>
-						<div class="list_item clearfix">Upcoming #2</div>
-				   </td>
-				   <td class="spacer"></td>
-				   <td class="list">
-						<div class="list_item clearfix">Updated #1</div>
-						<div class="list_item clearfix">Updated #2</div>						
-				   </td>
-			  </tr>
-			  <tr>
-				   <td class="see_all"><div><a href="#">See all upcoming activities</a></div></td>
-				   <td class="spacer"></td>
-				   <td class="see_all"><div><a href="#">See all recently updated places</a></div></td>
-			  </tr>
-		 </table>
+
+	<div class="columns">
+		<div class="column left_column">
+			<h1>Upcoming Activities <span><a href="#">See All</a></span></h1>
+			<div>
+				Upcoming #1
+			</div>
+			<div>
+				Upcoming #2
+			</div>
+		</div>
+		<div class="column right_column">
+			<h1>Recently Updated <span><a href="#">See All</a></span></h1>
+			<div>
+				Updated #1
+			</div>
+			<div>
+				Updated #2
+			</div>
+		</div>
 	</div>
 </fb:fbml>
