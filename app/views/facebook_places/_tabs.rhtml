@@ -6,7 +6,7 @@
 @tab_friends = fb_tab_not_selected
 @tab_network = fb_tab_not_selected
 
-case params[:country]
+case params['country']
 	when "my_places"
 		@tab_my_places = fb_tab_selected
 	when "friends"
@@ -15,7 +15,8 @@ case params[:country]
 		@tab_network = fb_tab_selected
 end
 %>
-
+	<!-- Rendering fb:tabs -->
+	<!-- dbg: my_places = <%= @tab_my_places %>; friends = <%= @tab_friends %>; network = <%= @tab_network %> -->
 	<fb:tabs>
 		<fb:tab-item href="/macrodeckplaces/browse/my_places/" <%= @tab_my_places %>>My Places</fb:tab-item>
 		<fb:tab-item href="/macrodeckplaecs/browse/friends/" <%= @tab_friends %>>Friends' Places</fb:tab-item>

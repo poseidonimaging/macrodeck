@@ -3,7 +3,7 @@
 
 class ApplicationController < ActionController::Base
 
-	def old_finish_facebook_login
+	def finish_facebook_login
 		redirect_to "http://places.macrodeck.com/facebook/"
 	end
 
