@@ -15,11 +15,10 @@ case params['country']
 		@tab_network = fb_tab_selected
 end
 %>
-	<p>TEST</p>
 	<!-- Rendering fb:tabs -->
 	<!-- dbg: my_places = <%= @tab_my_places %>; friends = <%= @tab_friends %>; network = <%= @tab_network %> -->
 	<fb:tabs>
-		<fb:tab-item href="/macrodeckplaces/browse/my_places/" <%= @tab_my_places %>>My Places</fb:tab-item>
-		<fb:tab-item href="/macrodeckplaecs/browse/friends/" <%= @tab_friends %>>Friends' Places</fb:tab-item>
-		<fb:tab-item href="/macrodeckplaces/browse/network/" <%= @tab_network %>>$NETWORK Places</fb:tab-item>
+		<fb:tab-item href="/macrodeckplaces/browse/my_places/" title="My Places" <%= @tab_my_places %>>My Places</fb:tab-item>
+		<fb:tab-item href="/macrodeckplaecs/browse/friends/" title="Friends' Places" <%= @tab_friends %>>Friends' Places</fb:tab-item>
+		<fb:tab-item href="/macrodeckplaces/browse/network/" title="Network Places" <%= @tab_network %>>Network Places</fb:tab-item>
 	</fb:tabs>

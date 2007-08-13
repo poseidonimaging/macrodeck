@@ -2,28 +2,37 @@
 
 	<%= render :partial => "style" %>
 	
-	<%= render :partial => "dashboard" %>
-
 	<%= render :partial => "tabs" %>
 
-	<div class="columns">
-		<div class="column left_column">
-			<h1>Upcoming Activities <span><a href="#">See All</a></span></h1>
-			<div>
-				Upcoming #1
-			</div>
-			<div>
-				Upcoming #2
-			</div>
-		</div>
-		<div class="column right_column">
-			<h1>Recently Updated <span><a href="#">See All</a></span></h1>
-			<div>
-				Updated #1
-			</div>
-			<div>
-				Updated #2
-			</div>
-		</div>
+	<%= render :partial => "dashboard" %>
+
+	<div class="lists">
+		 <table class="lists">
+			  <tr>
+				   <th>
+						<h1>Upcoming Activities</h1>
+						<a href="#">See All</a>
+				   </th>
+				   <th class="spacer"></th>
+				   <th>
+						<h1>Recently Updated</h1>
+						<a href="#">See All</a>
+				   </th>
+			  </tr>
+			  <tr>
+				   <td class="list">
+						ITEMS
+				   </td>
+				   <td class="spacer"></td>
+				   <td class="list">
+						ITEMS
+				   </td>
+			  </tr>
+			  <tr>
+				   <td class="see_all"><div><a href="#">See all</a></div></td>
+				   <td class="spacer"></td>
+				   <td class="see_all"><div><a href="#">See all</a></div></td>
+			  </tr>
+		 </table>
 	</div>
 </fb:fbml>
