@@ -21,7 +21,7 @@ class FacebookPlacesController < ApplicationController
 	def browse
 		case params[:country]
 			when "my_places"
-				render :template => "facebook/browse_my_places"
+				render :template => "facebook_places/browse_my_places"
 		end
 	end
 
