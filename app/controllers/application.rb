@@ -1,25 +1,9 @@
 # Filters added to this controller will be run for all controllers in the application.
 # Likewise, all the methods added will be available for all controllers.
 
-# FIXME: Since RFacebook 0.8.0, all of this stuff here is no longer needed, and in fact
-# *BREAKS* the application! Waiting for RubyGems to update their database so I can get on
-# with life.
-
-require "facebook_rails_controller_extensions"
-
 class ApplicationController < ActionController::Base
-	
-	include RFacebook::RailsControllerExtensions
 
-	def facebook_api_key
-		"d90f27cab1014065a8c90630186b9776"
-	end
-
-	def facebook_api_secret
-		"8564bcd16141d4c650dd4dc55725b291"
-	end
-
-	def finish_facebook_login
+	def old_finish_facebook_login
 		redirect_to "http://places.macrodeck.com/facebook/"
 	end
 

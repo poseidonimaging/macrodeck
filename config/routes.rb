@@ -19,9 +19,8 @@ ActionController::Routing::Routes.draw do |map|
 
   # Facebook Places
   map.fbplaces 'facebook', :controller => "facebook_places",
-		:action => "browse", :country => "summary",
-		:conditions => { :subdomain => "places" },
-		:defaults => { :state => nil, :city => nil, :place => nil }
+		:action => "browse", :country => "my_places", :state => nil, :city => nil, :place => nil,
+		:conditions => { :subdomain => "places" }
 
   map.fbplaces 'facebook/:action/:country/:state/:city/:place', :controller => "facebook_places",
 		:conditions => { :subdomain => "places" },
@@ -33,7 +32,7 @@ ActionController::Routing::Routes.draw do |map|
 	  :conditions => { :subdomain => "places" },
 	  :defaults => { :action => "index", :country => "us", :state => nil, :city => nil, :place => nil }
 
-  # Route / to the MacroDeck Places homepage until we get a real one.
+  # Route / to the MacroDeck HomeController until we get real content
   map.connect '', :controller => 'home', :action => 'index'
   
   # Install the default route as the lowest priority.
