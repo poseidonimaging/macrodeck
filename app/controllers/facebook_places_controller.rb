@@ -28,6 +28,8 @@ class FacebookPlacesController < ApplicationController
 				render :template => "facebook_places/browse_friends"
 			when "network"
 				render :template => "facebook_places/browse_network"
+			when "all"
+				render :template => "facebook_places/browse_all"
 		end
 	end
 
@@ -51,15 +53,28 @@ class FacebookPlacesController < ApplicationController
 
 	# RFacebook Debug Panel
 	def debug
-		@network = get_primary_network
+		get_primary_network
 
-		#render_with_facebook_debug_panel
+		render_with_facebook_debug_panel
 	end
 
-	# This method gets the primary network for the current fbsession user
-	def get_primary_network
-		response = fbsession.users_getInfo(:uids => fbsession.session_user_id, :fields => ["first_name", "last_name", "affiliations"])
-		network = response.affiliations
-		render :text => "<pre>#{network}</pre>"
-	end
+	private
+		# This method gets the primary network for the current fbsession user
+		def get_primary_network
+			response = fbsession.users_getInfo(:uids => fbsession.session_user_id, :fields => ["affiliations"])
+			if response != nil && response.user != nil && response.user.affiliations_list != nil && response.user.affiliations_list[0].name != nil
+				@network = response.user.affiliations_list[0].name
+			else
+				@network = "Network"
+			end
+		end
+
+		# This method gets all of the networks for the current fbsession user
+		def get_networks
+			response = fbsession.users_getInfo(:uids => fbsession.session_user_id, :fields => ["affiliations"])
+			if response != nil && response.user != nil && response.user.affiliations_list != nil
+				@networks = response.user.affiliations_list
+			else
+				@networks = []
+			end
 end
