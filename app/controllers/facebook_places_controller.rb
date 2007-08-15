@@ -60,6 +60,6 @@ class FacebookPlacesController < ApplicationController
 	def get_primary_network
 		response = fbsession.users_getInfo(:uids => [fbsession.session_user_id], :fields => ["affiliations"])
 		network = response.affiliations_list[0].name
-		return network
+		render :text => network
 	end
 end
