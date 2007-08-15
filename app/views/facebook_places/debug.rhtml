@@ -4,7 +4,9 @@
 
 	<%= render :partial => "dashboard" %>
 
-	<p>DEBUG!</p>
-	<pre><%= @network %></pre>
+	<p>Debugging @network.</p>
+	<pre>
+		<%= @network.to_yaml %>
+	</pre>
 
 </fb:fbml>
