@@ -19,7 +19,7 @@ class FacebookPlacesController < ApplicationController
 	# browse URLs look like view URLs presently. when browsing
 	# by tags happens they might look different.
 	def browse
-		get_primary_network
+		get_networks
 
 		case params[:country]
 			when "my_places"
@@ -53,28 +53,22 @@ class FacebookPlacesController < ApplicationController
 
 	# RFacebook Debug Panel
 	def debug
-		get_primary_network
+		get_networks
 
 		render_with_facebook_debug_panel
 	end
 
 	private
-		# This method gets the primary network for the current fbsession user
-		def get_primary_network
-			response = fbsession.users_getInfo(:uids => fbsession.session_user_id, :fields => ["affiliations"])
-			if response != nil && response.user != nil && response.user.affiliations_list != nil && response.user.affiliations_list[0].name != nil
-				@network = response.user.affiliations_list[0].name
-			else
-				@network = "Network"
-			end
-		end
-
 		# This method gets all of the networks for the current fbsession user
 		def get_networks
 			response = fbsession.users_getInfo(:uids => fbsession.session_user_id, :fields => ["affiliations"])
 			if response != nil && response.user != nil && response.user.affiliations_list != nil
-				@networks = response.user.affiliations_list
+				@primary_network = response.user.affiliations.affiliation_list[0].name
+				@networks = response.user.affiliations.affiliation_list
 			else
+				@primary_network = "Network"
 				@networks = []
 			end
+			p @networks
+		end
 end

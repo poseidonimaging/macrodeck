@@ -6,36 +6,18 @@
 	
 	<%= render :partial => "tabs" %>
 
-	<!-- FIXME: use DIVs -->
-	<div class="lists">
-		 <table class="lists" cellspacing="0">
-			  <tr>
-				   <th>
-						<h1>Upcoming Activities</h1>
-						<a href="#">See All</a>
-				   </th>
-				   <th class="spacer"></th>
-				   <th>
-						<h1>Recently Updated</h1>
-						<a href="#">See All</a>
-				   </th>
-			  </tr>
-			  <tr>
-				   <td class="list">
-						<div class="list_item clearfix">ITEMS!</div>
-						<div class="list_item clearfix">ITEMS!</div>
-				   </td>
-				   <td class="spacer"></td>
-				   <td class="list">
-						<div class="list_item clearfix">ITEMS!</div>
-						<div class="list_item clearfix">ITEMS!</div>
-				   </td>
-			  </tr>
-			  <tr>
-				   <td class="see_all"><div><a href="#">See all</a></div></td>
-				   <td class="spacer"></td>
-				   <td class="see_all"><div><a href="#">See all</a></div></td>
-			  </tr>
-		 </table>
+	<div class="content">
+		<h1>Your Networks</h1>
+		<ul>
+			<% @networks.each do |network| %>
+				<!-- thanks to facebook, this is made hackish looking -->
+				<li><%= link_to network.name, "/macrodeckplaces/browse/network/#{network.nid}/" %></li>
+			<% end %>
+		</ul>
+
+		<h1>Regions</h1>
+		<ul>
+			<li><%= link_to "United States", "/macrodeckplaces/browse/us/" %></li>
+		</ul>
 	</div>
 </fb:fbml>
