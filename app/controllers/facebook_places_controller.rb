@@ -19,6 +19,8 @@ class FacebookPlacesController < ApplicationController
 	# browse URLs look like view URLs presently. when browsing
 	# by tags happens they might look different.
 	def browse
+		get_primary_network
+
 		case params[:country]
 			when "my_places"
 				render :template => "facebook_places/browse_my_places"
@@ -46,4 +48,17 @@ class FacebookPlacesController < ApplicationController
 	# error.
 	def remove_patronage
 	end
+
+	# RFacebook Debug Panel
+	def debug
+		get_primary_network
+
+		render_with_facebook_debug_panel
+	end
+
+	private
+		def get_primary_network
+			response = fbsession.users_getInfo(:uids => [fbsession.session_user_id], :fields => ["affiliations"])
+			@network = response
+		end
 end
