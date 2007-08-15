@@ -59,7 +59,7 @@ class FacebookPlacesController < ApplicationController
 	# This method gets the primary network for the current fbsession user
 	def get_primary_network
 		response = fbsession.users_getInfo(:uids => [fbsession.session_user_id], :fields => ["affiliations"])
-		network = response.affiliations_list[0].name
-		render :text => network
+		network = response
+		render :text => network.to_yaml
 	end
 end
