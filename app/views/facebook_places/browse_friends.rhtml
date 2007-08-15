@@ -1,0 +1,41 @@
+<fb:fbml>
+
+	<%= render :partial => "style" %>
+
+	<%= render :partial => "dashboard" %>
+	
+	<%= render :partial => "tabs" %>
+
+	<!-- FIXME: use DIVs -->
+	<div class="lists">
+		 <table class="lists" cellspacing="0">
+			  <tr>
+				   <th>
+						<h1>Upcoming Activities</h1>
+						<a href="#">See All</a>
+				   </th>
+				   <th class="spacer"></th>
+				   <th>
+						<h1>Recently Updated</h1>
+						<a href="#">See All</a>
+				   </th>
+			  </tr>
+			  <tr>
+				   <td class="list">
+						<div class="list_item clearfix">ITEMS!</div>
+						<div class="list_item clearfix">ITEMS!</div>
+				   </td>
+				   <td class="spacer"></td>
+				   <td class="list">
+						<div class="list_item clearfix">ITEMS!</div>
+						<div class="list_item clearfix">ITEMS!</div>
+				   </td>
+			  </tr>
+			  <tr>
+				   <td class="see_all"><div><a href="#">See all</a></div></td>
+				   <td class="spacer"></td>
+				   <td class="see_all"><div><a href="#">See all</a></div></td>
+			  </tr>
+		 </table>
+	</div>
+</fb:fbml>

@@ -22,6 +22,10 @@ class FacebookPlacesController < ApplicationController
 		case params[:country]
 			when "my_places"
 				render :template => "facebook_places/browse_my_places"
+			when "friends"
+				render :template => "facebook_places/browse_friends"
+			when "network"
+				render :template => "facebook_places/browse_network"
 		end
 	end
 
