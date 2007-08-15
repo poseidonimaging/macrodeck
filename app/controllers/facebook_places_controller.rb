@@ -53,12 +53,13 @@ class FacebookPlacesController < ApplicationController
 	def debug
 		@network = get_primary_network
 
-		render_with_facebook_debug_panel
+		#render_with_facebook_debug_panel
 	end
 
-	private
-		def get_primary_network
-			response = fbsession.users_getInfo(:uids => [fbsession.session_user_id], :fields => ["affiliations"])
-			return response
-		end
+	# This method gets the primary network for the current fbsession user
+	def get_primary_network
+		response = fbsession.users_getInfo(:uids => [fbsession.session_user_id], :fields => ["affiliations"])
+		network = response.affiliations_list[0].name
+		return network
+	end
 end
