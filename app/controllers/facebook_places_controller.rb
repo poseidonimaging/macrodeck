@@ -69,6 +69,5 @@ class FacebookPlacesController < ApplicationController
 				@primary_network = "Network"
 				@networks = []
 			end
-			p @networks
 		end
 end
