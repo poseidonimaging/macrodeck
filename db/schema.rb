@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 45) do
+ActiveRecord::Schema.define(:version => 46) do
 
   create_table "components", :force => true do |t|
     t.column "uuid",              :string
@@ -172,19 +172,21 @@ ActiveRecord::Schema.define(:version => 45) do
   end
 
   create_table "users", :force => true do |t|
-    t.column "uuid",                :string
-    t.column "username",            :string
-    t.column "password",            :string
-    t.column "secretquestion",      :string
-    t.column "secretanswer",        :string
-    t.column "name",                :string
-    t.column "displayname",         :string
-    t.column "creation",            :integer
-    t.column "authcode",            :string
-    t.column "verified_email",      :boolean
-    t.column "email",               :string
-    t.column "authcookie",          :string
-    t.column "authcookie_set_time", :integer
+    t.column "uuid",                 :string
+    t.column "username",             :string
+    t.column "password",             :string
+    t.column "secretquestion",       :string
+    t.column "secretanswer",         :string
+    t.column "name",                 :string
+    t.column "displayname",          :string
+    t.column "creation",             :integer
+    t.column "authcode",             :string
+    t.column "verified_email",       :boolean
+    t.column "email",                :string
+    t.column "authcookie",           :string
+    t.column "authcookie_set_time",  :integer
+    t.column "facebook_session_key", :string
+    t.column "facebook_uid",         :integer
   end
 
   create_table "widget_instances", :force => true do |t|
