@@ -70,4 +70,14 @@ class FacebookPlacesController < ApplicationController
 				@networks = []
 			end
 		end
+
+		# Initialize Facebook User - Creates a User if needed, maps friends, etc. Use as a
+		# before_filter.
+		def initialize_facebook_user
+			if fbsession && fbsession.is_valid?
+				user = User.find_or_create_by_facebook_session(fbsession)
+				# here we would load their friends list or whatever.
+				@fbuser = user			
+			end
+		end
 end
