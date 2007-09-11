@@ -2,7 +2,15 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 46) do
+ActiveRecord::Schema.define(:version => 48) do
+
+  create_table "categories", :force => true do |t|
+    t.column "uuid",        :string
+    t.column "title",       :string
+    t.column "description", :text
+    t.column "url_part",    :string
+    t.column "parent",      :string
+  end
 
   create_table "components", :force => true do |t|
     t.column "uuid",              :string
@@ -38,6 +46,7 @@ ActiveRecord::Schema.define(:version => 46) do
     t.column "include_sources",   :text
     t.column "updated",           :integer
     t.column "creation",          :integer
+    t.column "category",          :string
   end
 
   create_table "data_items", :force => true do |t|
@@ -186,7 +195,7 @@ ActiveRecord::Schema.define(:version => 46) do
     t.column "authcookie",           :string
     t.column "authcookie_set_time",  :integer
     t.column "facebook_session_key", :string
-    t.column "facebook_uid",         :integer
+    t.column "facebook_uid",         :string
   end
 
   create_table "widget_instances", :force => true do |t|
