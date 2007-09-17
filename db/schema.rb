@@ -2,14 +2,15 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 48) do
+ActiveRecord::Schema.define(:version => 49) do
 
   create_table "categories", :force => true do |t|
-    t.column "uuid",        :string
-    t.column "title",       :string
-    t.column "description", :text
-    t.column "url_part",    :string
-    t.column "parent",      :string
+    t.column "uuid",           :string
+    t.column "title",          :string
+    t.column "description",    :text
+    t.column "url_part",       :string
+    t.column "parent",         :string
+    t.column "can_have_items", :boolean
   end
 
   create_table "components", :force => true do |t|
