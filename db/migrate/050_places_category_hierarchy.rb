@@ -4,7 +4,7 @@ class PlacesCategoryHierarchy < ActiveRecord::Migration
 	# "United States" and then populates United States with all of our states.
 	
 	places = DataService.createCategory(:title => "Places", :url_part => "places", :description => "MacroDeck Places")
-	usa = places.createChild(:title = > "United States", :url_part => "us", :description => "Places in the United States")
+	usa = places.createChild(:title => "United States", :url_part => "us", :description => "Places in the United States")
 	
 	# States.
 	usa.createChild(:title => "Alabama",	:url_part => "al")
