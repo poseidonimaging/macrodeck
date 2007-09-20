@@ -20,5 +20,5 @@ end
 	<fb:tabs>
 		<fb:tab-item href="/macrodeckplaces/browse/my_places/" title="My Places" <%= @tab_my_places %>>My Places</fb:tab-item>
 		<fb:tab-item href="/macrodeckplaces/browse/friends/" title="Friends' Places" <%= @tab_friends %>>Friends' Places</fb:tab-item>
-		<fb:tab-item href="/macrodeckplaces/browse/network/" title="<%= @primary_network %> Places" <%= @tab_network %>><%= @primary_network %> Places</fb:tab-item>
+		<fb:tab-item href="/macrodeckplaces/browse/network/<%= @primary_network_nid %>/" title="<%= @primary_network %> Places" <%= @tab_network %>><%= @primary_network %> Places</fb:tab-item>
 	</fb:tabs>

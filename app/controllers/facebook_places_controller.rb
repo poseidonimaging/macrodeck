@@ -5,6 +5,8 @@ class FacebookPlacesController < ApplicationController
 	# view takes parameters like this:
 	# view/:country/:state/:city/:place
 	# If a parameter isn't specified, it is nil.
+	#
+	# View requires all parameters. You want to view a place.
 	def view
 	end
 
@@ -30,6 +32,24 @@ class FacebookPlacesController < ApplicationController
 				render :template => "facebook_places/browse_network"
 			when "all"
 				render :template => "facebook_places/browse_all"
+			when "us"
+				get_us_states
+				if params[:state]
+					# A state was specified. Either..
+					# 1) browse a state (city = nil)
+					# 2) browse a city (city != nil)
+					if params[:city]
+						# A city was specified.
+					else
+						# Browse the state (all cities). Should this be explicitly allowed?
+						# States like Texas probably have a lot of cities. I dunno.
+						get_cities(params[:state])
+						render :template => "facebook_places/browse_state"
+					end
+				else
+					# State not specified, show them all!
+					render :template => "facebook_places/browse_country"
+				end
 		end
 	end
 
@@ -64,6 +84,7 @@ class FacebookPlacesController < ApplicationController
 			response = fbsession.users_getInfo(:uids => fbsession.session_user_id, :fields => ["affiliations"])
 			if response != nil && response.user != nil && response.user.affiliations_list != nil
 				@primary_network = response.user.affiliations.affiliation_list[0].name
+				@primary_network_nid = response.user.affiliations.affiliation_list[0].nid
 				@networks = response.user.affiliations.affiliation_list
 			else
 				@primary_network = "Network"
@@ -79,5 +100,12 @@ class FacebookPlacesController < ApplicationController
 				# here we would load their friends list or whatever.
 				@fbuser = user			
 			end
+		end
+
+		# Gets all US states and puts them in @states
+		def get_us_states
+			places = Category.find(:first, :conditions => ["parent IS NULL AND url_part = ?", "places"])
+			usa = places.getChildByURL("us")
+			@states = usa.children
 		end
 end

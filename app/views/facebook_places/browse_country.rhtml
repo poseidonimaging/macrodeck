@@ -1,0 +1,17 @@
+<fb:fbml>
+
+	<%= render :partial => "style" %>
+
+	<%= render :partial => "dashboard" %>
+	
+	<%= render :partial => "tabs" %>
+
+	<div class="content">
+		<h1>States</h1>
+		<ul>
+			<% @states.each do |state| %>
+				<li><%= link_to state.title, "/macrodeckplaces/browse/us/#{state.url_part}/" %></li>
+			<% end %>
+		</ul>
+	</div>
+</fb:fbml>
