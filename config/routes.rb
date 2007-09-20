@@ -24,13 +24,13 @@ ActionController::Routing::Routes.draw do |map|
 
   map.fbplaces 'facebook/:action/:country/:state/:city/:place', :controller => "facebook_places",
 		:conditions => { :subdomain => "places" },
-		:defaults => { :action => "browse", :country => "us", :state => nil, :city => nil, :place => nil }
+		:defaults => { :action => "browse", :country => "all", :state => nil, :city => nil, :place => nil }
   
   # Places
   map.places '', :controller => "places", :conditions => { :subdomain => "places" }
   map.places ':action/:country/:state/:city/:place', :controller => 'places',
 	  :conditions => { :subdomain => "places" },
-	  :defaults => { :action => "index", :country => "us", :state => nil, :city => nil, :place => nil }
+	  :defaults => { :action => "index", :country => "all", :state => nil, :city => nil, :place => nil }
 
   # Route / to the MacroDeck HomeController until we get real content
   map.connect '', :controller => 'home', :action => 'index'

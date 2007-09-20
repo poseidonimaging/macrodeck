@@ -34,6 +34,7 @@ class FacebookPlacesController < ApplicationController
 				render :template => "facebook_places/browse_all"
 			when "us"
 				get_us_states
+
 				if params[:state]
 					# A state was specified. Either..
 					# 1) browse a state (city = nil)
@@ -105,7 +106,28 @@ class FacebookPlacesController < ApplicationController
 		# Gets all US states and puts them in @states
 		def get_us_states
 			places = Category.find(:first, :conditions => ["parent IS NULL AND url_part = ?", "places"])
-			usa = places.getChildByURL("us")
-			@states = usa.children
+			@country = places.getChildByURL("us")
+
+			if @country != nil
+				@states = @country.children
+			else
+				raise "Country not found."
+			end
+		end
+
+		# Gets all cities in a state and puts them in @cities
+		def get_cities(state_url_part)
+			places = Category.find(:first, :conditions => ["parent IS NULL AND url_part = ?", "places"])
+			@country = places.getChildByURL("us")
+			if @country != nil
+				@state = @country.getChildByURL(state_url_part)
+				if @state != nil
+					@cities = @state.children
+				else
+					raise "State not found."
+				end
+			else
+				raise "Country not found."
+			end
 		end
 end
