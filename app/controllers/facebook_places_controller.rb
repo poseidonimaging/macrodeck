@@ -58,6 +58,25 @@ class FacebookPlacesController < ApplicationController
 	# create/:country/:state/:city/
 	# You fill in the place name in the form!
 	def create
+		case params[:country]
+			when "us"
+				get_us_states
+
+				if params[:state]
+					# A state was specified, either...
+					# 1) create a city (city == nil)
+					# 2) create a place (city != nil)
+					if params[:city]
+						# TODO: Create Place
+					else
+						# TODO: Create City
+					end
+				else
+					# No state specified, redirect to the browse URL for
+					# whatever they attempted to create...
+					# TODO: Actually do this
+				end
+		end
 	end
 
 	# add_patronage looks like view. add_patronage says that
@@ -84,11 +103,28 @@ class FacebookPlacesController < ApplicationController
 		def get_networks
 			response = fbsession.users_getInfo(:uids => fbsession.session_user_id, :fields => ["affiliations"])
 			if response != nil && response.user != nil && response.user.affiliations_list != nil
-				@primary_network = response.user.affiliations.affiliation_list[0].name
-				@primary_network_nid = response.user.affiliations.affiliation_list[0].nid
-				@networks = response.user.affiliations.affiliation_list
+				# XXX: We work with cities currently, so we have to only support regional networks right now.
+				# College and work networks will be supported but we will have to have some sort of associated
+				# city with each network. We will depend on our users for this information, and this requires more
+				# UI and stuff.
+				@networks = []
+
+				response.user.affiliations.affiliation_list.each do |affiliation|
+					if affiliation.type == "region"
+						@networks << affiliation
+					end
+				end
+				if @networks.length > 0
+					# TODO: Find city/state from network name and create city if needed
+					# FIXME: nid is no longer needed.
+					@primary_network = @networks[0].name
+					@primary_network_nid = @networks[0].nid
+				else
+					@primary_network = nil
+					@primary_network_nid = nil
+				end
 			else
-				@primary_network = "Network"
+				@primary_network = nil
 				@networks = []
 			end
 		end
@@ -98,7 +134,7 @@ class FacebookPlacesController < ApplicationController
 		def initialize_facebook_user
 			if fbsession && fbsession.is_valid?
 				user = User.find_or_create_by_facebook_session(fbsession)
-				# here we would load their friends list or whatever.
+				# TODO: here we would load their friends list or whatever.
 				@fbuser = user			
 			end
 		end
