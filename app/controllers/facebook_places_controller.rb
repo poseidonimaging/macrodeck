@@ -99,6 +99,11 @@ class FacebookPlacesController < ApplicationController
 	end
 
 	private
+		# This method takes a string and returns a suitable URL version.
+		def url_sanitize(str)
+			return str.chomp.strip.downcase.gsub(/[^0-9A-Za-z_\-\s]/, "").gsub(" ", "-")
+		end
+
 		# This method gets all of the networks for the current fbsession user
 		def get_networks
 			response = fbsession.users_getInfo(:uids => fbsession.session_user_id, :fields => ["affiliations"])
@@ -108,23 +113,34 @@ class FacebookPlacesController < ApplicationController
 				# city with each network. We will depend on our users for this information, and this requires more
 				# UI and stuff.
 				@networks = []
+				@unsupported_networks = []
 
 				response.user.affiliations.affiliation_list.each do |affiliation|
-					if affiliation.type == "region"
+					# method_missing("type") is used because affiliation.type does not work
+					# because type is a reserved Ruby method
+					if affiliation.method_missing("type") == "region"
 						@networks << affiliation
+					else
+						@unsupported_networks << affiliation
 					end
 				end
 				if @networks.length > 0
 					# TODO: Find city/state from network name and create city if needed
-					# FIXME: nid is no longer needed.
 					@primary_network = @networks[0].name
-					@primary_network_nid = @networks[0].nid
+					@primary_network_country = "US" # FIXME: This will need more support in the future when we support non-US places
+					@primary_network_state = @networks[0].name.split(",")[-1].chomp.strip
+					@primary_network_city = @networks[0].name.split(",")[0].chomp.strip
 				else
 					@primary_network = nil
-					@primary_network_nid = nil
+					@primary_network_country = nil
+					@primary_network_state = nil
+					@primary_network_city = nil
 				end
 			else
 				@primary_network = nil
+				@primary_network_country = nil
+				@primary_network_state = nil
+				@primary_network_city = nil
 				@networks = []
 			end
 		end

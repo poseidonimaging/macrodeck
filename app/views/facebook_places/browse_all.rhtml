@@ -9,11 +9,26 @@
 	<div class="content">
 		<h1>Your Networks</h1>
 		<ul>
-			<% @networks.each do |network| %>
-				<!-- thanks to facebook, this is made hackish looking -->
-				<li><%= link_to network.name, "/macrodeckplaces/browse/network/#{network.nid}/" %></li>
+			<% if @networks.length > 0 %>
+				<% @networks.each do |network| %>
+					<% net = get_network_info(network) %>
+					<li><%= link_to net[:name], "/macrodeckplaces/browse/#{url_sanitize(net[:country])}/#{url_sanitize(net[:state])}/#{url_sanitize(net[:city])}/" %></li>
+				<% end %>
+			<% else %>
+				<p>You are not a part of any supported networks. Consider joining a regional network.</p>
 			<% end %>
 		</ul>
+
+		<% if @unsupported_networks.length > 0 %>
+			<h1>Unsupported Networks</h1>
+			<p>You are a member of the following networks, however we cannot currently use these networks for locating places.
+			This functionality will be added in the future.</p>
+			<ul>
+				<% @unsupported_networks.each do |unet| %>
+					<li><%= unet.name %></li>
+				<% end %>
+			</ul>
+		<% end %>
 
 		<h1>Countries</h1>
 		<ul>
