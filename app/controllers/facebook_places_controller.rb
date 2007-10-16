@@ -69,7 +69,12 @@ class FacebookPlacesController < ApplicationController
 					if params[:city]
 						# TODO: Create Place
 					else
-						# TODO: Create City
+						# Create a city.
+						if request.get?
+							# This is a GET request; show the creation form.
+						elsif request.post?
+							# This is a POST request; create the city and redirect to the city.
+						end
 					end
 				else
 					# No state specified, redirect to the browse URL for
