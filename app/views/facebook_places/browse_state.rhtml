@@ -10,7 +10,7 @@
 		<div class="breadcrumbs">
 			<%= link_to "Browse", "/macrodeckplaces/browse/" %> / <%= link_to @country.title, "/macrodeckplaces/browse/us/" %> /
 		</div>
-		<h1><%= @state.title %></h1>
+		<h1 class="area-title"><%= @state.title %></h1>
 		<% if @cities != nil && @cities.length > 0 %>
 			<ul>
 				<% @cities.each do |city| %>

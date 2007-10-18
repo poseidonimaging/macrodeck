@@ -7,7 +7,8 @@
 	<%= render :partial => "tabs" %>
 
 	<div class="content">
-		<h1>Your Networks</h1>
+		<h1 class="area-title">Browse</h1>
+		<h2>Your Networks</h2>
 		<ul>
 			<% if @networks.length > 0 %>
 				<% @networks.each do |network| %>
@@ -19,8 +20,13 @@
 			<% end %>
 		</ul>
 
+		<h2>Countries</h2>
+		<ul>
+			<li><%= link_to "United States", "/macrodeckplaces/browse/us/" %></li>
+		</ul>
+
 		<% if @unsupported_networks.length > 0 %>
-			<h1>Unsupported Networks</h1>
+			<h2>Unsupported Networks</h2>
 			<p>You are a member of the following networks, however we cannot currently use these networks for locating places.
 			This functionality will be added in the future.</p>
 			<ul>
@@ -29,10 +35,5 @@
 				<% end %>
 			</ul>
 		<% end %>
-
-		<h1>Countries</h1>
-		<ul>
-			<li><%= link_to "United States", "/macrodeckplaces/browse/us/" %></li>
-		</ul>
 	</div>
 </fb:fbml>

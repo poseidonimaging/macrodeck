@@ -10,7 +10,7 @@
 		<div class="breadcrumbs">
 			<%= link_to "Browse", "/macrodeckplaces/browse/" %> / 
 		</div>
-		<h1><%= @country.title %></h1>
+		<h1 class="area-title"><%= @country.title %></h1>
 		<ul>
 			<% @states.each do |state| %>
 				<li><%= link_to state.title, "/macrodeckplaces/browse/us/#{state.url_part}/" %></li>

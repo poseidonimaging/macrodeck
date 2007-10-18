@@ -12,8 +12,12 @@ case params[:country]
 	when "friends"
 		@tab_friends = fb_tab_selected
 	else
-		if params[:country].downcase == @primary_network_country.downcase && params[:state].downcase == @primary_network_state.downcase && params[:city].downcase == @primary_network_city.downcase
-			@tab_network = fb_tab_selected
+		if params[:country] != nil && params[:country].downcase == @primary_network_country.downcase
+			if params[:state] != nil && params[:state].downcase == @primary_network_state.downcase
+				if params[:city] != nil && params[:city].downcase == @primary_network_city.downcase
+					@tab_network = fb_tab_selected
+				end
+			end
 		end
 end
 %>
