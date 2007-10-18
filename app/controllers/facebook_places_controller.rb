@@ -125,12 +125,22 @@ class FacebookPlacesController < ApplicationController
 					# because type is a reserved Ruby method
 					if affiliation.method_missing("type") == "region"
 						@networks << affiliation
+
+						# Create a city for each regional network when we detect them.
+						aff_state = affiliation.name.split(",")[-1].chomp.strip
+						aff_city = affiliation.name.split(",")[0].chomp.strip
+
+						# Unless is backwards if. the following code is run always, unless
+						# the city actually exists.
+						unless PlacesService.isCity?(aff_city, aff_state) 
+							puts "*** Places: Creating a new city: #{aff_city}, #{aff_state}"
+							PlacesService.createCity(aff_city, aff_state)
+						end
 					else
 						@unsupported_networks << affiliation
 					end
 				end
 				if @networks.length > 0
-					# TODO: Find city/state from network name and create city if needed
 					@primary_network = @networks[0].name
 					@primary_network_country = "US" # FIXME: This will need more support in the future when we support non-US places
 					@primary_network_state = @networks[0].name.split(",")[-1].chomp.strip
