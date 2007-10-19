@@ -41,6 +41,8 @@ class FacebookPlacesController < ApplicationController
 					# 2) browse a city (city != nil)
 					if params[:city]
 						# A city was specified.
+						get_city_info(params[:city], params[:state])
+						render :template => "facebook_places/browse_city"
 					else
 						# Browse the state (all cities). Should this be explicitly allowed?
 						# States like Texas probably have a lot of cities. I dunno.
