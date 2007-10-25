@@ -199,4 +199,13 @@ class FacebookPlacesController < ApplicationController
 				raise "Country not found."
 			end
 		end
+
+		# Gets city information and stores it in variables so that the page can get them.
+		def get_city_info(city_name, state)
+			c = PlacesService.getCity(city_name,state)
+			places = Category.find(:first, :conditions => ["parent IS NULL AND url_part = ?", "places"])
+			@country = places.getChildByURL("us")
+			@state = @country.getChild(state)
+			@city = c
+		end
 end
