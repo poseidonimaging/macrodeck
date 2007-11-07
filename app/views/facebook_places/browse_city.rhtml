@@ -14,18 +14,35 @@
 		<h1 class="area-title"><%= @city.title %></h1>
 		<div class="profile-layout">
 			<div class="profile-sidebar">
-				<img src="http://places.intranet.ignition-project.com:3000/images/places/no-image-large.png" alt="City Image" />
-				<ul>
+				<div class="profile-sidebar-image"><img src="http://places.intranet.ignition-project.com:3000/images/places/no-image-large.png" alt="City Image" /></div>
+				<ul class="profile-links">
 					<!-- TODO: Only show this if it's not the home city -->
 					<li><a href="#">Set as home city</a></li>
 					<li><a href="#">Suggest a place to me</a></li>
 					<li><a href="#">Find nearby cities</a></li>
 					<li><a href="#">Map</a></li>
 				</ul>
+				<br />
 				<div class="ad-placeholder">Ad placeholder</div>
+				<br />
 			</div>
 			<div class="profile-content">
-				<p>This is where you'll see recently updated/added places and recommended places.</p>
+				<div class="twocol-layout">
+					<div class="twocol-left">
+						<div class="twocol-left-padding">
+							<h2 class="section-title">Recently Added/Updated</h2>
+							<p>This would normally contain a list of recently added and updated places in
+							<%= @city.title %>, <%= @state.title %>, except I haven't coded it yet.</p>
+						</div>
+					</div>
+					<div class="twocol-right">
+						<div class="twocol-right-padding">
+							<h2 class="section-title">Recommended Places</h2>
+							<p>This would normally contain a bunch of places we recommend you try out, but
+							we haven't gotten that working yet.</p>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

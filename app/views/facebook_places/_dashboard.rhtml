@@ -6,9 +6,9 @@
 
 		<% if @country != nil && @state != nil && @country != "network" %>
 			<% if @city != nil %>
-				<fb:create-button href="<%= "/macrodeckplaces/create/#{@country}/#{@state}/#{@city}" %>">Create a Place</fb:create-button>
+				<fb:create-button href="<%= "/macrodeckplaces/create/#{url_sanitize(@country.url_part)}/#{url_sanitize(@state.url_part)}/#{url_sanitize(@city.title)}" %>">Create a Place</fb:create-button>
 			<% else %>
-				<fb:create-button href="<%= "/macrodeckplaces/create/#{@country}/#{@state}/" %>">Add City</fb:create-button>
+				<fb:create-button href="<%= "/macrodeckplaces/create/#{url_sanitize(@country.url_part)}/#{url_sanitize(@state.url_part)}/" %>">Add City</fb:create-button>
 			<% end %>
 		<% end %>
 	</fb:dashboard>
