@@ -2,14 +2,14 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 51) do
+ActiveRecord::Schema.define(:version => 52) do
 
   create_table "categories", :force => true do |t|
     t.column "uuid",           :string
     t.column "title",          :string
     t.column "description",    :text
     t.column "url_part",       :string
-    t.column "parent",         :string
+    t.column "parent_uuid",    :string
     t.column "can_have_items", :boolean, :default => false, :null => false
   end
 
@@ -100,7 +100,7 @@ ActiveRecord::Schema.define(:version => 51) do
     t.column "groupid",  :string
     t.column "userid",   :string
     t.column "level",    :string
-    t.column "isbanned", :boolean, :default => false, :null => false
+    t.column "isbanned", :boolean, :null => false
   end
 
   create_table "groups", :force => true do |t|
@@ -124,7 +124,7 @@ ActiveRecord::Schema.define(:version => 51) do
     t.column "updated_at", :datetime
   end
 
-  add_index "sessions", ["session_id"], :name => "sessions_session_id_index"
+  add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
 
   create_table "storages", :force => true do |t|
     t.column "objectid",          :string
