@@ -4,10 +4,10 @@ CREATE TABLE `categories` (
   `title` varchar(255) default NULL,
   `description` text,
   `url_part` varchar(255) default NULL,
-  `parent` varchar(255) default NULL,
+  `parent_uuid` varchar(255) default NULL,
   `can_have_items` tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `components` (
   `id` int(11) NOT NULL auto_increment,
@@ -48,7 +48,7 @@ CREATE TABLE `data_groups` (
   `creation` int(11) default NULL,
   `category` varchar(255) default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `data_items` (
   `id` int(11) NOT NULL auto_increment,
@@ -107,7 +107,7 @@ CREATE TABLE `group_members` (
   `groupid` varchar(255) default NULL,
   `userid` varchar(255) default NULL,
   `level` varchar(255) default NULL,
-  `isbanned` tinyint(1) NOT NULL default '0',
+  `isbanned` tinyint(1) NOT NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -140,8 +140,8 @@ CREATE TABLE `sessions` (
   `data` text,
   `updated_at` datetime default NULL,
   PRIMARY KEY  (`id`),
-  KEY `sessions_session_id_index` (`session_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
+  KEY `index_sessions_on_session_id` (`session_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `storages` (
   `id` int(11) NOT NULL auto_increment,
@@ -226,7 +226,7 @@ CREATE TABLE `users` (
   `facebook_session_key` varchar(255) default NULL,
   `facebook_uid` varchar(255) default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `widget_instances` (
   `id` int(11) NOT NULL auto_increment,
@@ -261,4 +261,4 @@ CREATE TABLE `widgets` (
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO schema_info (version) VALUES (51)
+INSERT INTO schema_info (version) VALUES (52)
