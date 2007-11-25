@@ -174,7 +174,7 @@ class FacebookPlacesController < ApplicationController
 
 		# Gets all US states and puts them in @states
 		def get_us_states
-			places = Category.find(:first, :conditions => ["parent IS NULL AND url_part = ?", "places"])
+			places = Category.find(:first, :conditions => ["parent_uuid IS NULL AND url_part = ?", "places"])
 			@country = places.getChildByURL("us")
 
 			if @country != nil
@@ -186,7 +186,7 @@ class FacebookPlacesController < ApplicationController
 
 		# Gets all cities in a state and puts them in @cities
 		def get_cities(state_url_part)
-			places = Category.find(:first, :conditions => ["parent IS NULL AND url_part = ?", "places"])
+			places = Category.find(:first, :conditions => ["parent_uuid IS NULL AND url_part = ?", "places"])
 			@country = places.getChildByURL("us")
 			if @country != nil
 				@state = @country.getChildByURL(state_url_part)
@@ -203,7 +203,7 @@ class FacebookPlacesController < ApplicationController
 		# Gets city information and stores it in variables so that the page can get them.
 		def get_city_info(city_name, state)
 			c = PlacesService.getCity(city_name,state)
-			places = Category.find(:first, :conditions => ["parent IS NULL AND url_part = ?", "places"])
+			places = Category.find(:first, :conditions => ["parent_uuid IS NULL AND url_part = ?", "places"])
 			@country = places.getChildByURL("us")
 			@state = @country.getChild(state)
 			@city = c

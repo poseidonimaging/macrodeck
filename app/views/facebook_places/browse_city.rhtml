@@ -30,9 +30,20 @@
 				<div class="twocol-layout">
 					<div class="twocol-left">
 						<div class="twocol-left-padding">
-							<h2 class="section-title">Recently Added/Updated</h2>
-							<p>This would normally contain a list of recently added and updated places in
-							<%= @city.title %>, <%= @state.title %>, except I haven't coded it yet.</p>
+							<h2 class="section-title">Recently Added</h2>
+							<div class="places">
+								<% if @city.top_10_newest_places.length > 0 %>
+									<% @city.top_10_newest_places.each do |p| %>
+										<div class="place">
+											<img src="http://places.intranet.ignition-project.com:3000/images/places/no-image-small.png" alt="<%= p.title %>" /> 
+											<%= link_to p.title, "/macrodeckplaces/view/#{@country.url_part}/#{@state.url_part}/#{@city_url_part}/#{p.get_url_part}/" %><br />
+											<span><%= p.place_metadata[:address] %></span>
+										</div>
+									<% end %>
+								<% else %>
+									<p>This city has no places yet! Create one!</p>
+								<% end %>
+							</div>
 						</div>
 					</div>
 					<div class="twocol-right">
