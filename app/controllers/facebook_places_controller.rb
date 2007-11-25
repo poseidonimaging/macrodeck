@@ -60,6 +60,8 @@ class FacebookPlacesController < ApplicationController
 	# create/:country/:state/:city/
 	# You fill in the place name in the form!
 	def create
+		get_networks
+
 		case params[:country]
 			when "us"
 				get_us_states
@@ -69,11 +71,21 @@ class FacebookPlacesController < ApplicationController
 					# 1) create a city (city == nil)
 					# 2) create a place (city != nil)
 					if params[:city]
-						# TODO: Create Place
+						puts "*** CREATING A PLACE"
+						# Create a place.
+						get_city_info(params[:city], params[:state])
+						if request.get?
+							# Show the initial form.
+							render :template => "facebook_places/create_place"
+						elsif request.post?
+							# Validate the form.
+							render :template => "facebook_places/create_place"
+						end
 					else
 						# Create a city.
 						if request.get?
 							# This is a GET request; show the creation form.
+							render :template => "facebook_places/create_city"
 						elsif request.post?
 							# This is a POST request; create the city and redirect to the city.
 						end
@@ -81,7 +93,7 @@ class FacebookPlacesController < ApplicationController
 				else
 					# No state specified, redirect to the browse URL for
 					# whatever they attempted to create...
-					# TODO: Actually do this
+					redirect_to :back
 				end
 		end
 	end

@@ -10,9 +10,18 @@
 		<div class="breadcrumbs">
 			<%= link_to "Browse", "/macrodeckplaces/browse/" %> / <%= link_to @country.title, "/macrodeckplaces/browse/us/" %> /
 			<%= link_to @state.title, "/macrodeckplaces/browse/#{@country.url_part}/#{@state.url_part}/" %> /
-			<%= link_to @city.title, "/macrodeckplaces/browse/#{@country.url_part}/#{@state.url_part}/#{url_sanitize(@city.title)}" %>
+			<%= link_to @city.title, "/macrodeckplaces/browse/#{@country.url_part}/#{@state.url_part}/#{url_sanitize(@city.title)}" %> /
 		</div>
 		<h1 class="area-title">Create a Place</h1>
-
+		<% form_tag "/macrodeckplaces/create/#{@country.url_part}/#{@state.url_part}/#{url_sanitize(@city.title)}" do %>
+			<div class="form-item-main">
+				<div class="form-item-main-left"><p><label for="place_name">Place Name</label></p></div>
+				<div class="form-item-main-right"><%= text_field_tag "place_name" %></div>
+			</div>
+			<div class="form-item">
+				<div class="form-item-left"><p><label for="place_description">Description</label></p></div>
+				<div class="form-item-right"><%= text_field_tag "place_description" %></div>
+			</div>
+		<% end %>
 	</div>
 </fb:fbml>
