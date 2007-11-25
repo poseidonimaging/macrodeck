@@ -1,0 +1,18 @@
+<fb:fbml>
+
+	<%= render :partial => "style" %>
+
+	<%= render :partial => "dashboard" %>
+	
+	<%= render :partial => "tabs" %>
+
+	<div class="content">
+		<div class="breadcrumbs">
+			<%= link_to "Browse", "/macrodeckplaces/browse/" %> / <%= link_to @country.title, "/macrodeckplaces/browse/us/" %> /
+			<%= link_to @state.title, "/macrodeckplaces/browse/#{@country.url_part}/#{@state.url_part}/" %> /
+			<%= link_to @city.title, "/macrodeckplaces/browse/#{@country.url_part}/#{@state.url_part}/#{url_sanitize(@city.title)}" %>
+		</div>
+		<h1 class="area-title">Create a Place</h1>
+
+	</div>
+</fb:fbml>
