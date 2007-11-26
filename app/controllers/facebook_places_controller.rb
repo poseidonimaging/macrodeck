@@ -71,11 +71,11 @@ class FacebookPlacesController < ApplicationController
 					# 1) create a city (city == nil)
 					# 2) create a place (city != nil)
 					if params[:city]
-						puts "*** CREATING A PLACE"
 						# Create a place.
 						get_city_info(params[:city], params[:state])
 						if request.get?
 							# Show the initial form.
+							@place_types = get_place_type_option_list
 							render :template => "facebook_places/create_place"
 						elsif request.post?
 							# Validate the form.
@@ -121,6 +121,17 @@ class FacebookPlacesController < ApplicationController
 		# This method takes a string and returns a suitable URL version.
 		def url_sanitize(str)
 			return str.chomp.strip.downcase.gsub(/[^0-9A-Za-z_\-\s]/, "").gsub(" ", "-")
+		end
+
+		# Returns an <option /> list containing place types.
+		def get_place_type_option_list
+			types = PlaceMetadata.get_place_types
+			option_list = []
+			types.each_pair do |key, value|
+				option_list << "<option value=\"#{key.to_s}\">#{value}</option>"
+			end
+			option_list.sort
+			return option_list.to_s
 		end
 
 		# This method gets all of the networks for the current fbsession user

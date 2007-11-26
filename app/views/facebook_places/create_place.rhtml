@@ -22,6 +22,10 @@
 				<div class="form-item-left"><p><label for="place_description">Description</label></p></div>
 				<div class="form-item-right"><%= text_field_tag "place_description" %></div>
 			</div>
+			<div class="form-item">
+				<div class="form-item-left"><p><label for="place_type">Type</label></p></div>
+				<div class="form-item-right"><%= select_tag "place_type", @place_types %></div>
+			</div>
 		<% end %>
 	</div>
 </fb:fbml>
