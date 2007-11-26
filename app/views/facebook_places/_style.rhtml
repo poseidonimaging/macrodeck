@@ -62,6 +62,9 @@
 	/* ad stuff */
 	.ad-placeholder { width: 100px; height: 100px; padding: 5px; border: 1px solid #000; font-size: 8pt; background-color: #ccc; }
 
+	/* images */
+	img.inline { vertical-align: middle; }
+
 	/* profile-style layout */
 	.profile-layout { border: 0; margin: 0; padding: 0; width: 100%; }
 	.profile-sidebar { float: left; margin: 0; padding: 0; border: 0; width: 25%; }
@@ -82,21 +85,26 @@
 	/* forms */
 	.form-item-main { width: 100%; height: 40px; padding: 0; margin: 0; background-color: #d8dfea; clear: both; }
 	.form-item-main-left { height: 40px; float: left; width: 20%; padding: 0; margin: 0; background-color: #d8dfea; }
-	.form-item-main-left input { margin-top: 10px; width: 95%; }
+	.form-item-main-left input, .form-item-main-left select { margin-top: 10px; width: 95%; }
 	.form-item-main-left p { padding-left: 5px; }
 	.form-item-main-left label { color: #000; }
 	.form-item-main-right { height: 40px; float: left; width: 80%; padding: 0; margin: 0; background-color: #d8dfea; }
-	.form-item-main-right input { margin-top: 10px; width: 95%; }
+	.form-item-main-right input, .form-item-main-right select { margin-top: 10px; width: 95%; }
 	.form-item-main-right p { padding-left: 5px; }
+	.form-item-main-right p img { padding-right: 3px; }
 	.form-item-main-right label { color: #000; }
 
 	.form-item { width: 100%; padding: 0; height: 40px; margin: 0; clear: both; }
 	.form-item-left { height: 40px; float: left; width: 20%; padding: 0; margin: 0; }
-	.form-item-left input { margin-top: 10px; width: 95%; }
+	.form-item-left input, .form-item-left select { margin-top: 10px; width: 95%; }
 	.form-item-left p { padding-left: 5px; }
 	.form-item-left label { color: #000; }
 	.form-item-right { height: 40px; float: left; width: 80%; padding: 0; margin: 0; }
-	.form-item-right input { margin-top: 10px; width: 95%; }
+	.form-item-right input, .form-item-right select { margin-top: 10px; width: 95%; }
 	.form-item-right p { padding-left: 5px; }
+	.form-item-right p img { padding-right: 3px; }
 	.form-item-right label { color: #000; }
+
+	.invalid-selection { color: #ccc; }
+	.seperator { border-top: 1px solid #ccc; height: 1px; margin: 0; margin-top: 10px; padding: 0; }
 </style>

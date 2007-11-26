@@ -69,11 +69,9 @@ EMAIL_VALIDATION    = /^([a-zA-Z0-9&_?\/`!|#*$^%=~{}+'-]+|"([\x00-\x0C\x0E-\x21\
 # User Password Salt
 PASSWORD_SALT   = "giomullyoxonoind" # Random character generator
 
-# Default tabs
-DEFAULT_TABS    = [ { :url => "/",                :text => "Home",      :id => "home" },
-            { :url => "/group/macrodeck/blog/",     :text => "Development Blog",:id => "devblog" },
-            { :url => "/directory/",          :text => "Directory",   :id => "directory" },
-            { :url => "http://developer.macrodeck.com/",:text => "Developers",    :id => "developers" }]
+# Places
+PLACES_BASEURL = "http://places.intranet.ignition-project.com:3000" # do not use a trailing slash
+PLACES_FBURL = "http://apps.facebook.com/macrodeckplaces" # do not use a trailing slash
 
 # Start services we need
 Services.startService "uuid_service"

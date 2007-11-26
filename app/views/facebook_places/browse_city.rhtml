@@ -8,13 +8,13 @@
 
 	<div class="content">
 		<div class="breadcrumbs">
-			<%= link_to "Browse", "/macrodeckplaces/browse/" %> / <%= link_to @country.title, "/macrodeckplaces/browse/us/" %> /
-			<%= link_to @state.title, "/macrodeckplaces/browse/#{@country.url_part}/#{@state.url_part}/" %> /
+			<%= link_to "Browse", "#{PLACES_FBURL}/browse/" %> / <%= link_to @country.title, "#{PLACES_FBURL}/browse/us/" %> /
+			<%= link_to @state.title, "#{PLACES_FBURL}/browse/#{@country.url_part}/#{@state.url_part}/" %> /
 		</div>
 		<h1 class="area-title"><%= @city.title %></h1>
 		<div class="profile-layout">
 			<div class="profile-sidebar">
-				<div class="profile-sidebar-image"><img src="http://places.intranet.ignition-project.com:3000/images/places/no-image-large.png" alt="City Image" /></div>
+				<div class="profile-sidebar-image"><img src="<%= PLACES_BASEURL %>/images/places/no-image-large.png" alt="City Image" /></div>
 				<ul class="profile-links">
 					<!-- TODO: Only show this if it's not the home city -->
 					<li><a href="#">Set as home city</a></li>
@@ -35,8 +35,8 @@
 								<% if @city.top_10_newest_places.length > 0 %>
 									<% @city.top_10_newest_places.each do |p| %>
 										<div class="place">
-											<img src="http://places.intranet.ignition-project.com:3000/images/places/no-image-small.png" alt="<%= p.title %>" /> 
-											<%= link_to p.title, "/macrodeckplaces/view/#{@country.url_part}/#{@state.url_part}/#{@city_url_part}/#{p.get_url_part}/" %><br />
+											<img src="<%= PLACES_BASEURL %>/images/places/no-image-small.png" alt="<%= p.title %>" /> 
+											<%= link_to p.title, "#{PLACES_FBURL}/view/#{@country.url_part}/#{@state.url_part}/#{@city_url_part}/#{p.get_url_part}/" %><br />
 											<span><%= p.place_metadata[:address] %></span>
 										</div>
 									<% end %>

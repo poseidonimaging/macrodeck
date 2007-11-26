@@ -18,13 +18,21 @@
 				<div class="form-item-main-left"><p><label for="place_name">Place Name</label></p></div>
 				<div class="form-item-main-right"><%= text_field_tag "place_name" %></div>
 			</div>
+			<div class="form-item-main">
+				<div class="form-item-main-left"><p></p></div>
+				<div class="form-item-main-right"><p><%= image_tag "icons/small/standard-black/warning.gif", :class => "inline" %> Be sure and use proper spelling and capitalization.</p></div>
+			</div>
 			<div class="form-item">
 				<div class="form-item-left"><p><label for="place_description">Description</label></p></div>
 				<div class="form-item-right"><%= text_field_tag "place_description" %></div>
 			</div>
 			<div class="form-item">
 				<div class="form-item-left"><p><label for="place_type">Type</label></p></div>
-				<div class="form-item-right"><%= select_tag "place_type", @place_types %></div>
+				<div class="form-item-right"><%= select_tag "place_type", "<option value=\"none\" class=\"invalid-selection\" selected=\"selected\">Select a Type</option>#{@place_types}" %></div>
+			</div>
+			<div class="form-item">
+				<div class="form-item-left"><p><label for="place_features">Features</label></p></div>
+				<div class="form-item-right"><p>TODO</p></div>
 			</div>
 		<% end %>
 	</div>

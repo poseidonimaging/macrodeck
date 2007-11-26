@@ -73,12 +73,13 @@ class FacebookPlacesController < ApplicationController
 					if params[:city]
 						# Create a place.
 						get_city_info(params[:city], params[:state])
-						if request.get?
+						if params[:validation_step] == nil
 							# Show the initial form.
 							@place_types = get_place_type_option_list
 							render :template => "facebook_places/create_place"
-						elsif request.post?
+						elsif params[:validation_step] == 1
 							# Validate the form.
+							raise "Validate form"
 							render :template => "facebook_places/create_place"
 						end
 					else
@@ -128,9 +129,13 @@ class FacebookPlacesController < ApplicationController
 			types = PlaceMetadata.get_place_types
 			option_list = []
 			types.each_pair do |key, value|
-				option_list << "<option value=\"#{key.to_s}\">#{value}</option>"
+				if key != :other
+					option_list << "<option value=\"#{key.to_s}\">#{value}</option>"
+				end
 			end
-			option_list.sort
+			option_list.sort!
+			option_list << "<option value=\"none\" class=\"seperator\" disabled=\"disabled\"></option>"
+			option_list << "<option value=\"other\">Other</option>"
 			return option_list.to_s
 		end
 
