@@ -32,8 +32,24 @@
 			</div>
 			<div class="form-item">
 				<div class="form-item-left"><p><label for="place_features">Features</label></p></div>
-				<div class="form-item-right"><p>TODO</p></div>
+				<div class="form-item-unformatted-right"><p>TODO</p></div>
 			</div>
+			<div class="form-item">
+				<div class="form-item-left"><p class="faux-label">Location</p></div>
+				<div class="form-item-unformatted-right"><p><label for="place_address">Address:</label> <%= text_field_tag "place_address", nil, :style => "width: 66%;" %> <label for="place_zipcode">Zip:</label> <%= text_field_tag "place_zipcode", nil, :size => 5 %></p></div>
+			</div>
+
+			<a id="advanced_show" href="#" clicktohide="advanced_show" clicktoshow="advanced,advanced_hide">Show Advanced Options</a>
+			<a id="advanced_hide" href="#" clicktohide="advanced,advanced_hide" clicktoshow="advanced_show" style="display: none;">Hide Advanced Options</a>
+			<div id="advanced" style="display: none;">
+				<div class="form-item">
+					<div class="form-item-left"><p class="faux-label">Hours of Operation</p></div>
+					<div class="form-item-unformatted-right">
+						<p>TODO</p>
+					</div>
+				</div>
+			</div>
+			<div class="form-submit"><%= submit_tag "Next >", :class => "inputsubmit" %></div>
 		<% end %>
 	</div>
 </fb:fbml>
