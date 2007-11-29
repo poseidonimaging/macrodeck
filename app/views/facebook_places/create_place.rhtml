@@ -1,4 +1,4 @@
-<fb:fbml>
+	<fb:fbml>
 
 	<%= render :partial => "style" %>
 
@@ -13,10 +13,20 @@
 			<%= link_to @city.title, "/macrodeckplaces/browse/#{@country.url_part}/#{@state.url_part}/#{url_sanitize(@city.title)}" %> /
 		</div>
 		<h1 class="area-title">Create a Place</h1>
+		<div class="information">
+			<h2><%= image_tag "icons/small/standard-black/info.gif", :class => "inline" %> Tips for Creating Places</h2>
+			<p>Enter as much information as possible as accurately as possible. The only <em>required</em> fields are Place Name,
+			Place Type, and Address. Everything else is optional, but putting this information makes it easier to locate this
+			place. If you do not know the exact address, feel free to use an intersection (e.g. 71st and Memorial). Also, when picking
+			which features a place has, check all of the boxes you need to describe what features the place has.</p>
+			<p>Enjoy Places!</p>
+			<!-- TODO: make a button so this can go away if you would like it to -->
+		</div>
+		<br />
 		<% form_tag "/macrodeckplaces/create/#{@country.url_part}/#{@state.url_part}/#{url_sanitize(@city.title)}" do %>
 			<div class="form-item-main">
 				<div class="form-item-main-left"><p><label for="place_name">Place Name</label></p></div>
-				<div class="form-item-main-right"><%= text_field_tag "place_name" %></div>
+				<div class="form-item-main-right"><%= text_field_tag "place_name", @place_name %></div>
 			</div>
 			<div class="form-item-main">
 				<div class="form-item-main-left"><p></p></div>
@@ -24,28 +34,64 @@
 			</div>
 			<div class="form-item">
 				<div class="form-item-left"><p><label for="place_description">Description</label></p></div>
-				<div class="form-item-right"><%= text_field_tag "place_description" %></div>
-			</div>
-			<div class="form-item">
-				<div class="form-item-left"><p><label for="place_type">Type</label></p></div>
-				<div class="form-item-right"><%= select_tag "place_type", "<option value=\"none\" class=\"invalid-selection\" selected=\"selected\" disabled=\"disabled\">Select a Type</option>#{@place_types}" %></div>
-			</div>
-			<div class="form-item">
-				<div class="form-item-left"><p><label for="place_features">Features</label></p></div>
-				<div class="form-item-unformatted-right"><p>TODO</p></div>
+				<div class="form-item-right"><%= text_field_tag "place_description", @place_description %></div>
 			</div>
 			<div class="form-item">
 				<div class="form-item-left"><p class="faux-label">Location</p></div>
-				<div class="form-item-unformatted-right"><p><label for="place_address">Address:</label> <%= text_field_tag "place_address", nil, :style => "width: 66%;" %> <label for="place_zipcode">Zip:</label> <%= text_field_tag "place_zipcode", nil, :size => 5 %></p></div>
+				<div class="form-item-unformatted-right">
+					<p>
+						<label for="place_address">Address:</label> <%= text_field_tag "place_address", @place_address, :style => "width: 66%;" %> 
+						<label for="place_zipcode">Zip:</label> <%= text_field_tag "place_zipcode", @place_zipcode, :size => 5 %>
+					</p>
+				</div>
+			</div>
+			<div class="form-item">
+				<div class="form-item-left"><p class="faux-label">Phone Number</p></div>
+				<div class="form-item-unformatted-right">
+					<p>(<%= text_field_tag "place_phone_number_area_code", nil, :size => 3 %>)
+					<%= text_field_tag "place_phone_number_exchange", nil, :size => 3 %>-<%= text_field_tag "place_phone_number_number", nil, :size => 4 %></p>
+				</div>
+			</div>
+			<div class="form-item">
+				<div class="form-item-left"><p><label for="place_type">Type</label></p></div>
+				<div class="form-item-right">
+					<%= select_tag "place_type", "<option value=\"none\" class=\"invalid-selection\" selected=\"selected\" disabled=\"disabled\">Select a Type</option>#{@place_types}" %>
+				</div>
+			</div>
+			<div class="form-item">
+				<div class="form-item-left"><p class="faux-label">Features</p></div>
+				<div class="form-item-unformatted-right"><div class="form-multicolumn-layout"><%= @place_features %></div></div>
 			</div>
 
 			<a id="advanced_show" href="#" clicktohide="advanced_show" clicktoshow="advanced,advanced_hide">Show Advanced Options</a>
 			<a id="advanced_hide" href="#" clicktohide="advanced,advanced_hide" clicktoshow="advanced_show" style="display: none;">Hide Advanced Options</a>
 			<div id="advanced" style="display: none;">
 				<div class="form-item">
+					<div class="form-item-left"><p><label for="place_website">Website</label></p></div>
+					<div class="form-item-right"><%= text_field_tag "place_website" %></div>
+				</div>
+				<div class="form-item">
+					<div class="form-item-left"><p class="faux-label">Geographic Coordinates</p></div>
+					<div class="form-item-unformatted-right">
+						<p>
+							<label for="place_latitude">Latitude:</label> <%= text_field_tag "place_latitude" %>
+							<label for="place_longitude">Longitude:</label> <%= text_field_tag "place_longitude" %>
+						</p>
+					</div>
+				</div>
+				<div class="form-item">
 					<div class="form-item-left"><p class="faux-label">Hours of Operation</p></div>
 					<div class="form-item-unformatted-right">
-						<p>TODO</p>
+						<p class="form-offset-fields">
+							<!-- TODO: make the entry field use a standard format -->
+							<label for="place_hours_sunday">Sunday:</label> <%= text_field_tag "place_hours_sunday" %><br />
+							<label for="place_hours_monday">Monday:</label> <%= text_field_tag "place_hours_monday" %><br />
+							<label for="place_hours_tuesday">Tuesday:</label> <%= text_field_tag "place_hours_tuesday" %><br />
+							<label for="place_hours_wednesday">Wednesday:</label> <%= text_field_tag "place_hours_wednesday" %><br />
+							<label for="place_hours_thursday">Thursday:</label> <%= text_field_tag "place_hours_thursday" %><br />
+							<label for="place_hours_friday">Friday:</label> <%= text_field_tag "place_hours_friday" %><br />
+							<label for="place_hours_saturday">Saturday:</label> <%= text_field_tag "place_hours_saturday" %>
+						</p>
 					</div>
 				</div>
 			</div>

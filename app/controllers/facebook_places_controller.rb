@@ -76,6 +76,7 @@ class FacebookPlacesController < ApplicationController
 						if params[:validation_step] == nil
 							# Show the initial form.
 							@place_types = get_place_type_option_list
+							@place_features = get_place_feature_checkboxes
 							render :template => "facebook_places/create_place"
 						elsif params[:validation_step] == 1
 							# Validate the form.
@@ -137,6 +138,40 @@ class FacebookPlacesController < ApplicationController
 			option_list << "<option value=\"none\" class=\"seperator\" disabled=\"disabled\"></option>"
 			option_list << "<option value=\"other\">Other</option>"
 			return option_list.to_s
+		end
+
+		# Returns a bunch of checkboxes for each feature available for a place
+		def get_place_feature_checkboxes
+			features = PlaceMetadata.get_place_features
+			feature_list = []
+			features.each_pair do |key, value|
+				feature_list << "<input type=\"checkbox\" name=\"place_#{key.to_s}\" value=\"1\" /><label for=\"place_#{key.to_s}\" class=\"standard\">#{value}</label><br />"
+			end
+			feature_list.sort!
+			columnized_feature_list = []
+
+			if feature_list[0..6] != nil
+				columnized_feature_list << "<div class=\"form-multicolumn-column\">"
+				feature_list[0..6].each do |feature|
+					columnized_feature_list << feature
+				end
+				columnized_feature_list << "</div>"
+			end
+			if feature_list[7..13] != nil
+				columnized_feature_list << "<div class=\"form-multicolumn-column\">"
+				feature_list[7..13].each do |feature|
+					columnized_feature_list << feature
+				end
+				columnized_feature_list << "</div>"
+			end
+			if feature_list[14..-1] != nil
+				columnized_feature_list << "<div class=\"form-multicolumn-column\">"
+				feature_list[14..-1].each do |feature|
+					columnized_feature_list << feature
+				end
+				columnized_feature_list << "</div>"
+			end
+			return columnized_feature_list.to_s
 		end
 
 		# This method gets all of the networks for the current fbsession user

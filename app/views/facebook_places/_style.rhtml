@@ -59,6 +59,9 @@
 	.area-title span { display: block; color: #999; font-size: 8pt; font-weight: normal; } /* subtitle */
 	.section-title { font-size: 1.0em; border-bottom: 1px solid #d8dfea; margin-bottom: 5px; }
 
+	.information { background-color: #FDFFE4; padding: 5px; border: 1px solid #FFDA5B; }
+	.information h2 { font-size: 8pt; }
+
 	/* ad stuff */
 	.ad-placeholder { width: 100px; height: 100px; padding: 5px; border: 1px solid #000; font-size: 8pt; background-color: #ccc; }
 
@@ -82,7 +85,8 @@
 	.twocol-right { float: left; margin: 0; padding: 0; border: 0; width: 50%; }
 	.twocol-right-padding { padding-left: 5px; }
 
-	/* forms */
+	/*** forms ***/
+	/* main (first) item - blue background */
 	.form-item-main { width: 100%; height: 40px; padding: 0; margin: 0; background-color: #d8dfea; clear: both; }
 	.form-item-main-left { height: 40px; float: left; width: 20%; padding: 0; margin: 0; background-color: #d8dfea; }
 	.form-item-main-left input, .form-item-main-left select { margin-top: 10px; width: 95%; }
@@ -94,6 +98,7 @@
 	.form-item-main-right p img { padding-right: 3px; }
 	.form-item-main-right label { color: #000; }
 
+	/* standard items - clear background */
 	.form-item { width: 100%; padding: 0; height: 40px; margin: 0; clear: both; }
 	.form-item-left { height: 40px; float: left; width: 20%; padding: 0; margin: 0; }
 	.form-item-left input, .form-item-left select { margin-top: 10px; width: 95%; }
@@ -104,13 +109,31 @@
 	.form-item-right p { padding-left: 5px; }
 	.form-item-right p img { padding-right: 3px; }
 	.form-item-right label { color: #000; }
-	
+
+	/* multicolumn layout */
+	.form-multicolumn-layout { width: 100%; padding: 0; margin: 0; }
+	.form-multicolumn-column { float: left; width: 30%; margin: 0; padding: 0; }
+
+	/* unformatted right side (e.g. no height set) */
 	.form-item-unformatted-right { float: left; width: 80%; padding: 0; margin: 0; }
 	.form-item-unformatted-right p { padding-left: 5px; }
 
+	/* generic styles for input elements */
 	.invalid-selection { color: #ccc; }
 	.seperator { border-top: 1px solid #ccc; height: 1px; margin: 0; margin-top: 10px; padding: 0; }
+
+	/* faux label = looks like a <label> on the left side of the form but is a <p> */
 	.faux-label { color: #000; font-weight: bold; }
 
+	/* bottom submit buttons */
 	.form-submit { margin-right: 0; margin-left: auto; padding: 0; text-align: right; }
+
+	/* for multiple field sections of a form that need the fields offset */
+	.form-offset-fields label { display: block; float: left; width: 20%; }
+	.form-offset-fields input { float: left; }
+	.form-offset-fields br { clear: both; }
+
+	/* make a label that is standard text and not formatted specially */
+	label.standard { font-weight: normal; color: #000; }
+
 </style>
