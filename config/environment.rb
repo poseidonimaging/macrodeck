@@ -65,6 +65,7 @@ CREATOR_MACRODECK   = "7b7e7c62-0a56-4785-93d5-6e689c9793c9"
 # E-mail validation regex
 #EMAIL_VALIDATION   = /^[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/
 EMAIL_VALIDATION    = /^([a-zA-Z0-9&_?\/`!|#*$^%=~{}+'-]+|"([\x00-\x0C\x0E-\x21\x23-\x5B\x5D-\x7F]|\\[\x00-\x7F])*")(\.([a-zA-Z0-9&_?\/`!|#*$^%=~{}+'-]+|"([\x00-x0C\x0E-\x21\x23-\x5B\x5D-\x7F]|\\[\x00-\x7F])*"))*@([a-zA-Z0-9&_?\/`!|#*$^%=~{}+'-]+|\[([\x00-\x0C\x0E-\x5A\x5E-\x7F]|\\[\x00-\x7F])*\])(\.([a-zA-Z0-9&_?\/`!|#*$^%=~{}+'-]+|\[([\x00-\x0C\x0E-\x5A\x5E-\x7F]|\\[\x00-\x7F])*\]))*$/
+PHONE_VALIDATION	= /^[01]?[- .]?(\([2-9]\d{2}\)|[2-9]\d{2})[- .]?\d{3}[- .]?\d{4}$/
 
 # User Password Salt
 PASSWORD_SALT   = "giomullyoxonoind" # Random character generator

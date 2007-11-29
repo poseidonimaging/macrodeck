@@ -77,11 +77,70 @@ class FacebookPlacesController < ApplicationController
 							# Show the initial form.
 							@place_types = get_place_type_option_list
 							@place_features = get_place_feature_checkboxes
+							@validation_step = 1
+							@errors = []
 							render :template => "facebook_places/create_place"
-						elsif params[:validation_step] == 1
-							# Validate the form.
-							raise "Validate form"
-							render :template => "facebook_places/create_place"
+						elsif params[:validation_step] == "1"
+							# get required variables for the form
+							@place_types = get_place_type_option_list
+							@place_features = get_place_feature_checkboxes
+							@validation_step = 1
+							# get params in variables
+							@place_name = params[:place_name]
+							@place_address = params[:place_address]
+							@place_type = params[:place_type]
+							@place_phone_number_area_code = params[:place_phone_number_area_code]
+							@place_phone_number_exchange = params[:place_phone_number_exchange]
+							@place_phone_number_number = params[:place_phone_number_number]
+							if @place_phone_number_area_code.empty?
+								@place_phone_number_area_code = nil
+							end
+							if @place_phone_number_exchange.empty?
+								@place_phone_number_exchange = nil
+							end
+							if @place_phone_number_number.empty?
+								@place_phone_number_number = nil
+							end
+							@place_description = params[:place_description]
+							@place_zipcode = params[:place_zipcode]
+							@place_latitude = params[:place_latitude]
+							@place_longitude = params[:place_longitude]
+							# TODO: features
+							# TODO: hours
+						
+							# Yummy validation!
+							@errors = []
+							if !validate_not_nil(@place_name)
+								@errors << "Please enter a place name."
+							end
+							if !validate_not_nil(@place_address)
+								@errors << "Please enter an address."
+							end
+							if !validate_not_nil(@place_type) || @place_type == "none"
+								@errors << "Please select a valid place type."
+							end
+							if @place_phone_number_area_code != nil || @place_phone_number_exchange != nil || @place_phone_number_number != nil
+								if !validate_field("(#{@place_phone_number_area_code}) #{@place_phone_number_exchange}-#{@place_phone_number_number}", :phone)
+									@errors << "Please enter a valid phone number."
+								end
+							end
+							if !validate_field(@place_zipcode, :zipcode)
+								@errors << "Please enter a valid zip code."
+							end
+							if @place_latitude != nil && !validate_field(@place_latitude, :latitude)
+								@errors << "Please enter a valid latitude in decimal notation (e.g. 12.3456789)"
+							end
+							if @place_longitude != nil && !validate_field(@place_longitude, :longitude)
+								@errors << "Please enter a valid longitude in decimal notation (e.g. 98.7654321)"
+							end
+
+							if @errors.length > 0
+								render :template => "facebook_places/create_place"
+							else
+								# no validation errors.
+								@errors << "debug: no errors!"
+								render :template => "facebook_places/create_place"
+							end
 						end
 					else
 						# Create a city.
@@ -120,6 +179,56 @@ class FacebookPlacesController < ApplicationController
 	end
 
 	private
+		# Validates a field. Field types: :email, :phone, :latitude, :longitude, :zipcode
+		def validate_field(value, type)
+			case type
+			when :email
+				if value =~ EMAIL_VALIDATION
+					return true
+				else
+					return false
+				end
+			when :phone
+				if value =~ PHONE_VALIDATION
+					return true
+				else
+					return false
+				end
+			when :latitude
+				# latitude = -90 to +90
+				if value.to_f <= 90.0 && value.to_f >= -90.0
+					return true
+				else
+					return false
+				end
+			when :longitude
+				# longitude = -180 to +180
+				if value.to_f <= 180.0 && value.to_f >= -180.0
+					return true
+				else
+					return false
+				end
+			when :zipcode
+				if value != nil && !value.empty? && value.length = 5
+					return true
+				elsif value == nil || value.empty?
+					# it is valid for a zipcode to be empty.
+					return true
+				else
+					return false
+				end
+			end
+		end
+
+		# Returns true if not nil, false otherwise.
+		def validate_not_nil(value)
+			if value == nil || value.empty?
+				return false
+			else
+				return true
+			end
+		end
+		
 		# This method takes a string and returns a suitable URL version.
 		def url_sanitize(str)
 			return str.chomp.strip.downcase.gsub(/[^0-9A-Za-z_\-\s]/, "").gsub(" ", "-")
@@ -135,8 +244,9 @@ class FacebookPlacesController < ApplicationController
 				end
 			end
 			option_list.sort!
-			option_list << "<option value=\"none\" class=\"seperator\" disabled=\"disabled\"></option>"
-			option_list << "<option value=\"other\">Other</option>"
+			# TODO: support for Other
+			#option_list << "<option value=\"none\" class=\"seperator\" disabled=\"disabled\"></option>"
+			#option_list << "<option value=\"other\">Other</option>"
 			return option_list.to_s
 		end
 
