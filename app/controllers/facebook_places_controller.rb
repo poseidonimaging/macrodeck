@@ -82,8 +82,8 @@ class FacebookPlacesController < ApplicationController
 							render :template => "facebook_places/create_place"
 						elsif params[:validation_step] == "1"
 							# get required variables for the form
-							@place_types = get_place_type_option_list
-							@place_features = get_place_feature_checkboxes
+							@place_types = get_place_type_option_list(params[:place_type])
+							@place_features = get_place_feature_checkboxes(params[:place_features])
 							@validation_step = 1
 							# get params in variables
 							@place_name = params[:place_name]
@@ -139,6 +139,7 @@ class FacebookPlacesController < ApplicationController
 							else
 								# no validation errors.
 								@errors << "debug: no errors!"
+								@errors << params[:place_features].inspect
 								render :template => "facebook_places/create_place"
 							end
 						end
@@ -209,7 +210,7 @@ class FacebookPlacesController < ApplicationController
 					return false
 				end
 			when :zipcode
-				if value != nil && !value.empty? && value.length = 5
+				if value != nil && !value.empty? && value.length == 5
 					return true
 				elsif value == nil || value.empty?
 					# it is valid for a zipcode to be empty.
@@ -234,28 +235,44 @@ class FacebookPlacesController < ApplicationController
 			return str.chomp.strip.downcase.gsub(/[^0-9A-Za-z_\-\s]/, "").gsub(" ", "-")
 		end
 
-		# Returns an <option /> list containing place types.
-		def get_place_type_option_list
+		# Returns an <option /> list containing place types (specify the selected value with a key if there is one)
+		def get_place_type_option_list(default_value = nil)
 			types = PlaceMetadata.get_place_types
 			option_list = []
 			types.each_pair do |key, value|
 				if key != :other
-					option_list << "<option value=\"#{key.to_s}\">#{value}</option>"
+					if default_value != nil && default_value.to_s == key.to_s
+						option_list << "<option value=\"#{key.to_s}\" selected=\"selected\">#{value}</option>"
+					else
+						option_list << "<option value=\"#{key.to_s}\">#{value}</option>"
+					end
 				end
 			end
 			option_list.sort!
+			if default_value != nil
+				option_list.insert(0, "<option value=\"none\" class=\"invalid-selection\" disabled=\"disabled\">Select a Type</option>")
+			else
+				option_list.insert(0, "<option value=\"none\" class=\"invalid-selection\" selected=\"selected\" disabled=\"disabled\">Select a Type</option>")
+			end
 			# TODO: support for Other
 			#option_list << "<option value=\"none\" class=\"seperator\" disabled=\"disabled\"></option>"
 			#option_list << "<option value=\"other\">Other</option>"
 			return option_list.to_s
 		end
 
-		# Returns a bunch of checkboxes for each feature available for a place
-		def get_place_feature_checkboxes
+		# Returns a bunch of checkboxes for each feature available for a place; the enabled features should be specified as a hash like { :outdoor_seating => "1" } or { "outdoor_seating" => "1" }
+		def get_place_feature_checkboxes(enabled_features = {})
 			features = PlaceMetadata.get_place_features
 			feature_list = []
 			features.each_pair do |key, value|
-				feature_list << "<input type=\"checkbox\" name=\"place_#{key.to_s}\" value=\"1\" /><label for=\"place_#{key.to_s}\" class=\"standard\">#{value}</label><br />"
+				if enabled_features != nil && enabled_features[key.to_s] != nil && enabled_features[key.to_s] == "1"
+					feature_list << "<input type=\"checkbox\" name=\"place_features[#{key.to_s}]\" value=\"1\" checked=\"checked\"/>
+										<label for=\"place_#{key.to_s}\" class=\"standard\">#{value}</label><br />"
+				else
+					# feature isn't selected
+					feature_list << "<input type=\"checkbox\" name=\"place_features[#{key.to_s}]\" value=\"1\" />
+										<label for=\"place_#{key.to_s}\" class=\"standard\">#{value}</label><br />"
+				end
 			end
 			feature_list.sort!
 			columnized_feature_list = []
