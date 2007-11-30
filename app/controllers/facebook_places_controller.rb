@@ -105,8 +105,15 @@ class FacebookPlacesController < ApplicationController
 							@place_zipcode = params[:place_zipcode]
 							@place_latitude = params[:place_latitude]
 							@place_longitude = params[:place_longitude]
-							# TODO: features
-							# TODO: hours
+							@place_website = params[:place_website]
+							@place_feature_list = params[:place_features]
+							@place_hours_sunday = params[:place_hours_sunday]
+							@place_hours_monday = params[:place_hours_monday]
+							@place_hours_tuesday = params[:place_hours_tuesday]
+							@place_hours_wednesday = params[:place_hours_wednesday]
+							@place_hours_thursday = params[:place_hours_thursday]
+							@place_hours_friday = params[:place_hours_friday]
+							@place_hours_saturday = params[:place_hours_saturday]
 						
 							# Yummy validation!
 							@errors = []
@@ -134,22 +141,67 @@ class FacebookPlacesController < ApplicationController
 								@errors << "Please enter a valid longitude in decimal notation (e.g. 98.7654321)"
 							end
 
+							# TODO: Test to make sure this place at this address doesn't already exist.
+							# TODO: Test the zipcode to make sure it's in this city.
+
 							if @errors.length > 0
 								render :template => "facebook_places/create_place"
 							else
-								# no validation errors.
-								@errors << "debug: no errors!"
-								@errors << params[:place_features].inspect
-								render :template => "facebook_places/create_place"
+								# CREATE!
+								place = @city.create_place({ :title => @place_name, :description => @place_description })
+								metadata = PlaceMetadata.new
+								metadata.type = @place_type.to_sym
+								metadata.address = @place_address
+								metadata.zipcode = @place_zipcode
+								metadata.phone_number = "(#{@place_phone_number_area_code}) #{@place_phone_number_exchange}-#{@place_phone_number_number}"
+								metadata.latitude = @place_latitude
+								metadata.longitude = @place_longitude
+								metadata.website = @place_website
+								metadata.hours_sunday = @place_hours_sunday
+								metadata.hours_monday = @place_hours_monday
+								metadata.hours_tuesday = @place_hours_tuesday
+								metadata.hours_wednesday = @place_hours_wednesday
+								metadata.hours_thursday = @place_hours_thursday
+								metadata.hours_friday = @place_hours_friday
+								metadata.hours_saturday = @place_hours_saturday
+								if @place_feature_list != nil
+									@place_feature_list.each_key do |feature|
+										metadata.features << feature.to_sym
+									end
+								end
+								place.place_metadata = metadata
+								place.save!
+								redirect_to "#{PLACES_FBURL}/view/#{@country.url_part}/#{@state.url_part}/#{url_sanitize(@city.title)}/#{place.uuid}/"
 							end
 						end
 					else
+						get_state(params[:state])
 						# Create a city.
-						if request.get?
-							# This is a GET request; show the creation form.
+						if params[:validation_step] == nil
+							# show creation form
+							@errors = []
+							@validation_step = "1"
 							render :template => "facebook_places/create_city"
-						elsif request.post?
-							# This is a POST request; create the city and redirect to the city.
+						elsif params[:validation_step] == "1"
+							# validate and then save the city
+							# Capitalize first letter of the city name
+							@city_name = params[:city_name].capitalize.chomp.strip
+							@errors = []
+							@validation_step = "1"
+							if !validate_not_nil(@city_name)
+								@errors << "Please enter a city name."
+							end
+							if @errors.length > 0
+								render :template => "facebook_places/create_city"
+							else
+								city = PlacesService.createCity(@city_name, @state.title)
+								if city != nil
+									redirect_to "#{PLACES_FBURL}/browse/#{@country.url_part}/#{@state.url_part}/#{url_sanitize(city.title)}"
+								else
+									@errors << "The city you attempted to create already exists."
+									render :template => "facebook_places/create_city"
+								end
+							end
 						end
 					end
 				else
@@ -369,6 +421,19 @@ class FacebookPlacesController < ApplicationController
 
 			if @country != nil
 				@states = @country.children
+			else
+				raise "Country not found."
+			end
+		end
+
+		def get_state(state_url_part)
+			places = Category.find(:first, :conditions => ["parent_uuid IS NULL AND url_part = ?", "places"])
+			@country = places.getChildByURL("us")
+			if @country != nil
+				@state = @country.getChildByURL(state_url_part)
+				if @state.nil?
+					raise "State not found."
+				end
 			else
 				raise "Country not found."
 			end
