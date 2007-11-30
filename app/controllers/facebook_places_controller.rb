@@ -148,7 +148,6 @@ class FacebookPlacesController < ApplicationController
 								render :template => "facebook_places/create_place"
 							else
 								# CREATE!
-								place = @city.create_place({ :title => @place_name, :description => @place_description })
 								metadata = PlaceMetadata.new
 								metadata.type = @place_type.to_sym
 								metadata.address = @place_address
@@ -164,11 +163,14 @@ class FacebookPlacesController < ApplicationController
 								metadata.hours_thursday = @place_hours_thursday
 								metadata.hours_friday = @place_hours_friday
 								metadata.hours_saturday = @place_hours_saturday
+								feature_array = []
 								if @place_feature_list != nil
 									@place_feature_list.each_key do |feature|
-										metadata.features << feature.to_sym
+										feature_array << feature.to_sym
 									end
 								end
+								metadata.features = feature_array
+								place = @city.create_place({ :title => @place_name, :description => @place_description })
 								place.place_metadata = metadata
 								place.save!
 								redirect_to "#{PLACES_FBURL}/view/#{@country.url_part}/#{@state.url_part}/#{url_sanitize(@city.title)}/#{place.uuid}/"
