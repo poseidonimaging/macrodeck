@@ -1,0 +1,55 @@
+<fb:fbml>
+
+	<%= render :partial => "style" %>
+
+	<%= render :partial => "dashboard" %>
+	
+	<%= render :partial => "tabs" %>
+
+	<div class="content">
+		<div class="breadcrumbs">
+			<%= link_to "Browse", "#{PLACES_FBURL}/browse/" %> / <%= link_to @country.title, "#{PLACES_FBURL}/browse/us/" %> /
+			<%= link_to @state.title, "#{PLACES_FBURL}/browse/#{@country.url_part}/#{@state.url_part}/" %> /
+			<%= link_to @city.title, "#{PLACES_FBURL}/browse/#{@country.url_part}/#{@state.url_part}/#{url_sanitize(@city.title)}/" %> /
+		</div>
+		<h1 class="area-title"><%= @place.title %></h1>
+		<div class="profile-layout">
+			<div class="profile-sidebar">
+				<div class="profile-sidebar-image"><img src="<%= PLACES_BASEURL %>/images/places/no-image-large.png" alt="Place Image" /></div>
+				<ul class="profile-links">
+					<!-- TODO: Only show this if it's not the home city -->
+					<li><a href="#">I go to this place</a></li>
+					<li><a href="#">Find similar places</a></li>
+					<li><a href="#">Map</a></li>
+				</ul>
+				<br />
+				<div class="ad-placeholder">Ad placeholder</div>
+				<br />
+			</div>
+			<div class="profile-content">
+				<% if !@place.description.nil? && !@place.description.empty? %><p><%= @place.description %></p><% end %>
+				<div class="offset">
+				<p>
+				<% if !@place.place_metadata[:address].nil? && !@place.place_metadata[:address].empty? %>
+					<span class="key">Address</span><span class="value"><%= @place.place_metadata[:address] %></span><br />
+				<% end %>
+				<% if !@place.place_metadata[:zipcode].nil? %>
+					<span class="key">Zipcode</span><span class="value"><%= @place.place_metadata[:zipcode] %></span><br />
+				<% end %>
+				<% if !@place.place_metadata[:phone_number].nil? && !@place.place_metadata[:phone_number].empty? %>
+					<span class="key">Phone Number</span><span class="value"><%= @place.place_metadata[:phone_number] %></span><br />
+				<% end %>
+				<% if !@place.place_metadata[:website].nil? && !@place.place_metadata[:website].empty? %>
+					<span class="key">Website</span><span class="value"><%= @place.place_metadata[:website] %></span><br />
+				<% end %>
+				<% if !@place.place_metadata[:latitude].nil? %>
+					<span class="key">Latitude</span><span class="value"><%= @place.place_metadata[:latitude] %></span><br />
+				<% end %>
+				<% if !@place.place_metadata[:longitude].nil? %>
+					<span class="key">Longitude</span><span class="value"><%= @place.place_metadata[:longitude] %></span><br />
+				<% end %>
+				</p>
+			</div>
+		</div>
+	</div>
+</fb:fbml>

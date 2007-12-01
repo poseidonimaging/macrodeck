@@ -8,6 +8,18 @@ class FacebookPlacesController < ApplicationController
 	#
 	# View requires all parameters. You want to view a place.
 	def view
+		get_networks
+
+		case params[:country]
+		when "us"
+			get_us_states
+
+			if params[:state] && params[:city] && params[:place]
+				get_city_info(params[:city], params[:state])
+				@place = Place.find_by_dataid(params[:place])
+				render :template => "facebook_places/view_place"
+			end
+		end
 	end
 
 	# edit URLs look like view.
