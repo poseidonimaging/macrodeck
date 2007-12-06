@@ -36,8 +36,16 @@
 									<% @city.top_10_newest_places.each do |p| %>
 										<div class="place">
 											<img src="<%= PLACES_BASEURL %>/images/places/no-image-small.png" alt="<%= p.title %>" /> 
-											<%= link_to p.title, "#{PLACES_FBURL}/view/#{@country.url_part}/#{@state.url_part}/#{url_sanitize(@city.title)}/#{p.url_part}/" %><br />
-											<span><%= p.place_metadata[:address] %></span>
+											<div>
+												<!-- extra DIV for padding purposes -->
+												<div>
+													<%= link_to p.title, "#{PLACES_FBURL}/view/#{@country.url_part}/#{@state.url_part}/#{url_sanitize(@city.title)}/#{p.url_part}/" %><br />
+													<% if p.description.length > 0 %>
+														<span class="description"><%= truncate(p.description) %></span><br />
+													<% end %>
+													<span class="address"><%= p.place_metadata[:address] %></span>
+												</div>
+											</div>
 										</div>
 									<% end %>
 								<% else %>

@@ -22,6 +22,11 @@ class FacebookPlacesController < ApplicationController
 		end
 	end
 
+	def welcome
+		get_networks
+		# Just static text.
+	end
+
 	# edit URLs look like view.
 	def edit
 	end
@@ -164,7 +169,11 @@ class FacebookPlacesController < ApplicationController
 								metadata.type = @place_type.to_sym
 								metadata.address = @place_address
 								metadata.zipcode = @place_zipcode
-								metadata.phone_number = "(#{@place_phone_number_area_code}) #{@place_phone_number_exchange}-#{@place_phone_number_number}"
+								if @place_phone_number_area_code.nil? && @place_phone_number_exchange.nil? && @place_phone_number_number.nil?
+									metadata.phone_number = nil
+								else
+									metadata.phone_number = "(#{@place_phone_number_area_code}) #{@place_phone_number_exchange}-#{@place_phone_number_number}"
+								end
 								metadata.latitude = @place_latitude
 								metadata.longitude = @place_longitude
 								metadata.website = @place_website

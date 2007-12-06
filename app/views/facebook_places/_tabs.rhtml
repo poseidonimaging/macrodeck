@@ -5,28 +5,33 @@
 @tab_my_places = fb_tab_not_selected
 @tab_friends = fb_tab_not_selected
 @tab_network = fb_tab_not_selected
+@tab_welcome = fb_tab_not_selected
 
-case params[:country]
-	when "my_places"
-		@tab_my_places = fb_tab_selected
-	when "friends"
-		@tab_friends = fb_tab_selected
-	else
-		if params[:country] != nil && params[:country].downcase == @primary_network_country.downcase
-			if params[:state] != nil && params[:state].downcase == @primary_network_state.downcase
-				if params[:city] != nil && params[:city].downcase == @primary_network_city.downcase
-					@tab_network = fb_tab_selected
+if params[:action] == "browse" || params[:action] == "view" || params[:action] == "create"
+	case params[:country]
+		when "my_places"
+			@tab_my_places = fb_tab_selected
+		when "friends"
+			@tab_friends = fb_tab_selected
+		else
+			if params[:country] != nil && params[:country].downcase == @primary_network_country.downcase
+				if params[:state] != nil && params[:state].downcase == @primary_network_state.downcase
+					if params[:city] != nil && params[:city].downcase == @primary_network_city.downcase
+						@tab_network = fb_tab_selected
+					end
 				end
 			end
-		end
+	end
+elsif params[:action] == "welcome"
+	@tab_welcome = fb_tab_selected
 end
+
 %>
 	<fb:tabs>
-		<fb:tab-item href="/macrodeckplaces/browse/my_places/" title="My Places" <%= @tab_my_places %>>My Places</fb:tab-item>
-		<fb:tab-item href="/macrodeckplaces/browse/friends/" title="Friends' Places" <%= @tab_friends %>>Friends' Places</fb:tab-item>
+		<fb:tab-item href="<%= PLACES_FBURL %>/welcome/" title="Welcome" <%= @tab_welcome%>>Welcome</fb:tab-item>
 		
 		<% if @primary_network != nil %>
-			<fb:tab-item href="/macrodeckplaces/browse/<%= "#{url_sanitize(@primary_network_country)}/#{url_sanitize(@primary_network_state)}/#{url_sanitize(@primary_network_city)}" %>/"
+			<fb:tab-item href="<%= PLACES_FBURL %>/browse/<%= "#{url_sanitize(@primary_network_country)}/#{url_sanitize(@primary_network_state)}/#{url_sanitize(@primary_network_city)}" %>/"
 			title="<%= @primary_network %> Places" <%= @tab_network %>><%= @primary_network %> Places</fb:tab-item>
 		<% end %>
 	</fb:tabs>

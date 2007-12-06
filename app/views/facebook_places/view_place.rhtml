@@ -18,7 +18,7 @@
 				<div class="profile-sidebar-image"><img src="<%= PLACES_BASEURL %>/images/places/no-image-large.png" alt="Place Image" /></div>
 				<ul class="profile-links">
 					<!-- TODO: Only show this if it's not the home city -->
-					<li><a href="#">I go to this place</a></li>
+					<li><%= link_to "I am a patron", "#{PLACES_FBURL}/add_patronage/#{@country.url_part}/#{@state.url_part}/#{url_sanitize(@city.title)}/#{@place.dataid}/" %></li>
 					<li><a href="#">Find similar places</a></li>
 					<li><a href="#">Map</a></li>
 				</ul>
@@ -29,27 +29,30 @@
 			<div class="profile-content">
 				<% if !@place.description.nil? && !@place.description.empty? %><p><%= @place.description %></p><% end %>
 				<div class="offset">
-				<p>
-				<% if !@place.place_metadata[:address].nil? && !@place.place_metadata[:address].empty? %>
-					<span class="key">Address</span><span class="value"><%= @place.place_metadata[:address] %></span><br />
-				<% end %>
-				<% if !@place.place_metadata[:zipcode].nil? %>
-					<span class="key">Zipcode</span><span class="value"><%= @place.place_metadata[:zipcode] %></span><br />
-				<% end %>
-				<% if !@place.place_metadata[:phone_number].nil? && !@place.place_metadata[:phone_number].empty? %>
-					<span class="key">Phone Number</span><span class="value"><%= @place.place_metadata[:phone_number] %></span><br />
-				<% end %>
-				<% if !@place.place_metadata[:website].nil? && !@place.place_metadata[:website].empty? %>
-					<span class="key">Website</span><span class="value"><%= @place.place_metadata[:website] %></span><br />
-				<% end %>
-				<% if !@place.place_metadata[:latitude].nil? %>
-					<span class="key">Latitude</span><span class="value"><%= @place.place_metadata[:latitude] %></span><br />
-				<% end %>
-				<% if !@place.place_metadata[:longitude].nil? %>
-					<span class="key">Longitude</span><span class="value"><%= @place.place_metadata[:longitude] %></span><br />
-				<% end %>
-				</p>
-			</div>
+					<p>
+					<% if !@place.place_metadata[:address].nil? && !@place.place_metadata[:address].empty? %>
+						<span class="key">Address</span><span class="value"><%= @place.place_metadata[:address] %></span><br />
+					<% end %>
+					<% if !@place.place_metadata[:zipcode].nil? && !@place.place_metadata[:zipcode].to_s.empty? %>
+						<span class="key">Zipcode</span><span class="value"><%= @place.place_metadata[:zipcode] %></span><br />
+					<% end %>
+					<% if !@place.place_metadata[:phone_number].nil? && !@place.place_metadata[:phone_number].empty? %>
+						<span class="key">Phone Number</span><span class="value"><%= @place.place_metadata[:phone_number] %></span><br />
+					<% end %>
+					<% if !@place.place_metadata[:website].nil? && !@place.place_metadata[:website].empty? %>
+						<span class="key">Website</span><span class="value"><%= @place.place_metadata[:website] %></span><br />
+					<% end %>
+					<% if !@place.place_metadata[:latitude].nil? && !@place.place_metadata[:latitude].to_s.empty? %>
+						<span class="key">Latitude</span><span class="value"><%= @place.place_metadata[:latitude] %></span><br />
+					<% end %>
+					<% if !@place.place_metadata[:longitude].nil? && !@place.place_metadata[:longitude].to_s.empty? %>
+						<span class="key">Longitude</span><span class="value"><%= @place.place_metadata[:longitude] %></span><br />
+					<% end %>
+					</p>
+				</div>
+
+				<h2 class="section-title">Comments</h2>
+				<p>This feature is coming soon!</p>
 		</div>
 	</div>
 </fb:fbml>
