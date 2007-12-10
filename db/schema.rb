@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 52) do
+ActiveRecord::Schema.define(:version => 53) do
 
   create_table "categories", :force => true do |t|
     t.column "uuid",           :string
@@ -116,6 +116,14 @@ ActiveRecord::Schema.define(:version => 52) do
     t.column "objectid",       :string
     t.column "max_file_size",  :string
     t.column "max_total_size", :string
+  end
+
+  create_table "relationships", :force => true do |t|
+    t.column "source_uuid",  :string,   :default => "", :null => false
+    t.column "target_uuid",  :string,   :default => "", :null => false
+    t.column "relationship", :string,   :default => "", :null => false
+    t.column "created_at",   :datetime,                 :null => false
+    t.column "updated_at",   :datetime,                 :null => false
   end
 
   create_table "sessions", :force => true do |t|
