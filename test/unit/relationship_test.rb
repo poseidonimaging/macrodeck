@@ -1,0 +1,1 @@
+../../vendor/plugins/services/test/relationship_test.rb
