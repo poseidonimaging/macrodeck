@@ -17,7 +17,18 @@ class FacebookPlacesController < ApplicationController
 			if params[:state] && params[:city] && params[:place]
 				get_city_info(params[:city], params[:state])
 				@place = Place.find_by_dataid(params[:place])
-				render :template => "facebook_places/view_place"
+				if @place != nil
+					patron_relationship = Relationship.find(:first, :conditions => ["source_uuid = ? AND target_uuid = ? AND relationship = 'patron'", @fbuser.uuid, @place.dataid])
+					if patron_relationship.nil?
+						@place_is_patron = false
+					else
+						@place_is_patron = true
+					end
+					render :template => "facebook_places/view_place"
+				else
+					# place doesn't exist; redirect to the city's browse page (if it doesn't exist then browse_city will take care of it we hope)
+					redirect_to "#{PLACES_FBURL}/browse/#{params[:country]}/#{params[:state]}/#{params[:city]}/"
+				end
 			end
 		end
 	end
@@ -29,6 +40,168 @@ class FacebookPlacesController < ApplicationController
 
 	# edit URLs look like view.
 	def edit
+		get_networks
+		
+		case params[:country]
+			when "us"
+				get_us_states
+
+				if params[:state]
+					if params[:city]
+						if params[:place]
+							@place = Place.find_by_dataid(params[:place])
+							if @place.nil?
+								redirect_to "#{PLACES_FBURL}/browse/#{params[:country]}/#{params[:state]}/#{params[:city]}/"
+							else
+								# Edit a place.
+								get_city_info(params[:city], params[:state])
+								if params[:validation_step] == nil
+									# Show the initial form.
+									@place_metadata = @place.place_metadata
+									@place_types = get_place_type_option_list(@place_metadata[:type])
+									@place_features = get_place_feature_checkboxes(@place_metadata[:features])
+									@place_name = @place.title
+									@place_address = @place_metadata[:address]
+									if @place_metadata[:phone_number] != nil && @place_metadata[:phone_number].length > 5
+										@place_phone_number_area_code = @place_metadata[:phone_number].gsub(/\W/, "")[0..2]
+										@place_phone_number_exchange = @place_metadata[:phone_number].gsub(/\W/, "")[3..5]
+										@place_phone_number_number = @place_metadata[:phone_number].gsub(/\W/, "")[6..9]
+									else
+										@place_phone_number_area_code = nil
+										@place_phone_number_exchange = nil
+										@place_phone_number_number = nil
+									end
+									@place_description = @place.description
+									@place_zipcode = @place_metadata[:zipcode]
+									@place_latitude = @place_metadata[:latitude]
+									@place_longitude = @place_metadata[:longitude]
+									@place_website = @place_metadata[:website]
+									@place_hours_sunday = @place_metadata[:hours_sunday]
+									@place_hours_monday = @place_metadata[:hours_monday]
+									@place_hours_tuesday = @place_metadata[:hours_tuesday]
+									@place_hours_wednesday = @place_metadata[:hours_wednesday]
+									@place_hours_thursday = @place_metadata[:hours_thursday]
+									@place_hours_friday = @place_metadata[:hours_friday]
+									@place_hours_saturday = @place_metadata[:hours_saturday]
+									@validation_step = 1
+									@errors = []
+									render :template => "facebook_places/edit_place"
+								elsif params[:validation_step] == "1"
+									# get required variables for the form
+									@place_types = get_place_type_option_list(params[:place_type])
+									@place_features = get_place_feature_checkboxes(params[:place_features])
+									@validation_step = 1
+									# get params in variables
+									@place_name = params[:place_name]
+									@place_address = params[:place_address]
+									@place_type = params[:place_type]
+									@place_phone_number_area_code = params[:place_phone_number_area_code]
+									@place_phone_number_exchange = params[:place_phone_number_exchange]
+									@place_phone_number_number = params[:place_phone_number_number]
+									if @place_phone_number_area_code.empty?
+										@place_phone_number_area_code = nil
+									end
+									if @place_phone_number_exchange.empty?
+										@place_phone_number_exchange = nil
+									end
+									if @place_phone_number_number.empty?
+										@place_phone_number_number = nil
+									end
+									@place_description = params[:place_description]
+									@place_zipcode = params[:place_zipcode]
+									@place_latitude = params[:place_latitude]
+									@place_longitude = params[:place_longitude]
+									@place_website = params[:place_website]
+									@place_feature_list = params[:place_features]
+									@place_hours_sunday = params[:place_hours_sunday]
+									@place_hours_monday = params[:place_hours_monday]
+									@place_hours_tuesday = params[:place_hours_tuesday]
+									@place_hours_wednesday = params[:place_hours_wednesday]
+									@place_hours_thursday = params[:place_hours_thursday]
+									@place_hours_friday = params[:place_hours_friday]
+									@place_hours_saturday = params[:place_hours_saturday]
+								
+									# TODO: Combine create and edit validation into one function
+
+									# Yummy validation!
+									@errors = []
+									if !validate_not_nil(@place_name)
+										@errors << "Please enter a place name."
+									end
+									if !validate_not_nil(@place_address)
+										@errors << "Please enter an address."
+									end
+									if !validate_not_nil(@place_type) || @place_type == "none"
+										@errors << "Please select a valid place type."
+									end
+									if @place_phone_number_area_code != nil || @place_phone_number_exchange != nil || @place_phone_number_number != nil
+										if !validate_field("(#{@place_phone_number_area_code}) #{@place_phone_number_exchange}-#{@place_phone_number_number}", :phone)
+											@errors << "Please enter a valid phone number."
+										end
+									end
+									if !validate_field(@place_zipcode, :zipcode)
+										@errors << "Please enter a valid zip code."
+									end
+									if @place_latitude != nil && !validate_field(@place_latitude, :latitude)
+										@errors << "Please enter a valid latitude in decimal notation (e.g. 12.3456789)"
+									end
+									if @place_longitude != nil && !validate_field(@place_longitude, :longitude)
+										@errors << "Please enter a valid longitude in decimal notation (e.g. 98.7654321)"
+									end
+
+									# TODO: Test to make sure this place at this address doesn't already exist.
+									# TODO: Test the zipcode to make sure it's in this city.
+
+									if @errors.length > 0
+										render :template => "facebook_places/edit_place"
+									else
+										# create a metadata object
+										# TODO: Make a function that does this for both create and edit.
+										metadata = PlaceMetadata.new
+										metadata.type = @place_type.to_sym
+										metadata.address = @place_address
+										metadata.zipcode = @place_zipcode
+										if @place_phone_number_area_code.nil? && @place_phone_number_exchange.nil? && @place_phone_number_number.nil?
+											metadata.phone_number = nil
+										else
+											metadata.phone_number = "(#{@place_phone_number_area_code}) #{@place_phone_number_exchange}-#{@place_phone_number_number}"
+										end
+										metadata.latitude = @place_latitude
+										metadata.longitude = @place_longitude
+										metadata.website = @place_website
+										metadata.hours_sunday = @place_hours_sunday
+										metadata.hours_monday = @place_hours_monday
+										metadata.hours_tuesday = @place_hours_tuesday
+										metadata.hours_wednesday = @place_hours_wednesday
+										metadata.hours_thursday = @place_hours_thursday
+										metadata.hours_friday = @place_hours_friday
+										metadata.hours_saturday = @place_hours_saturday
+										feature_array = []
+										if @place_feature_list != nil
+											@place_feature_list.each_key do |feature|
+												feature_array << feature.to_sym
+											end
+										end
+										metadata.features = feature_array
+										@place.title = @place_name
+										@place.description = @place_description
+										@place.place_metadata = metadata
+										@place.save!
+										redirect_to "#{PLACES_FBURL}/view/#{@country.url_part}/#{@state.url_part}/#{url_sanitize(@city.title)}/#{@place.uuid}/"
+									end # /@errors.length > 0
+								end # /validation_step
+							end # /place.nil?
+						else 
+							# TODO: City editing.
+						end # / params[:place]
+					else
+						# No city specified.
+						redirect_to "#{PLACES_FBURL}/browse/#{params[:country]}/#{params[:state]}/"
+					end # /params[:city]
+				end # /params[:state]
+			else
+				raise "Invalid country!"
+		end # / case params[:country]
 	end
 	
 	# delete URLs look like view.
@@ -230,7 +403,7 @@ class FacebookPlacesController < ApplicationController
 				else
 					# No state specified, redirect to the browse URL for
 					# whatever they attempted to create...
-					redirect_to :back
+					redirect_to "#{PLACES_FBURL}/browse/#{params[:country]}/"
 				end
 		end
 	end
@@ -238,6 +411,31 @@ class FacebookPlacesController < ApplicationController
 	# add_patronage looks like view. add_patronage says that
 	# the user visiting the URL is a patron of the place.
 	def add_patronage
+		get_networks
+
+		case params[:country]
+		when "us"
+			get_us_states
+
+			if params[:state] && params[:city] && params[:place]
+				get_city_info(params[:city], params[:state])
+				@place = Place.find_by_dataid(params[:place])
+				if @place != nil
+					patron_relationship = Relationship.find(:first, :conditions => ["source_uuid = ? AND target_uuid = ? AND relationship = 'patron'", @fbuser.uuid, @place.dataid])
+					if patron_relationship.nil?
+						# Add patronage.
+						patronage = Relationship.new do |r|
+							r.source_uuid = @fbuser.uuid
+							r.target_uuid = @place.dataid
+							r.relationship = "patron"
+						end
+						patronage.save!
+					end
+					# Don't do anything if they are already a patron.
+				end
+				redirect_to "#{PLACES_FBURL}/view/#{params[:country]}/#{params[:state]}/#{params[:city]}/#{@place.dataid}/"
+			end
+		end
 	end
 
 	# remove_patronage looks like view. remove_patronage says
@@ -245,6 +443,26 @@ class FacebookPlacesController < ApplicationController
 	# if the user never went to that place we shouldn't throw an
 	# error.
 	def remove_patronage
+		get_networks
+
+		case params[:country]
+		when "us"
+			get_us_states
+
+			if params[:state] && params[:city] && params[:place]
+				get_city_info(params[:city], params[:state])
+				@place = Place.find_by_dataid(params[:place])
+				if @place != nil
+					patron_relationship = Relationship.find(:first, :conditions => ["source_uuid = ? AND target_uuid = ? AND relationship = 'patron'", @fbuser.uuid, @place.dataid])
+					if patron_relationship != nil
+						# Remove patronage.
+						patron_relationship.destroy
+					end
+					# Don't do anything if they aren't a patron.
+				end
+				redirect_to "#{PLACES_FBURL}/view/#{params[:country]}/#{params[:state]}/#{params[:city]}/#{@place.dataid}/"
+			end
+		end
 	end
 
 	# RFacebook Debug Panel
@@ -339,8 +557,16 @@ class FacebookPlacesController < ApplicationController
 		def get_place_feature_checkboxes(enabled_features = {})
 			features = PlaceMetadata.get_place_features
 			feature_list = []
+			# support for an array e.g. [ :outdoor_seating, :chicken, :etc ]
+			if enabled_features.class == Array && enabled_features.length > 0
+				new_enabled_features = {}
+				enabled_features.each do |f|
+					new_enabled_features[f.to_s] = "1"
+				end
+				enabled_features = new_enabled_features
+			end
 			features.each_pair do |key, value|
-				if enabled_features != nil && enabled_features[key.to_s] != nil && enabled_features[key.to_s] == "1"
+				if enabled_features != nil && enabled_features.length > 0 && enabled_features[key.to_s] != nil && enabled_features[key.to_s] == "1"
 					feature_list << "<input type=\"checkbox\" name=\"place_features[#{key.to_s}]\" value=\"1\" checked=\"checked\"/>
 										<label for=\"place_#{key.to_s}\" class=\"standard\">#{value}</label><br />"
 				else

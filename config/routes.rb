@@ -19,7 +19,7 @@ ActionController::Routing::Routes.draw do |map|
 
   # Facebook Places
   map.fbplaces 'facebook', :controller => "facebook_places",
-		:action => "browse", :country => "my_places", :state => nil, :city => nil, :place => nil,
+		:action => "welcome", :country => nil, :state => nil, :city => nil, :place => nil,
 		:conditions => { :subdomain => "places" }
 
   map.fbplaces 'facebook/:action/:country/:state/:city/:place', :controller => "facebook_places",

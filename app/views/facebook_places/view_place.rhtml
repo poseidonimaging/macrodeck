@@ -18,9 +18,20 @@
 				<div class="profile-sidebar-image"><img src="<%= PLACES_BASEURL %>/images/places/no-image-large.png" alt="Place Image" /></div>
 				<ul class="profile-links">
 					<!-- TODO: Only show this if it's not the home city -->
-					<li><%= link_to "I am a patron", "#{PLACES_FBURL}/add_patronage/#{@country.url_part}/#{@state.url_part}/#{url_sanitize(@city.title)}/#{@place.dataid}/" %></li>
-					<li><a href="#">Find similar places</a></li>
-					<li><a href="#">Map</a></li>
+					<li>
+						<% if @place_is_patron %>
+							<%= link_to "I am no longer a patron", "#{PLACES_FBURL}/remove_patronage/#{@country.url_part}/#{@state.url_part}/#{url_sanitize(@city.title)}/#{@place.dataid}/" %>
+						<% else %>
+							<%= link_to "I am a patron", "#{PLACES_FBURL}/add_patronage/#{@country.url_part}/#{@state.url_part}/#{url_sanitize(@city.title)}/#{@place.dataid}/" %>
+						<% end %>
+					</li>
+					<li><%= link_to "Edit this place", "#{PLACES_FBURL}/edit/#{@country.url_part}/#{@state.url_part}/#{url_sanitize(@city.title)}/#{@place.dataid}/" %></li>
+					
+					<% 
+						# Extra items we aren't adding yet.
+						#<li><a href="#">Find similar places</a></li>
+						#<li><a href="#">Map</a></li>
+					%>
 				</ul>
 				<br />
 				<div class="ad-placeholder">Ad placeholder</div>
