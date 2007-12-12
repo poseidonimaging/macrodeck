@@ -15,55 +15,65 @@
 		<h1 class="area-title"><%= @place.title %></h1>
 		<div class="profile-layout">
 			<div class="profile-sidebar">
-				<div class="profile-sidebar-image"><img src="<%= PLACES_BASEURL %>/images/places/no-image-large.png" alt="Place Image" /></div>
-				<ul class="profile-links">
-					<!-- TODO: Only show this if it's not the home city -->
-					<li>
-						<% if @place_is_patron %>
-							<%= link_to "I am no longer a patron", "#{PLACES_FBURL}/remove_patronage/#{@country.url_part}/#{@state.url_part}/#{url_sanitize(@city.title)}/#{@place.dataid}/" %>
-						<% else %>
-							<%= link_to "I am a patron", "#{PLACES_FBURL}/add_patronage/#{@country.url_part}/#{@state.url_part}/#{url_sanitize(@city.title)}/#{@place.dataid}/" %>
-						<% end %>
-					</li>
-					<li><%= link_to "Edit this place", "#{PLACES_FBURL}/edit/#{@country.url_part}/#{@state.url_part}/#{url_sanitize(@city.title)}/#{@place.dataid}/" %></li>
-					
-					<% 
-						# Extra items we aren't adding yet.
-						#<li><a href="#">Find similar places</a></li>
-						#<li><a href="#">Map</a></li>
-					%>
-				</ul>
-				<br />
-				<div class="ad-placeholder">Ad placeholder</div>
-				<br />
+				<div class="profile-sidebar-padding">
+					<div class="profile-sidebar-image"><img src="<%= PLACES_BASEURL %>/images/places/no-image-large.png" alt="Place Image" /></div>
+					<ul class="profile-links">
+						<li>
+							<% if @place_is_patron %>
+								<%= link_to "I am no longer a patron", "#{PLACES_FBURL}/remove_patronage/#{@country.url_part}/#{@state.url_part}/#{url_sanitize(@city.title)}/#{@place.dataid}/" %>
+							<% else %>
+								<%= link_to "I am a patron", "#{PLACES_FBURL}/add_patronage/#{@country.url_part}/#{@state.url_part}/#{url_sanitize(@city.title)}/#{@place.dataid}/" %>
+							<% end %>
+						</li>
+						<li><%= link_to "Edit this place", "#{PLACES_FBURL}/edit/#{@country.url_part}/#{@state.url_part}/#{url_sanitize(@city.title)}/#{@place.dataid}/" %></li>
+						
+						<% 
+							# Extra items we aren't adding yet.
+							#<li><a href="#">Find similar places</a></li>
+							#<li><a href="#">Map</a></li>
+						%>
+					</ul>
+					<%= render :partial => "facebook_places/profile_ad" %>
+				</div>
 			</div>
 			<div class="profile-content">
-				<% if !@place.description.nil? && !@place.description.empty? %><p><%= @place.description %></p><% end %>
-				<div class="offset">
-					<p>
-					<% if !@place.place_metadata[:address].nil? && !@place.place_metadata[:address].empty? %>
-						<span class="key">Address</span><span class="value"><%= @place.place_metadata[:address] %></span><br />
-					<% end %>
-					<% if !@place.place_metadata[:zipcode].nil? && !@place.place_metadata[:zipcode].to_s.empty? %>
-						<span class="key">Zipcode</span><span class="value"><%= @place.place_metadata[:zipcode] %></span><br />
-					<% end %>
-					<% if !@place.place_metadata[:phone_number].nil? && !@place.place_metadata[:phone_number].empty? %>
-						<span class="key">Phone Number</span><span class="value"><%= @place.place_metadata[:phone_number] %></span><br />
-					<% end %>
-					<% if !@place.place_metadata[:website].nil? && !@place.place_metadata[:website].empty? %>
-						<span class="key">Website</span><span class="value"><%= @place.place_metadata[:website] %></span><br />
-					<% end %>
-					<% if !@place.place_metadata[:latitude].nil? && !@place.place_metadata[:latitude].to_s.empty? %>
-						<span class="key">Latitude</span><span class="value"><%= @place.place_metadata[:latitude] %></span><br />
-					<% end %>
-					<% if !@place.place_metadata[:longitude].nil? && !@place.place_metadata[:longitude].to_s.empty? %>
-						<span class="key">Longitude</span><span class="value"><%= @place.place_metadata[:longitude] %></span><br />
-					<% end %>
-					</p>
-				</div>
+				<div class="profile-content-padding">
+					<% if !@place.description.nil? && !@place.description.empty? %><p><%= @place.description %></p><% end %>
+					<div class="offset">
+						<p>
+						<% if !@place.place_metadata[:address].nil? && !@place.place_metadata[:address].empty? %>
+							<span class="key">Address</span><span class="value"><%= @place.place_metadata[:address] %></span><br />
+						<% end %>
+						<% if !@place.place_metadata[:zipcode].nil? && !@place.place_metadata[:zipcode].to_s.empty? %>
+							<span class="key">Zipcode</span><span class="value"><%= @place.place_metadata[:zipcode] %></span><br />
+						<% end %>
+						<% if !@place.place_metadata[:phone_number].nil? && !@place.place_metadata[:phone_number].empty? %>
+							<span class="key">Phone Number</span><span class="value"><%= @place.place_metadata[:phone_number] %></span><br />
+						<% end %>
+						<% if !@place.place_metadata[:website].nil? && !@place.place_metadata[:website].empty? %>
+							<span class="key">Website</span><span class="value"><%= @place.place_metadata[:website] %></span><br />
+						<% end %>
+						<% if !@place.place_metadata[:latitude].nil? && !@place.place_metadata[:latitude].to_s.empty? %>
+							<span class="key">Latitude</span><span class="value"><%= @place.place_metadata[:latitude] %></span><br />
+						<% end %>
+						<% if !@place.place_metadata[:longitude].nil? && !@place.place_metadata[:longitude].to_s.empty? %>
+							<span class="key">Longitude</span><span class="value"><%= @place.place_metadata[:longitude] %></span><br />
+						<% end %>
+						</p>
+					</div>
 
-				<h2 class="section-title">Comments</h2>
-				<p>This feature is coming soon!</p>
+					<h2 class="section-title">Patrons</h2>
+					<% if @place.patrons != nil && @place.patrons.length > 0 %>
+						<!-- Place has patrons, list them -->
+					<% else %>
+						<p>
+							This place has no patrons. If you like this place, 
+							<%= link_to "become a patron", "#{PLACES_FBURL}/add_patronage/#{@country.url_part}/#{@state.url_part}/#{url_sanitize(@city.title)}/#{@place.dataid}/" %>.
+						</p>
+					<% end %>
+					<h2 class="section-title">The Wall</h2>
+					<p>This feature is coming soon!</p>
+				</div>
 		</div>
 	</div>
 </fb:fbml>
