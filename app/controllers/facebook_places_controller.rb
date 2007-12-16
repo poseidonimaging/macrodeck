@@ -9,6 +9,7 @@ class FacebookPlacesController < ApplicationController
 	# View requires all parameters. You want to view a place.
 	def view
 		get_networks
+		get_home_city
 
 		case params[:country]
 		when "us"
@@ -33,14 +34,44 @@ class FacebookPlacesController < ApplicationController
 		end
 	end
 
+	def set_home_city
+		get_networks
+		get_home_city
+
+		case params[:country]
+		when "us"
+			get_us_states
+			
+			if params[:state] && params[:city]
+				get_city_info(params[:city], params[:state])
+
+				hcity_rel = Relationship.find(:first, :conditions => ["source_uuid = ? AND relationship = 'home_city'", @fbuser.uuid])
+				if hcity_rel.nil?
+					raise "set_home_city: home city relationship nonexistant"
+				end
+
+				hcity_rel.target_uuid = @city.uuid
+				hcity_rel.save!
+
+				redirect_to fbplaces_url(:action => :browse, :country => @city.country, :state => @city.state(:abbreviation => true), :city => @city.url_part)
+			else
+				raise "set_home_city: city or state not specified"
+			end
+		else
+			raise "set_home_city: invalid country specification"
+		end
+	end
+
 	def welcome
 		get_networks
+		get_home_city
 		# Just static text.
 	end
 
 	# edit URLs look like view.
 	def edit
 		get_networks
+		get_home_city
 		
 		case params[:country]
 			when "us"
@@ -212,6 +243,7 @@ class FacebookPlacesController < ApplicationController
 	# by tags happens they might look different.
 	def browse
 		get_networks
+		get_home_city
 
 		case params[:country]
 			when "my_places"
@@ -251,6 +283,7 @@ class FacebookPlacesController < ApplicationController
 	# You fill in the place name in the form!
 	def create
 		get_networks
+		get_home_city
 
 		case params[:country]
 			when "us"
@@ -412,6 +445,7 @@ class FacebookPlacesController < ApplicationController
 	# the user visiting the URL is a patron of the place.
 	def add_patronage
 		get_networks
+		get_home_city
 
 		case params[:country]
 		when "us"
@@ -444,6 +478,7 @@ class FacebookPlacesController < ApplicationController
 	# error.
 	def remove_patronage
 		get_networks
+		get_home_city
 
 		case params[:country]
 		when "us"
@@ -468,6 +503,7 @@ class FacebookPlacesController < ApplicationController
 	# RFacebook Debug Panel
 	def debug
 		get_networks
+		get_home_city
 
 		render_with_facebook_debug_panel
 	end
@@ -653,13 +689,35 @@ class FacebookPlacesController < ApplicationController
 			end
 		end
 
+		# Gets the home city for the current user.
+		def get_home_city
+			hcity_rel = Relationship.find(:first, :conditions => ["source_uuid = ? AND relationship = 'home_city'", @fbuser.uuid])
+			if hcity_rel.nil?
+				# home city is nil.
+				# This must mean there hasn't been one set. So we set the primary network city as the home city.
+				hcity_rel = Relationship.new do |r|
+					r.source_uuid = @fbuser.uuid
+					c = PlacesService.getCity(@primary_network_city, @primary_network_state)
+					if c != nil
+						r.target_uuid = c.uuid # FIXME: dataid can go to hell
+					else
+						raise "get_home_city: attempting to set home city to a city that does not exist!"
+					end
+					r.relationship = "home_city"
+				end
+				hcity_rel.save!
+			end
+			hcity = City.find_by_uuid(hcity_rel.target_uuid)
+			@home_city = hcity
+		end
+
 		# Initialize Facebook User - Creates a User if needed, maps friends, etc. Use as a
 		# before_filter.
 		def initialize_facebook_user
 			if fbsession && fbsession.is_valid?
 				user = User.find_or_create_by_facebook_session(fbsession)
 				# TODO: here we would load their friends list or whatever.
-				@fbuser = user			
+				@fbuser = user
 			end
 		end
 
@@ -711,5 +769,34 @@ class FacebookPlacesController < ApplicationController
 			@country = places.getChildByURL("us")
 			@state = @country.getChild(state)
 			@city = c
+		end
+
+		# A URL helper that will hopefully override the default fbplaces_url and let you
+		# link to crap easier.
+		#
+		# options_hash possible values:
+		#   :action => (any action you wish... used in ../action/us/ok/tulsa/
+		#   :country => (two-letter country code)
+		#   :state => (two-letter state)
+		#   :city => City object
+		#   :place => Place object
+		def fbplaces_url(options = {})
+			url = "#{PLACES_FBURL}/"
+			if options[:action] != nil && options[:action] != ""
+				url << "#{url_sanitize(options[:action].to_s)}/"
+			end
+			if options[:country] != nil && options[:country] != ""
+				url << "#{url_sanitize(options[:country])}/"
+			end
+			if options[:state] != nil && options[:state] != ""
+				url << "#{url_sanitize(options[:state])}/"
+			end
+			if options[:city] != nil && options[:city] != ""
+				url << "#{url_sanitize(options[:city])}/"
+			end
+			if options[:place] != nil && options[:place] != ""
+				url << "#{url_sanitize(options[:place])}/"
+			end
+			return url
 		end
 end

@@ -14,51 +14,52 @@
 		<h1 class="area-title"><%= @city.title %></h1>
 		<div class="profile-layout">
 			<div class="profile-sidebar">
-				<div class="profile-sidebar-image"><img src="<%= PLACES_BASEURL %>/images/places/no-image-large.png" alt="City Image" /></div>
-				<ul class="profile-links">
-					<!-- TODO: Only show this if it's not the home city -->
-					<li><a href="#">Set as home city</a></li>
-					<li><a href="#">Suggest a place to me</a></li>
-					<li><a href="#">Find nearby cities</a></li>
-					<li><a href="#">Map</a></li>
-				</ul>
-				<br />
-				<div class="ad-placeholder">Ad placeholder</div>
-				<br />
+				<div class="profile-sidebar-padding">
+					<div class="profile-sidebar-image"><img src="<%= PLACES_BASEURL %>/images/places/no-image-large.png" alt="City Image" /></div>
+					<ul class="profile-links">
+						<!-- TODO: Only show this if it's not the home city -->
+						<% if @home_city.uuid != @city.uuid %>
+							<li><%= link_to "Set as home city", fbplaces_url(:action => :set_home_city, :country => @city.country, :state => @city.state(:abbreviation => true), :city => @city.url_part) %></li>
+						<% end %>
+					</ul>
+					<%= render :partial => "profile_ad" %>
+				</div>
 			</div>
 			<div class="profile-content">
-				<div class="twocol-layout">
-					<div class="twocol-left">
-						<div class="twocol-left-padding">
-							<h2 class="section-title">Recently Added</h2>
-							<div class="places">
-								<% if @city.top_10_newest_places.length > 0 %>
-									<% @city.top_10_newest_places.each do |p| %>
-										<div class="place">
-											<img src="<%= PLACES_BASEURL %>/images/places/no-image-small.png" alt="<%= p.title %>" /> 
-											<div>
-												<!-- extra DIV for padding purposes -->
+				<div class="profile-content-padding">
+					<div class="twocol-layout">
+						<div class="twocol-left">
+							<div class="twocol-left-padding">
+								<h2 class="section-title">Recently Added</h2>
+								<div class="places">
+									<% if @city.top_10_newest_places.length > 0 %>
+										<% @city.top_10_newest_places.each do |p| %>
+											<div class="place">
+												<img src="<%= PLACES_BASEURL %>/images/places/no-image-small.png" alt="<%= p.title %>" /> 
 												<div>
-													<%= link_to p.title, "#{PLACES_FBURL}/view/#{@country.url_part}/#{@state.url_part}/#{url_sanitize(@city.title)}/#{p.url_part}/" %><br />
-													<% if p.description.length > 0 %>
-														<span class="description"><%= truncate(p.description) %></span><br />
-													<% end %>
-													<span class="address"><%= p.place_metadata[:address] %></span>
+													<!-- extra DIV for padding purposes -->
+													<div>
+														<%= link_to p.title, "#{PLACES_FBURL}/view/#{@country.url_part}/#{@state.url_part}/#{url_sanitize(@city.title)}/#{p.url_part}/" %><br />
+														<% if p.description.length > 0 %>
+															<span class="description"><%= truncate(p.description) %></span><br />
+														<% end %>
+														<span class="address"><%= p.place_metadata[:address] %></span>
+													</div>
 												</div>
 											</div>
-										</div>
+										<% end %>
+									<% else %>
+										<p>This city has no places yet! Create one!</p>
 									<% end %>
-								<% else %>
-									<p>This city has no places yet! Create one!</p>
-								<% end %>
+								</div>
 							</div>
 						</div>
-					</div>
-					<div class="twocol-right">
-						<div class="twocol-right-padding">
-							<h2 class="section-title">Recommended Places</h2>
-							<p>This would normally contain a bunch of places we recommend you try out, but
-							we haven't gotten that working yet.</p>
+						<div class="twocol-right">
+							<div class="twocol-right-padding">
+								<h2 class="section-title">Recommended Places</h2>
+								<p>This would normally contain a bunch of places we recommend you try out, but
+								we haven't gotten that working yet.</p>
+							</div>
 						</div>
 					</div>
 				</div>
