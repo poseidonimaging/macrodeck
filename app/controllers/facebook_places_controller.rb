@@ -1,3 +1,5 @@
+gem 'flickr'
+
 # This controller handles the Facebook app.
 class FacebookPlacesController < ApplicationController
 	before_filter :require_facebook_login, :initialize_facebook_user
@@ -10,6 +12,7 @@ class FacebookPlacesController < ApplicationController
 	def view
 		get_networks
 		get_home_city
+		get_secondary_city
 
 		case params[:country]
 		when "us"
@@ -45,14 +48,17 @@ class FacebookPlacesController < ApplicationController
 			if params[:state] && params[:city]
 				get_city_info(params[:city], params[:state])
 
-				hcity_rel = Relationship.find(:first, :conditions => ["source_uuid = ? AND relationship = 'home_city'", @fbuser.uuid])
-				if hcity_rel.nil?
-					raise "set_home_city: home city relationship nonexistant"
+				# Validate not setting the home city to the secondary city...
+				if @secondary_city.nil? || @city.uuid != @secondary_city.uuid
+					hcity_rel = Relationship.find(:first, :conditions => ["source_uuid = ? AND relationship = 'home_city'", @fbuser.uuid])
+					if hcity_rel.nil?
+						raise "set_home_city: home city relationship nonexistant"
+					end
+
+					hcity_rel.target_uuid = @city.uuid
+					hcity_rel.save!
 				end
-
-				hcity_rel.target_uuid = @city.uuid
-				hcity_rel.save!
-
+				
 				redirect_to fbplaces_url(:action => :browse, :country => @city.country, :state => @city.state(:abbreviation => true), :city => @city.url_part)
 			else
 				raise "set_home_city: city or state not specified"
@@ -62,9 +68,45 @@ class FacebookPlacesController < ApplicationController
 		end
 	end
 
+	def set_secondary_city
+		get_networks
+		get_home_city
+		get_secondary_city
+
+		case params[:country]
+		when "us"
+			get_us_states
+			
+			if params[:state] && params[:city]
+				get_city_info(params[:city], params[:state])
+
+				# Validate not setting the home city as the secondary city...
+				if @secondary_city.nil? || @home_city.uuid != @secondary_city.uuid
+					scity_rel = Relationship.find(:first, :conditions => ["source_uuid = ? AND relationship = 'secondary_city'", @fbuser.uuid])
+					if scity_rel.nil?
+						scity_rel = Relationship.new do |r|
+							r.source_uuid = @fbuser.uuid
+							r.relationship = "secondary_city"
+						end
+					end
+
+					scity_rel.target_uuid = @city.uuid
+					scity_rel.save!
+				end
+
+				redirect_to fbplaces_url(:action => :browse, :country => @city.country, :state => @city.state(:abbreviation => true), :city => @city.url_part)
+			else
+				raise "set_secondary_city: city or state not specified"
+			end
+		else
+			raise "set_secondary_city: invalid country specification"
+		end
+	end
+
 	def welcome
 		get_networks
 		get_home_city
+		get_secondary_city
 		# Just static text.
 	end
 
@@ -72,6 +114,7 @@ class FacebookPlacesController < ApplicationController
 	def edit
 		get_networks
 		get_home_city
+		get_secondary_city
 		
 		case params[:country]
 			when "us"
@@ -244,6 +287,7 @@ class FacebookPlacesController < ApplicationController
 	def browse
 		get_networks
 		get_home_city
+		get_secondary_city
 
 		case params[:country]
 			when "my_places"
@@ -284,6 +328,7 @@ class FacebookPlacesController < ApplicationController
 	def create
 		get_networks
 		get_home_city
+		get_secondary_city
 
 		case params[:country]
 			when "us"
@@ -504,7 +549,13 @@ class FacebookPlacesController < ApplicationController
 	def debug
 		get_networks
 		get_home_city
+		get_secondary_city
 
+		flickr = Flickr.new(FLICKR_API_KEY)
+		photos = flickr.tag(@home_city.name.downcase.gsub(" ", "") + " " + @home_city.state(:abbreviation => true).downcase)
+		photos.each do |photo|
+			p photo
+		end
 		render_with_facebook_debug_panel
 	end
 
@@ -709,6 +760,17 @@ class FacebookPlacesController < ApplicationController
 			end
 			hcity = City.find_by_uuid(hcity_rel.target_uuid)
 			@home_city = hcity
+		end
+
+		# Gets the secondary city for the current user. 
+		def get_secondary_city
+			scity_rel = Relationship.find(:first, :conditions => ["source_uuid = ? AND relationship = 'secondary_city'", @fbuser.uuid])
+			if scity_rel.nil?
+				@secondary_city = nil
+			else
+				scity = City.find_by_uuid(scity_rel.target_uuid)
+				@secondary_city = scity
+			end
 		end
 
 		# Initialize Facebook User - Creates a User if needed, maps friends, etc. Use as a
