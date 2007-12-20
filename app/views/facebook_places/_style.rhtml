@@ -1,64 +1,43 @@
 <style type="text/css">
-	div.lists {
-		padding: 10px;
-	}
-
-	table.lists {
-		padding: 0;
-		margin: 0;
-	}
-
-	.lists th {
-		 text-align: left;
-		 padding: 5px 10px;
-		 background-color: #6d84b4;
-	}
-
-	.lists .spacer {
-		 background: none;
-		 border: none;
-		 padding: 0px;
-		 margin: 0px;
-		 width: 10px; 
-	}
-
-	.lists th h1 { float: left; color: white; font-size: 9pt; }
-	.lists th a { float: right; font-weight: normal; color: #d9dfea; }
-	.lists th a:hover { color: white; }
-
-	.lists td {
-		 margin:0px 10px;
-		 padding:0px;
-		 vertical-align:top;
-		 width:306px;
-	}
-
-	.lists .list {
-		background-color: #fff;
-		border: 1px solid #bbb;
-		border-collapse: collapse;
-	}
-
-	.lists .list .list_item { border-top: 1px solid #E5E5E5; padding: 10px; }
-	.lists .list .list_item.first { border-top: none; }
-
-	.lists .see_all {
-		background-color: #fff;
-		border: 1px solid #bbb;
-		border-top: none;
-		text-align:left;
-		border-collapse: collapse;
-	}
-
-	.lists .see_all div { border-top:1px solid #E5E5E5; padding:5px 10px; }
-
-	/* the following styles actually don't suck - everything above this point does */
+	/* standard stuff */
 	.content { padding-left: 10px; padding-right: 10px; padding-bottom: 10px; padding-top: 5px; }
 	.breadcrumbs { color: #000; }
 	.area-title { font-size: 2.0em; border-bottom: 1px solid #d8dfea; margin-bottom: 5px; clear: both; }
 	.area-title span { display: block; color: #999; font-size: 8pt; font-weight: normal; } /* subtitle */
 	.section-title { font-size: 1.0em; border-bottom: 1px solid #d8dfea; margin-bottom: 5px; clear: both; padding-top: 5px; }
 
+	/* the magic paginator (original blue = #000099 */
+	.pagination {
+		padding: 3px;
+		margin: 3px;
+	}
+	.pagination a {
+		padding: 2px 5px 2px 5px;
+		margin: 2px;
+		border: 1px solid #aaaadd;
+		text-decoration: none;
+		color: #3b5998;
+	}
+	.pagination a:hover, .pagination a:active {
+		border: 1px solid #3b5998;
+		color: #000;
+	}
+	.pagination span.current {
+	    padding: 2px 5px 2px 5px;
+	    margin: 2px;
+	    border: 1px solid #3b5998;
+		font-weight: bold;
+		background-color: #3b5998;
+		color: #FFF;
+	}
+	.pagination span.disabled {
+		padding: 2px 5px 2px 5px;
+		margin: 2px;
+		border: 1px solid #eee;
+		color: #ddd;
+	}
+
+	/* box styles */
 	.information { background-color: #FDFFE4; padding: 5px; border: 1px solid #FFDA5B; }
 	.information h2 { font-size: 8pt; }
 	.errors { background-color: #F7E5E4; padding: 5px; border: 1px solid #610B23; }

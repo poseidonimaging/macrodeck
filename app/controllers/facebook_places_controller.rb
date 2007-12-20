@@ -1,5 +1,3 @@
-gem 'flickr'
-
 # This controller handles the Facebook app.
 class FacebookPlacesController < ApplicationController
 	before_filter :require_facebook_login, :initialize_facebook_user
@@ -551,12 +549,19 @@ class FacebookPlacesController < ApplicationController
 		get_home_city
 		get_secondary_city
 
+		puts "flickr_api_key: #{FLICKR_API_KEY}"
 		flickr = Flickr.new(FLICKR_API_KEY)
-		photos = flickr.tag(@home_city.name.downcase.gsub(" ", "") + " " + @home_city.state(:abbreviation => true).downcase)
-		photos.each do |photo|
+		searchfor = @home_city.name.downcase.gsub(" ", "") + " " + @home_city.state(:abbreviation => true).downcase
+		
+		photo_req = flickr.photos_search(:text => searchfor)
+		photos = photo_req['photos']['photo'].collect do |photo|
+			Flickr::Photo.from_request(photo)
+		end
+		@photos = photos.paginate(:page => params[:page], :per_page => 10)
+		@photos.each do |photo|
+			puts "photo:"
 			p photo
 		end
-		render_with_facebook_debug_panel
 	end
 
 	private

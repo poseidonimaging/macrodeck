@@ -4,9 +4,12 @@
 
 	<%= render :partial => "dashboard" %>
 
-	<p>Debugging @network.</p>
-	<pre>
-		<%= @network.to_yaml %>
-	</pre>
+	<%= render :partial => "tabs" %>
 
+	<p>Debugging photos</p>
+	<% @photos.each do |photo| %>
+		<li><%= image_tag(photo.source("Thumbnail"), :alt => photo.title, :title => photo.title) %></li>
+	<% end %>
+
+	<%= will_paginate @photos %>
 </fb:fbml>
