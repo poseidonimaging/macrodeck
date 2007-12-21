@@ -50,10 +50,11 @@ class FacebookPlacesController < ApplicationController
 				if @secondary_city.nil? || @city.uuid != @secondary_city.uuid
 					hcity_rel = Relationship.find(:first, :conditions => ["source_uuid = ? AND relationship = 'home_city'", @fbuser.uuid])
 					if hcity_rel.nil?
-						raise "set_home_city: home city relationship nonexistant"
+						hcity_rel = Relationship.new
 					end
-
+					hcity_rel.source_uuid = @fbuser.uuid
 					hcity_rel.target_uuid = @city.uuid
+					hcity_rel.relationship = "home_city"
 					hcity_rel.save!
 				end
 				
@@ -553,11 +554,11 @@ class FacebookPlacesController < ApplicationController
 		flickr = Flickr.new(FLICKR_API_KEY)
 		searchfor = @home_city.name.downcase.gsub(" ", "") + " " + @home_city.state(:abbreviation => true).downcase
 		
-		photo_req = flickr.photos_search(:text => searchfor)
+		photo_req = flickr.photos_search(:text => searchfor, :sort => "relevance")
 		photos = photo_req['photos']['photo'].collect do |photo|
 			Flickr::Photo.from_request(photo)
 		end
-		@photos = photos.paginate(:page => params[:page], :per_page => 10)
+		@photos = photos.paginate(:page => params[:page], :per_page => 6)
 		@photos.each do |photo|
 			puts "photo:"
 			p photo
@@ -748,7 +749,7 @@ class FacebookPlacesController < ApplicationController
 		# Gets the home city for the current user.
 		def get_home_city
 			hcity_rel = Relationship.find(:first, :conditions => ["source_uuid = ? AND relationship = 'home_city'", @fbuser.uuid])
-			if hcity_rel.nil?
+			if hcity_rel.nil? && @primary_network != nil # the primary network may be nil if they don't have a regional network.
 				# home city is nil.
 				# This must mean there hasn't been one set. So we set the primary network city as the home city.
 				hcity_rel = Relationship.new do |r|
@@ -763,8 +764,14 @@ class FacebookPlacesController < ApplicationController
 				end
 				hcity_rel.save!
 			end
-			hcity = City.find_by_uuid(hcity_rel.target_uuid)
-			@home_city = hcity
+
+			# See if we created it or not a minute ago...
+			if hcity_rel.nil?
+				@home_city = nil
+			else
+				hcity = City.find_by_uuid(hcity_rel.target_uuid)
+				@home_city = hcity
+			end
 		end
 
 		# Gets the secondary city for the current user. 

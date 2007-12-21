@@ -17,14 +17,14 @@
 				<div class="profile-sidebar-padding">
 					<div class="profile-sidebar-image"><img src="<%= PLACES_BASEURL %>/images/places/no-image-large.png" alt="City Image" /></div>
 					<ul class="profile-links">
-						<!-- TODO: Only show this if it's not the home city -->
-						<% if @home_city.uuid != @city.uuid && (@secondary_city.nil? || @secondary_city.uuid != @city.uuid) %>
+						<% if @home_city.nil? || (@home_city.uuid != @city.uuid && (@secondary_city.nil? || @secondary_city.uuid != @city.uuid)) %>
 							<li>
 								<%= link_to "Set as home city",
 									fbplaces_url(:action => :set_home_city, :country => @city.country, :state => @city.state(:abbreviation => true), :city => @city.url_part) %>
 							</li>
 						<% end %>
-						<% if @home_city.uuid != @city.uuid && (@secondary_city.nil? || @secondary_city.uuid != @city.uuid) %>
+						<!-- secondary cities cannot be set if you don't have a home city set. -->
+						<% if @home_city != nil && @home_city.uuid != @city.uuid && (@secondary_city.nil? || @secondary_city.uuid != @city.uuid) %>
 							<li>
 								<%= link_to "Set as secondary city",
 									fbplaces_url(:action => :set_secondary_city, :country => @city.country, :state => @city.state(:abbreviation => true), :city => @city.url_part) %>

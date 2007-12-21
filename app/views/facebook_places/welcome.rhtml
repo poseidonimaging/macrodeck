@@ -7,6 +7,13 @@
 	<%= render :partial => "tabs" %>
 
 	<div class="content">
+		<% if @home_city.nil? %>
+			<div class="information">
+				<h1><%= image_tag "icons/small/standard-black/exclamation.gif", :class => "inline" %> No Regional Networks Found!</h1>
+				<p>You do not have any regional networks on your Facebook account, so we can't pick a home city for you.
+				Please <%= link_to "browse for a city", fbplaces_url(:action => :browse) %>.</p>
+			</div>
+		<% end %>
 		<h1 class="area-title">Welcome</h1>
 		<p>Welcome to Places. Places will revolutionize how you think about the places you go, eat, and visit. Think about it: it's a Friday night, you want to go out to eat, 
 		and you don't want to eat at the same place again. But you don't want your food to suck either. So, you pull up MacroDeck Places, and you can easily find places that

@@ -15,10 +15,12 @@ if params[:action] == "browse" || params[:action] == "view" || params[:action] =
 		when "friends"
 			@tab_friends = fb_tab_selected
 		else
-			if params[:country] != nil && params[:country].downcase == @home_city.country.downcase
-				if params[:state] != nil && params[:state].downcase == @home_city.state(:abbreviation => true).downcase
-					if params[:city] != nil && params[:city].downcase == @home_city.name.downcase
-						@tab_home_city = fb_tab_selected
+			if @home_city != nil
+				if params[:country] != nil && params[:country].downcase == @home_city.country.downcase
+					if params[:state] != nil && params[:state].downcase == @home_city.state(:abbreviation => true).downcase
+						if params[:city] != nil && params[:city].downcase == @home_city.name.downcase
+							@tab_home_city = fb_tab_selected
+						end
 					end
 				end
 			end
