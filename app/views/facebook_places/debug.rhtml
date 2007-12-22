@@ -6,25 +6,8 @@
 
 	<%= render :partial => "tabs" %>
 
-	<p>Debugging photos</p>
-	<div style="clear: both;">
-	<% @photos.each do |photo| %>
-		<div style="float: left; padding: 5px; border: 1px solid #3b5998; width: 150px; height: 150px; margin: 5px;">
-			<% small_img = photo.sizes("Small") %>
-			<% if small_img["width"].to_i > small_img["height"].to_i %>
-				<%= image_tag(small_img["source"], :alt => photo.title, :title => photo.title, :style => "display: block; width: 128px; margin-left: auto; margin-right: auto; text-align: center;") %>
-			<% else %>
-				<%= image_tag(small_img["source"], :alt => photo.title, :title => photo.title, :style => "display: block; height: 128px; margin-left: auto; margin-right: auto; text-align: center;") %>
-			<% end %>
-			<br />
-			<strong><%= truncate(photo.title, 30) %></strong>
-		</div>
-	<% end %>
-	</div>
-
-	<br />
-	
-	<div style="clear: both;">
-		<%= will_paginate @photos %>
+	<div class="content">
+		<p>Click on a photo to select it.</p>
+		<%= render :partial => "flickr_photos", :locals => { :flickr_photos => @photos } %>
 	</div>
 </fb:fbml>
