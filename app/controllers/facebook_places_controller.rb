@@ -549,23 +549,40 @@ class FacebookPlacesController < ApplicationController
 		get_networks
 		get_home_city
 		get_secondary_city
+		fb_sig_cleanup
 
-		puts "flickr_api_key: #{FLICKR_API_KEY}"
 		flickr = Flickr.new(FLICKR_API_KEY)
-		searchfor = @home_city.name.downcase.gsub(" ", "") + " " + @home_city.state(:abbreviation => true).downcase
+		if params["photo"].nil?
+			searchfor = @home_city.name.downcase.gsub(" ", "") + " " + @home_city.state(:abbreviation => true).downcase
 		
-		photo_req = flickr.photos_search(:text => searchfor, :sort => "relevance")
-		photos = photo_req['photos']['photo'].collect do |photo|
-			Flickr::Photo.from_request(photo)
-		end
-		@photos = photos.paginate(:page => params[:page], :per_page => 6)
-		@photos.each do |photo|
-			puts "photo:"
-			p photo
+			photo_req = flickr.photos_search(:text => searchfor, :sort => "relevance")
+			photos = photo_req['photos']['photo'].collect do |photo|
+				Flickr::Photo.from_request(photo)
+			end
+
+			@photos = photos.paginate(:page => params[:page], :per_page => 6)
+		else
+			@photo = Flickr::Photo.new(params["photo"])
 		end
 	end
 
 	private
+		# Removes fb_sig values from the params
+		def fb_sig_cleanup
+			params.delete("fb_sig")
+			params.delete("fb_sig_time")
+			params.delete("fb_sig_in_canvas")
+			params.delete("fb_sig_position_fix")
+			params.delete("fb_sig_session_key")
+			params.delete("fb_sig_request_method")
+			params.delete("fb_sig_expires")
+			params.delete("fb_sig_added")
+			params.delete("fb_sig_friends")
+			params.delete("fb_sig_user")
+			params.delete("fb_sig_api_key")
+			params.delete("fb_sig_profile_update_time")
+		end
+
 		# Validates a field. Field types: :email, :phone, :latitude, :longitude, :zipcode
 		def validate_field(value, type)
 			case type

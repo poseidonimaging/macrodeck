@@ -1,0 +1,9 @@
+	<div class="photo">
+		<% img = flickr_photo.sizes("Medium") %>
+		<%= image_tag(img["source"], :alt => flickr_photo.title, :title => flickr_photo.title) %>
+		<br />
+		<strong><%= flickr_photo.title %></strong>
+	</div>
+
+	<p><%= link_to "Back", params.merge({ :photo => nil }) %><br />
+		<%= link_to "Select This Photo", params.merge({ :select => "1" }) %></p>

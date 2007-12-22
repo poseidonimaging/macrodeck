@@ -7,7 +7,12 @@
 	<%= render :partial => "tabs" %>
 
 	<div class="content">
-		<p>Click on a photo to select it.</p>
-		<%= render :partial => "flickr_photos", :locals => { :flickr_photos => @photos } %>
+		<% if params["photo"].nil? %>
+			<p>Click on a photo to select it.</p>
+			<%= render :partial => "flickr_photos", :locals => { :flickr_photos => @photos } %>
+		<% else %>
+			<p>Verify this is the photo you wish to use.</p>
+			<%= render :partial => "flickr_view_photo", :locals => { :flickr_photo => @photo } %>
+		<% end %>
 	</div>
 </fb:fbml>
