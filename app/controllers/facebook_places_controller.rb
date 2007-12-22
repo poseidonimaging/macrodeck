@@ -544,6 +544,29 @@ class FacebookPlacesController < ApplicationController
 		end
 	end
 
+	# Sets the photo for a city/place
+	def photo
+		get_networks
+		get_home_city
+		fb_sig_cleanup
+		
+		if params[:country] != nil && params[:country] == "us" && params[:state] != nil && params[:city] != nil
+			get_us_states
+			get_city_info(params[:city], params[:state])
+
+			if params[:place].nil?
+				# Set photo for city
+				raise "TODO: Set photo for city"
+			else
+				place = Place.find_by_uuid(params[:place])
+				if place != nil
+
+				else
+					raise "photo: Place does not exist!"
+				end
+			end
+	end
+
 	# RFacebook Debug Panel
 	def debug
 		get_networks
