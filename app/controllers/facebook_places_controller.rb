@@ -571,6 +571,7 @@ class FacebookPlacesController < ApplicationController
 						end
 	
 						@photos = photos.paginate(:page => params[:page], :per_page => 6)
+						render :template => "facebook_places/photo_place"
 					else
 						@photo = Flickr::Photo.new(params[:photo])
 					end
