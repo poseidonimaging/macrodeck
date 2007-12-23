@@ -553,6 +553,7 @@ class FacebookPlacesController < ApplicationController
 		if params[:country] != nil && params[:country] == "us" && params[:state] != nil && params[:city] != nil
 			get_us_states
 			get_city_info(params[:city], params[:state])
+			flickr = Flickr.new(FLICKR_API_KEY)
 
 			if params[:place].nil?
 				# Set photo for city
@@ -560,7 +561,19 @@ class FacebookPlacesController < ApplicationController
 			else
 				place = Place.find_by_uuid(params[:place])
 				if place != nil
-
+					if params[:photo].nil?
+						# e.g. "Wonder Waffle Okmulgee, OK" => "wonder waffle okmulgee"
+						# since we're not searching by tag and instead by relevance, this works better. 
+						searchfor = place.name.downcase + " " + @city.name.downcase.gsub(" ", "") 
+						photo_req = flickr.photos_search(:text => searchfor, :sort => "relevance")
+						photos = photo_req["photos"]["photo"].collect do |photo|
+							Flickr::Photo.from_request(photo)
+						end
+	
+						@photos = photos.paginate(:page => params[:page], :per_page => 6)
+					else
+						@photo = Flickr::Photo.new(params[:photo])
+					end
 				else
 					raise "photo: Place does not exist!"
 				end
@@ -575,7 +588,7 @@ class FacebookPlacesController < ApplicationController
 		fb_sig_cleanup
 
 		flickr = Flickr.new(FLICKR_API_KEY)
-		if params["photo"].nil?
+		if params[:photo].nil?
 			searchfor = @home_city.name.downcase.gsub(" ", "") + " " + @home_city.state(:abbreviation => true).downcase
 		
 			photo_req = flickr.photos_search(:text => searchfor, :sort => "relevance")
