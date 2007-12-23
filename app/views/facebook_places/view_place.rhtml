@@ -26,7 +26,7 @@
 							<% end %>
 						</li>
 						<li><%= link_to "Edit this place", "#{PLACES_FBURL}/edit/#{@country.url_part}/#{@state.url_part}/#{url_sanitize(@city.title)}/#{@place.dataid}/" %></li>
-						
+						<li><%= link_to "Change place photo", fbplaces_url(:action => :photo, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part, :place => @place.url_part) %></li>
 						<% 
 							# Extra items we aren't adding yet.
 							#<li><a href="#">Find similar places</a></li>

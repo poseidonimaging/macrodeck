@@ -554,7 +554,7 @@ class FacebookPlacesController < ApplicationController
 			get_us_states
 			get_city_info(params[:city], params[:state])
 			flickr = Flickr.new(FLICKR_API_KEY)
-
+			
 			if params[:place].nil?
 				# Set photo for city
 				raise "TODO: Set photo for city"
@@ -564,7 +564,7 @@ class FacebookPlacesController < ApplicationController
 					if params[:photo].nil?
 						# e.g. "Wonder Waffle Okmulgee, OK" => "wonder waffle okmulgee"
 						# since we're not searching by tag and instead by relevance, this works better. 
-						searchfor = place.name.downcase + " " + @city.name.downcase.gsub(" ", "") 
+						searchfor = place.name.downcase + " " + @city.name  
 						photo_req = flickr.photos_search(:text => searchfor, :sort => "relevance")
 						photos = photo_req["photos"]["photo"].collect do |photo|
 							Flickr::Photo.from_request(photo)
@@ -579,6 +579,7 @@ class FacebookPlacesController < ApplicationController
 					raise "photo: Place does not exist!"
 				end
 			end
+		end
 	end
 
 	# RFacebook Debug Panel
