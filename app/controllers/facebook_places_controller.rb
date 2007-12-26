@@ -591,13 +591,12 @@ class FacebookPlacesController < ApplicationController
 					if params[:photo].nil?
 						# e.g. "Wonder Waffle Okmulgee, OK" => "wonder waffle okmulgee"
 						# since we're not searching by tag and instead by relevance, this works better.
+						searchfor = nil
 						if params[:alternate].nil? || params[:alternate] != "1"
-							searchfor = @place.name.downcase + " " + @city.name  
+							searchfor = @place.name.downcase + " " + @city.name.downcase
 						else
-							searchfor = @place.name.downcase.gsub(" ", "") + " " + @city.name
+							searchfor = @place.name.downcase.gsub(" ", "") + " " + @city.name.downcase
 						end
-						# remove non-word (\W) characters
-						searchfor.gsub!(/\W/, "")
 						photo_req = flickr.photos_search(:text => searchfor, :sort => "relevance")
 						if photo_req["photos"]["photo"] != nil
 							photos = photo_req["photos"]["photo"].collect do |photo|

@@ -33,7 +33,7 @@
 				<%= render :partial => "flickr_photos", :locals => { :flickr_photos => @photos } %>
 			<% else %>
 				<p>Verify this is the photo you wish to use for <%= @place.title %> and press "Select Photo" below.</p>
-				<%= render :partial => "flickr_view_photo", :locals => { :flickr_photo => @photo } %>
+				<%= render :partial => "flickr_view_photo", :locals => { :flickr_photo => @photo, :show_select => true } %>
 			<% end %>
 		<% else %>
 			<p>There are no photos for this place on flickr. Please go to <%= link_to "flickr", "http://www.flickr.com/" %> and upload a photo there, and you will
