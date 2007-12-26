@@ -1,0 +1,15 @@
+<div class="breadcrumbs">
+	<%= link_to "Browse", fbplaces_url(:action => :browse) %> /
+	<% if country != nil %>
+		<%= link_to country.title, fbplaces_url(:action => :browse, :country => country.url_part) %> / 
+	<% end %>
+	<% if state != nil %>
+		<%= link_to state.title, fbplaces_url(:action => :browse, :country => country.url_part, :state => state.url_part) %> /
+	<% end %>
+	<% if city != nil %>
+		<%= link_to city.title, fbplaces_url(:action => :browse, :country => country.url_part, :state => state.url_part, :city => city.url_part) %> /
+	<% end %>
+	<% if place != nil %>
+		<%= link_to place.title, fbplaces_url(:action => :view, :country => country.url_part, :state => state.url_part, :city => city.url_part, :place => place.url_part) %> /
+	<% end %>
+</div>

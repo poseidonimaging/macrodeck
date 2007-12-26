@@ -7,11 +7,10 @@
 	<%= render :partial => "tabs" %>
 
 	<div class="content">
-		<div class="breadcrumbs">
-			<%= link_to "Browse", "#{PLACES_FBURL}/browse/" %> / <%= link_to @country.title, "#{PLACES_FBURL}/browse/us/" %> /
-			<%= link_to @state.title, "#{PLACES_FBURL}/browse/#{@country.url_part}/#{@state.url_part}/" %> /
-		</div>
+		<%= render :partial => "breadcrumbs", :locals => { :country => @country, :state => @state } %>
+
 		<h1 class="area-title"><%= @city.title %></h1>
+
 		<div class="profile-layout">
 			<%= render :partial => "city_profile_sidebar" %>
 			<div class="profile-content">

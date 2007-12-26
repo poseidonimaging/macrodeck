@@ -7,14 +7,8 @@
 	<%= render :partial => "tabs" %>
 
 	<div class="content">
-		<div class="breadcrumbs">
-			<%= link_to "Browse", fbplaces_url(:action => :browse) %> / 
-			<%= link_to @country.title, fbplaces_url(:action => :browse, :country => "us") %> / 
-			<%= link_to @state.title, fbplaces_url(:action => :browse, :country => "us", :state => @state.url_part) %> /
-			<%= link_to @city.title, fbplaces_url(:action => :browse, :country => "us", :state => @state.url_part, :city => @city.url_part) %> /
-			<%= link_to @place.title, fbplaces_url(:action => :view, :country => "us", :state => @state.url_part, :city => @city.url_part, :place => @place.uuid) %> /
-		</div>
-		
+		<%= render :partial => "breadcrumbs", :locals => { :country => @country, :state => @state, :city => @city, :place => @place } %>
+
 		<h1 class="area-title">Change Photo</h1>
 
 		<% if @photos != nil || params[:photo] != nil %>
