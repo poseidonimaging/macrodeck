@@ -26,6 +26,8 @@ class FacebookPlacesController < ApplicationController
 					else
 						@place_is_patron = true
 					end
+					@place_features = get_place_features_as_list(@place.place_metadata[:features])
+					@place_type = place_type_to_string(@place.place_metadata[:type])
 					render :template => "facebook_places/view_place"
 				else
 					# place doesn't exist; redirect to the city's browse page (if it doesn't exist then browse_city will take care of it we hope)
@@ -595,7 +597,8 @@ class FacebookPlacesController < ApplicationController
 						if params[:alternate].nil? || params[:alternate] != "1"
 							searchfor = @place.name.downcase + " " + @city.name.downcase
 						else
-							searchfor = @place.name.downcase.gsub(" ", "") + " " + @city.name.downcase
+							# Remove everything that's not alphanumeric including spaces
+							searchfor = @place.name.downcase.gsub(/\W/, "") + " " + @city.name.downcase
 						end
 						photo_req = flickr.photos_search(:text => searchfor, :sort => "relevance")
 						if photo_req["photos"]["photo"] != nil
@@ -725,6 +728,12 @@ class FacebookPlacesController < ApplicationController
 			return str.chomp.strip.downcase.gsub(/[^0-9A-Za-z_\-\s]/, "").gsub(" ", "-")
 		end
 
+		# Takes a symbol corresponding to a place type and returns a human readable string
+		def place_type_to_string(type)
+			types = PlaceMetadata.get_place_types
+			return types[type]
+		end
+
 		# Returns an <option /> list containing place types (specify the selected value with a key if there is one)
 		def get_place_type_option_list(default_value = nil)
 			types = PlaceMetadata.get_place_types
@@ -748,6 +757,42 @@ class FacebookPlacesController < ApplicationController
 			#option_list << "<option value=\"none\" class=\"seperator\" disabled=\"disabled\"></option>"
 			#option_list << "<option value=\"other\">Other</option>"
 			return option_list.to_s
+		end
+
+		# Returns HTML for the image for a feature (used in feature list)
+		def image_for_feature(feature)
+			case feature
+			when :full_bar, :wine, :byob, :beer
+				return "<img src=\"#{PLACES_BASEURL}/images/icons/small/standard-black/alcohol.png\" class=\"inline\" alt=\"Info\" />"
+			when :call_ahead
+				return "<img src=\"#{PLACES_BASEURL}/images/icons/small/standard-black/phone.gif\" class=\"inline\" alt=\"Info\" />"
+			when :outdoor_seating
+				return "<img src=\"#{PLACES_BASEURL}/images/icons/small/standard-black/outdoor.png\" class=\"inline\" alt=\"Info\" />"
+			when :free_wifi, :pay_wifi
+				return "<img src=\"#{PLACES_BASEURL}/images/icons/small/standard-black/signal.gif\" class=\"inline\" alt=\"Info\" />"
+			when :cash_only
+				return "<img src=\"#{PLACES_BASEURL}/images/icons/small/standard-black/exclamation.gif\" class=\"inline\" alt=\"Info\" />"
+			else
+				return "<img src=\"#{PLACES_BASEURL}/images/icons/small/standard-black/info.gif\" class=\"inline\" alt=\"Info\" />"
+			end
+		end
+
+		# Returns a <ul /> containing all of the features a place has.
+		def get_place_features_as_list(features)
+			all_features = PlaceMetadata.get_place_features
+			feature_list = []
+			if features != nil && features.length > 0
+				features.each do |feature|
+					feature_list << "<li class=\"#{feature.to_s}\">#{image_for_feature(feature)}<span>#{all_features[feature]}</span></li>"
+				end
+				feature_list.sort!
+				final_feature_list = ["<ul class=\"features\">"]
+				final_feature_list << feature_list
+				final_feature_list << "</ul>"
+				return final_feature_list.to_s
+			else
+				return nil
+			end
 		end
 
 		# Returns a bunch of checkboxes for each feature available for a place; the enabled features should be specified as a hash like { :outdoor_seating => "1" } or { "outdoor_seating" => "1" }

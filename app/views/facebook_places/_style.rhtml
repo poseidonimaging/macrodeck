@@ -3,7 +3,9 @@
 	.content { padding-left: 10px; padding-right: 10px; padding-bottom: 10px; padding-top: 5px; }
 	.breadcrumbs { color: #000; }
 	.area-title { font-size: 2.0em; border-bottom: 1px solid #d8dfea; margin-bottom: 5px; clear: both; }
-	.area-title span { display: block; color: #999; font-size: 8pt; font-weight: normal; } /* subtitle */
+	.area-title span { display: block; height: 1.3em; } /* hack: firefox doesn't fill in the box height even though it exists */
+	.area-title span span { display: block; width: 50%; float: left; }
+	.area-title span span.subtitle { color: #999; font-size: 8pt; font-weight: normal; text-align: right; height: 1.3em; padding-top: 1em; } /* subtitle */
 	.section-title { font-size: 1.0em; border-bottom: 1px solid #d8dfea; margin-bottom: 5px; clear: both; padding-top: 5px; }
 	.clear { clear: both; }
 	.align-left { text-align: left; margin-left: 0; margin-right: auto; }
@@ -56,6 +58,11 @@
 	.offset .value { display: block; float: left; }
 	.offset br { clear: both; }
 
+	/* view place styles */
+	ul.features { margin: 0; padding: 0; }
+	ul.features li { list-style-type: none; padding-top: 1px; padding-bottom: 1px; }
+	ul.features li span { padding-left: 3px; }
+
 	/* browse city */
 	.places .place { clear: both; padding-bottom: 5px; padding-top: 5px; }
 	.places .place img { display: block; float: left; width: 64px; }
@@ -87,7 +94,13 @@
 
 	/* profile-style layout */
 	.profile-layout { border: 0; margin: 0; padding: 0; width: 100%; }
-	.profile-sidebar { float: left; margin: 0; padding: 0; border: 0; width: 25%; }
+	<% if request.user_agent =~ /MSIE 6.0/ %>
+		/* MSIE 6.0 adds extra padding */
+		.profile-sidebar { float: left; margin: 0; padding: 0; border: 0; width: 23%; }
+	<% else %>
+		/* everyone else is okay */
+		.profile-sidebar { float: left; margin: 0; padding: 0; border: 0; width: 25%; }
+	<% end %>
 	.profile-sidebar-padding { padding-right: 5px; }
 	.profile-sidebar-image { text-align: left; margin-left: 0; margin-right: auto; margin-bottom: 5px; }
 	.profile-content { float: left; margin: 0; padding: 0; border: 0; width: 75%; }
@@ -98,10 +111,17 @@
 	.profile-links a { color: inherit; display: block; margin: 0; padding: 2px; padding-left: 10px; text-decoration: none; }
 
 	/* two column layout */
-	.twocol-layout { border: 0; margin: 0; padding: 0; width: 100%; }
-	.twocol-left { float: left; margin: 0; padding: 0; border: 0; width: 50%; }
+	.twocol-layout { border: 0; margin: 0; padding: 0; width: 100%; clear: both; }
+	<% if request.user_agent =~ /MSIE 6.0/ %>
+		/* MSIE 6.0 adds extra padding and that makes stuff not work.... */
+		.twocol-left { float: left; margin: 0; padding: 0; border: 0; width: 48%; }
+		.twocol-right { float: left; margin: 0; padding: 0; border: 0; width: 48%; }
+	<% else %>
+		/* everybody else is in the party */
+		.twocol-left { float: left; margin: 0; padding: 0; border: 0; width: 50%; }
+		.twocol-right { float: left; margin: 0; padding: 0; border: 0; width: 50%; }
+	<% end %>
 	.twocol-left-padding { padding-right: 5px; }
-	.twocol-right { float: left; margin: 0; padding: 0; border: 0; width: 50%; }
 	.twocol-right-padding { padding-left: 5px; }
 
 	/* three column layout */

@@ -8,7 +8,8 @@
 
 	<div class="content">
 		<%= render :partial => "breadcrumbs", :locals => { :country => @country, :state => @state, :city => @city, :place => nil } %>
-		<h1 class="area-title"><%= @place.title %></h1>
+		<h1 class="area-title"><span><span><%= @place.title %></span> <span class="subtitle"><%= @place_type %></span></span></h1>
+		<div class="clear"></div>
 		<div class="profile-layout">
 			<%= render :partial => "place_profile_sidebar" %>
 			<div class="profile-content">
@@ -37,6 +38,13 @@
 						</p>
 					</div>
 
+					<h2 class="section-title">Features and Services</h2>
+					<% if @place_features.nil? %>
+						<p>According to our records, this place doesn't have any features or offer any services. If you know this place does, edit this place and check which
+						features and services this place provides.</p>
+					<% else %>
+						<%= @place_features %>
+					<% end %>
 					<h2 class="section-title">Patrons</h2>
 					<% if @place.patrons != nil && @place.patrons.length > 0 %>
 						<%= patron_table @place.patrons %>
