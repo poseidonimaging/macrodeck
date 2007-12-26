@@ -7,7 +7,7 @@
 	<%= render :partial => "tabs" %>
 
 	<div class="content">
-		<%= render :partial => "breadcrumbs", :locals => { :country => @country, :state => @state } %>
+		<%= render :partial => "breadcrumbs", :locals => { :country => @country, :state => @state, :city => nil, :place => nil } %>
 
 		<h1 class="area-title"><%= @city.title %></h1>
 

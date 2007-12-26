@@ -7,12 +7,7 @@
 	<%= render :partial => "tabs" %>
 
 	<div class="content">
-		<div class="breadcrumbs">
-			<%= link_to "Browse", "#{PLACES_FBURL}/browse/" %> / <%= link_to @country.title, "#{PLACES_FBURL}/browse/us/" %> /
-			<%= link_to @state.title, "#{PLACES_FBURL}/browse/#{@country.url_part}/#{@state.url_part}/" %> /
-			<%= link_to @city.title, "#{PLACES_FBURL}/browse/#{@country.url_part}/#{@state.url_part}/#{url_sanitize(@city.title)}" %> /
-			<%= link_to @place.title, "#{PLACES_FBURL}/view/#{@country.url_part}/#{@state.url_part}/#{url_sanitize(@city.title)}/#{@place.dataid}" %> /
-		</div>
+		<%= render :partial => "breadcrumbs", :locals => { :country => @country, :state => @state, :city => @city, :place => @place } %>
 		<h1 class="area-title">Edit Place</h1>
 		<% if @errors.length > 0 %>
 			<div class="errors">

@@ -1,6 +1,6 @@
 <div class="profile-sidebar">
 	<div class="profile-sidebar-padding">
-		<div class="profile-sidebar-image"><%= image_tag "places/no-image-large.png" :alt => "City Image" %></div>
+		<div class="profile-sidebar-image"><%= image_tag "places/no-image-large.png", :alt => "City Image" %></div>
 		<ul class="profile-links">
 			<% if @home_city.nil? || (@home_city.uuid != @city.uuid && (@secondary_city.nil? || @secondary_city.uuid != @city.uuid)) %>
 				<li>

@@ -7,11 +7,7 @@
 	<%= render :partial => "tabs" %>
 
 	<div class="content">
-		<div class="breadcrumbs">
-			<%= link_to "Browse", "/macrodeckplaces/browse/" %> / <%= link_to @country.title, "/macrodeckplaces/browse/us/" %> /
-			<%= link_to @state.title, "/macrodeckplaces/browse/#{@country.url_part}/#{@state.url_part}/" %> /
-			<%= link_to @city.title, "/macrodeckplaces/browse/#{@country.url_part}/#{@state.url_part}/#{url_sanitize(@city.title)}" %> /
-		</div>
+		<%= render :partial => "breadcrumbs", :locals => { :country => @country, :state => @state, :city => @city, :place => nil } %>
 		<h1 class="area-title">Create a Place</h1>
 		<div class="information">
 			<h2><%= image_tag "icons/small/standard-black/info.gif", :class => "inline" %> Tips for Creating Places</h2>
