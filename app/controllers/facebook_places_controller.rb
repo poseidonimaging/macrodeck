@@ -544,6 +544,32 @@ class FacebookPlacesController < ApplicationController
 		end
 	end
 
+	def view_photo
+		get_networks
+		get_home_city
+		get_secondary_city
+		fb_sig_cleanup
+
+		if params[:country] != nil && params[:country] == "us" && params[:state] != nil && params[:city] != nil
+			get_us_states
+			get_city_info(params[:city], params[:state])
+			flickr = Flickr.new(FLICKR_API_KEY)
+			
+			if params[:place].nil?
+				# Set photo for city
+				raise "TODO: Get photo for city"
+			else
+				@place = Place.find_by_uuid(params[:place])
+				if @place != nil
+					@photo = Flickr::Photo.new(@place.place_metadata[:flickr_photo_id])
+					render :template => "facebook_places/view_photo_place"
+				else
+					raise "view_photo: place does not exist"
+				end
+			end
+		end
+	end
+
 	# Sets the photo for a city/place
 	def change_photo
 		get_networks
@@ -570,6 +596,8 @@ class FacebookPlacesController < ApplicationController
 						else
 							searchfor = @place.name.downcase.gsub(" ", "") + " " + @city.name
 						end
+						# remove non-word (\W) characters
+						searchfor.gsub!(/\W/, "")
 						photo_req = flickr.photos_search(:text => searchfor, :sort => "relevance")
 						if photo_req["photos"]["photo"] != nil
 							photos = photo_req["photos"]["photo"].collect do |photo|
@@ -598,7 +626,7 @@ class FacebookPlacesController < ApplicationController
 						end
 					end
 				else
-					raise "photo: Place does not exist!"
+					raise "change_photo: Place does not exist!"
 				end
 			end
 		end

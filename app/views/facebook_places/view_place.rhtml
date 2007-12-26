@@ -8,48 +8,13 @@
 
 	<div class="content">
 		<div class="breadcrumbs">
-			<%= link_to "Browse", "#{PLACES_FBURL}/browse/" %> / <%= link_to @country.title, "#{PLACES_FBURL}/browse/us/" %> /
-			<%= link_to @state.title, "#{PLACES_FBURL}/browse/#{@country.url_part}/#{@state.url_part}/" %> /
-			<%= link_to @city.title, "#{PLACES_FBURL}/browse/#{@country.url_part}/#{@state.url_part}/#{url_sanitize(@city.title)}/" %> /
+			<%= link_to "Browse", fbplaces_url(:action => :browse) %> / <%= link_to @country.title, fbplaces_url(:action => :browse, :country => @country.url_part) %> /
+			<%= link_to @state.title, fbplaces_url(:action => :browse, :country => @country.url_part, :state => @state.url_part) %> /
+			<%= link_to @city.title, fbplaces_url(:action => :browse, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part) %> /
 		</div>
 		<h1 class="area-title"><%= @place.title %></h1>
 		<div class="profile-layout">
-			<div class="profile-sidebar">
-				<div class="profile-sidebar-padding">
-					<div class="profile-sidebar-image">
-						<div class="photo">
-							<% if @place.place_metadata[:flickr_photo_id].nil? || @place.place_metadata[:flickr_photo_id] == 0 %>
-								<%= image_tag "places/no-image-large.png", :alt => "No Photo Selected" %>
-							<% else %>
-								<% photo = Flickr::Photo.new(@place.place_metadata[:flickr_photo_id]) %>
-								<% small_img = photo.sizes("Small") %>
-								<% if small_img["width"].to_i > small_img["height"].to_i %>
-									<%= image_tag(small_img["source"], :alt => photo.title, :title => photo.title, :class => "wide") %>
-								<% else %>
-									<%= image_tag(small_img["source"], :alt => photo.title, :title => photo.title, :class => "tall") %>
-								<% end %>									
-							<% end %>
-						</div>
-					</div>
-					<ul class="profile-links">
-						<li>
-							<% if @place_is_patron %>
-								<%= link_to "I am no longer a patron", "#{PLACES_FBURL}/remove_patronage/#{@country.url_part}/#{@state.url_part}/#{url_sanitize(@city.title)}/#{@place.dataid}/" %>
-							<% else %>
-								<%= link_to "I am a patron", "#{PLACES_FBURL}/add_patronage/#{@country.url_part}/#{@state.url_part}/#{url_sanitize(@city.title)}/#{@place.dataid}/" %>
-							<% end %>
-						</li>
-						<li><%= link_to "Edit this place", "#{PLACES_FBURL}/edit/#{@country.url_part}/#{@state.url_part}/#{url_sanitize(@city.title)}/#{@place.dataid}/" %></li>
-						<li><%= link_to "Change place photo", fbplaces_url(:action => :change_photo, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part, :place => @place.url_part) %></li>
-						<% 
-							# Extra items we aren't adding yet.
-							#<li><a href="#">Find similar places</a></li>
-							#<li><a href="#">Map</a></li>
-						%>
-					</ul>
-					<%= render :partial => "facebook_places/profile_ad" %>
-				</div>
-			</div>
+			<%= render :partial => "place_profile_sidebar" %>
 			<div class="profile-content">
 				<div class="profile-content-padding">
 					<% if !@place.description.nil? && !@place.description.empty? %><p><%= auto_link(@place.description) %></p><% end %>
@@ -88,7 +53,8 @@
 					<br />
 					<h2 class="section-title">The Wall</h2>
 					<p>This feature is coming soon!</p>
-				</div>
-		</div>
-	</div>
+				</div> <!-- /padding -->
+			</div> <!-- /profile-content -->
+		</div> <!-- /profile-layout -->
+	</div> <!-- /content -->
 </fb:fbml>

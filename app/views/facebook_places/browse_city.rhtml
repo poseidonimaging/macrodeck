@@ -44,7 +44,13 @@
 									<% if @city.top_10_newest_places.length > 0 %>
 										<% @city.top_10_newest_places.each do |p| %>
 											<div class="place">
-												<img src="<%= PLACES_BASEURL %>/images/places/no-image-small.png" alt="<%= p.title %>" /> 
+												<% if p.place_metadata[:flickr_photo_id].nil? || p.place_metadata[:flickr_photo_id] == 0 %>
+													<%= image_tag "places/no-image-small.png", :alt => p.name, :title => p.name %>
+												<% else %>
+													<% photo = Flickr::Photo.new(p.place_metadata[:flickr_photo_id]) %>
+													<% square_img = photo.sizes("Square") %>
+													<%= image_tag square_img["source"], :alt => p.name, :title => p.name %>
+												<% end %>
 												<div>
 													<!-- extra DIV for padding purposes -->
 													<div>
