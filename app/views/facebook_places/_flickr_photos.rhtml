@@ -9,7 +9,6 @@
 				<%= link_to image_tag(small_img["source"], :alt => photo.title, :title => photo.title, :class => "tall"),
 					params.merge({ :photo => photo.id }) %>
 			<% end %>
-			<br />
 			<strong><%= truncate(photo.title, 30) %></strong>
 		</div>
 	<% end %>
@@ -18,5 +17,5 @@
 	<br />
 	
 	<div style="clear: both;">
-		<%= will_paginate flickr_photos %>
+		<%= will_paginate flickr_photos, :params => { :alternate => params[:alternate] } %>
 	</div>
