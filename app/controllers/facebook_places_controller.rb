@@ -539,15 +539,16 @@ class FacebookPlacesController < ApplicationController
 					end
 					# Don't do anything if they aren't a patron.
 				end
-				redirect_to "#{PLACES_FBURL}/view/#{params[:country]}/#{params[:state]}/#{params[:city]}/#{@place.dataid}/"
+				redirect_to fbplaces_url(:action => :view, :country => "us", :state => @state.url_part, :city => @city.url_part, :place => @place.uuid)
 			end
 		end
 	end
 
 	# Sets the photo for a city/place
-	def photo
+	def change_photo
 		get_networks
 		get_home_city
+		get_secondary_city
 		fb_sig_cleanup
 		
 		if params[:country] != nil && params[:country] == "us" && params[:state] != nil && params[:city] != nil
@@ -559,21 +560,42 @@ class FacebookPlacesController < ApplicationController
 				# Set photo for city
 				raise "TODO: Set photo for city"
 			else
-				place = Place.find_by_uuid(params[:place])
-				if place != nil
+				@place = Place.find_by_uuid(params[:place])
+				if @place != nil
 					if params[:photo].nil?
 						# e.g. "Wonder Waffle Okmulgee, OK" => "wonder waffle okmulgee"
-						# since we're not searching by tag and instead by relevance, this works better. 
-						searchfor = place.name.downcase + " " + @city.name  
-						photo_req = flickr.photos_search(:text => searchfor, :sort => "relevance")
-						photos = photo_req["photos"]["photo"].collect do |photo|
-							Flickr::Photo.from_request(photo)
+						# since we're not searching by tag and instead by relevance, this works better.
+						if params[:alternate].nil? || params[:alternate] != "1"
+							searchfor = @place.name.downcase + " " + @city.name  
+						else
+							searchfor = @place.name.downcase.gsub(" ", "") + " " + @city.name
 						end
+						photo_req = flickr.photos_search(:text => searchfor, :sort => "relevance")
+						if photo_req["photos"]["photo"] != nil
+							photos = photo_req["photos"]["photo"].collect do |photo|
+								Flickr::Photo.from_request(photo)
+							end
 	
-						@photos = photos.paginate(:page => params[:page], :per_page => 6)
-						render :template => "facebook_places/photo_place"
+							@photos = photos.paginate(:page => params[:page], :per_page => 6)
+							render :template => "facebook_places/change_photo_place"
+						else
+							# No results.
+							@photos = nil
+							render :template => "facebook_places/change_photo_place"
+						end
 					else
-						@photo = Flickr::Photo.new(params[:photo])
+						# showing a single photo.
+						if params[:select].nil? || params[:select] != "1"
+							@photo = Flickr::Photo.new(params[:photo])
+							render :template => "facebook_places/change_photo_place"
+						else
+							# TODO: Make this work in one line instead.
+							meta = @place.place_metadata
+							meta.flickr_photo_id = params[:photo]
+							@place.place_metadata = meta
+							@place.save!
+							redirect_to fbplaces_url(:action => :view, :country => "us", :state => @state.url_part, :city => @city.url_part, :place => @place.uuid)
+						end
 					end
 				else
 					raise "photo: Place does not exist!"
