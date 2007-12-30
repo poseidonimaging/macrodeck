@@ -9,11 +9,15 @@ module Flickr::Extensions
 		module ClassMethods
 			# Returns a Photo for a SimpleXML request reply block.
 			def from_request(request)
-				p = Flickr::Photo.new(request["id"])
-				p.instance_variable_set("@title", request["title"])
-				p.instance_variable_set("@owner", request["owner"])
-				p.instance_variable_set("@server", request["server"])
-				return p
+				if request != nil && request["id"] != nil
+					p = Flickr::Photo.new(request["id"])
+					p.instance_variable_set("@title", request["title"])
+					p.instance_variable_set("@owner", request["owner"])
+					p.instance_variable_set("@server", request["server"])
+					return p
+				else
+					return nil
+				end
 			end
 		end
 	end

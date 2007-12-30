@@ -15,15 +15,6 @@
 			<% if params[:photo].nil? %>
 				<p>Please choose the most appropriate photo for <%= @place.title %> from the list of photos from <%= link_to "flickr", "http://www.flickr.com/" %>
 				below. If you would like to upload your own photo, upload it to flickr, and it will appear in this list soon.</p>
-				<div class="information-compact">
-					<% if params[:alternate].nil? || params[:alternate] != "1" %>
-						<p><%= image_tag "icons/small/standard-black/info.gif", :class => "inline" %> 
-						Don't like these results? Try an <%= link_to "alternate search", params.merge({ :alternate => "1" }) %>.</p>
-					<% else %>
-						<p><%= image_tag "icons/small/standard-black/info.gif", :class => "inline" %>
-						Don't like the alternate results? Try the <%= link_to "original search", params.merge({ :alternate => nil }) %>.</p>
-					<% end %>
-				</div>
 				<%= render :partial => "flickr_photos", :locals => { :flickr_photos => @photos } %>
 			<% else %>
 				<p>Verify this is the photo you wish to use for <%= @place.title %> and press "Select Photo" below.</p>

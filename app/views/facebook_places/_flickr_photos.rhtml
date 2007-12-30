@@ -1,4 +1,4 @@
-	<div class="photos">
+<div class="photos">
 	<% flickr_photos.each do |photo| %>
 		<div class="photo">
 			<% small_img = photo.sizes("Small") %>
@@ -12,7 +12,7 @@
 			<strong><%= truncate(photo.title, 30) %></strong>
 		</div>
 	<% end %>
-	</div>
+</div>
 
 	<br />
 	

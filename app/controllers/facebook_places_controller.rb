@@ -593,19 +593,23 @@ class FacebookPlacesController < ApplicationController
 					if params[:photo].nil?
 						# e.g. "Wonder Waffle Okmulgee, OK" => "wonder waffle okmulgee"
 						# since we're not searching by tag and instead by relevance, this works better.
-						searchfor = nil
-						if params[:alternate].nil? || params[:alternate] != "1"
-							searchfor = @place.name.downcase + " " + @city.name.downcase
-						else
-							# Remove everything that's not alphanumeric including spaces
-							searchfor = @place.name.downcase.gsub(/\W/, "") + " " + @city.name.downcase
-						end
-						photo_req = flickr.photos_search(:text => searchfor, :sort => "relevance")
+						searchfor_first = @place.name.downcase + " " + @city.name.downcase
+						searchfor_second = @place.name.downcase.gsub(/\W/, "") + " " + @city.name.downcase
+
+						photo_req = flickr.photos_search(:text => searchfor_first, :sort => "relevance")
+						photo_req_alt = flickr.photos_search(:text => searchfor_second, :sort => "relevance")
+						photo_req.merge!(photo_req_alt)
+
 						if photo_req["photos"]["photo"] != nil
-							photos = photo_req["photos"]["photo"].collect do |photo|
-								Flickr::Photo.from_request(photo)
+							if photo_req["photos"]["photo"].class == Array
+								# more than one result
+								photos = photo_req["photos"]["photo"].collect do |photo|
+									Flickr::Photo.from_request(photo)
+								end
+							else
+								# one result (putting in an array so I don't have to hack Paginate elsewhere)
+								photos = [Flickr::Photo.from_request(photo_req["photos"]["photo"])]
 							end
-	
 							@photos = photos.paginate(:page => params[:page], :per_page => 6)
 							render :template => "facebook_places/change_photo_place"
 						else
