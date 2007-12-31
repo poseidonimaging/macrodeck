@@ -55,8 +55,35 @@
 						</p>
 					<% end %>
 					<br />
-					<h2 class="section-title">The Wall</h2>
-					<p>This feature is coming soon!</p>
+					<h2 class="section-title thewall">The Wall</h2>
+					<fb:wall>
+						<% form_tag fbplaces_url(:action => :wall, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part, :place => @place.url_part), :class => "thewall" do %>
+							<%= hidden_field_tag "add_comment", "1" %>
+							<div class="walltop">
+								<div class="count">
+									<p>Displaying <%= @place.wall.latest_comments.length %> of 
+									<%= link_to "#{@place.wall.comment_count} wall posts",
+										fbplaces_url(:action => :wall, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part, :place => @place.url_part) %>
+									</p>
+								</div>
+								<div class="seeall">
+									<p>
+									<%= link_to "See All",
+									fbplaces_url(:action => :wall, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part, :place => @place.url_part) %>
+									</p>
+								</div>
+							</div>
+							<div class="wallmessage">
+								<%= text_area_tag "message", nil, { :size => "43x4", :placeholder => "Write something...", :class => "textarea" } %>
+							</div>
+							<div class="wallcontrols"><%= submit_tag "Post", :class => "inputsubmit" %></div>
+						<% end %>
+						<% if @place.wall.latest_comments.length > 0 %>
+							<%= render :partial => "wall_post", :collection => @place.wall.latest_comments %>
+						<% else %>
+							<p>There are no wall posts for this place. Be the first to leave a message!</p>
+						<% end %>
+					</fb:wall>
 				</div> <!-- /padding -->
 			</div> <!-- /profile-content -->
 		</div> <!-- /profile-layout -->

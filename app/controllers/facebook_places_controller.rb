@@ -572,6 +572,40 @@ class FacebookPlacesController < ApplicationController
 		end
 	end
 
+	def wall 
+		get_networks
+		get_home_city
+		get_secondary_city
+
+		if params[:country] != nil && params[:country] == "us" && params[:state] != nil && params[:city] != nil && params[:place] != nil
+			get_us_states
+			get_city_info(params[:city], params[:state])
+			
+			@place = Place.find_by_uuid(params[:place])
+			if @place != nil
+				if params[:add_comment].nil? || params[:add_comment] == ""
+					# View wall posts.
+					comments = @place.wall.comments
+					if comments != nil && comments.length > 0
+						@comments = comments.paginate(:page => params[:page], :per_page => 10)
+					else
+						@comments = nil
+					end
+					render :template => "facebook_places/wall_view"
+				else
+					# Add a wall post
+					if params[:message] != nil && params[:message].length > 0
+						@place.wall.create_comment(params[:message], { :creator => @fbuser.uuid, :owner => @fbuser.uuid })
+					end
+					# If they didn't specify a message just redirect them to the place anyway, just don't add the null message.
+					redirect_to fbplaces_url(:action => :view, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part, :place => @place.uuid)
+				end
+			else
+				raise "wall: place does not exist"
+			end
+		end
+	end
+
 	# Sets the photo for a city/place
 	def change_photo
 		get_networks
@@ -596,9 +630,21 @@ class FacebookPlacesController < ApplicationController
 						searchfor_first = @place.name.downcase + " " + @city.name.downcase
 						searchfor_second = @place.name.downcase.gsub(/\W/, "") + " " + @city.name.downcase
 
-						photo_req = flickr.photos_search(:text => searchfor_first, :sort => "relevance")
-						photo_req_alt = flickr.photos_search(:text => searchfor_second, :sort => "relevance")
-						photo_req.merge!(photo_req_alt)
+						photo_req = flickr.photos_search(:text => searchfor_first, :sort => "relevance", :per_page => "15")
+						photo_req_alt = flickr.photos_search(:text => searchfor_second, :sort => "relevance", :per_page => "15")
+
+						# Merge the photo lists together
+						if photo_req["photos"]["photo"].class == Array && photo_req_alt["photos"]["photo"].class == Array
+							photo_req["photos"]["photo"] = photo_req["photos"]["photo"] | photo_req_alt["photos"]["photo"]
+						elsif photo_req["photos"]["photo"].class == Hash && photo_req_alt["photos"]["photo"].class == Hash
+							photo_req["photos"]["photo"] = [ photo_req["photos"]["photo"] ] | [ photo_req_alt["photos"]["photo"] ]
+						elsif photo_req["photos"]["photo"].class == Array && photo_req_alt["photos"]["photo"].class == Hash
+							photo_req["photos"]["photo"] = photo_req["photos"]["photo"] | [ photo_req_alt["photos"]["photo"] ]
+						elsif photo_req["photos"]["photo"].class == Hash && photo_req_alt["photos"]["photo"].class == Array
+							photo_req["photos"]["photo"] = [ photo_req["photos"]["photo"] ] | photo_req_alt["photos"]["photo"]
+						else
+							raise "change_photo: unhandled search merge"
+						end
 
 						if photo_req["photos"]["photo"] != nil
 							if photo_req["photos"]["photo"].class == Array
@@ -628,7 +674,7 @@ class FacebookPlacesController < ApplicationController
 							meta.flickr_photo_id = params[:photo]
 							@place.place_metadata = meta
 							@place.save!
-							redirect_to fbplaces_url(:action => :view, :country => "us", :state => @state.url_part, :city => @city.url_part, :place => @place.uuid)
+							redirect_to fbplaces_url(:action => :view, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part, :place => @place.uuid)
 						end
 					end
 				else
@@ -644,20 +690,9 @@ class FacebookPlacesController < ApplicationController
 		get_home_city
 		get_secondary_city
 		fb_sig_cleanup
-
 		flickr = Flickr.new(FLICKR_API_KEY)
-		if params[:photo].nil?
-			searchfor = @home_city.name.downcase.gsub(" ", "") + " " + @home_city.state(:abbreviation => true).downcase
-		
-			photo_req = flickr.photos_search(:text => searchfor, :sort => "relevance")
-			photos = photo_req['photos']['photo'].collect do |photo|
-				Flickr::Photo.from_request(photo)
-			end
-
-			@photos = photos.paginate(:page => params[:page], :per_page => 6)
-		else
-			@photo = Flickr::Photo.new(params["photo"])
-		end
+		photo_req = flickr.photos_search(:text => "(santa rita austin) OR (santarita austin)", :sort => "relevance")
+		p photo_req
 	end
 
 	private
@@ -766,6 +801,8 @@ class FacebookPlacesController < ApplicationController
 		# Returns HTML for the image for a feature (used in feature list)
 		def image_for_feature(feature)
 			case feature
+			when :breakfast, :lunch, :dinner
+				return "<img src=\"#{PLACES_BASEURL}/images/icons/small/standard-black/fork.png\" class=\"inline\" alt=\"Info\" />"
 			when :full_bar, :wine, :byob, :beer
 				return "<img src=\"#{PLACES_BASEURL}/images/icons/small/standard-black/alcohol.png\" class=\"inline\" alt=\"Info\" />"
 			when :call_ahead

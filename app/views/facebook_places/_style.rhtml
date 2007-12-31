@@ -6,7 +6,19 @@
 	.area-title span { display: block; height: 1.3em; } /* hack: firefox doesn't fill in the box height even though it exists */
 	.area-title span span { display: block; width: 50%; float: left; }
 	.area-title span span.subtitle { color: #999; font-size: 8pt; font-weight: normal; text-align: right; height: 1.3em; padding-top: 1em; } /* subtitle */
-	.section-title { font-size: 1.0em; border-bottom: 1px solid #d8dfea; margin-bottom: 5px; clear: both; padding-top: 5px; }
+	/*.section-title { font-size: 1.0em; border-bottom: 1px solid #d8dfea; margin-bottom: 5px; clear: both; padding-top: 5px; }*/
+	.section-title {
+		font-size: 1.0em;
+		border-top: 1px solid #3b5998;
+		margin-top: 5px;
+		margin-bottom: 5px;
+		clear: both;
+		padding-top: 2px;
+		padding-left: 5px;
+		padding-bottom: 2px;
+		background-color: #d8dfea;
+		color: #3b5998;
+	}
 	.clear { clear: both; }
 	.align-left { text-align: left; margin-left: 0; margin-right: auto; }
 	.align-right { text-align: right; margin-left: auto; margin-right: 0; }
@@ -109,6 +121,18 @@
 	.profile-links li { color: #3b5998; margin: 0; padding: 0; border-bottom: 1px solid #d8dfea; }
 	.profile-links li:hover { background: #3b5998; color: #fff; }
 	.profile-links a { color: inherit; display: block; margin: 0; padding: 2px; padding-left: 10px; text-decoration: none; }
+
+	/* the wall */
+	form.thewall { width: 100%; background-color: #f7f7f7; }
+	form.thewall div.wallmessage { padding: 10px; }
+	form.thewall textarea { width: 98%; }
+	form.thewall div.wallcontrols { margin: 10px; margin-top: 0; padding-top: 10px; border-top: 1px solid #e0e0e0; }
+	h2.thewall { margin-bottom: 0 !important; }
+	.walltop { background-color: #eeeeee; border-top: 1px solid #cccccc; border-bottom: 1px solid #cccccc; padding-top: 2px; padding-bottom: 2px; height: 15px; clear: both; }
+	.walltop .count { float: left; width: 50%; padding: 0; margin: 0; }
+	.walltop .count p { margin: 0; padding: 0; padding-left: 5px; text-align: left; }
+	.walltop .seeall { float: left; width: 50%; padding: 0; margin: 0; }
+	.walltop .seeall p { margin: 0; padding: 0; padding-right: 5px; text-align: right; }
 
 	/* two column layout */
 	.twocol-layout { border: 0; margin: 0; padding: 0; width: 100%; clear: both; }

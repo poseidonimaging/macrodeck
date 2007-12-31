@@ -9,7 +9,8 @@
 	<div class="content">
 		<%= render :partial => "breadcrumbs", :locals => { :country => @country, :state => @state, :city => nil, :place => nil } %>
 
-		<h1 class="area-title"><%= @city.title %></h1>
+		<h1 class="area-title"><span><span><%= @city.title %></span>
+				<span class="subtitle"><%= link_to "View All", fbplaces_url(:action => :browse, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part) %></span></span></h1>
 
 		<div class="profile-layout">
 			<%= render :partial => "city_profile_sidebar" %>

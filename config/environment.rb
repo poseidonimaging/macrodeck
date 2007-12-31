@@ -82,6 +82,7 @@ Services.startService "data_service"
 Services.startService "blog_service"
 Services.startService "user_service"
 Services.startService "places_service"
+Services.startService "comment_service"
 
 # Start web services now
 Services.startService "data_web_service"
