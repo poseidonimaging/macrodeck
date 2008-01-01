@@ -20,9 +20,9 @@
 		<ul class="profile-links">
 			<li>
 				<% if @place_is_patron %>
-					<%= link_to "I am no longer a patron", "#{PLACES_FBURL}/remove_patronage/#{@country.url_part}/#{@state.url_part}/#{url_sanitize(@city.title)}/#{@place.dataid}/" %>
+					<%= link_to "I am no longer a patron", fbplaces_url(:action => :remove_patronage, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part, :place => @place.url_part) %>
 				<% else %>
-					<%= link_to "I am a patron", "#{PLACES_FBURL}/add_patronage/#{@country.url_part}/#{@state.url_part}/#{url_sanitize(@city.title)}/#{@place.dataid}/" %>
+					<%= link_to "I am a patron", fbplaces_url(:action => :add_patronage, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part, :place => @place.url_part) %>
 				<% end %>
 			</li>
 			<li><%= link_to "Edit this place", fbplaces_url(:action => :edit, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part, :place => @place.url_part) %></li>
