@@ -75,6 +75,7 @@ PLACES_BASEURL = "http://places.intranet.ignition-project.com:3000" # do not use
 PLACES_FBURL = "http://apps.facebook.com/macrodeckplaces" # do not use a trailing slash
 FLICKR_API_KEY = "686693e936d2bd4bfc3c5477fa3f1332"
 FLICKR_SECRET = "b9a60cf2f27ed59c"
+PLACES_TEST_SERVER = true
 
 # Start services we need
 Services.startService "uuid_service"

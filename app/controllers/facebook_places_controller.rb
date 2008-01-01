@@ -5,8 +5,6 @@ class FacebookPlacesController < ApplicationController
 	# view takes parameters like this:
 	# view/:country/:state/:city/:place
 	# If a parameter isn't specified, it is nil.
-	#
-	# View requires all parameters. You want to view a place.
 	def view
 		get_networks
 		get_home_city
@@ -16,7 +14,10 @@ class FacebookPlacesController < ApplicationController
 		when "us"
 			get_us_states
 
-			if params[:state] && params[:city] && params[:place]
+			if params[:state] && params[:city] && params[:place].nil?
+				get_city_info(params[:city], params[:state])
+				render :template => "facebook_places/view_city"
+			elsif params[:state] && params[:city] && params[:place]
 				get_city_info(params[:city], params[:state])
 				@place = Place.find_by_dataid(params[:place])
 				if @place != nil
@@ -31,9 +32,48 @@ class FacebookPlacesController < ApplicationController
 					render :template => "facebook_places/view_place"
 				else
 					# place doesn't exist; redirect to the city's browse page (if it doesn't exist then browse_city will take care of it we hope)
-					redirect_to "#{PLACES_FBURL}/browse/#{params[:country]}/#{params[:state]}/#{params[:city]}/"
+					redirect_to fbplaces_url(:action => :view, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part)
 				end
 			end
+		end
+	end
+
+	# browse URLs look like view URLs presently. when browsing
+	# by tags happens they might look different.
+	def browse
+		get_networks
+		get_home_city
+		get_secondary_city
+
+		case params[:country]
+			when "my_places"
+				render :template => "facebook_places/browse_my_places"
+			when "all"
+				render :template => "facebook_places/browse_all"
+			when "us"
+				get_us_states
+
+				if params[:state]
+					# A state was specified. Either..
+					# 1) browse a state (city = nil)
+					# 2) browse a city (city != nil)
+					if params[:city]
+						# A city was specified.
+						# FYI: This used to be the view city page but then I realized that was dumb
+						# Browse City is now a listing of places.
+						get_city_info(params[:city], params[:state])
+						@places = Place.paginate(:conditions => ["datatype = ? AND grouping = ?", DTYPE_PLACE, @city.uuid], :page => params[:page], :per_page = 10)
+						render :template => "facebook_places/browse_city"
+					else
+						# Browse the state (all cities). Should this be explicitly allowed?
+						# States like Texas probably have a lot of cities. I dunno.
+						get_cities(params[:state])
+						render :template => "facebook_places/browse_state"
+					end
+				else
+					# State not specified, show them all!
+					render :template => "facebook_places/browse_country"
+				end
 		end
 	end
 
@@ -60,7 +100,7 @@ class FacebookPlacesController < ApplicationController
 					hcity_rel.save!
 				end
 				
-				redirect_to fbplaces_url(:action => :browse, :country => @city.country, :state => @city.state(:abbreviation => true), :city => @city.url_part)
+				redirect_to fbplaces_url(:action => :view, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part)
 			else
 				raise "set_home_city: city or state not specified"
 			end
@@ -95,7 +135,7 @@ class FacebookPlacesController < ApplicationController
 					scity_rel.save!
 				end
 
-				redirect_to fbplaces_url(:action => :browse, :country => @city.country, :state => @city.state(:abbreviation => true), :city => @city.url_part)
+				redirect_to fbplaces_url(:action => :view, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part)
 			else
 				raise "set_secondary_city: city or state not specified"
 			end
@@ -124,12 +164,13 @@ class FacebookPlacesController < ApplicationController
 				if params[:state]
 					if params[:city]
 						if params[:place]
+							# Edit a place.
+							get_city_info(params[:city], params[:state])
 							@place = Place.find_by_dataid(params[:place])
+
 							if @place.nil?
-								redirect_to "#{PLACES_FBURL}/browse/#{params[:country]}/#{params[:state]}/#{params[:city]}/"
+								redirect_to fbplaces_url(:action => :view, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part)
 							else
-								# Edit a place.
-								get_city_info(params[:city], params[:state])
 								if params[:validation_step] == nil
 									# Show the initial form.
 									@place_metadata = @place.place_metadata
@@ -262,7 +303,7 @@ class FacebookPlacesController < ApplicationController
 										@place.description = @place_description
 										@place.place_metadata = metadata
 										@place.save!
-										redirect_to "#{PLACES_FBURL}/view/#{@country.url_part}/#{@state.url_part}/#{url_sanitize(@city.title)}/#{@place.uuid}/"
+										redirect_to fbplaces_url(:action => :view, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part, :place => @place.url_part)
 									end # /@errors.length > 0
 								end # /validation_step
 							end # /place.nil?
@@ -271,7 +312,7 @@ class FacebookPlacesController < ApplicationController
 						end # / params[:place]
 					else
 						# No city specified.
-						redirect_to "#{PLACES_FBURL}/browse/#{params[:country]}/#{params[:state]}/"
+						redirect_to fbplaces_url(:action => :browse, :country => @country.url_part, :state => params[:state])
 					end # /params[:city]
 				end # /params[:state]
 			else
@@ -281,46 +322,7 @@ class FacebookPlacesController < ApplicationController
 	
 	# delete URLs look like view.
 	def delete
-	end
-
-	# browse URLs look like view URLs presently. when browsing
-	# by tags happens they might look different.
-	def browse
-		get_networks
-		get_home_city
-		get_secondary_city
-
-		case params[:country]
-			when "my_places"
-				render :template => "facebook_places/browse_my_places"
-			when "friends"
-				render :template => "facebook_places/browse_friends"
-			when "network"
-				render :template => "facebook_places/browse_network"
-			when "all"
-				render :template => "facebook_places/browse_all"
-			when "us"
-				get_us_states
-
-				if params[:state]
-					# A state was specified. Either..
-					# 1) browse a state (city = nil)
-					# 2) browse a city (city != nil)
-					if params[:city]
-						# A city was specified.
-						get_city_info(params[:city], params[:state])
-						render :template => "facebook_places/browse_city"
-					else
-						# Browse the state (all cities). Should this be explicitly allowed?
-						# States like Texas probably have a lot of cities. I dunno.
-						get_cities(params[:state])
-						render :template => "facebook_places/browse_state"
-					end
-				else
-					# State not specified, show them all!
-					render :template => "facebook_places/browse_country"
-				end
-		end
+		# TODO
 	end
 
 	# create URLs are like view but different in one way:
@@ -446,7 +448,7 @@ class FacebookPlacesController < ApplicationController
 								place = @city.create_place({ :title => @place_name, :description => @place_description })
 								place.place_metadata = metadata
 								place.save!
-								redirect_to "#{PLACES_FBURL}/view/#{@country.url_part}/#{@state.url_part}/#{url_sanitize(@city.title)}/#{place.uuid}/"
+								redirect_to fbplaces_url(:action => :view, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part, :place => place.url_part)
 							end
 						end
 					else
@@ -471,7 +473,9 @@ class FacebookPlacesController < ApplicationController
 							else
 								city = PlacesService.createCity(@city_name, @state.title)
 								if city != nil
-									redirect_to "#{PLACES_FBURL}/browse/#{@country.url_part}/#{@state.url_part}/#{url_sanitize(city.title)}"
+									city.creator = @fbuser.uuid
+									city.save!
+									redirect_to fbplaces_url(:action => :view, :country => @country.url_part, :state => @state.url_part, :city => city.url_part)
 								else
 									@errors << "The city you attempted to create already exists."
 									render :template => "facebook_places/create_city"
@@ -482,7 +486,7 @@ class FacebookPlacesController < ApplicationController
 				else
 					# No state specified, redirect to the browse URL for
 					# whatever they attempted to create...
-					redirect_to "#{PLACES_FBURL}/browse/#{params[:country]}/"
+					redirect_to fbplaces_url(:action => :browse, :country => params[:country])
 				end
 		end
 	end
@@ -513,7 +517,7 @@ class FacebookPlacesController < ApplicationController
 					end
 					# Don't do anything if they are already a patron.
 				end
-				redirect_to "#{PLACES_FBURL}/view/#{params[:country]}/#{params[:state]}/#{params[:city]}/#{@place.dataid}/"
+				redirect_to fbplaces_url(:action => :view, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part, :place => @place.url_part)
 			end
 		end
 	end
@@ -541,7 +545,7 @@ class FacebookPlacesController < ApplicationController
 					end
 					# Don't do anything if they aren't a patron.
 				end
-				redirect_to fbplaces_url(:action => :view, :country => "us", :state => @state.url_part, :city => @city.url_part, :place => @place.uuid)
+				redirect_to fbplaces_url(:action => :view, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part, :place => @place.url_part)
 			end
 		end
 	end
@@ -899,7 +903,9 @@ class FacebookPlacesController < ApplicationController
 				response.user.affiliations.affiliation_list.each do |affiliation|
 					# method_missing("type") is used because affiliation.type does not work
 					# because type is a reserved Ruby method
-					if affiliation.method_missing("type") == "region"
+					# Also, check for "/" as in "Dallas / Fort Worth, TX". We don't support
+					# a regional network named like that yet.
+					if affiliation.method_missing("type") == "region" && !(affiliation.name =~ /\//)
 						@networks << affiliation
 
 						# Create a city for each regional network when we detect them.
@@ -910,7 +916,9 @@ class FacebookPlacesController < ApplicationController
 						# the city actually exists.
 						unless PlacesService.isCity?(aff_city, aff_state) 
 							puts "*** Places: Creating a new city: #{aff_city}, #{aff_state}"
-							PlacesService.createCity(aff_city, aff_state)
+							c = PlacesService.createCity(aff_city, aff_state)
+							c.creator = @fbuser.uuid
+							c.save!
 						end
 					else
 						@unsupported_networks << affiliation
