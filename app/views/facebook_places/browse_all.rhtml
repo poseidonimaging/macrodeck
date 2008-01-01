@@ -13,7 +13,7 @@
 			<% if @networks.length > 0 %>
 				<% @networks.each do |network| %>
 					<% net = get_network_info(network) %>
-					<li><%= link_to net[:name], "/macrodeckplaces/browse/#{url_sanitize(net[:country])}/#{url_sanitize(net[:state])}/#{url_sanitize(net[:city])}/" %></li>
+					<li><%= link_to net[:name], fbplaces_url(:action => :view, :country => url_sanitize(net[:country]), :state => url_sanitize(net[:state]), :city => url_sanitize(net[:city])) %></li>
 				<% end %>
 			<% else %>
 				<p>You are not a part of any supported networks. Consider joining a regional network.</p>
@@ -22,7 +22,7 @@
 
 		<h2>Countries</h2>
 		<ul>
-			<li><%= link_to "United States", "/macrodeckplaces/browse/us/" %></li>
+			<li><%= link_to "United States", fbplaces_url(:action => :browse, :country => "us") %></li>
 		</ul>
 
 		<% if @unsupported_networks.length > 0 %>

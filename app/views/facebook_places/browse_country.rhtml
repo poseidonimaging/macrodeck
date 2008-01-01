@@ -11,7 +11,7 @@
 		<h1 class="area-title"><%= @country.title %></h1>
 		<ul>
 			<% @states.each do |state| %>
-				<li><%= link_to state.title, "/macrodeckplaces/browse/us/#{state.url_part}/" %></li>
+				<li><%= link_to state.title, fbplaces_url(:action => :browse, :country => "us", :state => state.url_part) %></li>
 			<% end %>
 		</ul>
 	</div>
