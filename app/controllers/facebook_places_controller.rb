@@ -483,7 +483,7 @@ class FacebookPlacesController < ApplicationController
 						elsif params[:validation_step] == "1"
 							# validate and then save the city
 							# Capitalize first letter of the city name
-							@city_name = params[:city_name].capitalize.chomp.strip
+							@city_name = params[:city_name].capitalize_each.chomp.strip
 							@errors = []
 							@validation_step = "1"
 							if !validate_not_nil(@city_name)
