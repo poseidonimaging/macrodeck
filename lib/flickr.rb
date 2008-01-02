@@ -46,7 +46,7 @@
 
 require 'cgi'
 require 'net/http'
-require 'xmlsimple'
+# -- rails provides -- require 'xmlsimple'
 
 # Flickr client class. Requires an API key, and optionally takes an email and password for authentication
 class Flickr
