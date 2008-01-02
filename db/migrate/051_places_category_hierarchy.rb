@@ -5,7 +5,9 @@ class PlacesCategoryHierarchy < ActiveRecord::Migration
 	
 	places = DataService.createCategory(:title => "Places", :url_part => "places", :description => "MacroDeck Places")
 	usa = places.createChild(:title => "United States", :url_part => "us", :description => "Places in the United States")
-	
+	usa.uuid = "537dfeba-1fbd-474f-beb2-737ac6e34fc4"
+	usa.save!
+
 	# States.
 	usa.createChild(:title => "Alabama",	:url_part => "al")
 	usa.createChild(:title => "Alaska",		:url_part => "ak")
