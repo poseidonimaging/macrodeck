@@ -1,5 +1,5 @@
 set :application, "macrodeck"
-set :repository,  "http://svn.macrodeck.com/macrodeck/branches/places-20070719"
+set :repository,  "http://svn.macrodeck.com/macrodeck/trunk"
 
 # If you aren't deploying to /u/apps/#{application} on the target
 # servers (which is the default), you can specify the actual location
