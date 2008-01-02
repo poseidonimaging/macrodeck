@@ -675,8 +675,14 @@ class FacebookPlacesController < ApplicationController
 							photo_req["photos"]["photo"] = photo_req["photos"]["photo"] | [ photo_req_alt["photos"]["photo"] ]
 						elsif photo_req["photos"]["photo"].class == Hash && photo_req_alt["photos"]["photo"].class == Array
 							photo_req["photos"]["photo"] = [ photo_req["photos"]["photo"] ] | photo_req_alt["photos"]["photo"]
+						elsif photo_req["photos"]["photo"].nil? && !photo_req_alt["photos"]["photo"].nil?
+							photo_req["photos"]["photo"] = photo_req_alt["photos"]["photo"]
+						elsif !photo_req["photos"]["photo"].nil? && photo_req_alt["photos"]["photo"].nil?
+							# do nothing, as the stuff is where it belongs already.
+						elsif photo_req["photos"]["photo"].nil? && photo_req_alt["photos"]["photo"].nil?
+							photo_req["photos"]["photo"] = nil
 						else
-							raise "change_photo: unhandled search merge"
+							raise "change_photo: unhandled search merge; photo_req=#{photo_req.inspect}"
 						end
 
 						if photo_req["photos"]["photo"] != nil
