@@ -1,0 +1,56 @@
+/* action thingies */
+.actions .action {
+	display: block;
+	float: left;
+	height: 16px;
+	margin-left: 10px;
+	font-size: 8pt;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	padding-left: 20px;
+	background-image: url(/images/actions/black/generic.gif);
+	background-repeat: no-repeat;
+	background-position: center left;
+	color: #000;
+}
+.actions .add {
+	background-image: url(/images/actions/black/add.gif);
+}
+.actions .edit {
+	background-image: url(/images/actions/black/edit.gif);
+}
+.actions .view-comments {
+	background-image: url(/images/actions/black/search_right.gif);
+}
+.actions .delete {
+	background-image: url(/images/actions/black/trash.gif);
+}
+.actions .yes {
+	background-image: url(/images/actions/black/check.gif);
+}
+.actions .no {
+	background-image: url(/images/actions/black/close.gif);
+}
+
+/* now :hover'ed */
+.actions .action:hover {
+	background-image: url(/images/actions/blue/generic.gif);
+}
+.actions .add:hover {
+	background-image: url(/images/actions/blue/add.gif);
+}
+.actions .edit:hover {
+	background-image: url(/images/actions/blue/edit.gif);
+}
+.actions .view-comments:hover {
+	background-image: url(/images/actions/blue/search_right.gif);
+}
+.actions .delete:hover {
+	background-image: url(/images/actions/blue/trash.gif);
+}
+.actions .yes:hover {
+	background-image: url(/images/actions/blue/check.gif);
+}
+.actions .no:hover {
+	background-image: url(/images/actions/blue/close.gif);
+}

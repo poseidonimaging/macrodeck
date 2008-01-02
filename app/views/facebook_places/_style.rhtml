@@ -1,0 +1,216 @@
+<style type="text/css">
+	/* standard stuff */
+	.content { padding-left: 10px; padding-right: 10px; padding-bottom: 10px; padding-top: 5px; }
+	.breadcrumbs { color: #000; }
+	.area-title { font-size: 2.0em; border-bottom: 1px solid #d8dfea; margin-bottom: 5px; clear: both; }
+	.area-title span { display: block; height: 1.3em; } /* hack: firefox doesn't fill in the box height even though it exists */
+	.area-title span span { display: block; width: 50%; float: left; }
+	.area-title span span.subtitle { color: #999; font-size: 8pt; font-weight: normal; text-align: right; height: 1.3em; padding-top: 1em; } /* subtitle */
+	/*.section-title { font-size: 1.0em; border-bottom: 1px solid #d8dfea; margin-bottom: 5px; clear: both; padding-top: 5px; }*/
+	.section-title {
+		font-size: 1.0em;
+		border-top: 1px solid #3b5998;
+		margin-top: 5px;
+		margin-bottom: 5px;
+		clear: both;
+		padding-top: 2px;
+		padding-left: 5px;
+		padding-bottom: 2px;
+		background-color: #d8dfea;
+		color: #3b5998;
+	}
+	.clear { clear: both; }
+	.align-left { text-align: left; margin-left: 0; margin-right: auto; }
+	.align-right { text-align: right; margin-left: auto; margin-right: 0; }
+
+	/* the magic paginator (original blue = #000099) */
+	.pagination {
+		padding: 3px;
+		margin: 3px;
+	}
+	.pagination a {
+		padding: 2px 5px 2px 5px;
+		margin: 2px;
+		border: 1px solid #aaaadd;
+		text-decoration: none;
+		color: #3b5998;
+	}
+	.pagination a:hover, .pagination a:active {
+		border: 1px solid #3b5998;
+		color: #000;
+	}
+	.pagination span.current {
+	    padding: 2px 5px 2px 5px;
+	    margin: 2px;
+	    border: 1px solid #3b5998;
+		font-weight: bold;
+		background-color: #3b5998;
+		color: #FFF;
+	}
+	.pagination span.disabled {
+		padding: 2px 5px 2px 5px;
+		margin: 2px;
+		border: 1px solid #eee;
+		color: #ddd;
+	}
+
+	/* box styles */
+	.get-started { padding: 5px; margin-bottom: 5px; border: 1px solid #d8dfea; background-color: #f7f7f7; }
+	.get-started h2 { font-size: 8pt; }
+	.get-started h1 { font-size: 8pt; }
+	.get-started a { padding-right: 5px; }
+	.get-started p { margin: 0; padding: 0; }
+	.information { background-color: #FDFFE4; padding: 5px; border: 1px solid #FFDA5B; }
+	.information h2 { font-size: 8pt; }
+	.information h1 { font-size: 8pt; }
+	.information-compact { background-color: #FDFFE4; padding: 5px; border: 1px solid #FFDA5B; }
+	.information-compact p { padding: 0; margin: 0; font-size: 8pt; }
+	.errors { background-color: #F7E5E4; padding: 5px; border: 1px solid #610B23; }
+	.errors h2 { font-size: 8pt; }
+
+	/* offset formatted paragraph thingies... er. best way is to describe:
+	Key	Value
+	*/
+	.offset .key { display: block; float: left; width: 20%; font-weight: bold; }
+	.offset .value { display: block; float: left; }
+	.offset br { clear: both; }
+
+	/* view place styles */
+	ul.features { margin: 0; padding: 0; }
+	ul.features li { list-style-type: none; padding-top: 1px; padding-bottom: 1px; }
+	ul.features li span { padding-left: 3px; }
+
+	/* browse city */
+	.places .place { clear: both; padding-bottom: 5px; padding-top: 5px; }
+	.places .place img { display: block; float: left; width: 64px; }
+	.places .place div { float: left; width: 70%; }
+	.places .place div div { padding: 5px; }
+	.places .place div div a { font-weight: bold; }
+	.places .place div div span.description { color: #000; }
+	.places .place div div span.address { color: #999; }
+
+	/* ad stuff */
+	.ad-placeholder { width: 100px; height: 100px; padding: 5px; border: 1px solid #000; font-size: 8pt; background-color: #ccc; }
+	/* ad stuff - futurama name to evade blocking even though I block ads too */
+	.dont-eat-the-popplers { width: 128px; border: 1px solid #d8dfea; }
+	.dont-eat-the-popplers a { display: block; padding: 5px; text-decoration: none; color: #000; text-align: center; }
+	.dont-eat-the-popplers img { display: block; border: 0; text-align: center; margin-left: auto; margin-right: auto; }
+
+	/* images */
+	img.inline { vertical-align: middle; }
+
+	/* flickr photos */
+	.photos { clear: both; margin-left: auto; margin-right: auto; text-align: center; width: 520px; }
+	.photos .photo { float: left; padding: 5px; border: 1px solid #3b5998; width: 150px; height: 150px; margin: 5px; }
+	.photo img.tall { display: block; height: 128px; margin-left: auto; margin-right: auto; text-align: center; }
+	.photo img.large-tall { display: block; height: 450px; margin-left: auto; margin-right: auto; text-align: center; }
+	.photo img.wide { display: block; width: 128px; margin-left: auto; margin-right: auto; text-align: center; }
+	.photo img.large-wide { display: block; width: 450px; margin-left: auto; margin-right: auto; text-align: center; }
+	.photo img.fullsize { display: block; margin-left: auto; margin-right: auto; text-align: center; }
+	.photo p { padding: 0; margin: 0; }
+
+	/* profile-style layout */
+	.profile-layout { border: 0; margin: 0; padding: 0; width: 100%; }
+	<% if request.user_agent =~ /MSIE 6.0/ %>
+		/* MSIE 6.0 adds extra padding */
+		.profile-sidebar { float: left; margin: 0; padding: 0; border: 0; width: 23%; }
+	<% else %>
+		/* everyone else is okay */
+		.profile-sidebar { float: left; margin: 0; padding: 0; border: 0; width: 25%; }
+	<% end %>
+	.profile-sidebar-padding { padding-right: 5px; }
+	.profile-sidebar-image { text-align: left; margin-left: 0; margin-right: auto; margin-bottom: 5px; }
+	.profile-content { float: left; margin: 0; padding: 0; border: 0; width: 75%; }
+	.profile-content-padding { padding-left: 5px; }
+	.profile-links { list-style-type: none; margin: 0; padding: 0; }
+	.profile-links li { color: #3b5998; margin: 0; padding: 0; border-bottom: 1px solid #d8dfea; }
+	.profile-links li:hover { background: #3b5998; color: #fff; }
+	.profile-links a { color: inherit; display: block; margin: 0; padding: 2px; padding-left: 10px; text-decoration: none; }
+
+	/* the wall */
+	form.thewall { width: 100%; background-color: #f7f7f7; }
+	form.thewall div.wallmessage { padding: 10px; }
+	form.thewall textarea { width: 98%; }
+	form.thewall div.wallcontrols { margin: 10px; margin-top: 0; padding-top: 10px; border-top: 1px solid #e0e0e0; }
+	h2.thewall { margin-bottom: 0 !important; }
+	.walltop { background-color: #eeeeee; border-top: 1px solid #cccccc; border-bottom: 1px solid #cccccc; padding-top: 2px; padding-bottom: 2px; height: 15px; clear: both; }
+	.walltop .count { float: left; width: 50%; padding: 0; margin: 0; }
+	.walltop .count p { margin: 0; padding: 0; padding-left: 5px; text-align: left; }
+	.walltop .seeall { float: left; width: 50%; padding: 0; margin: 0; }
+	.walltop .seeall p { margin: 0; padding: 0; padding-right: 5px; text-align: right; }
+
+	/* two column layout */
+	.twocol-layout { border: 0; margin: 0; padding: 0; width: 100%; clear: both; }
+	<% if request.user_agent =~ /MSIE 6.0/ %>
+		/* MSIE 6.0 adds extra padding and that makes stuff not work.... */
+		.twocol-left { float: left; margin: 0; padding: 0; border: 0; width: 48%; }
+		.twocol-right { float: left; margin: 0; padding: 0; border: 0; width: 48%; }
+	<% else %>
+		/* everybody else is in the party */
+		.twocol-left { float: left; margin: 0; padding: 0; border: 0; width: 50%; }
+		.twocol-right { float: left; margin: 0; padding: 0; border: 0; width: 50%; }
+	<% end %>
+	.twocol-left-padding { padding-right: 5px; }
+	.twocol-right-padding { padding-left: 5px; }
+
+	/* three column layout */
+	.threecol-layout { border: 0; margin: 0; padding: 0; width: 100%; clear: both; }
+	.threecol-first { float: left; margin: 0; padding: 0; border: 0; width: 33%; }
+	.threecol-first-padding { padding-right: 5px; }
+	.threecol-second { float: left; margin: 0; padding: 0; border: 0; width: 33%; }
+	.threecol-second-padding { padding-left: 5px; padding-right: 5px; }
+	.threecol-third { float: left; margin: 0; padding: 0; border: 0; width: 33%; }
+	.threecol-third-padding { padding-left: 5px; }
+
+	/*** forms ***/
+	/* main (first) item - blue background */
+	.form-item-main { width: 100%; height: 40px; padding: 0; margin: 0; background-color: #d8dfea; clear: both; }
+	.form-item-main-left { height: 40px; float: left; width: 20%; padding: 0; margin: 0; background-color: #d8dfea; }
+	.form-item-main-left input, .form-item-main-left select { margin-top: 10px; width: 95%; }
+	.form-item-main-left p { padding-left: 5px; }
+	.form-item-main-left label { color: #000; }
+	.form-item-main-right { height: 40px; float: left; width: 80%; padding: 0; margin: 0; background-color: #d8dfea; }
+	.form-item-main-right input, .form-item-main-right select { margin-top: 10px; width: 95%; }
+	.form-item-main-right p { padding-left: 5px; }
+	.form-item-main-right p img { padding-right: 3px; }
+	.form-item-main-right label { color: #000; }
+
+	/* standard items - clear background */
+	.form-item { width: 100%; padding: 0; height: 40px; margin: 0; clear: both; }
+	.form-item-left { height: 40px; float: left; width: 20%; padding: 0; margin: 0; }
+	.form-item-left input, .form-item-left select { margin-top: 10px; width: 95%; }
+	.form-item-left p { padding-left: 5px; }
+	.form-item-left label { color: #000; }
+	.form-item-right { height: 40px; float: left; width: 80%; padding: 0; margin: 0; }
+	.form-item-right input, .form-item-right select { margin-top: 10px; width: 95%; }
+	.form-item-right p { padding-left: 5px; }
+	.form-item-right p img { padding-right: 3px; }
+	.form-item-right label { color: #000; }
+
+	/* multicolumn layout */
+	.form-multicolumn-layout { width: 100%; padding: 0; margin: 0; }
+	.form-multicolumn-column { float: left; width: 30%; margin: 0; padding: 0; }
+
+	/* unformatted right side (e.g. no height set) */
+	.form-item-unformatted-right { float: left; width: 80%; padding: 0; margin: 0; }
+	.form-item-unformatted-right p { padding-left: 5px; }
+
+	/* generic styles for input elements */
+	.invalid-selection { color: #ccc; }
+	.seperator { border-top: 1px solid #ccc; height: 1px; margin: 0; margin-top: 10px; padding: 0; }
+
+	/* faux label = looks like a <label> on the left side of the form but is a <p> */
+	.faux-label { color: #000; font-weight: bold; }
+
+	/* bottom submit buttons */
+	.form-submit { margin-right: 0; margin-left: auto; padding: 0; text-align: right; }
+
+	/* for multiple field sections of a form that need the fields offset */
+	.form-offset-fields label { display: block; float: left; width: 20%; }
+	.form-offset-fields input { float: left; }
+	.form-offset-fields br { clear: both; }
+
+	/* make a label that is standard text and not formatted specially */
+	label.standard { font-weight: normal; color: #000; }
+
+</style>

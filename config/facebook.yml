@@ -1,0 +1,33 @@
+
+development:
+    key: d90f27cab1014065a8c90630186b9776
+    secret: 8564bcd16141d4c650dd4dc55725b291
+    canvas_path: /macrodeckplaces/
+    callback_path: /facebook/
+    tunnel:
+      username: ziggy
+      host: prometheus.poseidonimaging.com
+      port: 3000
+      local_port: 3000
+
+test:
+    key: d90f27cab1014065a8c90630186b9776
+    secret: 8564bcd16141d4c650dd4dc55725b291
+    canvas_path: /macrodeckplaces/
+    callback_path: /facebook/
+    tunnel:
+      username: ziggy
+      host: prometheus.poseidonimaging.com
+      port: 3000
+      local_port: 3000
+
+production:
+    key: d90f27cab1014065a8c90630186b9776
+    secret: 8564bcd16141d4c650dd4dc55725b291
+    canvas_path: /macrodeckplaces/
+    callback_path: /facebook/
+    tunnel:
+      username: ziggy
+      host: prometheus.poseidonimaging.com
+      port: 3000
+      local_port: 3000

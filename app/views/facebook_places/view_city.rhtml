@@ -1,0 +1,50 @@
+<fb:fbml>
+
+	<%= render :partial => "style" %>
+
+	<%= render :partial => "dashboard" %>
+	
+	<%= render :partial => "tabs" %>
+
+	<div class="content">
+		<%= render :partial => "breadcrumbs", :locals => { :country => @country, :state => @state, :city => nil, :place => nil } %>
+
+		<h1 class="area-title"><span><span><%= h(@city.title) %></span>
+				<span class="subtitle"><%= link_to "View All", fbplaces_url(:action => :browse, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part) %></span></span></h1>
+
+		<div class="profile-layout">
+			<%= render :partial => "city_profile_sidebar" %>
+			<div class="profile-content">
+				<div class="profile-content-padding">
+					<div class="twocol-layout">
+						<div class="twocol-left">
+							<div class="twocol-left-padding">
+								<h2 class="section-title">Recently Added</h2>
+								<div class="places">
+									<% if @city.top_10_newest_places.length > 0 %>
+										<%= render :partial => "place_griditem", :collection => @city.top_10_newest_places, :locals => { :longtext => false } %>
+									<% else %>
+										<p>This city has no places yet! Create one!</p>
+									<% end %>
+								</div>
+							</div>
+						</div>
+						<div class="twocol-right">
+							<div class="twocol-right-padding">
+								<h2 class="section-title">Random Places</h2>
+								<div class="places">
+									<% if @city.get_10_random_places.length > 0 %>
+										<%= render :partial => "place_griditem", :collection => @city.get_10_random_places, :locals => { :longtext => false } %>
+									<% else %>
+										<p>This city has no places yet! Create one!</p>
+									<% end %>
+								</div>
+							</div>
+						</div> <!-- /twocol right -->
+					</div> <!-- /twocol -->
+					<div class="clear"><br /></div>
+				</div> <!-- /profile-content-padding -->
+			</div> <!-- /profile-content -->
+		</div> <!-- /profile -->
+	</div> <!-- /content -->
+</fb:fbml>

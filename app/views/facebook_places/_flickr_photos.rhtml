@@ -1,0 +1,21 @@
+<div class="photos">
+	<% flickr_photos.each do |photo| %>
+		<div class="photo">
+			<% small_img = photo.sizes("Small") %>
+			<% if small_img["width"].to_i > small_img["height"].to_i %>
+				<%= link_to image_tag(small_img["source"], :alt => photo.title, :title => photo.title, :class => "wide"),
+					params.merge({ :photo => photo.id }) %>
+			<% else %>
+				<%= link_to image_tag(small_img["source"], :alt => photo.title, :title => photo.title, :class => "tall"),
+					params.merge({ :photo => photo.id }) %>
+			<% end %>
+			<strong><%= truncate(photo.title, 30) %></strong>
+		</div>
+	<% end %>
+</div>
+
+	<br />
+	
+	<div class="clear">
+		<%= will_paginate flickr_photos %>
+	</div>

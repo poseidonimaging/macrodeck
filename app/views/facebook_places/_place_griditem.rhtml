@@ -1,0 +1,24 @@
+<div class="place">
+	<% if place_griditem.place_metadata[:flickr_photo_id].nil? || place_griditem.place_metadata[:flickr_photo_id] == 0 %>
+		<%= image_tag "places/no-image-small.png", :alt => h(place_griditem.name), :title => h(place_griditem.name) %>
+	<% else %>
+		<% photo = Flickr::Photo.new(place_griditem.place_metadata[:flickr_photo_id]) %>
+		<% square_img = photo.sizes("Square") %>
+		<%= image_tag square_img["source"], :alt => h(place_griditem.name), :title => h(place_griditem.name) %>
+	<% end %>
+	<div>
+		<!-- extra DIV for padding purposes -->
+		<div>
+			<%= link_to h(place_griditem.name), fbplaces_url(:action => :view, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part, :place => place_griditem.url_part) %>
+			<br />
+			<% if place_griditem.description.length > 0 %>
+				<% if longtext %>
+					<span class="description"><%= h(place_griditem.description) %></span><br />
+				<% else %>
+					<span class="description"><%= h(truncate(place_griditem.description)) %></span><br />
+				<% end %>
+			<% end %>
+			<span class="address"><%= h(place_griditem.place_metadata[:address]) %></span>
+		</div>
+	</div>
+</div>

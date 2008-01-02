@@ -1,0 +1,13 @@
+
+	<fb:dashboard>
+		<fb:action href="<%= PLACES_FBURL %>">Home</fb:action>
+		<fb:action href="<%= fbplaces_url(:action => :browse) %>">Browse Places</fb:action>
+		<fb:action href="<%= fbplaces_url(:action => :invite) %>">Invite Your Friends</fb:action>
+		<% if @country != nil && @state != nil && @country != "network" %>
+			<% if @city != nil %>
+				<fb:create-button href="<%= fbplaces_url(:action => :create, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part) %>">Create a Place</fb:create-button>
+			<% else %>
+				<fb:create-button href="<%= fbplaces_url(:action => :create, :country => @country.url_part, :state => @state.url_part) %>">Add City</fb:create-button>
+			<% end %>
+		<% end %>
+	</fb:dashboard>

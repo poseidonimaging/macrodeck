@@ -1,0 +1,54 @@
+<fb:fbml>
+
+	<%= render :partial => "style" %>
+
+	<%= render :partial => "dashboard" %>
+	
+	<%= render :partial => "tabs" %>
+
+	<div class="content">
+		<div class="get-started">
+			<h1>Get Started</h1>
+			<p>
+			<% if @home_city != nil %>
+				<%= link_to image_tag("icons/small/silk/building_go.png", :class => "inline") + " Go to home city", 
+					fbplaces_url(:action => :view, :country => @home_city.country.downcase, :state => @home_city.state(:abbreviation => true).downcase, :city => @home_city.url_part) %>
+			<% end %>
+			<%= link_to image_tag("icons/small/silk/world_go.png", :class => "inline") + " Find or create a city", fbplaces_url(:action => :browse, :country => "us") %>
+			<%= link_to image_tag("icons/small/silk/user_comment.png", :class => "inline") + " Invite your friends", fbplaces_url(:action => :invite) %>
+			</p>
+		</div>
+		<% if @home_city.nil? %>
+			<div class="information">
+				<h1><%= image_tag "icons/small/standard-black/exclamation.gif", :class => "inline" %> No Regional Networks Found!</h1>
+				<p>You do not have any regional networks on your Facebook account, so we can't pick a home city for you.
+				Please <%= link_to "browse for a city", fbplaces_url(:action => :browse) %>.</p>
+			</div>
+		<% end %>
+		<fb:if-user-has-added-app>
+			<fb:else>
+				<div class="information">
+					<h1><%= image_tag "icons/small/standard-black/exclamation.gif", :class => "inline" %> Application Not Installed</h1>
+					<p>You have not installed Places. We think you would get more use out of Places if you installed it, but we don't require
+					you to install Places to use most of our features, because we think it's annoying when other applications tease you and
+					don't let you play with the application before installing it. If you would like to install Places, press the button below.</p>
+					<div class="confirm_button"><a href="<%= fbplaces_url(:action => :install) %>"><div><div><div><span>Add Application</span></div></div></div></a></div>
+					<div class="clear"></div>
+				</div>
+			</fb:else>
+		</fb:if-user-has-added-app>
+		<h1 class="area-title">Welcome</h1>
+		<p>Welcome to Places. Places will revolutionize how you think about the places you go, eat, and visit. Think about it: it's a Friday night, you want to go out to eat, 
+		and you don't want to eat at the same place again. But you don't want your food to suck either. So, you pull up MacroDeck Places, and you can easily find places that
+		your friends and your network recommend and visit. You find a new place, like it too, and then you tell us you liked it.</p>
+		<p>We're thinking about other uses too. Want to invite your friends to your house for a party? This will be as easy as a click, and all of your friends will be instantly
+		notified of the party. Or, own a local business? You can make a profile for your business, make announcements, and even post an online menu. This will be expanded to a
+		full-blown website in the future. That's our plans, anyway.</p>
+		<p>Got other suggestions? We're listening. Post a message on our <%= link_to "application page", PLACES_APPURL %>.</p>
+		<h1 class="area-title">Status</h1>
+		<p>Places is a work in progress and should be considered a beta for now. In particular, there are lots of missing features, some of which we say exist.
+		We know; we're working on it. If you get a problem, though, you should definitely go to our <%= link_to "application page", PLACES_APPURL %> and let us know.</p>
+		<h1 class="area-title">Source Code</h1>
+		<p>The core of Places, MacroDeck Services, is released under the GNU General Public License. You can read more about it <%= link_to "here", "http://developer.macrodeck.com/" %>.</p>
+	</div>
+</fb:fbml>

@@ -1,0 +1,41 @@
+/* MACRODECK MASTER STYLESHEET */
+
+body {
+	font-family: 'Lucida Grande', 'Lucida Sans Unicode', 'Tahoma', 'Verdana', 'Arial', sans-serif;
+	font-size: 9pt;
+	margin: 0;
+	padding: 0;
+}
+
+/* Links */
+a:link {
+	background-color: transparent;
+	color: #0456c9;
+}
+
+a:link:hover {
+	background-color: transparent;
+	color: #247fe8;
+}
+
+/* Generic styles */
+.monospace {
+	font-family: 'Courier New', monospace;
+}
+
+.block {
+	display: block;
+}
+
+.clear {
+	clear: both;
+}
+
+.small {
+	font-size: 8pt;
+	font-weight: lighter;
+}
+
+.hide {
+	display: none;
+}

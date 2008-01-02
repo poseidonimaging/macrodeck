@@ -1,0 +1,59 @@
+<%
+# Figure out what page we're on so we activate tabs as needed...
+
+# Initialize to default value
+@tab_my_places = fb_tab_not_selected
+@tab_friends = fb_tab_not_selected
+@tab_home_city = fb_tab_not_selected
+@tab_secondary_city = fb_tab_not_selected
+@tab_welcome = fb_tab_not_selected
+
+if params[:action] == "browse" || params[:action] == "view" || params[:action] == "create" || params[:action] == "edit"
+	case params[:country]
+		when "my_places"
+			@tab_my_places = fb_tab_selected
+		when "friends"
+			@tab_friends = fb_tab_selected
+		else
+			if @home_city != nil
+				if params[:country] != nil && params[:country].downcase == @home_city.country.downcase
+					if params[:state] != nil && params[:state].downcase == @home_city.state(:abbreviation => true).downcase
+						if params[:city] != nil && params[:city].downcase == @home_city.name.downcase
+							@tab_home_city = fb_tab_selected
+						end
+					end
+				end
+			end
+			if @secondary_city != nil
+				if params[:country] != nil && params[:country].downcase == @secondary_city.country.downcase
+					if params[:state] != nil && params[:state].downcase == @secondary_city.state(:abbreviation => true).downcase
+						if params[:city] != nil && params[:city].downcase == @secondary_city.name.downcase
+							@tab_secondary_city = fb_tab_selected
+						end
+					end
+				end
+			end
+	end
+elsif params[:action] == "welcome"
+	@tab_welcome = fb_tab_selected
+end
+
+%>
+	<fb:tabs>
+		<fb:tab-item href="<%= PLACES_FBURL %>/welcome/" title="Welcome" <%= @tab_welcome%>>Welcome</fb:tab-item>
+		
+		<% if @home_city != nil %>
+			<fb:tab-item href="<%= fbplaces_url(:action => :view, :country => @home_city.country, :state => @home_city.state(:abbreviation => true), :city => @home_city.url_part) %>"
+			title="<%= "#{@home_city.name}, #{@home_city.state(:abbreviation => true)}" %> Places" <%= @tab_home_city %>><%= "#{@home_city.name}, #{@home_city.state(:abbreviation => true)}" %> Places</fb:tab-item>
+		<% end %>
+		<% if @secondary_city != nil %>
+			<fb:tab-item href="<%= fbplaces_url(:action => :view, :country => @secondary_city.country, :state => @secondary_city.state(:abbreviation => true), :city => @secondary_city.url_part) %>"
+			title="<%= "#{@secondary_city.name}, #{@secondary_city.state(:abbreviation => true)}" %> Places" <%= @tab_secondary_city %>>
+				<%= "#{@secondary_city.name}, #{@secondary_city.state(:abbreviation => true)}" %> Places
+			</fb:tab-item>
+		<% end %>
+	</fb:tabs>
+
+	<% if PLACES_TEST_SERVER %>
+		<div class="information-compact" style="margin: 5px;"><p><strong>This is the test server.</strong> Any changes you make here, including adding cities and places, may not get moved to the real server.</div>
+	<% end %>
