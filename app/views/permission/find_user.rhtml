@@ -1,8 +1,0 @@
-<div class="compact">
-<h2>Find A User/Group</h2>
-<% if params["step"] == nil || params["step"] == "home" %>
-	<%= render :partial => "find_user_home" %>
-<% elsif params["step"] != nil && params["step"] == "lookup" %>
-	<%= render :partial => "find_user_lookup" %>
-<% end %>
-</div>

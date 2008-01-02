@@ -1,7 +1,0 @@
-<p>Are you sure you wish to add <%= h(@name) %> (<%= @uname %>)?</p>
-<div class="actions">
-	<p>
-		<a href="#" onclick="top.<%= @kind %>_add_perm('<%= @uuid %>', '<%= escape_javascript(h(@name)) %>'); parent.hideIbox(); return false;" class="action yes">Yes</a>
-		<a href="/permission/find_user?kind=<%= @kind %>&amp;step=home" class="action no">No</a>
-	</p>
-</div>
