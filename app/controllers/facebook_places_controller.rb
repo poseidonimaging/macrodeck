@@ -489,6 +489,9 @@ class FacebookPlacesController < ApplicationController
 							if !validate_not_nil(@city_name)
 								@errors << "Please enter a city name."
 							end
+							if @city_name =~ /\//
+								@errors << "Please don't enter metropolitan areas such as 'Dallas/Fort Worth'; instead create each city individually."
+							end
 							if @errors.length > 0
 								render :template => "facebook_places/create_city"
 							else
