@@ -148,7 +148,28 @@ class FacebookPlacesController < ApplicationController
 		get_networks
 		get_home_city
 		get_secondary_city
-		# Just static text.
+		# Render the page if they haven't been to the welcome page this session
+		if session[:seen_welcome_page].nil? || params[:default].nil?
+			session[:seen_welcome_page] = true
+			render
+		else
+			if @home_city != nil
+				redirect_to fbplaces_url(:action => :view, :country => @home_city.country.downcase, :state => @home_city.state(:abbreviation => true).downcase, :city => @home_city.url_part)
+			else
+				render
+			end
+		end
+	end
+
+	# Invite your friends
+	def invite
+		get_networks
+		get_home_city
+		get_secondary_city
+	end
+
+	def install
+		require_facebook_install
 	end
 
 	# edit URLs look like view.
@@ -514,6 +535,11 @@ class FacebookPlacesController < ApplicationController
 							r.relationship = "patron"
 						end
 						patronage.save!
+
+						action_message = "{actor} is now a patron of {place} using <a href=\"http://apps.facebook.com/macrodeckplaces/\">Places</a>."
+						action_place = "<a href='#{fbplaces_url(:action => :view, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part, :place => @place.url_part)}'>#{@place.name}</a>"
+						action_json = "{\"place\":\"#{action_place}\"}"
+						req = fbsession.feed_publishTemplatizedAction(:actor_id => @fbuser.facebook_uid, :title_template => action_message, :title_data => action_json)
 					end
 					# Don't do anything if they are already a patron.
 				end

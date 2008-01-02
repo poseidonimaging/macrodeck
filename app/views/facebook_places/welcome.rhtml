@@ -14,6 +14,18 @@
 				Please <%= link_to "browse for a city", fbplaces_url(:action => :browse) %>.</p>
 			</div>
 		<% end %>
+		<fb:if-user-has-added-app>
+			<fb:else>
+				<div class="information">
+					<h1><%= image_tag "icons/small/standard-black/exclamation.gif", :class => "inline" %> Application Not Installed</h1>
+					<p>You have not installed Places. We think you would get more use out of Places if you installed it, but we don't require
+					you to install Places to use most of our features, because we think it's annoying when other applications tease you and
+					don't let you play with the application before installing it. If you would like to install Places, press the button below.</p>
+					<div class="confirm_button"><a href="<%= fbplaces_url(:action => :install) %>"><div><div><div><span>Add Application</span></div></div></div></a></div>
+					<div class="clear"></div>
+				</div>
+			</fb:else>
+		</fb:if-user-has-added-app>
 		<h1 class="area-title">Welcome</h1>
 		<p>Welcome to Places. Places will revolutionize how you think about the places you go, eat, and visit. Think about it: it's a Friday night, you want to go out to eat, 
 		and you don't want to eat at the same place again. But you don't want your food to suck either. So, you pull up MacroDeck Places, and you can easily find places that
