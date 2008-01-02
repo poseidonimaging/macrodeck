@@ -71,12 +71,12 @@ PHONE_VALIDATION	= /^[01]?[- .]?(\([2-9]\d{2}\)|[2-9]\d{2})[- .]?\d{3}[- .]?\d{4
 PASSWORD_SALT   = "giomullyoxonoind" # Random character generator
 
 # Places
-PLACES_BASEURL = "http://places.intranet.ignition-project.com:3000" # do not use a trailing slash
+PLACES_BASEURL = "http://places.macrodeck.com" # do not use a trailing slash
 PLACES_FBURL = "http://apps.facebook.com/macrodeckplaces" # do not use a trailing slash
 PLACES_APPURL = "http://www.facebook.com/apps/application.php?id=2475497610"
 FLICKR_API_KEY = "686693e936d2bd4bfc3c5477fa3f1332"
 FLICKR_SECRET = "b9a60cf2f27ed59c"
-PLACES_TEST_SERVER = true
+PLACES_TEST_SERVER = false
 
 # Start services we need
 Services.startService "uuid_service"
