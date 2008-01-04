@@ -483,11 +483,14 @@ class FacebookPlacesController < ApplicationController
 						elsif params[:validation_step] == "1"
 							# validate and then save the city
 							# Capitalize first letter of the city name
-							@city_name = params[:city_name].capitalize.chomp.strip
+							@city_name = params[:city_name].capitalize_each.chomp.strip
 							@errors = []
 							@validation_step = "1"
 							if !validate_not_nil(@city_name)
 								@errors << "Please enter a city name."
+							end
+							if @city_name =~ /\//
+								@errors << "Please don't enter metropolitan areas such as 'Dallas/Fort Worth'; instead create each city individually."
 							end
 							if @errors.length > 0
 								render :template => "facebook_places/create_city"
@@ -672,8 +675,14 @@ class FacebookPlacesController < ApplicationController
 							photo_req["photos"]["photo"] = photo_req["photos"]["photo"] | [ photo_req_alt["photos"]["photo"] ]
 						elsif photo_req["photos"]["photo"].class == Hash && photo_req_alt["photos"]["photo"].class == Array
 							photo_req["photos"]["photo"] = [ photo_req["photos"]["photo"] ] | photo_req_alt["photos"]["photo"]
+						elsif photo_req["photos"]["photo"].nil? && !photo_req_alt["photos"]["photo"].nil?
+							photo_req["photos"]["photo"] = photo_req_alt["photos"]["photo"]
+						elsif !photo_req["photos"]["photo"].nil? && photo_req_alt["photos"]["photo"].nil?
+							# do nothing, as the stuff is where it belongs already.
+						elsif photo_req["photos"]["photo"].nil? && photo_req_alt["photos"]["photo"].nil?
+							photo_req["photos"]["photo"] = nil
 						else
-							raise "change_photo: unhandled search merge"
+							raise "change_photo: unhandled search merge; photo_req=#{photo_req.inspect}"
 						end
 
 						if photo_req["photos"]["photo"] != nil

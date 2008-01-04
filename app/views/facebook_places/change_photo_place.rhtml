@@ -23,15 +23,6 @@
 		<% else %>
 			<p>There are no photos for this place on flickr. Please go to <%= link_to "flickr", "http://www.flickr.com/" %> and upload a photo there, and you will
 			be able to select it here.</p>
-			<div class="information-compact">
-				<% if params[:alternate].nil? || params[:alternate] != "1" %>
-					<p><%= image_tag "icons/small/standard-black/info.gif", :class => "inline" %> 
-					Should there be results? Try an <%= link_to "alternate search", params.merge({ :alternate => "1" }) %>.</p>
-				<% else %>
-					<p><%= image_tag "icons/small/standard-black/info.gif", :class => "inline" %>
-					Don't like the alternate results? Try the <%= link_to "original search", params.merge({ :alternate => nil }) %>.</p>
-				<% end %>
-			</div>
 		<% end %>
 		<p class="clear">
 			<%= link_to "Go back to #{@place.title}'s Profile", fbplaces_url(:action => :view, :country => "us", :state => @state.url_part, :city => @city.url_part, :place => @place.uuid) %>
