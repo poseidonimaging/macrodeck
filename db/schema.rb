@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 53) do
+ActiveRecord::Schema.define(:version => 56) do
 
   create_table "categories", :force => true do |t|
     t.column "uuid",           :string
@@ -32,22 +32,23 @@ ActiveRecord::Schema.define(:version => 53) do
   end
 
   create_table "data_groups", :force => true do |t|
-    t.column "groupingtype",      :string
-    t.column "creator",           :string
-    t.column "groupingid",        :string
-    t.column "owner",             :string
+    t.column "data_type",         :string
+    t.column "created_by",        :string,   :default => "7b7e7c62-0a56-4785-93d5-6e689c9793c9", :null => false
+    t.column "uuid",              :string
+    t.column "owned_by",          :string,   :default => "7b7e7c62-0a56-4785-93d5-6e689c9793c9", :null => false
     t.column "tags",              :text
-    t.column "parent",            :string
+    t.column "parent_uuid",       :string
     t.column "title",             :string
     t.column "description",       :text
     t.column "read_permissions",  :text
     t.column "write_permissions", :text
-    t.column "remote_data",       :boolean, :default => false, :null => false
+    t.column "remote_data",       :boolean,  :default => false,                                  :null => false
     t.column "sourceid",          :string
     t.column "include_sources",   :text
-    t.column "updated",           :integer
-    t.column "creation",          :integer
     t.column "category",          :string
+    t.column "created_at",        :datetime,                                                     :null => false
+    t.column "updated_at",        :datetime,                                                     :null => false
+    t.column "updated_by",        :string,   :default => "7b7e7c62-0a56-4785-93d5-6e689c9793c9", :null => false
   end
 
   create_table "data_items", :force => true do |t|
