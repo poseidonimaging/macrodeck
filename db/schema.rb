@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 59) do
+ActiveRecord::Schema.define(:version => 61) do
 
   create_table "categories", :force => true do |t|
     t.column "uuid",           :string
@@ -45,7 +45,7 @@ ActiveRecord::Schema.define(:version => 59) do
     t.column "remote_data",       :boolean,  :default => false,                                  :null => false
     t.column "sourceid",          :string
     t.column "include_sources",   :text
-    t.column "category",          :string
+    t.column "category_uuid",     :string
     t.column "created_at",        :datetime,                                                     :null => false
     t.column "updated_at",        :datetime,                                                     :null => false
     t.column "updated_by",        :string,   :default => "7b7e7c62-0a56-4785-93d5-6e689c9793c9", :null => false
