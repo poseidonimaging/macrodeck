@@ -9,15 +9,15 @@ set :deploy_to, "/home/railsapps/macrodeck"
 
 # Gateway is prometheus.poseidonimaging.com since the servers are on localhost... workaround for
 # no TCP/IP on database
-set :gateway, "railsapps@prometheus.poseidonimaging.com"
+# gateway may no longer be required # set :gateway, "railsapps@prometheus.poseidonimaging.com"
 
 # If you aren't using Subversion to manage your source code, specify
 # your SCM below:
 # set :scm, :subversion
 
-role :app, "railsapps@localhost"
-role :web, "railsapps@localhost"
-role :db,  "railsapps@localhost", :primary => true
+role :app, "railsapps@prometheus.poseidonimaging.com"
+role :web, "railsapps@prometheus.poseidonimaging.com"
+role :db,  "railsapps@prometheus.poseidonimaging.com", :primary => true
 
 # Restart functions
 desc "Restarts Apache"
