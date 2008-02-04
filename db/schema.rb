@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 61) do
+ActiveRecord::Schema.define(:version => 64) do
 
   create_table "categories", :force => true do |t|
     t.column "uuid",           :string
@@ -32,9 +32,9 @@ ActiveRecord::Schema.define(:version => 61) do
   end
 
   create_table "data_groups", :force => true do |t|
-    t.column "data_type",         :string,   :default => "",                                     :null => false
+    t.column "data_type",         :string,                                                       :null => false
     t.column "created_by",        :string,   :default => "7b7e7c62-0a56-4785-93d5-6e689c9793c9", :null => false
-    t.column "uuid",              :string,   :default => "",                                     :null => false
+    t.column "uuid",              :string,                                                       :null => false
     t.column "owned_by",          :string,   :default => "7b7e7c62-0a56-4785-93d5-6e689c9793c9", :null => false
     t.column "tags",              :text
     t.column "parent_uuid",       :string
@@ -52,10 +52,10 @@ ActiveRecord::Schema.define(:version => 61) do
   end
 
   create_table "data_items", :force => true do |t|
-    t.column "data_type",         :string,   :default => "",                                     :null => false
+    t.column "data_type",         :string,                                                       :null => false
     t.column "application_uuid",  :string,   :default => "7b7e7c62-0a56-4785-93d5-6e689c9793c9", :null => false
-    t.column "uuid",              :string,   :default => "",                                     :null => false
-    t.column "data_group_uuid",   :string,   :default => "",                                     :null => false
+    t.column "uuid",              :string,                                                       :null => false
+    t.column "data_group_uuid",   :string,                                                       :null => false
     t.column "owned_by",          :string,   :default => "7b7e7c62-0a56-4785-93d5-6e689c9793c9", :null => false
     t.column "created_by",        :string,   :default => "7b7e7c62-0a56-4785-93d5-6e689c9793c9", :null => false
     t.column "tags",              :text
@@ -72,6 +72,29 @@ ActiveRecord::Schema.define(:version => 61) do
     t.column "updated_at",        :datetime,                                                     :null => false
     t.column "updated_by",        :string,   :default => "7b7e7c62-0a56-4785-93d5-6e689c9793c9", :null => false
   end
+
+  create_table "data_objects", :force => true do |t|
+    t.column "parent_id",      :integer
+    t.column "category_id",    :integer
+    t.column "application_id", :integer
+    t.column "created_by_id",  :integer,  :default => 0,     :null => false
+    t.column "updated_by_id",  :integer,  :default => 0,     :null => false
+    t.column "owned_by_id",    :integer,  :default => 0,     :null => false
+    t.column "type",           :string,                      :null => false
+    t.column "created_at",     :datetime,                    :null => false
+    t.column "updated_at",     :datetime,                    :null => false
+    t.column "uuid",           :string,                      :null => false
+    t.column "title",          :string
+    t.column "description",    :text
+    t.column "data",           :text
+    t.column "extended_data",  :text
+    t.column "is_remote_data", :boolean,  :default => false, :null => false
+    t.column "data_source_id", :integer
+    t.column "url_part",       :string
+  end
+
+  add_index "data_objects", ["uuid"], :name => "index_data_objects_on_uuid", :unique => true
+  add_index "data_objects", ["url_part"], :name => "index_data_objects_on_url_part"
 
   create_table "data_sources", :force => true do |t|
     t.column "uuid",            :string
@@ -121,11 +144,11 @@ ActiveRecord::Schema.define(:version => 61) do
   end
 
   create_table "relationships", :force => true do |t|
-    t.column "source_uuid",  :string,   :default => "", :null => false
-    t.column "target_uuid",  :string,   :default => "", :null => false
-    t.column "relationship", :string,   :default => "", :null => false
-    t.column "created_at",   :datetime,                 :null => false
-    t.column "updated_at",   :datetime,                 :null => false
+    t.column "source_uuid",  :string,   :null => false
+    t.column "target_uuid",  :string,   :null => false
+    t.column "relationship", :string,   :null => false
+    t.column "created_at",   :datetime, :null => false
+    t.column "updated_at",   :datetime, :null => false
   end
 
   create_table "sessions", :force => true do |t|
@@ -192,22 +215,27 @@ ActiveRecord::Schema.define(:version => 61) do
   end
 
   create_table "users", :force => true do |t|
-    t.column "uuid",                 :string
+    t.column "uuid",                 :string,   :null => false
     t.column "username",             :string
     t.column "password",             :string
     t.column "secretquestion",       :string
     t.column "secretanswer",         :string
-    t.column "name",                 :string
     t.column "displayname",          :string
     t.column "creation",             :integer
-    t.column "authcode",             :string
     t.column "verified_email",       :boolean
     t.column "email",                :string
-    t.column "authcookie",           :string
-    t.column "authcookie_set_time",  :integer
     t.column "facebook_session_key", :string
     t.column "facebook_uid",         :string
+    t.column "first_name",           :string
+    t.column "last_name",            :string
+    t.column "created_at",           :datetime
+    t.column "updated_at",           :datetime
   end
+
+  add_index "users", ["uuid"], :name => "index_users_on_uuid", :unique => true
+  add_index "users", ["username"], :name => "index_users_on_username", :unique => true
+  add_index "users", ["facebook_uid"], :name => "index_users_on_facebook_uid"
+  add_index "users", ["facebook_session_key"], :name => "index_users_on_facebook_session_key"
 
   create_table "widget_instances", :force => true do |t|
     t.column "instanceid",    :string
