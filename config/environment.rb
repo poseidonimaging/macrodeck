@@ -70,6 +70,8 @@ if PLACES_TEST_SERVER
 	PLACES_APPURL = "http://www.facebook.com/apps/application.php?id=6592864647"
 	FLICKR_API_KEY = "686693e936d2bd4bfc3c5477fa3f1332"
 	FLICKR_SECRET = "b9a60cf2f27ed59c"
+	ENV['RAILS_ENV'] ||= 'development'
+	puts "*** Using Test Server!"
 else
 	PLACES_BASEURL = "http://places.macrodeck.com" # do not use a trailing slash
 	PLACES_FBURL = "http://apps.facebook.com/macrodeckplaces" # do not use a trailing slash
@@ -81,7 +83,6 @@ end
 # Start services we need
 Services.startService "uuid_service"
 Services.startService "data_service"
-Services.startService "blog_service"
 Services.startService "user_service"
 Services.startService "places_service"
 Services.startService "comment_service"

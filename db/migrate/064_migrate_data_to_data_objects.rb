@@ -21,7 +21,7 @@ class MigrateDataToDataObjects < ActiveRecord::Migration
 	  say_with_time "Migrating DataItem/DataGroup tree to DataObject" do
 		  root_groups = DataGroup::find(:all, :conditions => ["parent_uuid IS NULL"])
 		  root_groups.each do |root_group|
-			  say "--- Migrating Root Item '#{root_group.title}' (#{root_group.uuid})"
+			  say "Migrating Root Group '#{root_group.title}' (#{root_group.uuid})"
 			  self.migrate_data_group(nil, root_group)
 		  end
 	  end

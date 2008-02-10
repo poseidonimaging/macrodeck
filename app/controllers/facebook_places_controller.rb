@@ -1021,7 +1021,7 @@ class FacebookPlacesController < ApplicationController
 		# Initialize Facebook User - Creates a User if needed, maps friends, etc. Use as a
 		# before_filter.
 		def initialize_facebook_user
-			if fbsession && fbsession.is_valid?
+			if fbsession && fbsession.ready?
 				user = User.find_or_create_by_facebook_session(fbsession)
 				# TODO: here we would load their friends list or whatever.
 				@fbuser = user
@@ -1031,7 +1031,7 @@ class FacebookPlacesController < ApplicationController
 		# Gets all US states and puts them in @states
 		def get_us_states
 			places = Category.find(:first, :conditions => ["parent_uuid IS NULL AND url_part = ?", "places"])
-			@country = places.getChildByURL("us")
+			@country = places.child("us")
 
 			if @country != nil
 				@states = @country.children
@@ -1042,9 +1042,9 @@ class FacebookPlacesController < ApplicationController
 
 		def get_state(state_url_part)
 			places = Category.find(:first, :conditions => ["parent_uuid IS NULL AND url_part = ?", "places"])
-			@country = places.getChildByURL("us")
+			@country = places.child("us")
 			if @country != nil
-				@state = @country.getChildByURL(state_url_part)
+				@state = @country.child(state_url_part)
 				if @state.nil?
 					raise "State not found."
 				end
@@ -1056,9 +1056,9 @@ class FacebookPlacesController < ApplicationController
 		# Gets all cities in a state and puts them in @cities
 		def get_cities(state_url_part)
 			places = Category.find(:first, :conditions => ["parent_uuid IS NULL AND url_part = ?", "places"])
-			@country = places.getChildByURL("us")
+			@country = places.child("us")
 			if @country != nil
-				@state = @country.getChildByURL(state_url_part)
+				@state = @country.child(state_url_part)
 				if @state != nil
 					@cities = @state.children
 				else
@@ -1073,8 +1073,8 @@ class FacebookPlacesController < ApplicationController
 		def get_city_info(city_name, state)
 			c = PlacesService.getCity(city_name,state)
 			places = Category.find(:first, :conditions => ["parent_uuid IS NULL AND url_part = ?", "places"])
-			@country = places.getChildByURL("us")
-			@state = @country.getChild(state)
+			@country = places.child("us")
+			@state = @country.child(state)
 			@city = c
 		end
 
