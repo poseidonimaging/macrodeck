@@ -19,9 +19,9 @@ class FacebookPlacesController < ApplicationController
 				render :template => "facebook_places/view_city"
 			elsif params[:state] && params[:city] && params[:place]
 				get_city_info(params[:city], params[:state])
-				@place = Place.find_by_dataid(params[:place])
+				@place = Place.find_by_uuid(params[:place])
 				if @place != nil
-					patron_relationship = Relationship.find(:first, :conditions => ["source_uuid = ? AND target_uuid = ? AND relationship = 'patron'", @fbuser.uuid, @place.dataid])
+					patron_relationship = Relationship.find(:first, :conditions => ["source_uuid = ? AND target_uuid = ? AND relationship = 'patron'", @fbuser.uuid, @place.uuid])
 					if patron_relationship.nil?
 						@place_is_patron = false
 					else
@@ -187,7 +187,7 @@ class FacebookPlacesController < ApplicationController
 						if params[:place]
 							# Edit a place.
 							get_city_info(params[:city], params[:state])
-							@place = Place.find_by_dataid(params[:place])
+							@place = Place.find_by_uuid(params[:place])
 
 							if @place.nil?
 								redirect_to fbplaces_url(:action => :view, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part)
@@ -527,14 +527,14 @@ class FacebookPlacesController < ApplicationController
 
 			if params[:state] && params[:city] && params[:place]
 				get_city_info(params[:city], params[:state])
-				@place = Place.find_by_dataid(params[:place])
+				@place = Place.find_by_uuid(params[:place])
 				if @place != nil
-					patron_relationship = Relationship.find(:first, :conditions => ["source_uuid = ? AND target_uuid = ? AND relationship = 'patron'", @fbuser.uuid, @place.dataid])
+					patron_relationship = Relationship.find(:first, :conditions => ["source_uuid = ? AND target_uuid = ? AND relationship = 'patron'", @fbuser.uuid, @place.uuid])
 					if patron_relationship.nil?
 						# Add patronage.
 						patronage = Relationship.new do |r|
 							r.source_uuid = @fbuser.uuid
-							r.target_uuid = @place.dataid
+							r.target_uuid = @place.uuid
 							r.relationship = "patron"
 						end
 						patronage.save!
@@ -565,9 +565,9 @@ class FacebookPlacesController < ApplicationController
 
 			if params[:state] && params[:city] && params[:place]
 				get_city_info(params[:city], params[:state])
-				@place = Place.find_by_dataid(params[:place])
+				@place = Place.find_by_uuid(params[:place])
 				if @place != nil
-					patron_relationship = Relationship.find(:first, :conditions => ["source_uuid = ? AND target_uuid = ? AND relationship = 'patron'", @fbuser.uuid, @place.dataid])
+					patron_relationship = Relationship.find(:first, :conditions => ["source_uuid = ? AND target_uuid = ? AND relationship = 'patron'", @fbuser.uuid, @place.uuid])
 					if patron_relationship != nil
 						# Remove patronage.
 						patron_relationship.destroy
@@ -628,7 +628,7 @@ class FacebookPlacesController < ApplicationController
 				else
 					# Add a wall post
 					if params[:message] != nil && params[:message].length > 0
-						@place.wall.create_comment(params[:message], { :creator => @fbuser.uuid, :owner => @fbuser.uuid })
+						@place.wall.create_comment(params[:message], { :created_by => @fbuser, :owned_by => @fbuser })
 					end
 					# If they didn't specify a message just redirect them to the place anyway, just don't add the null message.
 					redirect_to fbplaces_url(:action => :view, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part, :place => @place.uuid)
@@ -989,7 +989,7 @@ class FacebookPlacesController < ApplicationController
 					r.source_uuid = @fbuser.uuid
 					c = PlacesService.getCity(@primary_network_city, @primary_network_state)
 					if c != nil
-						r.target_uuid = c.uuid # FIXME: dataid can go to hell
+						r.target_uuid = c.uuid 
 					else
 						raise "get_home_city: attempting to set home city to a city that does not exist!"
 					end

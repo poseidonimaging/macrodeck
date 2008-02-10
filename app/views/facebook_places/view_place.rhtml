@@ -62,7 +62,7 @@
 							<div class="walltop">
 								<div class="count">
 									<p>Displaying <%= @place.wall.latest_comments.length %> of 
-									<%= link_to "#{@place.wall.comment_count} wall posts",
+									<%= link_to "#{@place.wall.children.length} wall posts",
 										fbplaces_url(:action => :wall, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part, :place => @place.url_part) %>
 									</p>
 								</div>
