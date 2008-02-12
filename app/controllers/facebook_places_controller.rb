@@ -749,6 +749,7 @@ class FacebookPlacesController < ApplicationController
 			params.delete("fb_sig_user")
 			params.delete("fb_sig_api_key")
 			params.delete("fb_sig_profile_update_time")
+			params.delete("fb_sig_locale")
 		end
 
 		# Validates a field. Field types: :email, :phone, :latitude, :longitude, :zipcode
@@ -1021,7 +1022,7 @@ class FacebookPlacesController < ApplicationController
 		# Initialize Facebook User - Creates a User if needed, maps friends, etc. Use as a
 		# before_filter.
 		def initialize_facebook_user
-			if fbsession && fbsession.ready?
+			if fbsession && fbsession.is_valid?
 				user = User.find_or_create_by_facebook_session(fbsession)
 				# TODO: here we would load their friends list or whatever.
 				@fbuser = user
