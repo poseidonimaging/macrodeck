@@ -4,10 +4,10 @@
 			<% small_img = photo.sizes("Small") %>
 			<% if small_img["width"].to_i > small_img["height"].to_i %>
 				<%= link_to image_tag(small_img["source"], :alt => photo.title, :title => photo.title, :class => "wide"),
-					params.merge({ :photo => photo.id }) %>
+					fbplaces_url(:action => params[:action], :country => params[:country], :state => params[:state], :city => params[:city], :place => params[:place]) + "?photo=#{photo.id}" %>
 			<% else %>
 				<%= link_to image_tag(small_img["source"], :alt => photo.title, :title => photo.title, :class => "tall"),
-					params.merge({ :photo => photo.id }) %>
+					fbplaces_url(:action => params[:action], :country => params[:country], :state => params[:state], :city => params[:city], :place => params[:place]) + "?photo=#{photo.id}" %>
 			<% end %>
 			<strong><%= truncate(photo.title, 30) %></strong>
 		</div>
