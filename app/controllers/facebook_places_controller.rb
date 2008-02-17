@@ -497,7 +497,7 @@ class FacebookPlacesController < ApplicationController
 							else
 								city = PlacesService.createCity(@city_name, @state.title)
 								if city != nil
-									city.creator = @fbuser.uuid
+									city.created_by_id = @fbuser.id
 									city.save!
 									redirect_to fbplaces_url(:action => :view, :country => @country.url_part, :state => @state.url_part, :city => city.url_part)
 								else
@@ -953,7 +953,7 @@ class FacebookPlacesController < ApplicationController
 						unless PlacesService.isCity?(aff_city, aff_state) 
 							puts "*** Places: Creating a new city: #{aff_city}, #{aff_state}"
 							c = PlacesService.createCity(aff_city, aff_state)
-							c.creator = @fbuser.uuid
+							c.created_by_id = @fbuser.id
 							c.save!
 						end
 					else
