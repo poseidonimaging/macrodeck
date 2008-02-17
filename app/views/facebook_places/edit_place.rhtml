@@ -21,8 +21,9 @@
 			</div>
 			<br />
 		<% end %>
-		<% form_tag "#{PLACES_FBURL}/edit/#{@country.url_part}/#{@state.url_part}/#{url_sanitize(@city.title)}/#{@place.dataid}/" do %>
+		<% form_tag "#{PLACES_FBURL}/edit/#{@country.url_part}/#{@state.url_part}/#{url_sanitize(@city.title)}/#{@place.uuid}/" do %>
 			<%= hidden_field_tag "validation_step", @validation_step %>
+			<%= hidden_field_tag "flickr_photo_id", @place_flickr_photo_id %>
 			<div class="form-item-main">
 				<div class="form-item-main-left"><p><label for="place_name">Place Name</label></p></div>
 				<div class="form-item-main-right"><%= text_field_tag "place_name", @place_name %></div>

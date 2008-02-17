@@ -8,7 +8,8 @@
 
 	<div class="content">
 		<%= render :partial => "breadcrumbs", :locals => { :country => @country, :state => @state, :city => @city, :place => nil } %>
-		<h1 class="area-title"><span><span><%= h(@place.title) %></span> <span class="subtitle"><%= @place_type %></span></span></h1>
+		<h1 class="area-title"><%= h(@place.title) %></h1>
+		<div class="area-subtitle"><%= @place_type %></div>
 		<div class="clear"></div>
 		<div class="profile-layout">
 			<%= render :partial => "place_profile_sidebar" %>

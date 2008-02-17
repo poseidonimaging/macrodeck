@@ -208,6 +208,7 @@ class FacebookPlacesController < ApplicationController
 										@place_phone_number_exchange = nil
 										@place_phone_number_number = nil
 									end
+									@place_flickr_photo_id = @place_metadata[:flickr_photo_id]
 									@place_description = @place.description
 									@place_zipcode = @place_metadata[:zipcode]
 									@place_latitude = @place_metadata[:latitude]
@@ -232,6 +233,7 @@ class FacebookPlacesController < ApplicationController
 									@place_name = params[:place_name]
 									@place_address = params[:place_address]
 									@place_type = params[:place_type]
+									@place_flickr_photo_id = params[:flickr_photo_id]
 									@place_phone_number_area_code = params[:place_phone_number_area_code]
 									@place_phone_number_exchange = params[:place_phone_number_exchange]
 									@place_phone_number_number = params[:place_phone_number_number]
@@ -320,6 +322,7 @@ class FacebookPlacesController < ApplicationController
 											end
 										end
 										metadata.features = feature_array
+										metadata.flickr_photo_id = @place_flickr_photo_id
 										@place.title = @place_name
 										@place.description = @place_description
 										@place.place_metadata = metadata
