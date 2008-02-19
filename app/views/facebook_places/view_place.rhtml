@@ -61,14 +61,23 @@
 					<% if @place.calendar.events != nil && @place.calendar.events.length > 0 %>
 						<div class="vcalendar">
 						<% @place.calendar.events.each do |event| %>
+							<!-- TODO: Convert to partial -->
 							<div class="vevent">
-								<span class="summary"><%= event.title %></span>
-								<abbr class="dtstart" title="<%= event.start_time.strftime("%Y-%m-%d %H:%M:%S") %>">
-									<%= event.start_time.strftime("%B %d, %Y") %>
-								</abbr>
-								<abbr class="dtend" title="<%= event.end_time.strftime("%Y-%m-%d %H:%M:%S") %>">
-									<%= event.end_time.strftime("%B %d, %Y") %>
-								</abbr>
+								<h3 class="summary"><%= event.title %></h3>
+								<dl class="eventinfo">
+									<dt>Start Time</dt>
+									<dd>
+										<abbr class="dtstart" title="<%= event.start_time.strftime("%Y-%m-%d %H:%M:%S") %>">
+											<%= event.start_time.strftime("%B %d, %Y") %>
+										</abbr>
+									</dd>
+									<dt>End Time</dt>
+									<dd>
+										<abbr class="dtend" title="<%= event.end_time.strftime("%Y-%m-%d %H:%M:%S") %>">
+											<%= event.end_time.strftime("%B %d, %Y") %>
+										</abbr>
+									</dd>
+								</dl>
 								<!-- TODO: location via hCard for the place -->
 							</div>
 						<% end %>
