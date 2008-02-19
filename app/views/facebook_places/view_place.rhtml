@@ -68,13 +68,13 @@
 									<dt>Start Time</dt>
 									<dd>
 										<abbr class="dtstart" title="<%= event.start_time.strftime("%Y-%m-%d %H:%M:%S") %>">
-											<%= event.start_time.strftime("%B %d, %Y") %>
+											<%= event.start_time.strftime("%B %d, %Y at %I:%M %p") %>
 										</abbr>
 									</dd>
 									<dt>End Time</dt>
 									<dd>
 										<abbr class="dtend" title="<%= event.end_time.strftime("%Y-%m-%d %H:%M:%S") %>">
-											<%= event.end_time.strftime("%B %d, %Y") %>
+											<%= event.end_time.strftime("%B %d, %Y at %I:%M %p") %>
 										</abbr>
 									</dd>
 								</dl>
