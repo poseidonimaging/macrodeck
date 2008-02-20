@@ -1,0 +1,2 @@
+class FacebookEventsController < ApplicationController
+end
