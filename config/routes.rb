@@ -17,6 +17,17 @@ ActionController::Routing::Routes.draw do |map|
   # instead of a file named 'wsdl'
   map.connect ':controller/service.wsdl', :action => 'wsdl'
 
+  # Facebook Events (via Places - someday we'll have our own MacroDeck Events app..)
+  # Place-specific event create URL
+  map.fbevents_create_from_places 'facebook/view/:country/:state/:city/:place/create_event', :controller => "facebook_events",
+  		:action => "create_from_places",
+  		:conditions => { :subdomain => "places" }
+
+  # calendar namespace - example: apps.facebook.com/macrodeckplaces/calendar/1234-5667-abcdef-123456435/show
+  map.fbevents 'facebook/calendar/:calendar/:action/:event',
+  		:conditions => { :subdomain => "places" },
+		:defaults => { :action => "show" }
+
   # Facebook Places
   map.fbplaces 'facebook', :controller => "facebook_places",
 		:action => "welcome", :default => true, :country => nil, :state => nil, :city => nil, :place => nil,
