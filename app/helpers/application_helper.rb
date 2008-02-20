@@ -45,4 +45,33 @@ module ApplicationHelper
 				</div>"
 		return html
 	end
+
+	# A URL helper that will hopefully override the default fbplaces_url and let you
+	# link to crap easier.
+	#
+	# options_hash possible values:
+	#   :action => (any action you wish... used in ../action/us/ok/tulsa/
+	#   :country => (two-letter country code)
+	#   :state => (two-letter state)
+	#   :city => City object
+	#   :place => Place object
+	def fbplaces_url(options = {})
+		url = "#{PLACES_FBURL}/"
+		if options[:action] != nil && options[:action] != ""
+			url << "#{url_sanitize(options[:action].to_s)}/"
+		end
+		if options[:country] != nil && options[:country] != ""
+			url << "#{url_sanitize(options[:country])}/"
+		end
+		if options[:state] != nil && options[:state] != ""
+			url << "#{url_sanitize(options[:state])}/"
+		end
+		if options[:city] != nil && options[:city] != ""
+			url << "#{url_sanitize(options[:city])}/"
+		end
+		if options[:place] != nil && options[:place] != ""
+			url << "#{url_sanitize(options[:place])}/"
+		end
+		return url
+	end
 end
