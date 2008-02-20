@@ -1022,16 +1022,6 @@ class FacebookPlacesController < ApplicationController
 			end
 		end
 
-		# Initialize Facebook User - Creates a User if needed, maps friends, etc. Use as a
-		# before_filter.
-		def initialize_facebook_user
-			if fbsession && fbsession.is_valid?
-				user = User.find_or_create_by_facebook_session(fbsession)
-				# TODO: here we would load their friends list or whatever.
-				@fbuser = user
-			end
-		end
-
 		# Gets all US states and puts them in @states
 		def get_us_states
 			places = Category.find(:first, :conditions => ["parent_uuid IS NULL AND url_part = ?", "places"])
