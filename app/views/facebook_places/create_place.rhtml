@@ -43,7 +43,7 @@
 			</div>
 			<div class="form-item">
 				<div class="form-item-left"><p><label for="place_description">Description</label></p></div>
-				<div class="form-item-right"><%= text_field_tag "place_description", @place_description %></div>
+				<div class="form-item-unformatted-right"><%= text_area_tag "place_description", @place_description, :size => "80x5", :style => "margin-top: 5px;" %></div>
 			</div>
 			<div class="form-item">
 				<div class="form-item-left"><p class="faux-label">Location</p></div>

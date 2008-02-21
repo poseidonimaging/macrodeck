@@ -24,7 +24,7 @@ ActionController::Routing::Routes.draw do |map|
   		:conditions => { :subdomain => "places" }
 
   # calendar namespace - example: apps.facebook.com/macrodeckplaces/calendar/1234-5667-abcdef-123456435/show
-  map.fbevents 'facebook/calendar/:calendar/:action/:event',
+  map.fbevents 'facebook/calendar/:calendar/:action/:event', :controller => "facebook_events",
   		:conditions => { :subdomain => "places" },
 		:defaults => { :action => "show" }
 

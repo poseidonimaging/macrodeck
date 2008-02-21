@@ -1,0 +1,54 @@
+	<fb:fbml>
+
+	<%
+	# TODO: Don't render partials from other controllers (not a problem _yet_) 
+	%>
+	<%= render :partial => "facebook_places/style" %>
+
+	<%= render :partial => "facebook_places/dashboard" %>
+	
+	<%= render :partial => "facebook_places/tabs" %>
+
+	<div class="content">
+		<%= render :partial => "breadcrumbs", :locals => { :calendar => @calendar, :event => nil } %>
+		<h1 class="area-title">Create an Event</h1>
+		<br />
+		<% if @errors.length > 0 %>
+			<div class="errors">
+				<h2><%= image_tag "icons/small/standard-black/exclamation.gif", :class => "inline" %> Errors Found With This Entry</h2>
+				<p>There were errors with your entry. Please correct the following errors:</p>
+				<ul>
+					<% @errors.each do |error| %>
+						<li><%= error %></li>
+					<% end %>
+				</ul>
+			</div>
+			<br />
+		<% end %>
+		<% form_tag fbevents_url(:calendar => @calendar.uuid, :action => :create) do %>
+			<%= hidden_field_tag "create_event", "1" %>
+			<% if params["redirect"] %>
+				<%= hidden_field_tag "redirect", true %>
+				<%= hidden_field_tag "redirecturl", params[:redirecturl] %>
+			<% end %>
+			<div class="form-item-main">
+				<div class="form-item-main-left"><p><label for="event_summary">Event Summary</label></p></div>
+				<div class="form-item-main-right"><%= text_field_tag "event_summary", @event_summary %></div>
+			</div>
+			<div class="form-item">
+				<div class="form-item-left"><p><label for="event_description">Description</label></p></div>
+				<div class="form-item-unformatted-right"><%= text_area_tag "event_description", @event_description, :size => "80x5", :style => "margin-top: 5px;" %></div>
+			</div>
+			<div class="form-item">
+				<div class="form-item-left"><p><label for="event_dtstart">Start Time</label></p></div>
+				<div class="form-item-unformatted-right"><p>todo</p></div>
+			</div>
+			<div class="form-item">
+				<div class="form-item-left"><p><label for="event_dtend">End Time</label></p></div>
+				<div class="form-item-unformatted-right"><p>todo</p></div>
+			</div>
+			<br />
+			<div class="form-submit"><%= submit_tag "Create Event", :class => "inputsubmit" %></div>
+		<% end %>
+	</div>
+</fb:fbml>

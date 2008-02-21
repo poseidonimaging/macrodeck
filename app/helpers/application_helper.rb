@@ -74,4 +74,25 @@ module ApplicationHelper
 		end
 		return url
 	end
+
+	# A URL helper that links to events
+	def fbevents_url(options = {})
+		url = "#{PLACES_FBURL}/calendar/"
+		if options[:calendar] != nil && options[:calendar] != ""
+			url << "#{url_sanitize(options[:calendar].to_s)}/"
+		end
+		if options[:action] != nil && options[:action] != ""
+			url << "#{url_sanitize(options[:action].to_s)}/"
+		end
+		if options[:event] != nil && options[:event] != ""
+			url << "#{url_sanitize(options[:event].to_s)}/"
+		end
+		return url
+	end
+
+	# This method takes a string and returns a suitable URL version.
+	def url_sanitize(str)
+		return str.chomp.strip.downcase.gsub(/[^0-9A-Za-z_\-\s]/, "").gsub(" ", "-")
+	end
+
 end

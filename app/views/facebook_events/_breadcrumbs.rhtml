@@ -1,0 +1,9 @@
+<div class="breadcrumbs">
+	<%= link_to "Calendars", fbevents_url(:action => :browse) %> /
+	<% if calendar != nil %>
+		<%= link_to calendar.title, fbevents_url(:action => :events, :calendar => calendar.url_part) %> / 
+	<% end %>
+	<% if event != nil %>
+		<%= link_to event.title, fbevents_url(:action => :event, :calendar => calendar.url_part, :event => event.url_part) %> /
+	<% end %>
+</div>
