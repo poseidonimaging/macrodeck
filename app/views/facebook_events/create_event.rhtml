@@ -25,30 +25,20 @@
 			</div>
 			<br />
 		<% end %>
-		<% form_tag fbevents_url(:calendar => @calendar.uuid, :action => :create) do %>
+		<fb:editor action="<%= fbevents_url(:calendar => @calendar.uuid, :action => :create) %>" labelwidth="100" width="500">
 			<%= hidden_field_tag "create_event", "1" %>
 			<% if params["redirect"] %>
 				<%= hidden_field_tag "redirect", true %>
 				<%= hidden_field_tag "redirecturl", params[:redirecturl] %>
 			<% end %>
-			<div class="form-item-main">
-				<div class="form-item-main-left"><p><label for="event_summary">Event Summary</label></p></div>
-				<div class="form-item-main-right"><%= text_field_tag "event_summary", @event_summary %></div>
-			</div>
-			<div class="form-item">
-				<div class="form-item-left"><p><label for="event_description">Description</label></p></div>
-				<div class="form-item-unformatted-right"><%= text_area_tag "event_description", @event_description, :size => "80x5", :style => "margin-top: 5px;" %></div>
-			</div>
-			<div class="form-item">
-				<div class="form-item-left"><p><label for="event_dtstart">Start Time</label></p></div>
-				<div class="form-item-unformatted-right"><p>todo</p></div>
-			</div>
-			<div class="form-item">
-				<div class="form-item-left"><p><label for="event_dtend">End Time</label></p></div>
-				<div class="form-item-unformatted-right"><p>todo</p></div>
-			</div>
-			<br />
-			<div class="form-submit"><%= submit_tag "Create Event", :class => "inputsubmit" %></div>
-		<% end %>
+			<fb:editor-text label="Event Summary" name="event_summary" value="<%= @event_summary %>" />
+			<fb:editor-textarea label="Description" name="event_description" value="<%= @event_description %>" />
+			<fb:editor-time label="Start Time" name="event_dtstart_time" value="<%= @event_dtstart.to_i %>" /> 
+			<fb:editor-custom>
+				<%= month_picker("event_dtstart_date_mon", @event_dtstart.mon) %>
+				<%= day_picker("event_dtstart_date_day", @event_dtstart.day) %>
+				<%= year_picker("event_dtstart_date_year", @event_dtstart.year) %>
+			</fb:editor-custom>
+		</fb:editor>
 	</div>
 </fb:fbml>

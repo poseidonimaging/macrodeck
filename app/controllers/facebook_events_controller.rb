@@ -13,8 +13,9 @@ class FacebookEventsController < ApplicationController
 			if @calendar.nil?
 				raise ArgumentError, "event#create - Calendar specified is invalid"
 			else
-				@event_dtstart = params["event_dtstart"]
-				@event_dtend = params["event_dtend"]
+				@event_dtstart = date_from_params("event_dtstart")
+				@event_dtend = date_from_params("event_dtend")
+				p @event_dtstart
 				@event_summary = params["event_summary"]
 				@event_description = params["event_description"]
 				@event_recurrence = params["event_recurrence"]

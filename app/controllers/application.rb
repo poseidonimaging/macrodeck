@@ -33,4 +33,25 @@ class ApplicationController < ActionController::Base
 			@fbuser = user
 		end
 	end
+
+	# Returns a Date from the params[] passed to this controller (need to be a specific
+	# format though: prefix_time_hour, prefix_time_min, prefix_time_ampm, prefix_date_month, prefix_date_day, prefix_date_year
+	def date_from_params(prefix)
+		hour = params["#{prefix}_time_hour"]
+		minute = params["#{prefix}_time_min"]
+		# If PM, add 12 hours to hour (makes it military time)
+		if params["#{prefix}_time_ampm"] == "pm"
+			hour = hour + 12
+		end
+		month = params["#{prefix}_date_month"]
+		day = params["#{prefix}_date_day"]
+		year = params["#{prefix}_date_year"]
+
+		if hour.nil? || minute.nil? || month.nil? || day.nil? || year.nil?
+			t = Time.new
+		else
+			t = Time.mktime(year, month, day, hour, minute)
+		end
+		return t
+	end
 end

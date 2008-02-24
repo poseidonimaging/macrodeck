@@ -95,4 +95,56 @@ module ApplicationHelper
 		return str.chomp.strip.downcase.gsub(/[^0-9A-Za-z_\-\s]/, "").gsub(" ", "-")
 	end
 
+	# Returns HTML for a month picker having the HTML name specified.
+	# Optionally can specify the month and it will make it selected.
+	def month_picker(name, default = 0)
+		html = ""
+		html << "<select name='#{name}'>"
+		i = 0
+		MONTHS_EN.each do |m|
+			i = i + 1
+			if default == i
+				html << "<option value='#{i}' selected='selected'>#{m}</option>"
+			else
+				html << "<option value='#{i}'>#{m}</option>"
+			end
+		end
+		html << "</select>"
+		return html
+	end
+
+	# Returns HTML for a day picker having the HTML name specified.
+	def day_picker(name, default = 0)
+		html = ""
+		html << "<select name='#{name}'>"
+		i = 0
+		31.times do
+			i = i + 1
+			if default == i
+				html << "<option value='#{i}' selected='selected'>#{i}</option>"
+			else
+				html << "<option value='#{i}'>#{i}</option>"
+			end
+		end
+		html << "</select>"
+		return html
+	end
+
+	# Returns HTML for a year picker, having the HTML name specified
+	def year_picker(name, default = 0)
+		html = ""
+		html << "<select name='#{name}'>"
+		i = Time.now.year
+		10.times do
+			if default == i
+				html << "<option value='#{i}' selected='selected'>#{i}</option>"
+			else
+				html << "<option value='#{i}'>#{i}</option>"
+			end
+			i = i + 1
+		end
+		html << "</select>"
+		return html
+	end
+
 end
