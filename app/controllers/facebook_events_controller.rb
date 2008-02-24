@@ -16,6 +16,7 @@ class FacebookEventsController < ApplicationController
 				@event_dtstart = date_from_params("event_dtstart")
 				@event_dtend = date_from_params("event_dtend")
 				p @event_dtstart
+				p @event_dtend
 				@event_summary = params["event_summary"]
 				@event_description = params["event_description"]
 				@event_recurrence = params["event_recurrence"]
@@ -24,9 +25,10 @@ class FacebookEventsController < ApplicationController
 	
 				if params[:create_event].nil?
 					# display the form
-					render :template => "facebook_events/create_event.rhtml"
+					render :template => "facebook_events/create_event"
 				else
 					# validate the data and create the place
+					render :template => "facebook_events/create_event"
 				end
 			end
 		else
