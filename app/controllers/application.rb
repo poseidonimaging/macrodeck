@@ -79,7 +79,6 @@ class ApplicationController < ActionController::Base
 		day = params["#{prefix}_date_day"]
 		year = params["#{prefix}_date_year"]
 	
-		puts "h=#{hour.to_i} m=#{minute.to_i} mo=#{month.to_i} d=#{day.to_i} y=#{year.to_i}"
 		if hour.nil? || minute.nil? || month.nil? || day.nil? || year.nil?
 			t = Time.new
 		else
@@ -90,7 +89,7 @@ class ApplicationController < ActionController::Base
 
     # This method takes a string and returns a suitable URL version.
     def url_sanitize(str)
-            return str.chomp.strip.downcase.gsub(/[^0-9A-Za-z_\-\s]/, "").gsub(" ", "-")
+		return str.chomp.strip.downcase.gsub(/[^0-9A-Za-z_\-\s]/, "").gsub(" ", "-")
     end
 
 	# This method gets all of the networks for the current fbsession user

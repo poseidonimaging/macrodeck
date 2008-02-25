@@ -19,8 +19,6 @@ class FacebookEventsController < ApplicationController
 			else
 				@event_dtstart = date_from_params("event_dtstart")
 				@event_dtend = date_from_params("event_dtend")
-				p @event_dtstart
-				p @event_dtend
 				@event_summary = params["event_summary"]
 				@event_description = params["event_description"]
 				@event_recurrence = params["event_recurrence"]
@@ -32,7 +30,27 @@ class FacebookEventsController < ApplicationController
 					render :template => "facebook_events/create_event"
 				else
 					# validate the data and create the place
-					render :template => "facebook_events/create_event"
+					@errors << "Your event must have a summary." if @event_summary.nil? || @event_summary.length == 0
+					@errors << "Your event cannot end before it starts!" if @event_dtend < @event_dtstart
+					@errors << "Your event cannot start and end at the same time!" if @event_dtend == @event_dtstart
+					if @errors.length > 0
+						render :template => "facebook_events/create_event"
+					else
+						# create the event.
+						extdata = { :start_time => @event_dtstart, :end_time => @event_dtend }
+						e = Event.create(:extended_data => extdata, :title => @event_summary, :description => @event_description, :parent_id => @calendar.id,
+										 :created_by => @fbuser, :owned_by => @fbuser)
+
+						if @redirect
+							if @redirecturl =~ /^http:\/\/apps.facebook.com\/macrodeck/
+								redirect_to @redirecturl
+							else
+								puts "*** Events: Attempted to redirect to an invalid URL!"
+							end
+						else
+							redirect_to fbevents_url(:calendar => @calendar.uuid, :action => :events)
+						end
+					end
 				end
 			end
 		else
