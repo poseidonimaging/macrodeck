@@ -32,18 +32,23 @@
 				<%= hidden_field_tag "redirecturl", params[:redirecturl] %>
 			<% end %>
 			<fb:editor-text label="Event Summary" name="event_summary" value="<%= @event_summary %>" />
-			<fb:editor-textarea label="Description" name="event_description" value="<%= @event_description %>" />
-			<% event_dtstart_utc = @event_dtstart - @event_dtstart.gmt_offset %>
-			<fb:editor-time label="Start Time" name="event_dtstart_time" value="<%= event_dtstart_utc.to_i %>" /> 
-			<fb:editor-custom>
+			<fb:editor-textarea label="Description" name="event_description"><%= @event_description %></fb:editor-textarea>
+			<!-- <%= @event_dtstart.to_s %> -->
+			<fb:editor-custom label="Start Time">
+				<%= hour_picker("event_dtstart_time_hour", @event_dtstart.strftime("%I")) %> :
+				<%= minute_picker("event_dtstart_time_min", @event_dtstart.min) %>
+				<%= ampm_picker("event_dtstart_time_ampm", @event_dtstart.strftime("%p").downcase) %>
+				&nbsp;
 				<%= month_picker("event_dtstart_date_mon", @event_dtstart.mon) %>
 				<%= day_picker("event_dtstart_date_day", @event_dtstart.day) %>
 				<%= year_picker("event_dtstart_date_year", @event_dtstart.year) %>
 			</fb:editor-custom>
-			<fb:editor-divider />
-			<% event_dtend_utc = @event_dtend - @event_dtend.gmt_offset %>
-			<fb:editor-time label="End Time" name="event_dtend_time" value="<%= event_dtend_utc.to_i %>" />
-			<fb:editor-custom>
+			<!-- <%= @event_dtend.to_s %> -->
+			<fb:editor-custom label="End Time">
+				<%= hour_picker("event_dtend_time_hour", @event_dtend.strftime("%I")) %> :
+				<%= minute_picker("event_dtend_time_min", @event_dtend.min) %>
+				<%= ampm_picker("event_dtend_time_ampm", @event_dtend.strftime("%p").downcase) %>
+				&nbsp;
 				<%= month_picker("event_dtend_date_mon", @event_dtend.mon) %>
 				<%= day_picker("event_dtend_date_day", @event_dtend.day) %>
 				<%= year_picker("event_dtend_date_year", @event_dtend.year) %>

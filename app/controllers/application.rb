@@ -16,35 +16,34 @@ class ApplicationController < ActionController::Base
 		end
 	end
 
-    # A URL helper that will hopefully override the default fbplaces_url and let you
-    # link to crap easier.
-    #
-    # options_hash possible values:
-    #   :action => (any action you wish... used in ../action/us/ok/tulsa/
-    #   :country => (two-letter country code)
-    #   :state => (two-letter state)
-    #   :city => City object
-    #   :place => Place object
-    def fbplaces_url(options = {})
-            url = "#{PLACES_FBURL}/"
-            if options[:action] != nil && options[:action] != ""
-                    url << "#{url_sanitize(options[:action].to_s)}/"
-            end
-            if options[:country] != nil && options[:country] != ""
-                    url << "#{url_sanitize(options[:country])}/"
-            end
-            if options[:state] != nil && options[:state] != ""
-                    url << "#{url_sanitize(options[:state])}/"
-            end
-            if options[:city] != nil && options[:city] != ""
-                    url << "#{url_sanitize(options[:city])}/"
-            end
-            if options[:place] != nil && options[:place] != ""
-                    url << "#{url_sanitize(options[:place])}/"
-            end
-            return url
-    end
-
+	# A URL helper that will hopefully override the default fbplaces_url and let you
+	# link to crap easier.
+	#
+	# options_hash possible values:
+	#   :action => (any action you wish... used in ../action/us/ok/tulsa/
+	#   :country => (two-letter country code)
+	#   :state => (two-letter state)
+	#   :city => City object
+	#   :place => Place object
+	def fbplaces_url(options = {})
+		url = "#{PLACES_FBURL}/"
+		if options[:action] != nil && options[:action] != ""
+			url << "#{url_sanitize(options[:action].to_s)}/"
+		end
+		if options[:country] != nil && options[:country] != ""
+			url << "#{url_sanitize(options[:country])}/"
+		end
+		if options[:state] != nil && options[:state] != ""
+			url << "#{url_sanitize(options[:state])}/"
+		end
+		if options[:city] != nil && options[:city] != ""
+			url << "#{url_sanitize(options[:city])}/"
+		end
+		if options[:place] != nil && options[:place] != ""
+			url << "#{url_sanitize(options[:place])}/"
+		end
+		return url
+	end
 	
 	# Set no cache headers
 	def do_not_cache
@@ -94,4 +93,97 @@ class ApplicationController < ActionController::Base
             return str.chomp.strip.downcase.gsub(/[^0-9A-Za-z_\-\s]/, "").gsub(" ", "-")
     end
 
+	# This method gets all of the networks for the current fbsession user
+	def get_networks
+		response = fbsession.users_getInfo(:uids => fbsession.session_user_id, :fields => ["affiliations"])
+		if response != nil && response.user != nil && response.user.affiliations_list != nil
+			# XXX: We work with cities currently, so we have to only support regional networks right now.
+			# College and work networks will be supported but we will have to have some sort of associated
+			# city with each network. We will depend on our users for this information, and this requires more
+			# UI and stuff.
+			@networks = []
+			@unsupported_networks = []
+
+			response.user.affiliations.affiliation_list.each do |affiliation|
+				# method_missing("type") is used because affiliation.type does not work
+				# because type is a reserved Ruby method
+				# Also, check for "/" as in "Dallas / Fort Worth, TX". We don't support
+				# a regional network named like that yet.
+				if affiliation.method_missing("type") == "region" && !(affiliation.name =~ /\//)
+					@networks << affiliation
+
+					# Create a city for each regional network when we detect them.
+					aff_state = affiliation.name.split(",")[-1].chomp.strip
+					aff_city = affiliation.name.split(",")[0].chomp.strip
+
+					# Unless is backwards if. the following code is run always, unless
+					# the city actually exists.
+					unless PlacesService.isCity?(aff_city, aff_state) 
+						puts "*** Places: Creating a new city: #{aff_city}, #{aff_state}"
+						c = PlacesService.createCity(aff_city, aff_state)
+						c.created_by_id = @fbuser.id
+						c.save!
+					end
+				else
+					@unsupported_networks << affiliation
+				end
+			end
+			if @networks.length > 0
+				@primary_network = @networks[0].name
+				@primary_network_country = "US" # FIXME: This will need more support in the future when we support non-US places
+				@primary_network_state = @networks[0].name.split(",")[-1].chomp.strip
+				@primary_network_city = @networks[0].name.split(",")[0].chomp.strip
+			else
+				@primary_network = nil
+				@primary_network_country = nil
+				@primary_network_state = nil
+				@primary_network_city = nil
+			end
+		else
+			@primary_network = nil
+			@primary_network_country = nil
+			@primary_network_state = nil
+			@primary_network_city = nil
+			@networks = []
+		end
+	end
+
+	# Gets the home city for the current user.
+	def get_home_city
+		hcity_rel = Relationship.find(:first, :conditions => ["source_uuid = ? AND relationship = 'home_city'", @fbuser.uuid])
+		if hcity_rel.nil? && @primary_network != nil # the primary network may be nil if they don't have a regional network.
+			# home city is nil.
+			# This must mean there hasn't been one set. So we set the primary network city as the home city.
+			hcity_rel = Relationship.new do |r|
+				r.source_uuid = @fbuser.uuid
+				c = PlacesService.getCity(@primary_network_city, @primary_network_state)
+				if c != nil
+					r.target_uuid = c.uuid 
+				else
+					raise "get_home_city: attempting to set home city to a city that does not exist!"
+				end
+				r.relationship = "home_city"
+			end
+			hcity_rel.save!
+		end
+
+		# See if we created it or not a minute ago...
+		if hcity_rel.nil?
+			@home_city = nil
+		else
+			hcity = City.find_by_uuid(hcity_rel.target_uuid)
+			@home_city = hcity
+		end
+	end
+
+	# Gets the secondary city for the current user. 
+	def get_secondary_city
+		scity_rel = Relationship.find(:first, :conditions => ["source_uuid = ? AND relationship = 'secondary_city'", @fbuser.uuid])
+		if scity_rel.nil?
+			@secondary_city = nil
+		else
+			scity = City.find_by_uuid(scity_rel.target_uuid)
+			@secondary_city = scity
+		end
+	end
 end

@@ -95,6 +95,58 @@ module ApplicationHelper
 		return str.chomp.strip.downcase.gsub(/[^0-9A-Za-z_\-\s]/, "").gsub(" ", "-")
 	end
 
+	# Returns HTML for an hour picker having the HTML name specified.
+	# To work around Facebook's time picker not doing timezones in the least bit
+	# correctly.
+	def hour_picker(name, default = 0)
+		html = ""
+		html << "<select name='#{name}'>"
+		i = 0
+		if default.to_i > 12
+			default = default.to_i - 12
+		end
+		12.times do
+			i = i + 1
+			if default.to_i == i
+				html << "<option value='#{i}' selected='selected'>#{i}</option>"
+			else
+				html << "<option value='#{i}'>#{i}</option>"
+			end
+		end
+		html << "</select>"
+		return html
+	end
+
+	# Returns HTML for a minute picker, staggered every 5 minutes. Because Facebook sucks.
+	def minute_picker(name, default = 0)
+		html = ""
+		html << "<select name='#{name}'>"
+		["00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"].each do |t|
+			if default.to_i == t.to_i
+				html << "<option value='#{t}' selected='selected'>#{t}</option>"
+			else
+				html << "<option value='#{t}'>#{t}</option>"
+			end
+		end
+		html << "</select>"
+		return html
+	end
+
+	# Returns HTML for an AM/PM picker
+	def ampm_picker(name, default = "am")
+		html  = ""
+		html << "<select name='#{name}'>"
+		["am", "pm"].each do |t|
+			if default == t
+				html << "<option value='#{t}' selected='selected'>#{t}</option>"
+			else
+				html << "<option value='#{t}'>#{t}</option>"
+			end
+		end
+		html << "</select>"
+		return html
+	end
+
 	# Returns HTML for a month picker having the HTML name specified.
 	# Optionally can specify the month and it will make it selected.
 	def month_picker(name, default = 0)
@@ -103,7 +155,7 @@ module ApplicationHelper
 		i = 0
 		MONTHS_EN.each do |m|
 			i = i + 1
-			if default == i
+			if default.to_i == i
 				html << "<option value='#{i}' selected='selected'>#{m}</option>"
 			else
 				html << "<option value='#{i}'>#{m}</option>"
@@ -120,7 +172,7 @@ module ApplicationHelper
 		i = 0
 		31.times do
 			i = i + 1
-			if default == i
+			if default.to_i == i
 				html << "<option value='#{i}' selected='selected'>#{i}</option>"
 			else
 				html << "<option value='#{i}'>#{i}</option>"
@@ -136,7 +188,7 @@ module ApplicationHelper
 		html << "<select name='#{name}'>"
 		i = Time.now.year
 		10.times do
-			if default == i
+			if default.to_i == i
 				html << "<option value='#{i}' selected='selected'>#{i}</option>"
 			else
 				html << "<option value='#{i}'>#{i}</option>"

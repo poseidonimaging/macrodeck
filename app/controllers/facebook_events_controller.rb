@@ -7,6 +7,10 @@ class FacebookEventsController < ApplicationController
 	# There is an optional option, redirect, which can be true or false, and if it's true, it redirects to
 	# redirecturl, which is another option, when it finishes.
 	def create
+		get_networks
+		get_home_city
+		get_secondary_city
+
 		if !params[:calendar].nil?
 			@calendar = Calendar.find_by_uuid(params[:calendar])
 			@errors = []
