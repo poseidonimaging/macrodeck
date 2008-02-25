@@ -1,6 +1,7 @@
 <style type="text/css">
 	/* standard stuff */
 	.content { padding-left: 10px; padding-right: 10px; padding-bottom: 10px; padding-top: 5px; }
+	.hidden { display: none; }
 	.breadcrumbs { color: #000; }
 	.area-title { font-size: 2.0em; border-bottom: 1px solid #d8dfea; margin-bottom: 5px; clear: both; }
 	div.area-subtitle { width: 100%; color: #999; font-size: 8pt; font-weight: normal; text-align: right; height: 1.3em; padding-bottom: 1em; } /* subtitle */
@@ -69,8 +70,8 @@
 	/* offset formatted paragraph thingies... er. best way is to describe:
 	Key	Value
 	*/
-	.offset .key { display: block; float: left; width: 20%; font-weight: bold; }
-	.offset .value { display: block; float: left; }
+	.offset .offset-key { display: block; float: left; width: 20%; font-weight: bold; }
+	.offset .offset-value { display: block; float: left; }
 	.offset br { clear: both; }
 
 	/* view place styles */
@@ -211,4 +212,13 @@
 	/* make a label that is standard text and not formatted specially */
 	label.standard { font-weight: normal; color: #000; }
 
+	/* Microformats */
+	.vcard .fn { display: none; }
+	.vcard .uid { display: none; }
+	.vevent { padding-bottom: 5px; }
+	.vevent dl { margin: 0; padding: 0; }
+	.vevent dt { display: none; }
+	.vevent dd { margin: 0; padding: 0; }
+	.vevent abbr { text-decoration: none; color: #999; border-bottom: 0; }
+	.vevent .dtend { display: none; }
 </style>

@@ -15,29 +15,7 @@
 			<%= render :partial => "place_profile_sidebar" %>
 			<div class="profile-content">
 				<div class="profile-content-padding">
-					<% if !@place.description.nil? && !@place.description.empty? %><p><%= auto_link(simple_format(h(@place.description))) %></p><% end %>
-					<div class="offset">
-						<p>
-						<% if !@place.place_metadata[:address].nil? && !@place.place_metadata[:address].empty? %>
-							<span class="key">Address</span><span class="value"><%= h(@place.place_metadata[:address]) %></span><br />
-						<% end %>
-						<% if !@place.place_metadata[:zipcode].nil? && !@place.place_metadata[:zipcode].to_s.empty? %>
-							<span class="key">Zipcode</span><span class="value"><%= h(@place.place_metadata[:zipcode]) %></span><br />
-						<% end %>
-						<% if !@place.place_metadata[:phone_number].nil? && !@place.place_metadata[:phone_number].empty? %>
-							<span class="key">Phone Number</span><span class="value"><%= h(@place.place_metadata[:phone_number]) %></span><br />
-						<% end %>
-						<% if !@place.place_metadata[:website].nil? && !@place.place_metadata[:website].empty? %>
-							<span class="key">Website</span><span class="value"><%= auto_link(h(@place.place_metadata[:website])) %></span><br />
-						<% end %>
-						<% if !@place.place_metadata[:latitude].nil? && !@place.place_metadata[:latitude].to_s.empty? %>
-							<span class="key">Latitude</span><span class="value"><%= h(@place.place_metadata[:latitude]) %></span><br />
-						<% end %>
-						<% if !@place.place_metadata[:longitude].nil? && !@place.place_metadata[:longitude].to_s.empty? %>
-							<span class="key">Longitude</span><span class="value"><%= h(@place.place_metadata[:longitude]) %></span><br />
-						<% end %>
-						</p>
-					</div>
+					<%= render :partial => "hcard" %>
 
 					<h2 class="section-title">Features and Services</h2>
 					<% if @place_features.nil? %>
@@ -60,27 +38,7 @@
 					<h2 class="section-title">Events</h2>
 					<% if @place.calendar.events != nil && @place.calendar.events.length > 0 %>
 						<div class="vcalendar">
-						<% @place.calendar.events.each do |event| %>
-							<!-- TODO: Convert to partial -->
-							<div class="vevent">
-								<h3 class="summary"><%= event.title %></h3>
-								<dl class="eventinfo">
-									<dt>Start Time</dt>
-									<dd>
-										<abbr class="dtstart" title="<%= event.start_time.strftime("%Y-%m-%d %H:%M:%S") %>">
-											<%= event.start_time.strftime("%B %d, %Y at %I:%M %p") %>
-										</abbr>
-									</dd>
-									<dt>End Time</dt>
-									<dd>
-										<abbr class="dtend" title="<%= event.end_time.strftime("%Y-%m-%d %H:%M:%S") %>">
-											<%= event.end_time.strftime("%B %d, %Y at %I:%M %p") %>
-										</abbr>
-									</dd>
-								</dl>
-								<!-- TODO: location via hCard for the place -->
-							</div>
-						<% end %>
+							<%= render :partial => "hcalendar", :collection => @place.calendar.events %>
 						</div>
 					<% else %>
 						<p>This place has no events. If you know about any, let us know!</p>

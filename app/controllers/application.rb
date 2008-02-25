@@ -42,6 +42,9 @@ class ApplicationController < ActionController::Base
 		if options[:place] != nil && options[:place] != ""
 			url << "#{url_sanitize(options[:place])}/"
 		end
+		if options[:place_action] != nil && options[:place_action] != ""
+			url << "#{url_sanitize(options[:place_action].to_s)}/"
+		end
 		return url
 	end
 	
