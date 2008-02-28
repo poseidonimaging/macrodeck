@@ -61,6 +61,28 @@ class FacebookEventsController < ApplicationController
 		end
 	end
 
+	# Shows all of the events in a calendar
+	def events
+		if params[:calendar] != nil
+			@calendar = Calendar.find_by_uuid(params[:calendar])
+			if @calendar
+				if @calendar.events
+					if params[:show_all]
+						@events = @calendar.events.paginate(:page => params[:page], :per_page => 10)
+					else
+						@events = @calendar.upcoming_events.paginate(:page => params[:page], :per_page => 10)
+					end
+				else
+					@events = nil
+				end
+			else
+				raise ArgumentError, "event#events - Calendar is missing!"
+			end
+		else
+			raise ArgumentError, "event#events - Invalid calendar passed!"
+		end
+	end
+
 	# Fills in some redirect stuff and then calls create.
 	def create_from_places
 		# get calendar uuid
