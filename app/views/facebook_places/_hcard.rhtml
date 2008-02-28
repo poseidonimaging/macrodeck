@@ -1,0 +1,35 @@
+<div class="vcard">
+	<% if !@place.description.nil? && !@place.description.empty? %>
+		<p class="note"><%= auto_link(simple_format(h(@place.description))) %></p>
+	<% end %>
+	<div class="offset">
+		<p>
+			<span class="hidden">
+				<span class="offset-key">Name</span><span class="offset-value"><span class="fn org"><%= @place.name %></span></span>
+				<span class="offset-key">UUID</span><span class="offset-value"><span class="uid"><%= "#{@place.uuid}.places.macrodeck.com" %></span></span><br />
+			</span>
+			<span class="adr">
+				<% if !@place.place_metadata[:address].nil? && !@place.place_metadata[:address].empty? %>
+					<span class="offset-key">Address</span><span class="offset-value street-address"><%= h(@place.place_metadata[:address]) %></span><br />
+				<% end %>
+				<% if !@place.place_metadata[:zipcode].nil? && !@place.place_metadata[:zipcode].to_s.empty? %>
+					<span class="offset-key">Zipcode</span><span class="offset-value postal-code"><%= h(@place.place_metadata[:zipcode]) %></span><br />
+				<% end %>
+			</span>
+			<% if !@place.place_metadata[:phone_number].nil? && !@place.place_metadata[:phone_number].empty? %>
+				<span class="offset-key">Phone Number</span><span class="offset-value tel"><%= h(@place.place_metadata[:phone_number]) %></span><br />
+			<% end %>
+			<% if !@place.place_metadata[:website].nil? && !@place.place_metadata[:website].empty? %>
+				<span class="offset-key">Website</span><span class="offset-value url"><%= auto_link(h(@place.place_metadata[:website])) %></span><br />
+			<% end %>
+			<span class="geo">
+				<% if !@place.place_metadata[:latitude].nil? && !@place.place_metadata[:latitude].to_s.empty? %>
+					<span class="offset-key">Latitude</span><span class="offset-value latitude"><%= h(@place.place_metadata[:latitude]) %></span><br />
+				<% end %>
+				<% if !@place.place_metadata[:longitude].nil? && !@place.place_metadata[:longitude].to_s.empty? %>
+					<span class="offset-key">Longitude</span><span class="offset-value longitude"><%= h(@place.place_metadata[:longitude]) %></span><br />
+				<% end %>
+			</span>
+		</p>
+	</div>
+</div>

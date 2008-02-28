@@ -62,7 +62,7 @@ class FacebookPlacesController < ApplicationController
 						# FYI: This used to be the view city page but then I realized that was dumb
 						# Browse City is now a listing of places.
 						get_city_info(params[:city], params[:state])
-						@places = Place.paginate(:conditions => ["datatype = ? AND grouping = ?", DTYPE_PLACE, @city.uuid], :order => "title ASC", :page => params[:page], :per_page => 10)
+						@places = Place.paginate(:conditions => ["type = 'Place' AND parent_id = ?", @city.id], :order => "title ASC", :page => params[:page], :per_page => 10)
 						render :template => "facebook_places/browse_city"
 					else
 						# Browse the state (all cities). Should this be explicitly allowed?

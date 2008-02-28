@@ -45,6 +45,9 @@
 			</fb:editor-custom>
 			<!-- <%= @event_dtend.to_s %> -->
 			<fb:editor-custom label="End Time">
+				<%= check_box_tag "event_dtend_disable", "1", @event_dtend_disable, :style => "width: 13px; height: 13px;" %> This event does not have a specified ending time.
+			</fb:editor-custom>
+			<fb:editor-custom>
 				<%= hour_picker("event_dtend_time_hour", @event_dtend.strftime("%I")) %> :
 				<%= minute_picker("event_dtend_time_min", @event_dtend.min) %>
 				<%= ampm_picker("event_dtend_time_ampm", @event_dtend.strftime("%p").downcase) %>

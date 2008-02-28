@@ -1,0 +1,24 @@
+<fb:fbml>
+
+	<%
+	# TODO: Don't render partials from other controllers (not a problem _yet_) 
+	%>
+	<%= render :partial => "facebook_places/style" %>
+
+	<%= render :partial => "facebook_places/dashboard" %>
+	
+	<%= render :partial => "facebook_places/tabs" %>
+
+	<div class="content">
+		<%= render :partial => "breadcrumbs", :locals => { :calendar => nil, :event => nil } %>
+		<h1 class="area-title"><%= h(@calendar.title) %></h1>
+		<br />
+		<div class="vcalendar">
+			<%= render :partial => "hevent", :collection => @events %>
+		</div>
+		<div class="clear">
+			<br />
+			<%= will_paginate @events %>
+		</div>
+	</div>
+</fb:fbml>

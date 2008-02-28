@@ -1,0 +1,35 @@
+<div class="vevent">
+	<h3 class="summary"><%= hevent.title %></h3>
+	<dl class="eventinfo">
+		<% if !hevent.description.nil? && hevent.description.length > 0 %>
+			<dt>Description</dt>
+			<dd>
+				<p class="description"><%= hevent.description %></p>
+			</dd>
+		<% end %>
+		<span class="hidden">
+			<dt>UUID</dt>
+			<dd class="uid">
+				<%= "#{hevent.uuid}.events.macrodeck.com" %>
+			</dd>
+			<dt>Last Updated</dt>
+			<dd>
+				<abbr class="dtstamp" title="<%= hevent.updated_at.strftime("%Y-%m-%d %H:%M:%S") %>">
+					<%= hevent.updated_at.strftime("%B %d, %Y at %I:%M %p") %>
+				</abbr>
+			</dd>
+		</span>
+		<dt>Start Time</dt>
+		<dd>
+			<abbr class="dtstart" title="<%= hevent.start_time.strftime("%Y-%m-%d %H:%M:%S") %>">
+				<%= hevent.start_time.strftime("%B %d, %Y at %I:%M %p") %>
+			</abbr>
+		</dd>
+		<dt>End Time</dt>
+		<dd>
+			<abbr class="dtend" title="<%= hevent.end_time.strftime("%Y-%m-%d %H:%M:%S") %>">
+				<%= hevent.end_time.strftime("%B %d, %Y at %I:%M %p") %>
+			</abbr>
+		</dd>
+	</dl>
+</div>

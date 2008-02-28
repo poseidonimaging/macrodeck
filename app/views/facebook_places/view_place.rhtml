@@ -38,10 +38,11 @@
 					<h2 class="section-title">Events</h2>
 					<% if @place.calendar.events != nil && @place.calendar.events.length > 0 %>
 						<div class="vcalendar">
-							<%= render :partial => "hcalendar", :collection => @place.calendar.events %>
+							<%= render :partial => "facebook_events/hevent", :collection => @place.calendar.upcoming_events[0..10] %>
+							<p><%= link_to "Create an event", fbplaces_url(:action => :view, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part, :place => @place.url_part, :place_action => :create_event) %></p>
 						</div>
 					<% else %>
-						<p>This place has no events. If you know about any, let us know!</p>
+						<p>This place has no events. If you know about any, <%= link_to "add them", fbplaces_url(:action => :view, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part, :place => @place.url_part, :place_action => :create_event) %>!</p>
 					<% end %>
 					<br />
 					<h2 class="section-title thewall">The Wall</h2>
