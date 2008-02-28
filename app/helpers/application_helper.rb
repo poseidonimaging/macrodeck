@@ -103,7 +103,7 @@ module ApplicationHelper
 	# correctly.
 	def hour_picker(name, default = 0)
 		html = ""
-		html << "<select name='#{name}'>"
+		html << "<select name='#{name}' id='#{name}'>"
 		i = 0
 		if default.to_i > 12
 			default = default.to_i - 12
@@ -123,7 +123,7 @@ module ApplicationHelper
 	# Returns HTML for a minute picker, staggered every 5 minutes. Because Facebook sucks.
 	def minute_picker(name, default = 0)
 		html = ""
-		html << "<select name='#{name}'>"
+		html << "<select name='#{name}' id='#{name}'>"
 		["00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"].each do |t|
 			if default.to_i == t.to_i
 				html << "<option value='#{t}' selected='selected'>#{t}</option>"
@@ -138,7 +138,7 @@ module ApplicationHelper
 	# Returns HTML for an AM/PM picker
 	def ampm_picker(name, default = "am")
 		html  = ""
-		html << "<select name='#{name}'>"
+		html << "<select name='#{name}' id='#{name}'>"
 		["am", "pm"].each do |t|
 			if default == t
 				html << "<option value='#{t}' selected='selected'>#{t}</option>"
@@ -154,7 +154,7 @@ module ApplicationHelper
 	# Optionally can specify the month and it will make it selected.
 	def month_picker(name, default = 0)
 		html = ""
-		html << "<select name='#{name}'>"
+		html << "<select name='#{name}' id='#{name}'>"
 		i = 0
 		MONTHS_EN.each do |m|
 			i = i + 1
@@ -171,7 +171,7 @@ module ApplicationHelper
 	# Returns HTML for a day picker having the HTML name specified.
 	def day_picker(name, default = 0)
 		html = ""
-		html << "<select name='#{name}'>"
+		html << "<select name='#{name}' id='#{name}'>"
 		i = 0
 		31.times do
 			i = i + 1
@@ -188,7 +188,7 @@ module ApplicationHelper
 	# Returns HTML for a year picker, having the HTML name specified
 	def year_picker(name, default = 0)
 		html = ""
-		html << "<select name='#{name}'>"
+		html << "<select name='#{name}' id='#{name}'>"
 		i = Time.now.year
 		10.times do
 			if default.to_i == i

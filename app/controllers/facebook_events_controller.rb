@@ -19,7 +19,7 @@ class FacebookEventsController < ApplicationController
 			else
 				@event_dtstart = date_from_params("event_dtstart")
 				@event_dtend = date_from_params("event_dtend")
-				@event_dtend_enable = params["event_dtend_enable"]
+				@event_dtend_disable = params["event_dtend_disable"]
 				@event_summary = params["event_summary"]
 				@event_description = params["event_description"]
 				@event_recurrence = params["event_recurrence"]
@@ -32,15 +32,19 @@ class FacebookEventsController < ApplicationController
 				else
 					# validate the data and create the place
 					@errors << "Your event must have a summary." if @event_summary.nil? || @event_summary.length == 0
-					@errors << "Your event cannot end before it starts!" if @event_dtend < @event_dtstart
-					@errors << "Your event cannot start and end at the same time!" if @event_dtend == @event_dtstart
+					@errors << "Your event cannot end before it starts!" if (@event_dtend < @event_dtstart) && !@event_dtend_disable
+					@errors << "Your event cannot start and end at the same time!" if (@event_dtend == @event_dtstart) && !@event_dtend_disable
 					@errors << "Your event cannot start in the past!" if @event_dtstart < Time.now
 
 					if @errors.length > 0
 						render :template => "facebook_events/create_event"
 					else
 						# create the event.
-						extdata = { :start_time => @event_dtstart, :end_time => @event_dtend }
+						if @event_dtend_disable
+							extdata = { :start_time => @event_dtstart, :no_end_time = true }
+						else
+							extdata = { :start_time => @event_dtstart, :end_time => @event_dtend, :no_end_time => false }
+						end
 						e = Event.create(:extended_data => extdata, :title => @event_summary, :description => @event_description, :parent_id => @calendar.id,
 										 :created_by => @fbuser, :owned_by => @fbuser)
 

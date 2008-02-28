@@ -44,8 +44,27 @@
 				<%= year_picker("event_dtstart_date_year", @event_dtstart.year) %>
 			</fb:editor-custom>
 			<!-- <%= @event_dtend.to_s %> -->
+			<script>
+				// Handles the following checkbox.
+				function event_dtend_disable_handler() {
+					chkDtEnd = document.getElementById('event_dtend_disable');
+					chkDtEnd_Hour = document.getElementById('event_dtend_time_hour');
+					chkDtEnd_Min = document.getElementById('event_dtend_time_min');
+					chkDtEnd_AMPM = document.getElementById('event_dtend_time_ampm');
+					chkDtEnd_Mon = document.getElementById('event_dtend_date_mon');
+					chkDtEnd_Day = document.getElementById('event_dtend_date_day');
+					chkDtEnd_Year = document.getElementById('event_dtend_date_year');
+
+					chkDtEnd_Hour.setDisabled(chkDtEnd.getChecked());
+					chkDtEnd_Min.setDisabled(chkDtEnd.getChecked());
+					chkDtEnd_AMPM.setDisabled(chkDtEnd.getChecked());
+					chkDtEnd_Mon.setDisabled(chkDtEnd.getChecked());
+					chkDtEnd_Day.setDisabled(chkDtEnd.getChecked());
+					chkDtEnd_Year.setDisabled(chkDtEnd.getChecked());
+				}
+			</script>
 			<fb:editor-custom label="End Time">
-				<%= check_box_tag "event_dtend_disable", "1", @event_dtend_disable, :style => "width: 13px; height: 13px;" %> This event does not have a specified ending time.
+				<%= check_box_tag "event_dtend_disable", "1", @event_dtend_disable, :style => "width: 13px; height: 13px;", :onchange => "event_dtend_disable_handler();" %> This event does not have a specified ending time.
 			</fb:editor-custom>
 			<fb:editor-custom>
 				<%= hour_picker("event_dtend_time_hour", @event_dtend.strftime("%I")) %> :
