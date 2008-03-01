@@ -41,7 +41,7 @@ class FacebookEventsController < ApplicationController
 					else
 						# create the event.
 						if @event_dtend_disable
-							extdata = { :start_time => @event_dtstart, :no_end_time = true }
+							extdata = { :start_time => @event_dtstart, :no_end_time => true }
 						else
 							extdata = { :start_time => @event_dtstart, :end_time => @event_dtend, :no_end_time => false }
 						end
