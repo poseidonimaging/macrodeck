@@ -1,5 +1,5 @@
 <div class="vevent">
-	<h3 class="summary"><%= hevent.title %></h3>
+	<h3><%= link_to hevent.title, fbevents_url(:action => :event, :calendar => hevent.parent.url_part, :event => hevent.url_part), :class => "summary" %></h3>
 	<dl class="eventinfo">
 		<% if !hevent.description.nil? && hevent.description.length > 0 %>
 			<dt>Description</dt>

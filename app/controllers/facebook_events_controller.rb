@@ -67,6 +67,10 @@ class FacebookEventsController < ApplicationController
 
 	# Shows all of the events in a calendar
 	def events
+		get_networks
+		get_home_city
+		get_secondary_city
+
 		if params[:calendar] != nil
 			@calendar = Calendar.find_by_uuid(params[:calendar])
 			if @calendar
@@ -84,6 +88,29 @@ class FacebookEventsController < ApplicationController
 			end
 		else
 			raise ArgumentError, "event#events - Invalid calendar passed!"
+		end
+	end
+
+	# Shows a specific event in a calendar
+	def event
+		get_networks
+		get_home_city
+		get_secondary_city
+
+		if params[:calendar] != nil && params[:event] != nil
+			@calendar = Calendar.find_by_uuid(params[:calendar])
+			if @calendar
+				@event = Event.find_by_uuid(params[:event])
+				if @event
+					render
+				else
+					raise ArgumentError, "event#event - Event is missing!"
+				end
+			else
+				raise ArgumentError, "event#event - Calendar is missing!"
+			end
+		else
+			raise ArgumentError, "event#event - Invalid calendar passed!"
 		end
 	end
 
