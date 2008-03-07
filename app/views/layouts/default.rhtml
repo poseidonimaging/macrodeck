@@ -5,17 +5,13 @@
 	<%= render :partial => "layouts/header" %>
 </head>
 <body>
-	<div id="header">
-		<%= render :partial => "layouts/top" %>
+	<h1>MacroDeck</h1>
+	<%= render :partial => "layouts/menubar" %>
+
+	<div id="content">
+		<%= @content_for_layout %>
 	</div>
-	<div id="main">
-		<div id="content-container">
-			<div id="content">
-				<%= @content_for_layout %>
-				<br />
-				<%= render :partial => "layouts/footer" %>				
-			</div>
-		</div>
-	</div>
+
+	<%= render :partial => "layouts/footer" %>
 </body>
 </html>

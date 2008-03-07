@@ -1,0 +1,58 @@
+/* MacroDeck Facebook Applications */
+/* Common CSS Definitions */
+
+/* standard stuff */
+.content { padding-left: 10px; padding-right: 10px; padding-bottom: 10px; padding-top: 5px; }
+.hidden { display: none; }
+.breadcrumbs { color: #000; }
+.area-title { font-size: 2.0em; border-bottom: 1px solid #d8dfea; margin-bottom: 5px; clear: both; }
+div.area-subtitle { width: 100%; color: #999; font-size: 8pt; font-weight: normal; text-align: right; height: 1.3em; padding-bottom: 1em; } /* subtitle */
+.section-title {
+	font-size: 1.0em;
+	border-top: 1px solid #3b5998;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	clear: both;
+	padding-top: 2px;
+	padding-left: 5px;
+	padding-bottom: 2px;
+	background-color: #d8dfea;
+	color: #3b5998;
+}
+.clear { clear: both; }
+.align-left { text-align: left; margin-left: 0; margin-right: auto; }
+.align-right { text-align: right; margin-left: auto; margin-right: 0; }
+
+/* box styles */
+.information { background-color: #FDFFE4; padding: 5px; border: 1px solid #FFDA5B; }
+.information h2 { font-size: 8pt; }
+.information h1 { font-size: 8pt; }
+.information-compact { background-color: #FDFFE4; padding: 5px; border: 1px solid #FFDA5B; }
+.information-compact p { padding: 0; margin: 0; font-size: 8pt; }
+.errors { background-color: #F7E5E4; padding: 5px; border: 1px solid #610B23; }
+.errors h2 { font-size: 8pt; }
+
+/* ad stuff */
+.ad-placeholder { width: 100px; height: 100px; padding: 5px; border: 1px solid #000; font-size: 8pt; background-color: #ccc; }
+/* ad stuff - futurama name to evade blocking even though I block ads too */
+.dont-eat-the-popplers { width: 128px; border: 1px solid #d8dfea; }
+.dont-eat-the-popplers a { display: block; padding: 5px; text-decoration: none; color: #000; text-align: center; }
+.dont-eat-the-popplers img { display: block; border: 0; text-align: center; margin-left: auto; margin-right: auto; }
+
+/* images */
+img.inline { vertical-align: middle; }
+
+/*** Forms ***/
+
+/* generic styles for input elements */
+.invalid-selection { color: #ccc; }
+.seperator { border-top: 1px solid #ccc; height: 1px; margin: 0; margin-top: 10px; padding: 0; }
+
+/* faux label = looks like a <label> on the left side of the form but is a <p> */
+.faux-label { color: #000; font-weight: bold; }
+
+/* bottom submit buttons */
+.form-submit { margin-right: 0; margin-left: auto; padding: 0; text-align: right; }
+
+/* make a label that is standard text and not formatted specially */
+label.standard { font-weight: normal; color: #000; }

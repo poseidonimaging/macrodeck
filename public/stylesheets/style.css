@@ -1,26 +1,49 @@
 /* MACRODECK MASTER STYLESHEET */
 
+/* Palette: Samaha <http://www.colourlovers.com/palette/203494/Samaha>
+ * Colors: #235674, #2A7983, #43A793, #6FBE56, #B4D365
+ */
 body {
-	font-family: 'Lucida Grande', 'Lucida Sans Unicode', 'Tahoma', 'Verdana', 'Arial', sans-serif;
-	font-size: 9pt;
+	font-family: 'Lucida Grande', 'Lucida Sans Unicode', 'Luxi Sans', 'Tahoma', 'Verdana', 'Arial', sans-serif;
 	margin: 0;
-	padding: 0;
+	padding: 1em;
 }
 
-/* Links */
-a:link {
-	background-color: transparent;
-	color: #0456c9;
+/* Headers */
+h1 {
+	padding: 0; 
+	margin: 0;
+	color: #235674;
+	text-transform: lowercase;
+	border-bottom: 5px solid #235674;
+}
+h1 span { display: none; }
+h2 { color: #2A7983; }
+h3 { color: #43A793; }
+
+/* Menubar */
+div.skipnavigation { display: none; }
+ul.menubar { color: #B4D365; margin: 0; padding: 0; }
+ul.menubar li {
+	list-style-type: none;
+	float: left;
+	padding: 0.1em 0.5em 0.5em 0;
+	font-size: 1em;
+}
+ul.menubar li a {
+	text-transform: lowercase;
+	color: #B4D365;
+	text-decoration: none;
 }
 
-a:link:hover {
-	background-color: transparent;
-	color: #247fe8;
+/* Content */
+div#content {
+	clear: both;
 }
 
 /* Generic styles */
 .monospace {
-	font-family: 'Courier New', monospace;
+	font-family: 'Monaco', 'Courier New', monospace;
 }
 
 .block {
@@ -29,11 +52,6 @@ a:link:hover {
 
 .clear {
 	clear: both;
-}
-
-.small {
-	font-size: 8pt;
-	font-weight: lighter;
 }
 
 .hide {

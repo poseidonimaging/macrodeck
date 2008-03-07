@@ -1,25 +1,15 @@
-	<% if @page_title != nil then %>
-		<title><%= @page_title %> - MacroDeck</title>
-	<% else %>
-		<title>MacroDeck</title>
-	<% end %>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="Keywords" content="macro, deck, macrodeck, tools, blogging, blog, home, page, homepage, site, feed, reader, rss, facebook, place, finder" />
-    <meta name="Robots" content="ALL" />
-    <meta name="Revisit-After" content="1 day" />
-	<meta name="Generator" content="Ruby on Rails" />
-	<%= stylesheet_link_tag "style", :title => "MacroDeck" %>
-	<%= stylesheet_link_tag "top", :title => "MacroDeck" %>
-	<%= stylesheet_link_tag "actions", :title => "MacroDeck" %>
-	<%= stylesheet_link_tag "tables", :title => "MacroDeck" %>
-	<%= stylesheet_link_tag "body", :title => "MacroDeck" %>
-	<%= stylesheet_link_tag "yui" %>
-	<%= stylesheet_link_tag "yui-tree" %>
-	<%= stylesheet_link_tag "yui-ext" %>
+<% if @page_title != nil then %>
+	<title><%= @page_title %> - MacroDeck</title>
+<% else %>
+	<title>MacroDeck</title>
+<% end %>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="Keywords" content="macro, deck, macrodeck, tools, blogging, blog, home, page, homepage, site, feed, reader, rss, facebook, place, finder" />
+<meta name="Robots" content="ALL" />
+<meta name="Revisit-After" content="1 day" />
+<meta name="Generator" content="Ruby on Rails" />
+<%= stylesheet_link_tag "style", :title => "MacroDeck" %>
 
-	<%= javascript_include_tag :defaults %>
-	<%= javascript_include_tag "http://www.google-analytics.com/urchin.js" %>
-	<%= javascript_include_tag "tracking" %>
-	<%= javascript_include_tag "yui-utilities" %>
-	<%= javascript_include_tag "yui-treeview" %>
-	<%= javascript_include_tag "yui-ext" %>
+<%= javascript_include_tag :defaults %>
+<%= javascript_include_tag "http://www.google-analytics.com/urchin.js" %>
+<%= javascript_include_tag "tracking" %>
