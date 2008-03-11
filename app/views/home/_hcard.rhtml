@@ -1,0 +1,46 @@
+<div class="vcard">
+	<h3><span class="fn org"><%= hcard.name %></span></h3>
+	<dl class="locationinfo">
+		<% if !hcard.description.nil? && !hcard.description.empty? %>
+			<dt>Description</dt>
+			<dd class="note">
+				<%= auto_link(simple_format(h(hcard.description))) %>
+			</dd>
+		<% end %>
+		<span class="hidden">
+			<dt>UUID</dt>
+			<dd class="uid"><%= "#{@place.uuid}.places.macrodeck.com" %></dd>
+		</span>
+		<% if !hcard.place_metadata[:address].nil? && !hcard.place_metadata[:address].empty? %>
+			<dt>Address</dt>
+			<dd class="adr">
+				<span class="street-address"><%= h(hcard.place_metadata[:address]) %></span><%
+				if !hcard.place_metadata[:zipcode].nil? && !hcard.place_metadata[:zipcode].to_s.empty? %>,
+					<span class="postal-code"><%= h(hcard.place_metadata[:zipcode]) %></span>
+				<% end %>
+			</dd>
+		<% end %>
+		<% if !hcard.place_metadata[:phone_number].nil? && !hcard.place_metadata[:phone_number].empty? %>
+			<dt>Phone Number</dt>
+			<dd class="tel">
+				<%= h(hcard.place_metadata[:phone_number]) %>
+			</dd>
+		<% end %>
+		<% if !hcard.place_metadata[:website].nil? && !hcard.place_metadata[:website].empty? %>
+			<dt>Website</dt>
+			<dd>
+				<%= link_to hcard.place_metadata[:website], hcard.place_metadata[:website], :class => "url" %>
+			</dd>
+		<% end %>
+		<span class="geo">
+		<% if	!hcard.place_metadata[:latitude].nil? && !hcard.place_metadata[:latitude].to_s.empty? && 
+			!hcard.place_metadata[:longitude].nil? && !hcard.place_metadata[:longitude].to_s.empty?
+		%>
+			<dt>Coordinates</dt>
+			<dd class="geo">
+				<span class="latitude"><%= h(hcard.place_metadata[:latitude]) %></span>,
+				<span class="longitude"><%= h(hcard.place_metadata[:longitude]) %></span>
+			</dd>
+		<% end %>
+	</dl>
+</div>
