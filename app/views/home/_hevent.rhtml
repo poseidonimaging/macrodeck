@@ -25,6 +25,14 @@
 				<%= hevent.start_time.strftime("%B %d, %Y at %I:%M %p") %>
 			</abbr>
 		</dd>
+		
+		<% if hevent.parent.parent.type == "Place" %>
+			<dt>Location</dt>
+			<dd class="location">
+				<%= render :partial => "hcard", :locals => { :hcard => hevent.parent.parent } %>
+			</dd>
+		<% end %>
+
 		<% if !hevent.no_end_time %>
 			<dt>End Time</dt>
 			<dd>
