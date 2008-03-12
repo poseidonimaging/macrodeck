@@ -38,7 +38,7 @@
 		<% end %>
 		<% if hevent.parent.parent[:type] == "Place" %>
 			<dt>Location</dt>
-			<dd class="location">
+			<dd class="location vcard">
 				<%= render :partial => "hcard", :locals => { :hcard => hevent.parent.parent } %>
 			</dd>
 		<% end %>
