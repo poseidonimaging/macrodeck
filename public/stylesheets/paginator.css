@@ -1,0 +1,39 @@
+/* MacroDeck */
+/* will_paginate Stylesheet */
+
+/* Palette: Samaha <http://www.colourlovers.com/palette/203494/Samaha>
+ * Colors: #235674, #2A7983, #43A793, #6FBE56, #B4D365
+*/
+
+
+.pagination {
+	padding: 3px 0 3px 0;
+	margin: 3px 0 3px 0;
+	font-size: 0.6em;
+}
+.pagination a {
+	padding: 2px 5px 2px 5px;
+	margin: 2px;
+	border: 1px solid #2A7983;
+	text-decoration: none;
+	color: #2A7983;
+}
+.pagination a:hover, .pagination a:active {
+	border: 1px solid #2A7983;
+	background-color: #2A7983;
+	color: #fff;
+}
+.pagination span.current {
+	padding: 2px 5px 2px 5px;
+	margin: 2px;
+	border: 1px solid #000;
+	font-weight: bold;
+	background-color: #235674;
+	color: #FFF;
+}
+.pagination span.disabled {
+	padding: 2px 5px 2px 5px;
+	margin: 2px;
+	border: 1px solid #eee;
+	color: #ddd;
+}

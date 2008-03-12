@@ -1,5 +1,4 @@
 <div class="vcard">
-	<h3><span class="fn org"><%= hcard.name %></span></h3>
 	<dl class="locationinfo">
 		<% if !hcard.description.nil? && !hcard.description.empty? %>
 			<dt>Description</dt>
@@ -7,7 +6,11 @@
 				<%= auto_link(simple_format(h(hcard.description))) %>
 			</dd>
 		<% end %>
-		<span class="hidden">
+
+		<dt>Name</dt>
+		<dd class="fn org"><%= hcard.name %></dd>
+		
+		<span class="hide">
 			<dt>UUID</dt>
 			<dd class="uid"><%= "#{hcard.uuid}.places.macrodeck.com" %></dd>
 		</span>

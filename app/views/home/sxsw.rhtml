@@ -11,8 +11,15 @@
 	<a href="http://www.macrodeck.com/">home page</a>.
 </p>
 
+<h2>Upcoming Events</h2>
+
 <div class="vcalendar">
 	<% if !@events.nil? %>
+		<%= will_paginate @events %>
+
 		<%= render :partial => "hevent", :collection => @events %>
+
+		<div class="clear"></div>
+		<%= will_paginate @events %>
 	<% end %>
 </div>

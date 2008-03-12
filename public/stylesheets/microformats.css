@@ -1,0 +1,20 @@
+/* MacroDeck Facebook Applications */
+/* Microformat Styles */
+
+.vevent { padding-bottom: 5px; }
+.vevent dl { margin: 0; padding: 0; font-size: 0.8em; }
+.vevent dt { display: none; }
+.vevent dd { margin: 0; padding: 0; }
+.vevent abbr { text-decoration: none; color: #999; border-bottom: 0; }
+.vevent p { margin: 0; padding: 0; }
+.vevent .dtend { display: none; }
+.vevent .vcard dt { display: none; }
+.vevent .vcard dd { display: none; }
+.vevent .vcard .fn { display: block; }
+.vevent .vcard .adr { display: block; }
+.eventpage .summary { display: none; }
+.eventpage dt { display: block !important; width: 80px; font-weight: bold; float: left; clear: left; }
+.eventpage dt:after { content: ":"; } /* MSIE unsupported */
+.eventpage dd { display: block !important; margin: 0 0 0 90px; padding: 0 0 0.5em 0; }
+.eventpage .dtstart { display: block; color: #000; }
+.eventpage .dtend { display: block; color: #000; }
