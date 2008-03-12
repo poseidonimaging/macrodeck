@@ -46,7 +46,7 @@ class FacebookEventsController < ApplicationController
 							extdata = { :start_time => @event_dtstart, :end_time => @event_dtend, :no_end_time => false }
 						end
 						e = Event.create(:extended_data => extdata, :title => @event_summary, :description => @event_description, :parent_id => @calendar.id,
-										 :created_by => @fbuser, :owned_by => @fbuser)
+								:created_by => @fbuser, :owned_by => @fbuser, :category_id => @calendar.category_id)
 
 						if @redirect
 							if @redirecturl =~ /^http:\/\/apps.facebook.com\/macrodeck/

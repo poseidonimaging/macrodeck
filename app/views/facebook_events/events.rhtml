@@ -14,7 +14,7 @@
 		<h1 class="area-title"><%= h(@calendar.title) %></h1>
 		<div class="area-subtitle"><%= link_to "Show All", :show_all => 1 %></div>
 		<div class="clear"></div>
-		<% if @events.length > 0 %>
+		<% if !@events.nil? && @events.length > 0 %>
 			<div class="vcalendar">
 				<%= render :partial => "hevent", :collection => @events %>
 			</div>

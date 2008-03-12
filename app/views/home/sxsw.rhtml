@@ -12,4 +12,7 @@
 </p>
 
 <div class="vcalendar">
+	<% if !@events.nil? %>
+		<%= render :partial => "hevent", :collection => @events %>
+	<% end %>
 </div>

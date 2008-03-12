@@ -39,7 +39,20 @@
 					<div class="sectiontop">
 						<div class="count">
 							<p>
-								Displaying <%= @place.calendar.upcoming_events.length %> of <%= link_to "#{@place.calendar.events.length} events",
+								<%
+									if !@place.calendar.upcoming_events.nil?
+										upcoming_events_count = @place.calendar.upcoming_events.length
+									else
+										upcoming_events_count = 0
+									end
+
+									if !@place.calendar.events.nil?
+										events_count = @place.calendar.events.length
+									else
+										events_count = 0
+									end
+								%>
+								Displaying <%= upcoming_events_count %> of <%= link_to "#{events_count} events",
 								fbevents_url(:action => :events, :calendar => @place.calendar.uuid) + "?show_all=1" %>
 							</p>
 						</div>

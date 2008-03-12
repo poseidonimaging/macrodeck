@@ -26,11 +26,14 @@
 			</abbr>
 		</dd>
 		
-		<% if hevent.parent.parent.type == "Place" %>
+		<% if hevent.parent.parent[:type] == "Place" %>
 			<dt>Location</dt>
 			<dd class="location">
 				<%= render :partial => "hcard", :locals => { :hcard => hevent.parent.parent } %>
 			</dd>
+		<% else %>
+			<!-- parent: <%= hevent.parent[:type] %> -->
+			<!-- parent.parent: <%= hevent.parent.parent[:type] %> -->
 		<% end %>
 
 		<% if !hevent.no_end_time %>

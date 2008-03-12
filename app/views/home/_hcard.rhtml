@@ -9,7 +9,7 @@
 		<% end %>
 		<span class="hidden">
 			<dt>UUID</dt>
-			<dd class="uid"><%= "#{@place.uuid}.places.macrodeck.com" %></dd>
+			<dd class="uid"><%= "#{hcard.uuid}.places.macrodeck.com" %></dd>
 		</span>
 		<% if !hcard.place_metadata[:address].nil? && !hcard.place_metadata[:address].empty? %>
 			<dt>Address</dt>
