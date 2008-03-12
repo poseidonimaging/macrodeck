@@ -12,6 +12,7 @@
 .vevent .vcard dd { display: none; }
 .vevent .vcard .fn { display: block; }
 .vevent .vcard .adr { display: block; }
+.vevent .vcard .maplink { display: block; }
 .eventpage .summary { display: none; }
 .eventpage dt { display: block !important; width: 80px; font-weight: bold; float: left; clear: left; }
 .eventpage dt:after { content: ":"; } /* MSIE unsupported */

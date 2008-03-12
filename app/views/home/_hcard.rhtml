@@ -1,19 +1,21 @@
 <div class="vcard">
 	<dl class="locationinfo">
+		<dt>Metadata</dt>
+		<dd>
+			<dl class="hide">
+				<dt>UUID</dt>
+				<dd class="uid"><%= "#{hcard.uuid}.places.macrodeck.com" %></dd>
+			</dl>
+		</dd>
+		<dt>Name</dt>
+		<dd class="fn org"><%= hcard.name %></dd>
+		
 		<% if !hcard.description.nil? && !hcard.description.empty? %>
 			<dt>Description</dt>
 			<dd class="note">
 				<%= auto_link(simple_format(h(hcard.description))) %>
 			</dd>
 		<% end %>
-
-		<dt>Name</dt>
-		<dd class="fn org"><%= hcard.name %></dd>
-		
-		<span class="hide">
-			<dt>UUID</dt>
-			<dd class="uid"><%= "#{hcard.uuid}.places.macrodeck.com" %></dd>
-		</span>
 		<% if !hcard.place_metadata[:address].nil? && !hcard.place_metadata[:address].empty? %>
 			<dt>Address</dt>
 			<dd class="adr">
@@ -35,7 +37,6 @@
 				<%= link_to hcard.place_metadata[:website], hcard.place_metadata[:website], :class => "url" %>
 			</dd>
 		<% end %>
-		<span class="geo">
 		<% if	!hcard.place_metadata[:latitude].nil? && !hcard.place_metadata[:latitude].to_s.empty? && 
 			!hcard.place_metadata[:longitude].nil? && !hcard.place_metadata[:longitude].to_s.empty?
 		%>
@@ -45,5 +46,9 @@
 				<span class="longitude"><%= h(hcard.place_metadata[:longitude]) %></span>
 			</dd>
 		<% end %>
+		<dt>Map</dt>
+		<dd class="maplink">
+			<%= link_to "Map", "http://maps.google.com/maps?q=#{hcard.place_metadata[:address]}, Austin, TX", :target => "_blank" %>
+		</dd>
 	</dl>
 </div>

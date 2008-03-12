@@ -1,14 +1,27 @@
 <div class="vevent">
 	<h3><span class="summary"><%= hevent.summary %></span></h3>
 	<dl class="eventinfo">
-		
+		<dt>Metadata</dt>
+		<dd>
+			<dl class="hide">
+				<dt>UUID</dt>
+				<dd class="uid">
+					<%= "#{hevent.uuid}.events.macrodeck.com" %>
+				</dd>
+				<dt>Last Updated</dt>
+				<dd>
+					<abbr class="dtstamp" title="<%= hevent.updated_at.strftime("%Y-%m-%d %H:%M:%S") %>">
+						<%= hevent.updated_at.strftime("%B %d, %Y at %I:%M %p") %>
+					</abbr>
+				</dd>
+			</dl>
+		</dd>
 		<dt>Start Time</dt>
 		<dd>
 			<abbr class="dtstart" title="<%= hevent.start_time.strftime("%Y-%m-%d %H:%M:%S") %>">
 				<%= hevent.start_time.strftime("%B %d, %Y at %I:%M %p") %>
 			</abbr>
 		</dd>
-		
 		<% if !hevent.no_end_time && !hevent.end_time.nil? %>
 			<dt>End Time</dt>
 			<dd>
@@ -23,18 +36,6 @@
 				<p class="description"><%= hevent.description %></p>
 			</dd>
 		<% end %>
-		<span class="hide">
-			<dt>UUID</dt>
-			<dd class="uid">
-				<%= "#{hevent.uuid}.events.macrodeck.com" %>
-			</dd>
-			<dt>Last Updated</dt>
-			<dd>
-				<abbr class="dtstamp" title="<%= hevent.updated_at.strftime("%Y-%m-%d %H:%M:%S") %>">
-					<%= hevent.updated_at.strftime("%B %d, %Y at %I:%M %p") %>
-				</abbr>
-			</dd>
-		</span>
 		<% if hevent.parent.parent[:type] == "Place" %>
 			<dt>Location</dt>
 			<dd class="location">
