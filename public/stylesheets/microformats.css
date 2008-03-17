@@ -5,14 +5,15 @@
 .vevent dl { margin: 0; padding: 0; font-size: 0.8em; }
 .vevent dt { display: none; }
 .vevent dd { margin: 0; padding: 0; }
-.vevent abbr { text-decoration: none; color: #999; border-bottom: 0; }
+.vevent abbr { text-decoration: none; border-bottom: 0; }
 .vevent p { margin: 0; padding: 0; }
-.vevent .dtend { display: none; }
+.vevent .event-time { color: #999; }
 .vevent .vcard dt { display: none; }
 .vevent .vcard dd { display: none; }
 .vevent .vcard .fn { display: block; }
 .vevent .vcard .adr { display: block; }
 .vevent .vcard .maplink { display: block; }
+
 .eventpage .summary { display: none; }
 .eventpage dt { display: block !important; width: 80px; font-weight: bold; float: left; clear: left; }
 .eventpage dt:after { content: ":"; } /* MSIE unsupported */
