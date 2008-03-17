@@ -28,6 +28,7 @@
 					<h2 class="section-title">Patrons</h2>
 					<% if @place.patrons != nil && @place.patrons.length > 0 %>
 						<%= patron_table @place.patrons %>
+						<br />
 					<% else %>
 						<p>
 							This place has no patrons. If you like this place, 

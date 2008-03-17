@@ -1,8 +1,19 @@
 /* MacroDeck Facebook Applications */
 /* Microformat Styles */
 
+/* VCARD - hCard */
+.vcard { padding-bottom: 5px; }
 .vcard .fn { display: none; }
 .vcard .uid { display: none; }
+.vcard .hide { display: none !important; }
+.vcard .note p { padding: 0; margin: 0; }
+.vcard dl { margin: 0; padding: 0; }
+.vcard dt { display: block; width: 100px; font-weight: bold; float: left; clear: left; }
+.vcard dt.optional-display { display: none; }
+.vcard dt:after { content: ":"; } /* MSIE unsupported */
+.vcard dd { display: block; margin: 0 0 0 110px; padding: 0 0 0.5em 0; }
+
+/* VEVENT - hCalendar */
 .vevent { padding-bottom: 5px; }
 .vevent dl { margin: 0; padding: 0; }
 .vevent dt { display: none; }
