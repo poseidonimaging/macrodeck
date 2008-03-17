@@ -1,35 +1,56 @@
 <div class="vcard">
-	<% if !@place.description.nil? && !@place.description.empty? %>
-		<p class="note"><%= auto_link(simple_format(h(@place.description))) %></p>
-	<% end %>
-	<div class="offset">
-		<p>
-			<span class="hidden">
-				<span class="offset-key">Name</span><span class="offset-value"><span class="fn org"><%= @place.name %></span></span>
-				<span class="offset-key">UUID</span><span class="offset-value"><span class="uid"><%= "#{@place.uuid}.places.macrodeck.com" %></span></span><br />
-			</span>
-			<span class="adr">
-				<% if !@place.place_metadata[:address].nil? && !@place.place_metadata[:address].empty? %>
-					<span class="offset-key">Address</span><span class="offset-value street-address"><%= h(@place.place_metadata[:address]) %></span><br />
+	<dl class="locationinfo">
+		<dt>Metadata</dt>
+		<dd>
+			<dl class="hide">
+				<dt>UUID</dt>
+				<dd class="uid"><%= "#{hcard.uuid}.places.macrodeck.com" %></dd>
+			</dl>
+		</dd>
+		<dt>Name</dt>
+		<dd class="fn org"><%= hcard.name %></dd>
+		
+		<% if !hcard.description.nil? && !hcard.description.empty? %>
+			<dt>Description</dt>
+			<dd class="note">
+				<%= auto_link(simple_format(h(hcard.description))) %>
+			</dd>
+		<% end %>
+		<% if !hcard.place_metadata[:address].nil? && !hcard.place_metadata[:address].empty? %>
+			<dt>Address</dt>
+			<dd class="adr">
+				<span class="street-address"><%= h(hcard.place_metadata[:address]) %></span>, 
+				<span class="locality"><%= h(hcard.parent.name) %></span>,
+				<abbr class="region" title="<%= hcard.parent.state %>"><%= hcard.parent.state(:abbreviation => true) %></abbr>
+				<% if !hcard.place_metadata[:zipcode].nil? && !hcard.place_metadata[:zipcode].to_s.empty? %>
+					<span class="postal-code"><%= h(hcard.place_metadata[:zipcode]) %></span>
 				<% end %>
-				<% if !@place.place_metadata[:zipcode].nil? && !@place.place_metadata[:zipcode].to_s.empty? %>
-					<span class="offset-key">Zipcode</span><span class="offset-value postal-code"><%= h(@place.place_metadata[:zipcode]) %></span><br />
-				<% end %>
-			</span>
-			<% if !@place.place_metadata[:phone_number].nil? && !@place.place_metadata[:phone_number].empty? %>
-				<span class="offset-key">Phone Number</span><span class="offset-value tel"><%= h(@place.place_metadata[:phone_number]) %></span><br />
-			<% end %>
-			<% if !@place.place_metadata[:website].nil? && !@place.place_metadata[:website].empty? %>
-				<span class="offset-key">Website</span><span class="offset-value url"><%= auto_link(h(@place.place_metadata[:website])) %></span><br />
-			<% end %>
-			<span class="geo">
-				<% if !@place.place_metadata[:latitude].nil? && !@place.place_metadata[:latitude].to_s.empty? %>
-					<span class="offset-key">Latitude</span><span class="offset-value latitude"><%= h(@place.place_metadata[:latitude]) %></span><br />
-				<% end %>
-				<% if !@place.place_metadata[:longitude].nil? && !@place.place_metadata[:longitude].to_s.empty? %>
-					<span class="offset-key">Longitude</span><span class="offset-value longitude"><%= h(@place.place_metadata[:longitude]) %></span><br />
-				<% end %>
-			</span>
-		</p>
-	</div>
+			</dd>
+		<% end %>
+		<% if !hcard.place_metadata[:phone_number].nil? && !hcard.place_metadata[:phone_number].empty? %>
+			<dt>Phone Number</dt>
+			<dd class="tel">
+				<%= h(hcard.place_metadata[:phone_number]) %>
+			</dd>
+		<% end %>
+		<% if !hcard.place_metadata[:website].nil? && !hcard.place_metadata[:website].empty? %>
+			<dt>Website</dt>
+			<dd>
+				<%= link_to hcard.place_metadata[:website], hcard.place_metadata[:website], :class => "url" %>
+			</dd>
+		<% end %>
+		<% if	!hcard.place_metadata[:latitude].nil? && !hcard.place_metadata[:latitude].to_s.empty? && 
+			!hcard.place_metadata[:longitude].nil? && !hcard.place_metadata[:longitude].to_s.empty?
+		%>
+			<dt>Coordinates</dt>
+			<dd class="geo">
+				<span class="latitude"><%= h(hcard.place_metadata[:latitude]) %></span>,
+				<span class="longitude"><%= h(hcard.place_metadata[:longitude]) %></span>
+			</dd>
+		<% end %>
+		<dt>Map</dt>
+		<dd class="maplink">
+			<%= link_to "Map", "http://maps.google.com/maps?q=#{hcard.place_metadata[:address]}, Austin, TX", :target => "_blank" %>
+		</dd>
+	</dl>
 </div>
