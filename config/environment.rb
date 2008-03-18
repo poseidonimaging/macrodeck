@@ -88,9 +88,9 @@ end
 Services.startService "uuid_service"
 Services.startService "data_service"
 Services.startService "user_service"
+Services.startService "comment_service"
 Services.startService "event_service"
 Services.startService "places_service"
-Services.startService "comment_service"
 
 # Start web services now
 Services.startService "data_web_service"
