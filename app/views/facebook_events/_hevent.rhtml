@@ -7,18 +7,42 @@
 				<p class="description"><%= hevent.description %></p>
 			</dd>
 		<% end %>
-		<span class="hidden">
-			<dt>UUID</dt>
-			<dd class="uid">
-				<%= "#{hevent.uuid}.events.macrodeck.com" %>
+		<dt class="hide">Metadata</dt>
+		<dd class="hide">
+			<dl class="hide">
+				<dt>UUID</dt>
+				<dd class="uid">
+					<%= "#{hevent.uuid}.events.macrodeck.com" %>
+				</dd>
+				<dt>Last Updated</dt>
+				<dd>
+					<abbr class="dtstamp" title="<%= hevent.updated_at.strftime("%Y-%m-%d %H:%M:%S") %>">
+						<%= hevent.updated_at.strftime("%B %d, %Y at %I:%M %p") %>
+					</abbr>
+				</dd>
+			</dl>
+		</dd>
+		<% if hevent.parent.parent[:type] == "Place" && micro %>
+			<dt>Location</dt>
+			<dd class="location vcard">
+				<%= render :partial => "facebook_places/hcard_micro", :locals => { :hcard_micro => hevent.parent.parent } %>
 			</dd>
-			<dt>Last Updated</dt>
-			<dd>
-				<abbr class="dtstamp" title="<%= hevent.updated_at.strftime("%Y-%m-%d %H:%M:%S") %>">
-					<%= hevent.updated_at.strftime("%B %d, %Y at %I:%M %p") %>
-				</abbr>
+		<% elsif hevent.parent.parent[:type] == "Place" && !micro %>
+			<dt>Location</dt>
+			<dd class="location vcard">
+				<%= render :partial => "facebook_places/hcard", :locals => { :hcard => hevent.parent.parent } %>
 			</dd>
-		</span>
+		<% elsif hevent.parent.parent[:type] == "City" %>
+			<dt>Location</dt>
+			<dd class="location vcard-micro">
+				<p class="adr">
+					<span class="locality"><%= h(hevent.parent.parent.name) %></span>,
+					<abbr class="region" title="<%= hevent.parent.parent.state %>"><%= hevent.parent.parent.state(:abbreviation => true) %></abbr>
+				</p>
+			</dd>
+		<% else %>
+			<!-- <%= hevent.parent.parent[:type] %> -->
+		<% end %>
 		<dt>Start Time</dt>
 		<dd>
 			<abbr class="dtstart" title="<%= hevent.start_time.strftime("%Y-%m-%d %H:%M:%S") %>">

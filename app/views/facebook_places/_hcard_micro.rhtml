@@ -1,0 +1,19 @@
+<div class="vcard vcard-micro">
+	<p class="fn org"><%= hcard_micro.name %></p>
+	
+	<% if !hcard_micro.place_metadata[:address].nil? && !hcard_micro.place_metadata[:address].empty? %>
+		<p class="adr">
+			<span class="street-address"><%= h(hcard_micro.place_metadata[:address]) %></span>, 
+			<span class="locality"><%= h(hcard_micro.parent.name) %></span>,
+			<abbr class="region" title="<%= hcard_micro.parent.state %>"><%= hcard_micro.parent.state(:abbreviation => true) %></abbr>
+			<% if !hcard_micro.place_metadata[:zipcode].nil? && !hcard_micro.place_metadata[:zipcode].to_s.empty? %>
+				<span class="postal-code"><%= h(hcard_micro.place_metadata[:zipcode]) %></span>
+			<% end %>
+		</p>
+	<% end %>
+	<% if !hcard_micro.place_metadata[:phone_number].nil? && !hcard_micro.place_metadata[:phone_number].empty? %>
+		<p class="tel">
+			<%= h(hcard_micro.place_metadata[:phone_number]) %>
+		</p>
+	<% end %>
+</div>

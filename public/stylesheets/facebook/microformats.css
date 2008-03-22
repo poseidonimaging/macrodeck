@@ -6,6 +6,8 @@
 .vcard .fn { display: none; }
 .vcard .uid { display: none; }
 .vcard .hide { display: none !important; }
+.vcard dt.feedonly { display: none; }
+.vcard dd.feedonly { display: block; }
 .vcard .note p { padding: 0; margin: 0; }
 .vcard dl { margin: 0; padding: 0; }
 .vcard dt { display: block; width: 100px; font-weight: bold; float: left; clear: left; }
@@ -13,17 +15,32 @@
 .vcard dt:after { content: ":"; } /* MSIE unsupported */
 .vcard dd { display: block; margin: 0 0 0 110px; padding: 0 0 0.5em 0; }
 
+/* hCard Micro - just a couple lines of data, used in event feeds for cities */
+.vcard-micro p { padding: 0; margin: 0; }
+.vcard-micro p.fn { display: block; }
+
 /* VEVENT - hCalendar */
 .vevent { padding-bottom: 5px; }
+.vevent .hide { display: none !important; }
+.vevent dt.feedonly { display: none; }
+.vevent dd.feedonly { display: block; }
 .vevent dl { margin: 0; padding: 0; }
 .vevent dt { display: none; }
 .vevent dd { margin: 0; padding: 0; }
-.vevent abbr { text-decoration: none; color: #999; border-bottom: 0; }
+.vevent abbr.dtstart { text-decoration: none; color: #999; border-bottom: 0; }
+.vevent abbr.dtend { text-decoration: none; color: #999; border-bottom: 0; }
+.vevent .description { font-style: italic; }
 .vevent p { margin: 0; padding: 0; }
 .vevent .dtend { display: none; }
+.vevent .vcard-micro { padding-bottom: 0; }
+.vevent .vcard { padding-bottom: 0; }
+
 .eventpage .summary { display: none; }
-.eventpage dt { display: block !important; width: 80px; font-weight: bold; float: left; clear: left; }
+.eventpage .description { font-style: normal; }
+.eventpage dt { display: block; width: 80px; font-weight: bold; float: left; clear: left; }
 .eventpage dt:after { content: ":"; } /* MSIE unsupported */
-.eventpage dd { display: block !important; margin: 0 0 0 90px; padding: 0 0 0.5em 0; }
-.eventpage .dtstart { display: block; color: #000; }
-.eventpage .dtend { display: block; color: #000; }
+.eventpage dd { display: block; margin: 0 0 0 90px; padding: 0 0 0.5em 0; }
+.eventpage abbr.dtstart { display: block; color: #000; }
+.eventpage abbr.dtend { display: block; color: #000; }
+.eventpage .vcard { display: block; }
+
