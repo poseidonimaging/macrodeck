@@ -613,7 +613,30 @@ class FacebookPlacesController < ApplicationController
 		get_home_city
 		get_secondary_city
 
-		if params[:country] != nil && params[:country] == "us" && params[:state] != nil && params[:city] != nil && params[:place] != nil
+		if params[:country] != nil && params[:country] == "us" && params[:state] != nil && params[:city] != nil && params[:place] == nil
+			# City wall
+			get_us_states
+			get_city_info(params[:city], params[:state])
+			
+			if params[:add_comment].nil? || params[:add_comment] == ""
+				# View wall posts.
+				comments = @city.wall.comments
+				if comments != nil && comments.length > 0
+					@comments = comments.paginate(:page => params[:page], :per_page => 10)
+				else
+					@comments = nil
+				end
+				render :template => "facebook_places/wall_view"
+			else
+				# Add a wall post
+				if params[:message] != nil && params[:message].length > 0
+					@city.wall.create_comment(params[:message], { :created_by => @fbuser, :owned_by => @fbuser })
+				end
+				# If they didn't specify a message just redirect them to the place anyway, just don't add the null message.
+				redirect_to fbplaces_url(:action => :view, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part)
+			end
+		elsif params[:country] != nil && params[:country] == "us" && params[:state] != nil && params[:city] != nil && params[:place] != nil
+			# Place wall
 			get_us_states
 			get_city_info(params[:city], params[:state])
 			

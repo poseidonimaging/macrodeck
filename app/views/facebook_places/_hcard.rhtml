@@ -18,13 +18,16 @@
 		<% end %>
 		<% if !hcard.place_metadata[:address].nil? && !hcard.place_metadata[:address].empty? %>
 			<dt>Address</dt>
-			<dd class="adr">
-				<span class="street-address"><%= h(hcard.place_metadata[:address]) %></span>, 
-				<span class="locality"><%= h(hcard.parent.name) %></span>,
-				<abbr class="region" title="<%= hcard.parent.state %>"><%= hcard.parent.state(:abbreviation => true) %></abbr>
-				<% if !hcard.place_metadata[:zipcode].nil? && !hcard.place_metadata[:zipcode].to_s.empty? %>
-					<span class="postal-code"><%= h(hcard.place_metadata[:zipcode]) %></span>
-				<% end %>
+			<dd>
+			<a href="http://maps.google.com/maps?q=<%= "#{h(hcard.place_metadata[:address])}, #{h(hcard.parent.name)}, #{h(hcard.parent.state(:abbreviation => true))}" %>"
+				class="adr" target="_blank">
+					<span class="street-address"><%= h(hcard.place_metadata[:address]) %></span>, 
+					<span class="locality"><%= h(hcard.parent.name) %></span>,
+					<abbr class="region" title="<%= hcard.parent.state %>"><%= hcard.parent.state(:abbreviation => true) %></abbr>
+					<% if !hcard.place_metadata[:zipcode].nil? && !hcard.place_metadata[:zipcode].to_s.empty? %>
+						<span class="postal-code"><%= h(hcard.place_metadata[:zipcode]) %></span>
+					<% end %>
+				</a>
 			</dd>
 		<% end %>
 		<% if !hcard.place_metadata[:phone_number].nil? && !hcard.place_metadata[:phone_number].empty? %>

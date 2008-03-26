@@ -20,12 +20,17 @@
 						<div class="twocol-left">
 							<div class="twocol-left-padding">
 								<h2 class="section-title">Upcoming Events</h2>
-								<div class="vcalendar">
-									<%= render :partial => "facebook_events/hevent",
-										:collection => Calendar.upcoming_events_in_category(@city.category_id)[0..9],
-										:locals => { :micro => true }
-									%>
-								</div>
+								<% if Calendar.upcoming_events_in_category(@city.category_id)[0..9].length > 0 %>
+									<div class="vcalendar">
+										<%= render :partial => "facebook_events/hevent",
+											:collection => Calendar.upcoming_events_in_category(@city.category_id)[0..9],
+											:locals => { :micro => true }
+										%>
+									</div>
+								<% else %>
+									<p>There's nothing happening soon in this city! Consider adding events to some places or
+									city-wide events.</p>
+								<% end %>
 							</div>
 						</div>
 						<div class="twocol-right">
