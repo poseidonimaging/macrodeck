@@ -1,5 +1,6 @@
 class FacebookEventsController < ApplicationController
 	before_filter :require_facebook_login, :initialize_facebook_user
+	layout "facebook_events"
 
 	# Create an event.
 	# Expects the following URL parameters to exist:
@@ -17,6 +18,8 @@ class FacebookEventsController < ApplicationController
 			if @calendar.nil?
 				raise ArgumentError, "event#create - Calendar specified is invalid"
 			else
+				populate_params_with_location_information(@calendar)
+
 				@event_dtstart = date_from_params("event_dtstart")
 				@event_dtend = date_from_params("event_dtend")
 				@event_dtend_disable = params["event_dtend_disable"]
@@ -74,6 +77,8 @@ class FacebookEventsController < ApplicationController
 		if params[:calendar] != nil
 			@calendar = Calendar.find_by_uuid(params[:calendar])
 			if @calendar
+				populate_params_with_location_information(@calendar)
+
 				if @calendar.events
 					if params[:show_all]
 						@events = @calendar.events.paginate(:page => params[:page], :per_page => 10)
@@ -100,6 +105,8 @@ class FacebookEventsController < ApplicationController
 		if params[:calendar] != nil && params[:event] != nil
 			@calendar = Calendar.find_by_uuid(params[:calendar])
 			if @calendar
+				populate_params_with_location_information(@calendar)
+
 				@event = Event.find_by_uuid(params[:event])
 				if @event
 					render
@@ -130,4 +137,15 @@ class FacebookEventsController < ApplicationController
 		# now run create
 		create
 	end
+
+	private
+		def populate_params_with_location_information(calendar)
+			if calendar.parent[:type] == "Place"
+				params[:place] = calendar.parent.url_part
+				params[:city] = calendar.parent.parent.url_part
+				params[:state] = calendar.parent.parent.category.parent.url_part
+				params[:country] = calendar.parent.parent.category.parent.parent.url_part
+				puts "#{params[:place]} #{params[:city]} #{params[:state]} #{params[:country]}"
+			end
+		end
 end

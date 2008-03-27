@@ -1,33 +1,25 @@
-<fb:fbml>
-
-	<%
-	# TODO: Don't render partials from other controllers (not a problem _yet_) 
-	%>
-	<%= render :partial => "facebook_places/style" %>
-
-	<%= render :partial => "facebook_places/dashboard" %>
-	
-	<%= render :partial => "facebook_places/tabs" %>
-
-	<div class="content">
+<div class="content">
+	<% if @calendar.parent[:type] == "Place" %>
+		<%= render :partial => "facebook_places/breadcrumbs", :locals => { :country => @calendar.parent.parent.category.parent.parent, :state => @calendar.parent.parent.category.parent, :city => @calendar.parent.parent, :place => @calendar.parent } %>
+	<% else %>
 		<%= render :partial => "breadcrumbs", :locals => { :calendar => nil, :event => nil } %>
-		<h1 class="area-title"><%= h(@calendar.title) %></h1>
-		<div class="area-subtitle"><%= link_to "Show All", :show_all => 1 %></div>
-		<div class="clear"></div>
-		<% if !@events.nil? && @events.length > 0 %>
-			<div class="vcalendar">
-				<%= render :partial => "hevent", :collection => @events, :locals => { :micro => false } %>
-			</div>
-			<div class="clear">
-				<br />
-				<%= will_paginate @events %>
-			</div>
+	<% end %>
+	<h1 class="area-title"><%= h(@calendar.title) %></h1>
+	<div class="area-subtitle"><%= link_to "Show All", :show_all => 1 %></div>
+	<div class="clear"></div>
+	<% if !@events.nil? && @events.length > 0 %>
+		<div class="vcalendar">
+			<%= render :partial => "hevent", :collection => @events, :locals => { :micro => false } %>
+		</div>
+		<div class="clear">
+			<br />
+			<%= will_paginate @events %>
+		</div>
+	<% else %>
+		<% if params[:show_all] %>
+			<p>There are no events.</p>
 		<% else %>
-			<% if params[:show_all] %>
-				<p>There are no events.</p>
-			<% else %>
-				<p>There are no upcoming events. <%= link_to "Show all events", :show_all => 1 %>.</p>
-			<% end %>
+			<p>There are no upcoming events. <%= link_to "Show all events", :show_all => 1 %>.</p>
 		<% end %>
-	</div>
-</fb:fbml>
+	<% end %>
+</div>

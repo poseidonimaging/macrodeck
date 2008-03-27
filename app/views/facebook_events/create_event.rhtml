@@ -1,86 +1,74 @@
-	<fb:fbml>
-
-	<%
-	# TODO: Don't render partials from other controllers (not a problem _yet_) 
-	%>
-	<%= render :partial => "facebook_places/style" %>
-
-	<%= render :partial => "facebook_places/dashboard" %>
-	
-	<%= render :partial => "facebook_places/tabs" %>
-
-	<div class="content">
-		<%= render :partial => "breadcrumbs", :locals => { :calendar => @calendar, :event => nil } %>
-		<h1 class="area-title">Create an Event</h1>
-		<br />
-		<% if @errors.length > 0 %>
-			<div class="errors">
-				<h2><%= image_tag "icons/small/standard-black/exclamation.gif", :class => "inline" %> Errors Found With This Entry</h2>
-				<p>There were errors with your entry. Please correct the following errors:</p>
-				<ul>
-					<% @errors.each do |error| %>
-						<li><%= error %></li>
-					<% end %>
-				</ul>
-			</div>
-			<br />
-		<% end %>
-		<fb:editor action="<%= fbevents_url(:calendar => @calendar.uuid, :action => :create) %>" labelwidth="100" width="500">
-			<%= hidden_field_tag "create_event", "1" %>
-			<% if params["redirect"] %>
-				<%= hidden_field_tag "redirect", true %>
-				<%= hidden_field_tag "redirecturl", params[:redirecturl] %>
-			<% end %>
-			<fb:editor-text label="Event Summary" name="event_summary" value="<%= @event_summary %>" />
-			<fb:editor-textarea label="Description" name="event_description"><%= @event_description %></fb:editor-textarea>
-			<!-- <%= @event_dtstart.to_s %> -->
-			<fb:editor-custom label="Start Time">
-				<%= hour_picker("event_dtstart_time_hour", @event_dtstart.strftime("%I")) %> :
-				<%= minute_picker("event_dtstart_time_min", @event_dtstart.min) %>
-				<%= ampm_picker("event_dtstart_time_ampm", @event_dtstart.strftime("%p").downcase) %>
-				&nbsp;
-				<%= month_picker("event_dtstart_date_mon", @event_dtstart.mon) %>
-				<%= day_picker("event_dtstart_date_day", @event_dtstart.day) %>
-				<%= year_picker("event_dtstart_date_year", @event_dtstart.year) %>
-			</fb:editor-custom>
-			<!-- <%= @event_dtend.to_s %> -->
-			<script>
-				// Handles the following checkbox.
-				function event_dtend_disable_handler() {
-					chkDtEnd = document.getElementById('event_dtend_disable');
-					chkDtEnd_Hour = document.getElementById('event_dtend_time_hour');
-					chkDtEnd_Min = document.getElementById('event_dtend_time_min');
-					chkDtEnd_AMPM = document.getElementById('event_dtend_time_ampm');
-					chkDtEnd_Mon = document.getElementById('event_dtend_date_mon');
-					chkDtEnd_Day = document.getElementById('event_dtend_date_day');
-					chkDtEnd_Year = document.getElementById('event_dtend_date_year');
-
-					chkDtEnd_Hour.setDisabled(chkDtEnd.getChecked());
-					chkDtEnd_Min.setDisabled(chkDtEnd.getChecked());
-					chkDtEnd_AMPM.setDisabled(chkDtEnd.getChecked());
-					chkDtEnd_Mon.setDisabled(chkDtEnd.getChecked());
-					chkDtEnd_Day.setDisabled(chkDtEnd.getChecked());
-					chkDtEnd_Year.setDisabled(chkDtEnd.getChecked());
-				}
-			</script>
-			<fb:editor-custom label="End Time">
-				<%= check_box_tag "event_dtend_disable", "1", @event_dtend_disable, :style => "width: 13px; height: 13px;", :onchange => "event_dtend_disable_handler();" %> This event does not have a specified ending time.
-			</fb:editor-custom>
-			<fb:editor-custom>
-				<%= hour_picker("event_dtend_time_hour", @event_dtend.strftime("%I")) %> :
-				<%= minute_picker("event_dtend_time_min", @event_dtend.min) %>
-				<%= ampm_picker("event_dtend_time_ampm", @event_dtend.strftime("%p").downcase) %>
-				&nbsp;
-				<%= month_picker("event_dtend_date_mon", @event_dtend.mon) %>
-				<%= day_picker("event_dtend_date_day", @event_dtend.day) %>
-				<%= year_picker("event_dtend_date_year", @event_dtend.year) %>
-			</fb:editor-custom>
-			<fb:editor-buttonset>
-				<fb:editor-button value="Create Event" />
-				<% if @redirect %>
-					<fb:editor-cancel href="<%= @redirecturl %>" />
+<div class="content">
+	<%= render :partial => "breadcrumbs", :locals => { :calendar => @calendar, :event => nil } %>
+	<h1 class="area-title">Create an Event</h1>
+	<br />
+	<% if @errors.length > 0 %>
+		<div class="errors">
+			<h2><%= image_tag "icons/small/standard-black/exclamation.gif", :class => "inline" %> Errors Found With This Entry</h2>
+			<p>There were errors with your entry. Please correct the following errors:</p>
+			<ul>
+				<% @errors.each do |error| %>
+					<li><%= error %></li>
 				<% end %>
-			</fb:editor-buttonset>
-		</fb:editor>
-	</div>
-</fb:fbml>
+			</ul>
+		</div>
+		<br />
+	<% end %>
+	<fb:editor action="<%= fbevents_url(:calendar => @calendar.uuid, :action => :create) %>" labelwidth="100" width="500">
+		<%= hidden_field_tag "create_event", "1" %>
+		<% if params["redirect"] %>
+			<%= hidden_field_tag "redirect", true %>
+			<%= hidden_field_tag "redirecturl", params[:redirecturl] %>
+		<% end %>
+		<fb:editor-text label="Event Summary" name="event_summary" value="<%= @event_summary %>" />
+		<fb:editor-textarea label="Description" name="event_description"><%= @event_description %></fb:editor-textarea>
+		<!-- <%= @event_dtstart.to_s %> -->
+		<fb:editor-custom label="Start Time">
+			<%= hour_picker("event_dtstart_time_hour", @event_dtstart.strftime("%I")) %> :
+			<%= minute_picker("event_dtstart_time_min", @event_dtstart.min) %>
+			<%= ampm_picker("event_dtstart_time_ampm", @event_dtstart.strftime("%p").downcase) %>
+			&nbsp;
+			<%= month_picker("event_dtstart_date_mon", @event_dtstart.mon) %>
+			<%= day_picker("event_dtstart_date_day", @event_dtstart.day) %>
+			<%= year_picker("event_dtstart_date_year", @event_dtstart.year) %>
+		</fb:editor-custom>
+		<!-- <%= @event_dtend.to_s %> -->
+		<script>
+			// Handles the following checkbox.
+			function event_dtend_disable_handler() {
+				chkDtEnd = document.getElementById('event_dtend_disable');
+				chkDtEnd_Hour = document.getElementById('event_dtend_time_hour');
+				chkDtEnd_Min = document.getElementById('event_dtend_time_min');
+				chkDtEnd_AMPM = document.getElementById('event_dtend_time_ampm');
+				chkDtEnd_Mon = document.getElementById('event_dtend_date_mon');
+				chkDtEnd_Day = document.getElementById('event_dtend_date_day');
+				chkDtEnd_Year = document.getElementById('event_dtend_date_year');
+
+				chkDtEnd_Hour.setDisabled(chkDtEnd.getChecked());
+				chkDtEnd_Min.setDisabled(chkDtEnd.getChecked());
+				chkDtEnd_AMPM.setDisabled(chkDtEnd.getChecked());
+				chkDtEnd_Mon.setDisabled(chkDtEnd.getChecked());
+				chkDtEnd_Day.setDisabled(chkDtEnd.getChecked());
+				chkDtEnd_Year.setDisabled(chkDtEnd.getChecked());
+			}
+		</script>
+		<fb:editor-custom label="End Time">
+			<%= check_box_tag "event_dtend_disable", "1", @event_dtend_disable, :style => "width: 13px; height: 13px;", :onchange => "event_dtend_disable_handler();" %> This event does not have a specified ending time.
+		</fb:editor-custom>
+		<fb:editor-custom>
+			<%= hour_picker("event_dtend_time_hour", @event_dtend.strftime("%I")) %> :
+			<%= minute_picker("event_dtend_time_min", @event_dtend.min) %>
+			<%= ampm_picker("event_dtend_time_ampm", @event_dtend.strftime("%p").downcase) %>
+			&nbsp;
+			<%= month_picker("event_dtend_date_mon", @event_dtend.mon) %>
+			<%= day_picker("event_dtend_date_day", @event_dtend.day) %>
+			<%= year_picker("event_dtend_date_year", @event_dtend.year) %>
+		</fb:editor-custom>
+		<fb:editor-buttonset>
+			<fb:editor-button value="Create Event" />
+			<% if @redirect %>
+				<fb:editor-cancel href="<%= @redirecturl %>" />
+			<% end %>
+		</fb:editor-buttonset>
+	</fb:editor>
+</div>
