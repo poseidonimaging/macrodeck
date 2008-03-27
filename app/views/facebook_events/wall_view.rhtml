@@ -4,7 +4,12 @@
 		<h1 class="area-title">View Event Wall</h1>
 	<% else %>
 		<%= render :partial => "breadcrumbs", :locals => { :calendar => nil, :event => nil } %>
-		<h1 class="area-title"><%= h(@calendar.title) %></h1>
+		<%= render :partial => "breadcrumbs", :locals => { :crumbs => [ @basecrumb,
+																		Breadcrumb.from_calendar(:baseurl => @baseurl, :calendar => @calendar),
+																		Breadcrumb.from_event(:baseurl => @baseurl, :event => @event) ]
+		}
+		%>
+		<h1 class="area-title">View Wall Posts</h1>
 	<% end %>
 
 	<div class="profile-layout">

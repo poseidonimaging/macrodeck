@@ -1,5 +1,5 @@
 class FacebookEventsController < ApplicationController
-	before_filter :require_facebook_login, :initialize_facebook_user
+	before_filter :require_facebook_login, :initialize_facebook_user, :setup_breadcrumbs
 	layout "facebook_events"
 
 	# Create an event.
@@ -182,5 +182,11 @@ class FacebookEventsController < ApplicationController
 				params[:country] = calendar.parent.parent.category.parent.parent.url_part
 				puts "#{params[:place]} #{params[:city]} #{params[:state]} #{params[:country]}"
 			end
+		end
+
+		# Set the basecrumbs for this controller.
+		def setup_breadcrumbs
+			@baseurl = "#{PLACES_FBURL}/calendar/"
+			@basecrumb = Breadcrumb.new("Calendars", @baseurl)
 		end
 end

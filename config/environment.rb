@@ -91,6 +91,7 @@ Services.startService "user_service"
 Services.startService "comment_service"
 Services.startService "event_service"
 Services.startService "places_service"
+Services.startService "navigation_service"
 
 # Start web services now
 Services.startService "data_web_service"

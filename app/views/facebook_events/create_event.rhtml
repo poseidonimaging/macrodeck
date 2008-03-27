@@ -1,5 +1,5 @@
 <div class="content">
-	<%= render :partial => "breadcrumbs", :locals => { :calendar => @calendar, :event => nil } %>
+	<%= render :partial => "breadcrumbs", :locals => { :crumbs => [ @basecrumb, Breadcrumb.from_calendar(:baseurl => @baseurl, :calendar => @calendar) ] } %>
 	<h1 class="area-title">Create an Event</h1>
 	<br />
 	<% if @errors.length > 0 %>

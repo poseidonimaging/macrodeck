@@ -1,9 +1,9 @@
 <div class="content">
 	<% if @calendar.parent[:type] == "Place" %>
 		<%= render :partial => "facebook_places/breadcrumbs", :locals => { :country => @calendar.parent.parent.category.parent.parent, :state => @calendar.parent.parent.category.parent, :city => @calendar.parent.parent, :place => @calendar.parent } %>
-		<h1 class="area-title">Calendar</h1>
+		<h1 class="area-title">Events</h1>
 	<% else %>
-		<%= render :partial => "breadcrumbs", :locals => { :calendar => nil, :event => nil } %>
+		<%= render :partial => "breadcrumbs", :locals => { :crumbs => [ @basecrumb ] } %>
 		<h1 class="area-title"><%= h(@calendar.title) %></h1>
 	<% end %>
 	<div class="area-subtitle"><%= link_to "Show All", :show_all => 1 %></div>
