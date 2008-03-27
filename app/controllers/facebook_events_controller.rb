@@ -121,6 +121,41 @@ class FacebookEventsController < ApplicationController
 		end
 	end
 
+	def wall 
+		get_networks
+		get_home_city
+		get_secondary_city
+
+		if params[:calendar] != nil && params[:event] != nil
+			# Event wall
+			
+			@event = Event.find_by_uuid(params[:event])
+			@calendar = @event.parent
+
+			if @event != nil
+				if params[:add_comment].nil? || params[:add_comment] == ""
+					# View wall posts.
+					comments = @event.wall.comments
+					if comments != nil && comments.length > 0
+						@comments = comments.paginate(:page => params[:page], :per_page => 10)
+					else
+						@comments = nil
+					end
+					render :template => "facebook_events/wall_view"
+				else
+					# Add a wall post
+					if params[:message] != nil && params[:message].length > 0
+						@event.wall.create_comment(params[:message], { :created_by => @fbuser, :owned_by => @fbuser })
+					end
+					# If they didn't specify a message just redirect them to the place anyway, just don't add the null message.
+					redirect_to fbevents_url(:action => :event, :calendar => params[:calendar], :event => params[:event])
+				end
+			else
+				raise "wall: place does not exist"
+			end
+		end
+	end
+
 	# Fills in some redirect stuff and then calls create.
 	def create_from_places
 		# get calendar uuid

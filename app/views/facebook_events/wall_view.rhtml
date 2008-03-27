@@ -1,0 +1,22 @@
+<div class="content">
+	<% if @calendar.parent[:type] == "Place" %>
+		<%= render :partial => "facebook_places/breadcrumbs", :locals => { :country => @calendar.parent.parent.category.parent.parent, :state => @calendar.parent.parent.category.parent, :city => @calendar.parent.parent, :place => @calendar.parent } %>
+		<h1 class="area-title">View Event Wall</h1>
+	<% else %>
+		<%= render :partial => "breadcrumbs", :locals => { :calendar => nil, :event => nil } %>
+		<h1 class="area-title"><%= h(@calendar.title) %></h1>
+	<% end %>
+
+	<div class="profile-layout">
+		<!-- sidebar -->
+		<div class="profile-content">
+			<fb:wall>
+				<%= render :partial => "facebook_common/wall_post", :collection => @comments %>
+			</fb:wall>
+			
+			<br />
+			
+			<div class="clear"><%= will_paginate @comments %></div>
+		</div>
+	</div>
+</div>
