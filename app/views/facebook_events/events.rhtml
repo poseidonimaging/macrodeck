@@ -1,6 +1,18 @@
 <div class="content">
 	<% if @calendar.parent[:type] == "Place" %>
-		<%= render :partial => "facebook_places/breadcrumbs", :locals => { :country => @calendar.parent.parent.category.parent.parent, :state => @calendar.parent.parent.category.parent, :city => @calendar.parent.parent, :place => @calendar.parent } %>
+		<%#= render :partial => "facebook_places/breadcrumbs", :locals => {
+			:country => @calendar.parent.parent.category.parent.parent, :state => @calendar.parent.parent.category.parent, :city => @calendar.parent.parent, :place => @calendar.parent } %>
+		<%=
+			render :partial => "breadcrumbs", :locals => { :crumbs =>
+				[
+					@places_basecrumb,
+					Breadcrumb.from_category(:category => @calendar.parent.parent.category.parent.parent, :action => :browse, :baseurl => "#{PLACES_FBURL}/"),
+					Breadcrumb.from_category(:category => @calendar.parent.parent.category.parent, :action => :browse, :baseurl => "#{PLACES_FBURL}/", :levels => 1),
+					Breadcrumb.from_category(:category => @calendar.parent.parent.category, :action => :view, :baseurl => "#{PLACES_FBURL}/", :levels => 2),
+					Breadcrumb.from_place(:place => @calendar.parent, :action => :view, :baseurl => "#{PLACES_FBURL}/")
+				]
+			}
+		%>
 		<h1 class="area-title">Events</h1>
 	<% else %>
 		<%= render :partial => "breadcrumbs", :locals => { :crumbs => [ @basecrumb ] } %>

@@ -188,5 +188,6 @@ class FacebookEventsController < ApplicationController
 		def setup_breadcrumbs
 			@baseurl = "#{PLACES_FBURL}/calendar/"
 			@basecrumb = Breadcrumb.new("Calendars", @baseurl)
+			@places_basecrumb = Breadcrumb.new("Browse", "#{PLACES_FBURL}/browse/")
 		end
 end
