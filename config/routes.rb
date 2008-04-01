@@ -28,6 +28,9 @@ ActionController::Routing::Routes.draw do |map|
   		:conditions => { :subdomain => "places" },
 		:defaults => { :action => "events", :event => nil }
 
+  # For less calendar-specific actions for events
+  map.fbevents 'facebook/events/:action/', :controller => "facebook_events", :conditions => { :subdomain => "places" }
+
   # Facebook Places
   map.fbplaces 'facebook', :controller => "facebook_places",
 		:action => "welcome", :default => true, :country => nil, :state => nil, :city => nil, :place => nil,

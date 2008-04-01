@@ -35,16 +35,28 @@
 
 		// dtstart text field onchange callback - performs ajax call to parse the date entered.
 		function event_dtstart_ajax() {
-			var dtstart_ajax = new Ajax();
+			var ajax = new Ajax();
 			var params = { "time": document.getElementById('event_dtstart').getValue() };
-			ajax.responseType = Ajax.FBML;
+			ajax.responseType = Ajax.RAW;
+			ajax.onerror =
+				function(error) {
+					document.getElementById('event_dtstart_parsed').setTextValue("Error contacting server");
+				}
 			ajax.ondone =
 				function(parsed_time) {
-					document.getElementById('dtstart_parsed').setInnerFBML(parsed_time);
+					document.getElementById('event_dtstart_parsed').setTextValue(parsed_time);
 				}
-			ajax.post('<%= PLACES_BASEURL %>/calendar/parse_time/', params);
+			ajax.post('<%= PLACES_BASEURL %>/facebook/events/parse_time/', params);
+			setTimeout(function() { event_dtstart_ajax() }, 5000);
 		}
 
+		// displays a "Please wait..." message when the text field is changed.
+		function event_dtstart_wait() {
+			document.getElementById('event_dtstart_parsed').setTextValue("Please wait...");
+		}
+
+		// script that runs every 1s to process dtstart
+		setTimeout(function() { event_dtstart_ajax() }, 5000);
 	</script>
 	<fb:editor action="<%= fbevents_url(:calendar => @calendar.uuid, :action => :create) %>" labelwidth="100" width="500">
 		<%= hidden_field_tag "create_event", "1" %>
@@ -64,8 +76,13 @@
 			<%#= day_picker("event_dtstart_date_day", @event_dtstart.day) %>
 			<%#= year_picker("event_dtstart_date_year", @event_dtstart.year) %>
 			</fb:editor-custom> -->
+		<%
+			friendly_dtstart = @event_dtstart.strftime("%B ")
+			friendly_dtstart << @event_dtstart.day.to_s
+			friendly_dtstart << @event_dtstart.strftime(", %Y at %I:%M %p")
+		%>
 		<fb:editor-custom label="Start Time">
-			<%= text_field_tag "event_dtstart", @event_dtstart.to_s, :onchange => "event_dtstart_ajax();" %><br />
+		<%= text_field_tag "event_dtstart", friendly_dtstart, :onchange => "event_dtstart_wait();" %><br />
 			<div id="event_dtstart_parsed">Type in a time such as "Monday at 5pm" or "Jan 6 2009"</div>
 		</fb:editor-custom>
 		<!-- <%= @event_dtend.to_s %> -->

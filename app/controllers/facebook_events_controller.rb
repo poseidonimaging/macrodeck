@@ -1,5 +1,8 @@
 class FacebookEventsController < ApplicationController
-	before_filter :require_facebook_login, :initialize_facebook_user, :setup_breadcrumbs
+	before_filter :require_facebook_login, :except => :parse_time
+	before_filter :initialize_facebook_user, :except => :parse_time
+	before_filter :setup_breadcrumbs, :except => :parse_time
+
 	layout "facebook_events"
 
 	# Create an event.
@@ -157,7 +160,18 @@ class FacebookEventsController < ApplicationController
 	end
 
 	def parse_time
-		render :text => EventService.parse_time(params[:time]).to_s
+		parsed = EventService.parse_time(params[:time].chomp.strip.gsub(",", "").downcase)
+		if !parsed.nil?
+			# Day, Month 1st, 2008 at 12:00PM
+			friendly_date = parsed.strftime("%A, %B ")
+			friendly_date << parsed.day.to_s
+			friendly_date << parsed.strftime(", %Y at %I:%M %p")
+			friendly_date = friendly_date.chomp.strip
+			puts friendly_date
+			render :text => friendly_date
+		else 
+			render :text => ""
+		end
 	end
 
 	# Fills in some redirect stuff and then calls create.
