@@ -14,6 +14,38 @@
 		</div>
 		<br />
 	<% end %>
+	<script type="text/javascript">
+		// Handles the dtend checkbox
+		function event_dtend_disable_handler() {
+			chkDtEnd = document.getElementById('event_dtend_disable');
+			chkDtEnd_Hour = document.getElementById('event_dtend_time_hour');
+			chkDtEnd_Min = document.getElementById('event_dtend_time_min');
+			chkDtEnd_AMPM = document.getElementById('event_dtend_time_ampm');
+			chkDtEnd_Mon = document.getElementById('event_dtend_date_mon');
+			chkDtEnd_Day = document.getElementById('event_dtend_date_day');
+			chkDtEnd_Year = document.getElementById('event_dtend_date_year');
+
+			chkDtEnd_Hour.setDisabled(chkDtEnd.getChecked());
+			chkDtEnd_Min.setDisabled(chkDtEnd.getChecked());
+			chkDtEnd_AMPM.setDisabled(chkDtEnd.getChecked());
+			chkDtEnd_Mon.setDisabled(chkDtEnd.getChecked());
+			chkDtEnd_Day.setDisabled(chkDtEnd.getChecked());
+			chkDtEnd_Year.setDisabled(chkDtEnd.getChecked());
+		}
+
+		// dtstart text field onchange callback - performs ajax call to parse the date entered.
+		function event_dtstart_ajax() {
+			var dtstart_ajax = new Ajax();
+			var params = { "time": document.getElementById('event_dtstart').getValue() };
+			ajax.responseType = Ajax.FBML;
+			ajax.ondone =
+				function(parsed_time) {
+					document.getElementById('dtstart_parsed').setInnerFBML(parsed_time);
+				}
+			ajax.post('<%= PLACES_BASEURL %>/calendar/parse_time/', params);
+		}
+
+	</script>
 	<fb:editor action="<%= fbevents_url(:calendar => @calendar.uuid, :action => :create) %>" labelwidth="100" width="500">
 		<%= hidden_field_tag "create_event", "1" %>
 		<% if params["redirect"] %>
@@ -23,35 +55,20 @@
 		<fb:editor-text label="Event Summary" name="event_summary" value="<%= @event_summary %>" />
 		<fb:editor-textarea label="Description" name="event_description"><%= @event_description %></fb:editor-textarea>
 		<!-- <%= @event_dtstart.to_s %> -->
-		<fb:editor-custom label="Start Time">
-			<%= hour_picker("event_dtstart_time_hour", @event_dtstart.strftime("%I")) %> :
-			<%= minute_picker("event_dtstart_time_min", @event_dtstart.min) %>
-			<%= ampm_picker("event_dtstart_time_ampm", @event_dtstart.strftime("%p").downcase) %>
+		<!-- <fb:editor-custom label="Start Time">
+			<%#= hour_picker("event_dtstart_time_hour", @event_dtstart.strftime("%I")) %> :
+			<%#= minute_picker("event_dtstart_time_min", @event_dtstart.min) %>
+			<%#= ampm_picker("event_dtstart_time_ampm", @event_dtstart.strftime("%p").downcase) %>
 			&nbsp;
-			<%= month_picker("event_dtstart_date_mon", @event_dtstart.mon) %>
-			<%= day_picker("event_dtstart_date_day", @event_dtstart.day) %>
-			<%= year_picker("event_dtstart_date_year", @event_dtstart.year) %>
+			<%#= month_picker("event_dtstart_date_mon", @event_dtstart.mon) %>
+			<%#= day_picker("event_dtstart_date_day", @event_dtstart.day) %>
+			<%#= year_picker("event_dtstart_date_year", @event_dtstart.year) %>
+			</fb:editor-custom> -->
+		<fb:editor-custom label="Start Time">
+			<%= text_field_tag "event_dtstart", @event_dtstart.to_s, :onchange => "event_dtstart_ajax();" %><br />
+			<div id="event_dtstart_parsed">Type in a time such as "Monday at 5pm" or "Jan 6 2009"</div>
 		</fb:editor-custom>
 		<!-- <%= @event_dtend.to_s %> -->
-		<script type="text/javascript">
-			// Handles the following checkbox.
-			function event_dtend_disable_handler() {
-				chkDtEnd = document.getElementById('event_dtend_disable');
-				chkDtEnd_Hour = document.getElementById('event_dtend_time_hour');
-				chkDtEnd_Min = document.getElementById('event_dtend_time_min');
-				chkDtEnd_AMPM = document.getElementById('event_dtend_time_ampm');
-				chkDtEnd_Mon = document.getElementById('event_dtend_date_mon');
-				chkDtEnd_Day = document.getElementById('event_dtend_date_day');
-				chkDtEnd_Year = document.getElementById('event_dtend_date_year');
-
-				chkDtEnd_Hour.setDisabled(chkDtEnd.getChecked());
-				chkDtEnd_Min.setDisabled(chkDtEnd.getChecked());
-				chkDtEnd_AMPM.setDisabled(chkDtEnd.getChecked());
-				chkDtEnd_Mon.setDisabled(chkDtEnd.getChecked());
-				chkDtEnd_Day.setDisabled(chkDtEnd.getChecked());
-				chkDtEnd_Year.setDisabled(chkDtEnd.getChecked());
-			}
-		</script>
 		<fb:editor-custom label="End Time">
 			<%= check_box_tag "event_dtend_disable", "1", @event_dtend_disable, :style => "width: 13px; height: 13px;", :onchange => "event_dtend_disable_handler();" %> This event does not have a specified ending time.
 		</fb:editor-custom>

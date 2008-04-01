@@ -156,6 +156,10 @@ class FacebookEventsController < ApplicationController
 		end
 	end
 
+	def parse_time
+		render :text => EventService.parse_time(params[:time]).to_s
+	end
+
 	# Fills in some redirect stuff and then calls create.
 	def create_from_places
 		# get calendar uuid
