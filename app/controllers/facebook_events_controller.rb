@@ -23,8 +23,12 @@ class FacebookEventsController < ApplicationController
 			else
 				populate_params_with_location_information(@calendar)
 
-				@event_dtstart = date_from_params("event_dtstart")
-				@event_dtend = date_from_params("event_dtend")
+				@event_dtstart = EventService.parse_time(params["event_dtstart"]) unless params["event_dtstart"].nil?
+				@event_dtstart = Time.new if params["event_dtstart"].nil?
+				
+				@event_dtend = EventService.parse_time(params["event_dtend"]) unless params["event_dtend"].nil?
+				@event_dtend = Time.new if params["event_dtstart"].nil?
+
 				@event_dtend_disable = params["event_dtend_disable"]
 				@event_summary = params["event_summary"]
 				@event_description = params["event_description"]
