@@ -2,8 +2,8 @@
 /* Microformat Styles */
 
 /* VCARD - hCard */
-.vcard { padding-bottom: 5px; }
-.vcard .fn { display: none; }
+div.vcard { padding-bottom: 5px; }
+div.vcard .fn { display: none; }
 .vcard .uid { display: none; }
 .vcard .hide { display: none !important; }
 .vcard dt.feedonly { display: none; }
@@ -17,7 +17,6 @@
 
 /* hCard Micro - just a couple lines of data, used in event feeds for cities */
 .vcard-micro p { padding: 0; margin: 0; }
-.vcard-micro p.fn { display: block; }
 
 /* VEVENT - hCalendar */
 .vevent { padding-bottom: 5px; }
@@ -31,7 +30,6 @@
 .vevent abbr.dtend { text-decoration: none; color: #999; border-bottom: 0; }
 .vevent .description { font-style: italic; }
 .vevent p { margin: 0; padding: 0; }
-.vevent .dtend { display: none; }
 .vevent .vcard-micro { padding-bottom: 0; }
 .vevent .vcard { padding-bottom: 0; }
 

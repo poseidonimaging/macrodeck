@@ -1,22 +1,18 @@
-<div class="vcard vcard-micro">
-	<p class="fn org"><%= hcard_micro.name %></p>
-	
+<span class="vcard vcard-micro">
+	<span class="fn org"><%= hcard_micro.name %></span>
+
 	<% if !hcard_micro.place_metadata[:address].nil? && !hcard_micro.place_metadata[:address].empty? %>
-		<p>
-			<a href="http://maps.google.com/maps?q=<%= "#{h(hcard_micro.place_metadata[:address])}, #{h(hcard_micro.parent.name)}, #{h(hcard_micro.parent.state(:abbreviation => true))}" %>"
-				class="adr" target="_blank">
+		<a href="http://maps.google.com/maps?q=<%= "#{h(hcard_micro.place_metadata[:address])}, #{h(hcard_micro.parent.name)}, #{h(hcard_micro.parent.state(:abbreviation => true))}" %>"
+			target="_blank">
+			(Map)
+		</a>
+		<span class="hide adr">
 				<span class="street-address"><%= h(hcard_micro.place_metadata[:address]) %></span>, 
 				<span class="locality"><%= h(hcard_micro.parent.name) %></span>,
 				<abbr class="region" title="<%= hcard_micro.parent.state %>"><%= hcard_micro.parent.state(:abbreviation => true) %></abbr>
 				<% if !hcard_micro.place_metadata[:zipcode].nil? && !hcard_micro.place_metadata[:zipcode].to_s.empty? %>
 					<span class="postal-code"><%= h(hcard_micro.place_metadata[:zipcode]) %></span>
 				<% end %>
-			</a>
-		</p>
+		</span>
 	<% end %>
-	<% if !hcard_micro.place_metadata[:phone_number].nil? && !hcard_micro.place_metadata[:phone_number].empty? %>
-		<p class="tel">
-			<%= h(hcard_micro.place_metadata[:phone_number]) %>
-		</p>
-	<% end %>
-</div>
+</span>

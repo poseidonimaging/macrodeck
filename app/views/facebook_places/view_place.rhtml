@@ -27,7 +27,9 @@
 					<br />
 					<h2 class="section-title">Patrons</h2>
 					<% if @place.patrons != nil && @place.patrons.length > 0 %>
-						<%= patron_table @place.patrons %>
+						<div class="patrons">
+							<%= patron_table @place.patrons %>
+						</div>
 						<br />
 					<% else %>
 						<p>

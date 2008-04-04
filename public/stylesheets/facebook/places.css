@@ -14,3 +14,5 @@ ul.features li span { padding-left: 3px; }
 .places .place div div a { font-weight: bold; }
 .places .place div div span.description { color: #000; }
 .places .place div div span.address { color: #999; }
+
+.patrons img { margin: 3px; border: 1px solid #000; }
