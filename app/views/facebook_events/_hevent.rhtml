@@ -1,6 +1,6 @@
 <div class="vevent">
 	<div class="leftside">
-		<h3><%= link_to hevent.title, fbevents_url(:action => :event, :calendar => hevent.parent.url_part, :event => hevent.url_part), :class => "summary" %></h3>
+		<h3><%= link_to h(hevent.title), fbevents_url(:action => :event, :calendar => hevent.parent.url_part, :event => hevent.url_part), :class => "summary" %></h3>
 		<dl class="hide">
 			<dt>UUID</dt>
 			<dd class="uid">
@@ -14,7 +14,7 @@
 			</dd>
 		</dl>
 		<% if !hevent.description.nil? && hevent.description.length > 0 %>
-			<p class="description"><%= hevent.description %></p>
+			<p class="description"><%= auto_link(h(hevent.description), :all, { :target => "_blank" }) %></p>
 		<% end %>
 		<p>
 			<abbr class="dtstart" title="<%= hevent.start_time.strftime("%Y-%m-%d %H:%M:%S") %>">

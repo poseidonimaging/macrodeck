@@ -13,7 +13,7 @@
 		<% if !hcard.description.nil? && !hcard.description.empty? %>
 			<dt>Description</dt>
 			<dd class="note">
-				<%= auto_link(simple_format(h(hcard.description))) %>
+				<%= auto_link(simple_format(h(hcard.description)), :all, { :target => "_blank" }) %>
 			</dd>
 		<% end %>
 		<% if !hcard.place_metadata[:address].nil? && !hcard.place_metadata[:address].empty? %>
@@ -39,7 +39,7 @@
 		<% if !hcard.place_metadata[:website].nil? && !hcard.place_metadata[:website].empty? %>
 			<dt>Website</dt>
 			<dd>
-				<%= link_to hcard.place_metadata[:website], hcard.place_metadata[:website], :class => "url" %>
+				<%= auto_link(hcard.place_metadata[:website], :urls, { :class => "url", :target => "_blank" }) %>
 			</dd>
 		<% end %>
 		<% if	!hcard.place_metadata[:latitude].nil? && !hcard.place_metadata[:latitude].to_s.empty? && 
