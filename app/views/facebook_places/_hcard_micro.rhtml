@@ -1,11 +1,10 @@
 <span class="vcard vcard-micro">
-	<span class="fn org"><%= hcard_micro.name %></span>
+	<a href="<%= fbplaces_url(:action => :view, :country => hcard_micro.parent.category.parent.parent.url_part,
+				:state => hcard_micro.parent.category.parent.url_part,
+				:city => hcard_micro.parent.url_part,
+				:place => hcard_micro.url_part) %>" class="fn org"><%= hcard_micro.name %></a>
 
 	<% if !hcard_micro.place_metadata[:address].nil? && !hcard_micro.place_metadata[:address].empty? %>
-		<a href="http://maps.google.com/maps?q=<%= "#{h(hcard_micro.place_metadata[:address])}, #{h(hcard_micro.parent.name)}, #{h(hcard_micro.parent.state(:abbreviation => true))}" %>"
-			target="_blank">
-			(Map)
-		</a>
 		<span class="hide adr">
 				<span class="street-address"><%= h(hcard_micro.place_metadata[:address]) %></span>, 
 				<span class="locality"><%= h(hcard_micro.parent.name) %></span>,
