@@ -27,7 +27,8 @@
 			</li>
 			<li><%= link_to "Edit this place", fbplaces_url(:action => :edit, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part, :place => @place.url_part) %></li>
 			<li><%= link_to "Change place photo", fbplaces_url(:action => :change_photo, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part, :place => @place.url_part) %></li>
-			<li><%= link_to "Create an event", fbplaces_url(:action => :view, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part, :place => @place.url_part, :place_action => :create_event) %></li>
+			<li><%= link_to "Create an Event", fbevents_url(:action => :create, :calendar => @place.calendar.url_part) %></li>
+			<li><%= link_to "View Calendar", fbevents_url(:action => :events, :calendar => @place.calendar.url_part) %></li>
 			<li><%= link_to "Map", "http://maps.google.com/maps?q=#{@place.place_metadata[:address]}, #{@place.parent.name}, #{@place.parent.state(:abbreviation => true)}", :target => "_blank" %></li>
 			<% 
 				# Extra items we aren't adding yet.

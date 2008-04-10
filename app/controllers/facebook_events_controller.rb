@@ -42,9 +42,11 @@ class FacebookEventsController < ApplicationController
 				else
 					# validate the data and create the place
 					@errors << "Your event must have a summary." if @event_summary.nil? || @event_summary.length == 0
-					@errors << "Your event cannot end before it starts!" if (@event_dtend < @event_dtstart) && !@event_dtend_disable
-					@errors << "Your event cannot start and end at the same time!" if (@event_dtend == @event_dtstart) && !@event_dtend_disable
-					@errors << "Your event cannot start in the past!" if @event_dtstart < Time.now
+					@errors << "Your event must have a start time." if @event_dtstart.nil?
+					@errors << "Your event must have an end time." if @event_dtend.nil? && !@event_dtend_disable
+					@errors << "Your event cannot end before it starts!" if !@event_dtstart.nil? && (!@event_dtend_disable && (@event_dtend < @event_dtstart))
+					@errors << "Your event cannot start and end at the same time!" if !@event_dtstart.nil? && !@event_dtend_disable && (@event_dtend == @event_dtstart)
+					@errors << "Your event cannot start in the past!" if !@event_dtstart.nil? && @event_dtstart < Time.now
 
 					if @errors.length > 0
 						render :template => "facebook_events/create_event"
@@ -100,6 +102,33 @@ class FacebookEventsController < ApplicationController
 			end
 		else
 			raise ArgumentError, "event#events - Invalid calendar passed!"
+		end
+	end
+
+	# Shows all of the events in a calendar's category
+	def category
+		get_networks
+		get_home_city
+		get_secondary_city
+
+		if params[:calendar] != nil
+			@calendar = Calendar.find_by_uuid(params[:calendar])
+			if @calendar
+
+				if @calendar.events
+					if params[:show_all]
+						@events = Calendar.events_in_category(@calendar.category_id).paginate(:page => params[:page], :per_page => 10)
+					else
+						@events = Calendar.upcoming_events_in_category(@calendar.category_id).paginate(:page => params[:page], :per_page => 10)
+					end
+				else
+					@events = nil
+				end
+			else
+				raise ArgumentError, "event#category - Calendar is missing!"
+			end
+		else
+			raise ArgumentError, "event#category - Invalid calendar passed!"
 		end
 	end
 

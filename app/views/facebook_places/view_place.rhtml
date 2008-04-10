@@ -38,45 +38,28 @@
 						</p>
 					<% end %>
 					<br />
-					<h2 class="section-title sectiontop-header">Upcoming Events</h2>
-					<div class="sectiontop">
-						<div class="count">
-							<p>
-								<%
-									if !@place.calendar.upcoming_events.nil?
-										upcoming_events_count = @place.calendar.upcoming_events.length
-									else
-										upcoming_events_count = 0
-									end
+					<%
+						if !@place.calendar.upcoming_events.nil?
+							upcoming_events_count = @place.calendar.upcoming_events.length
+						else
+							upcoming_events_count = 0
+						end
 
-									if !@place.calendar.events.nil?
-										events_count = @place.calendar.events.length
-									else
-										events_count = 0
-									end
-								%>
-								Displaying <%= upcoming_events_count %> of <%= link_to "#{events_count} events",
-								fbevents_url(:action => :events, :calendar => @place.calendar.uuid) + "?show_all=1" %>
-							</p>
-						</div>
-						<div class="seeall">
-							<p>
-							<%= link_to "See All",
-								fbevents_url(:action => :events, :calendar => @place.calendar.uuid) + "?show_all=1" %>
-							</p>
-						</div>
-					</div>
-					<% if @place.calendar.upcoming_events != nil && @place.calendar.upcoming_events.length > 0 %>
-						<br />
-						<div class="vcalendar">
-							<%= render :partial => "facebook_events/hevent", :collection => @place.calendar.upcoming_events[0..10], :locals => { :micro => false } %>
-						</div>
-						<%= link_to image_tag("icons/small/standard-black/calendar.gif", :class => "inline") + " Create an event",
-							fbplaces_url(:action => :view, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part, :place => @place.url_part, :place_action => :create_event) %>
-					<% else %>
-						<p>This place has no upcoming events. If you know about any,
-						<%= link_to "add them", fbplaces_url(:action => :view, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part, :place => @place.url_part, :place_action => :create_event) %>!</p>
-					<% end %>
+						if !@place.calendar.events.nil?
+							events_count = @place.calendar.events.length
+						else
+							events_count = 0
+						end
+						
+						upcoming_caption = "Displaying #{upcoming_events_count} of "
+						upcoming_caption << link_to("#{events_count} events", fbevents_url(:action => :events, :calendar => @place.calendar.url_part) + "?show_all=1")
+
+						upcoming_controls = link_to("Create Event", fbevents_url(:action => :create, :calendar => @place.calendar.url_part))
+						upcoming_controls << " | "
+						upcoming_controls << link_to("See All",	fbevents_url(:action => :events, :calendar => @place.calendar.url_part) + "?show_all=1")
+					%>
+					<%= render :partial => "facebook_common/profile_module",
+						:locals => { :title => "Upcoming Events", :caption => upcoming_caption, :controls => upcoming_controls, :content => "facebook_places/place_upcoming_events_content" } %>
 					<br />
 					<%= render :partial => "facebook_common/wall",
 						:locals => {

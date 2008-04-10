@@ -1,6 +1,12 @@
 /* MacroDeck Facebook Applications */
 /* Profile Layout stylesheet */
 
+/* profile modules */
+.profile-module .caption { float: left; width: 50%; padding: 0; margin: 0; }
+.profile-module .caption p { margin: 0; padding: 0; padding-left: 5px; text-align: left; }
+.profile-module .controls { float: left; width: 50%; padding: 0; margin: 0; }
+.profile-module .controls p { margin: 0; padding: 0; padding-right: 5px; text-align: right; }
+
 /* profile-style layout */
 .profile-layout { border: 0; margin: 0; padding: 0; width: 100%; }
 .profile-sidebar { float: left; margin: 0; padding: 0; border: 0; width: 25%; }

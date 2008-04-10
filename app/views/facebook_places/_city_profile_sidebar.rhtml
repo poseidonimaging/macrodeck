@@ -15,7 +15,8 @@
 						fbplaces_url(:action => :set_secondary_city, :country => @city.country, :state => @city.state(:abbreviation => true), :city => @city.url_part) %>
 				</li>
 			<% end %>
+			<li><%= link_to "View Calendar", fbevents_url(:action => :category, :calendar => @city.calendar.url_part) %></li>
 		</ul>
-		<%= render :partial => "profile_ad" %>
+		<%= render :partial => "facebook_common/profile_ad" %>
 	</div>
 </div>
