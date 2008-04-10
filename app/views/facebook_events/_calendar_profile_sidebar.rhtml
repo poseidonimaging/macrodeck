@@ -4,7 +4,11 @@
 		</div>
 	</div>
 	<ul class="profile-links">
-		<li><%= link_to "Edit this calendar", fbevents_url(:action => :edit, :calendar => @calendar.url_part) %></li>
+		<% if params[:action] == "category" %>
+			<li><%= link_to "View events", fbevents_url(:action => :category, :calendar => @calendar.url_part) %></li>
+		<% else %>
+			<li><%= link_to "View events", fbevents_url(:action => :events, :calendar => @calendar.url_part) %></li>
+		<% end %>
 		<li><%= link_to "Create an event", fbevents_url(:action => :create, :calendar => @calendar.url_part) %></li>
 	</ul>
 	<%= render :partial => "facebook_common/profile_ad" %>
