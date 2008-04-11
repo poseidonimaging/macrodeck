@@ -21,7 +21,7 @@ class FacebookEventsController < ApplicationController
 			if @calendar.nil?
 				raise ArgumentError, "event#create - Calendar specified is invalid"
 			else
-				p params
+				populate_params_with_location_information(@calendar)
 
 				@event_dtstart = EventService.parse_time(params["event_dtstart"]) unless params["event_dtstart"].nil?
 				@event_dtstart = nil if params["event_dtstart"].nil?
@@ -114,6 +114,7 @@ class FacebookEventsController < ApplicationController
 		if params[:calendar] != nil
 			@calendar = Calendar.find_by_uuid(params[:calendar])
 			if @calendar
+				populate_params_with_location_information(@calendar)
 
 				if @calendar.events
 					if params[:show_all]
@@ -167,6 +168,7 @@ class FacebookEventsController < ApplicationController
 			
 			@event = Event.find_by_uuid(params[:event])
 			@calendar = @event.parent
+			populate_params_with_location_information(@calendar)
 
 			if @event != nil
 				if params[:add_comment].nil? || params[:add_comment] == ""
@@ -205,23 +207,6 @@ class FacebookEventsController < ApplicationController
 		else 
 			render :text => ""
 		end
-	end
-
-	# Fills in some redirect stuff and then calls create.
-	def create_from_places
-		# get calendar uuid
-		place = Place.find_by_uuid(params[:place])
-		if place.nil?
-			raise ArgumentError, "event#create_from_places - Required URL component invalid"
-		else
-			calendar_uuid = place.calendar.uuid
-		end
-		params["redirect"] = true
-		params["redirecturl"] = fbplaces_url(:action => :view, :country => params[:country], :state => params[:state], :city => params[:city], :place => params[:place])
-		params["calendar"] = calendar_uuid
-		
-		# now run create
-		create
 	end
 
 	private

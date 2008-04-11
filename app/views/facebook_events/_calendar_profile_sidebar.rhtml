@@ -1,8 +1,18 @@
-	<div class="profile-sidebar-image">
-		<div class="photo">
-			<!-- TODO -->
-		</div>
-	</div>
+	<% if @calendar.parent[:type] == "Place" %>
+		<%= render :partial => "facebook_common/profile_photo",
+			:locals => {
+				:item => @calendar.parent,
+				:view_url => Breadcrumb.from_place(:place => @calendar.parent, :action => :view_photo, :baseurl => "#{PLACES_FBURL}/").url
+			}
+		%>
+	<% elsif @calendar.parent[:type] == "City" %>
+		<%= render :partial => "facebook_common/profile_photo",
+			:locals => {
+				:item => @calendar.parent,
+				:view_url => Breadcrumb.from_category(:category => @calendar.parent.category, :action => :view_photo, :baseurl => "#{PLACES_FBURL}/", :levels => 2).url
+			}
+		%>
+	<% end %>
 	<ul class="profile-links">
 		<% if params[:action] == "category" %>
 			<li><%= link_to "View events", fbevents_url(:action => :category, :calendar => @calendar.url_part) %></li>
