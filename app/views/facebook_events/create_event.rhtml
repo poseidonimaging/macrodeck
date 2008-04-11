@@ -14,11 +14,12 @@
 				]
 			}
 		%>
+		<h1 class="area-title">Create an Event at <%= @calendar.parent.name %></h1>
 	<% else %>
 		<%= render :partial => "breadcrumbs", :locals => { :crumbs => [ @basecrumb, Breadcrumb.from_calendar(:baseurl => @baseurl, :calendar => @calendar) ] } %>
+		<h1 class="area-title">Create an Event</h1>
 	<% end %>
 
-	<h1 class="area-title">Create an Event</h1>
 	<br />
 	<%= render :partial => "facebook_common/profile_layout", :locals => { :sidebar => "facebook_events/calendar_profile_sidebar", :content => "facebook_events/create_event_content" } %>
 </div>

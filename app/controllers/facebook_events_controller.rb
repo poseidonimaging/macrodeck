@@ -21,13 +21,13 @@ class FacebookEventsController < ApplicationController
 			if @calendar.nil?
 				raise ArgumentError, "event#create - Calendar specified is invalid"
 			else
-				populate_params_with_location_information(@calendar)
+				p params
 
 				@event_dtstart = EventService.parse_time(params["event_dtstart"]) unless params["event_dtstart"].nil?
-				@event_dtstart = Time.new if params["event_dtstart"].nil?
+				@event_dtstart = nil if params["event_dtstart"].nil?
 				
 				@event_dtend = EventService.parse_time(params["event_dtend"]) unless params["event_dtend"].nil?
-				@event_dtend = Time.new if params["event_dtstart"].nil?
+				@event_dtend = nil if params["event_dtstart"].nil?
 
 				@event_dtend_disable = params["event_dtend_disable"]
 				@event_summary = params["event_summary"]
@@ -44,8 +44,8 @@ class FacebookEventsController < ApplicationController
 					@errors << "Your event must have a summary." if @event_summary.nil? || @event_summary.length == 0
 					@errors << "Your event must have a start time." if @event_dtstart.nil?
 					@errors << "Your event must have an end time." if @event_dtend.nil? && !@event_dtend_disable
-					@errors << "Your event cannot end before it starts!" if !@event_dtstart.nil? && (!@event_dtend_disable && (@event_dtend < @event_dtstart))
-					@errors << "Your event cannot start and end at the same time!" if !@event_dtstart.nil? && !@event_dtend_disable && (@event_dtend == @event_dtstart)
+					@errors << "Your event cannot end before it starts!" if !@event_dtstart.nil? && !@event_dtend.nil? && (!@event_dtend_disable && (@event_dtend < @event_dtstart))
+					@errors << "Your event cannot start and end at the same time!" if !@event_dtstart.nil? && !@event_dtend.nil? && !@event_dtend_disable && (@event_dtend == @event_dtstart)
 					@errors << "Your event cannot start in the past!" if !@event_dtstart.nil? && @event_dtstart < Time.now
 
 					if @errors.length > 0
