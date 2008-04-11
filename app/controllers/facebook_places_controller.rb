@@ -595,7 +595,12 @@ class FacebookPlacesController < ApplicationController
 			
 			if params[:place].nil?
 				# Set photo for city
-				raise "TODO: Get photo for city"
+				if !@city.extended_data[:flickr_photo_id].nil? && !@city.extended_data[:flickr_photo_id].empty? && @city.extended_data[:flickr_photo_id] != 0
+					@photo = Flickr::Photo.new(@city.extended_data[:flickr_photo_id])
+					render :template => "facebook_places/view_photo_city"
+				else
+					raise "view_photo: city does not exist"
+				end
 			else
 				@place = Place.find_by_uuid(params[:place])
 				if @place != nil

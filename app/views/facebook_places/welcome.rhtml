@@ -32,7 +32,22 @@
 					<p>You have not installed Places. We think you would get more use out of Places if you installed it, but we don't require
 					you to install Places to use most of our features, because we think it's annoying when other applications tease you and
 					don't let you play with the application before installing it. If you would like to install Places, press the button below.</p>
-					<div class="confirm_button"><a href="<%= fbplaces_url(:action => :install) %>"><div><div><div><span>Add Application</span></div></div></div></a></div>
+
+					<p>
+						<div id="confirm_button" class="confirm_button">
+							<a href="<%= fbplaces_url(:action => :install) %>" class="link_btn_style">
+								<div>
+									<div>
+										<div>
+											<span class="btn_text">
+												<strong>Add Application</strong>
+											</span>
+										</div>
+									</div>
+								</div>
+							</a>
+						</div>
+					</p>
 					<div class="clear"></div>
 				</div>
 			</fb:else>
