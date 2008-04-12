@@ -11,7 +11,7 @@
 				]
 			}
 		%>
-		<h1 class="area-title">Events</h1>
+		<h1 class="area-title">Events at <%= @calendar.parent.name %></h1>
 	<% elsif @calendar.parent[:type] == "City" %>
 		<%=
 			render :partial => "breadcrumbs", :locals => { :crumbs =>
@@ -23,7 +23,7 @@
 				]
 			}
 		%>
-		<h1 class="area-title">Events</h1>
+		<h1 class="area-title">Events in <%= @calendar.parent.name %>, <%= @calendar.parent.state(:abbreviation => true) %></h1>
 	<% else %>
 		<%= render :partial => "breadcrumbs", :locals => { :crumbs => [ @basecrumb ] } %>
 		<h1 class="area-title"><%= h(@calendar.title) %></h1>

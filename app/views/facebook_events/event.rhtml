@@ -12,6 +12,18 @@
 				]
 			}
 		%>
+	<% elsif @calendar.parent[:type] == "City" %>
+		<%=
+			render :partial => "breadcrumbs", :locals => { :crumbs =>
+				[
+					@places_basecrumb,
+					Breadcrumb.from_category(:category => @calendar.parent.parent.category.parent.parent, :action => :browse, :baseurl => "#{PLACES_FBURL}/"),
+					Breadcrumb.from_category(:category => @calendar.parent.parent.category.parent, :action => :browse, :baseurl => "#{PLACES_FBURL}/", :levels => 1),
+					Breadcrumb.from_category(:category => @calendar.parent.parent.category, :action => :view, :baseurl => "#{PLACES_FBURL}/", :levels => 2),
+					Breadcrumb.from_calendar(:calendar => @calendar, :baseurl => @baseurl)
+				]
+			}
+		%>
 	<% else %>
 		<%= render :partial => "breadcrumbs", :locals => { :crumbs => [ @basecrumb, Breadcrumb.from_calendar(:baseurl => @baseurl, :calendar => @calendar) ] } %>
 	<% end %>

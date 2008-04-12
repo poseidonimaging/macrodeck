@@ -15,6 +15,19 @@
 			}
 		%>
 		<h1 class="area-title">Create an Event at <%= @calendar.parent.name %></h1>
+	<% elsif @calendar.parent[:type] == "City" %>
+		<%=
+			render :partial => "breadcrumbs", :locals => { :crumbs =>
+				[
+					@places_basecrumb,
+					Breadcrumb.from_category(:category => @calendar.parent.category.parent.parent, :action => :browse, :baseurl => "#{PLACES_FBURL}/"),			# country
+					Breadcrumb.from_category(:category => @calendar.parent.category.parent, :action => :browse, :baseurl => "#{PLACES_FBURL}/", :levels => 1),	# state
+					Breadcrumb.from_category(:category => @calendar.parent.category, :action => :view, :baseurl => "#{PLACES_FBURL}/", :levels => 2),			# city
+					Breadcrumb.from_calendar(:calendar => @calendar, :baseurl => @baseurl)	# calendar
+				]
+			}
+		%>
+		<h1 class="area-title">Create an Event in <%= @calendar.parent.name %>, <%= @calendar.parent.state(:abbreviation => true) %></h1>
 	<% else %>
 		<%= render :partial => "breadcrumbs", :locals => { :crumbs => [ @basecrumb, Breadcrumb.from_calendar(:baseurl => @baseurl, :calendar => @calendar) ] } %>
 		<h1 class="area-title">Create an Event</h1>
