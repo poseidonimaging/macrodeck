@@ -104,7 +104,7 @@ class MigrateDataToDataObjects < ActiveRecord::Migration
 		created_by_id = 0 if group.created_by.nil?
 		updated_by_id = User::find_by_uuid(group.updated_by).id if !group.updated_by.nil?
 		updated_by_id = 0 if group.updated_by.nil?
-		owned_by_id = User::find_by_uuid(group.created_by_.id if !group.owned_by.nil?
+		owned_by_id = User::find_by_uuid(group.owned_by).id if !group.owned_by.nil?
 		owned_by_id = 0 if group.owned_by.nil?
 
 		  data_obj = DataObject::new({
