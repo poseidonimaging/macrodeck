@@ -1,7 +1,7 @@
 <div class="profile-sidebar-image">
 	<div class="photo">
 		<% if item.nil? || item.extended_data.nil? || item.extended_data[:flickr_photo_id].nil? || item.extended_data[:flickr_photo_id].empty? || item.extended_data[:flickr_photo_id] == 0 %>
-			<%= image_tag "places/no-image-large.png", :alt => "No Photo Selected" %>
+			<%= image_tag "#{PLACES_FBURL}/images/places/no-image-large.png", :alt => "No Photo Selected" %>
 		<% else %>
 			<%
 				photo = Flickr::Photo.new(item.extended_data[:flickr_photo_id])

@@ -1,6 +1,6 @@
 <div class="place">
 	<% if place_griditem.place_metadata[:flickr_photo_id].nil? || place_griditem.place_metadata[:flickr_photo_id] == 0 || place_griditem.place_metadata[:flickr_photo_id] == "" %>
-		<%= link_to (image_tag("places/no-image-small.png", :alt => h(place_griditem.name), :title => h(place_griditem.name)),
+		<%= link_to (image_tag("#{PLACES_FBURL}/images/places/no-image-small.png", :alt => h(place_griditem.name), :title => h(place_griditem.name)),
 			fbplaces_url(:action => :view, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part, :place => place_griditem.url_part))
 		%>
 	<% else %>
