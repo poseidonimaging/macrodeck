@@ -844,12 +844,10 @@ class FacebookPlacesController < ApplicationController
 			types = PlaceMetadata.get_place_types
 			option_list = []
 			types.each_pair do |key, value|
-				if key != :other
-					if default_value != nil && default_value.to_s == key.to_s
-						option_list << "<option value=\"#{key.to_s}\" selected=\"selected\">#{value}</option>"
-					else
-						option_list << "<option value=\"#{key.to_s}\">#{value}</option>"
-					end
+				if default_value != nil && default_value.to_s == key.to_s
+					option_list << "<option value=\"#{key.to_s}\" selected=\"selected\">#{value}</option>"
+				else
+					option_list << "<option value=\"#{key.to_s}\">#{value}</option>"
 				end
 			end
 			option_list.sort!
