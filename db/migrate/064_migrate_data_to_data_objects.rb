@@ -99,6 +99,14 @@ class MigrateDataToDataObjects < ActiveRecord::Migration
 	  if group.remote_data == true
 		  say "!!! Ignoring remote data as it's known broken! (#{group.uuid})"
 	  else
+	  	# Get IDs for each updater, creator, and owner
+		created_by_id = User::find_by_uuid(group.created_by).id if !group.created_by.nil?
+		created_by_id = 0 if group.created_by.nil?
+		updated_by_id = User::find_by_uuid(group.updated_by).id if !group.updated_by.nil?
+		updated_by_id = 0 if group.updated_by.nil?
+		owned_by_id = User::find_by_uuid(group.created_by_.id if !group.owned_by.nil?
+		owned_by_id = 0 if group.owned_by.nil?
+
 		  data_obj = DataObject::new({
 			  :parent_id		=> parent_id,
 			  :type				=> new_type,
@@ -109,9 +117,9 @@ class MigrateDataToDataObjects < ActiveRecord::Migration
 			  :updated_at		=> group.updated_at,
 			  # Foreign Keys!
 			  :category			=> Category::find_by_uuid(group.category_uuid),
-			  :created_by		=> User::find_by_uuid(group.created_by),
-			  :updated_by		=> User::find_by_uuid(group.updated_by),
-			  :owned_by			=> User::find_by_uuid(group.owned_by)
+			  :created_by_id		=> created_by_id,
+			  :updated_by_id		=> updated_by_id,
+			  :owned_by_id			=> owned_by_id
 		  })
 		  data_obj.type = new_type
 		  data_obj.save!
