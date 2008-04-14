@@ -9,16 +9,6 @@
 	<div class="content">
 		<%= render :partial => "breadcrumbs", :locals => { :country => @country, :state => @state, :city => @city, :place => nil } %>
 		<h1 class="area-title">Create a Place</h1>
-		<div class="information">
-			<h2><%= image_tag "icons/small/standard-black/info.gif", :class => "inline" %> Tips for Creating Places</h2>
-			<p>Enter as much information as possible as accurately as possible. The only <em>required</em> fields are Place Name,
-			Place Type, and Address. Everything else is optional, but putting this information makes it easier to locate this
-			place. If you do not know the exact address, feel free to use an intersection (e.g. 71st and Memorial). Also, when picking
-			which features a place has, check all of the boxes you need to describe what features the place has.</p>
-			<p>Enjoy Places!</p>
-			<!-- TODO: make a button so this can go away if you would like it to -->
-		</div>
-		<br />
 		<% if @errors.length > 0 %>
 			<div class="errors">
 				<h2><%= image_tag "icons/small/standard-black/exclamation.gif", :class => "inline" %> Errors Found With This Entry</h2>
@@ -59,7 +49,7 @@
 			</div>
 			<div class="form-item">
 				<div class="form-item-left"><p><label for="place_description">Description</label></p></div>
-				<div class="form-item-unformatted-right"><%= text_area_tag "place_description", @place_description, :size => "80x5", :style => "margin-top: 5px;" %></div>
+				<div class="form-item-unformatted-right"><%= text_area_tag "place_description", @place_description, :size => "78x5", :style => "margin-top: 5px;" %></div>
 			</div>
 			<div class="form-item">
 				<div class="form-item-left"><p class="faux-label">Phone Number</p></div>
