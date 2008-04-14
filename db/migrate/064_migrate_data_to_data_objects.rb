@@ -82,17 +82,17 @@ class MigrateDataToDataObjects < ActiveRecord::Migration
 
 		  data_obj = DataObject::new({
 			  :parent_id		=> parent_id,
-			  :type				=> new_type,
-			  :uuid				=> item.uuid,
-			  :title			=> item.title,
+			  :type			=> new_type,
+			  :uuid			=> item.uuid,
+			  :title		=> item.title,
 			  :description		=> item.description,
-			  :data				=> item.stringdata,
+			  :data			=> item.stringdata,
 			  :created_at		=> item.created_at,
 			  :updated_at		=> item.updated_at,
 			  # Foreign Keys!
-			  :created_by		=> created_by_id,
-			  :updated_by		=> updated_by_id,
-			  :owned_by		=> owned_by_id
+			  :created_by_id	=> created_by_id,
+			  :updated_by_id	=> updated_by_id,
+			  :owned_by_id		=> owned_by_id
 		  })
 		  data_obj.type = new_type
 		  if !item.objectdata.nil?
