@@ -1,0 +1,123 @@
+	<% if @errors.length > 0 %>
+		<div class="errors">
+			<h2><%= image_tag "icons/small/standard-black/exclamation.gif", :class => "inline" %> Errors Found With This Entry</h2>
+			<p>There were errors with your entry. Please correct the following errors:</p>
+			<ul>
+				<% @errors.each do |error| %>
+					<li><%= error %></li>
+				<% end %>
+			</ul>
+		</div>
+		<br />
+	<% end %>
+	<script type="text/javascript">
+		// global variables
+		var last_dtstart = "";
+		var last_dtend = "";
+
+		// Handles the dtend checkbox
+		function event_dtend_disable_handler() {
+			chkDtEnd = document.getElementById('event_dtend_disable');
+			txtDtEnd = document.getElementById('event_dtend');
+			txtDtEnd.setDisabled(chkDtEnd.getChecked());
+		}
+
+		// call our server and check dtstart
+		function event_dtstart_ajax() {
+			current_dtstart = document.getElementById('event_dtstart').getValue();
+
+			// only do Ajax calls if the current dtstart != the last dtstart
+			if (last_dtstart != current_dtstart) {
+				var ajax = new Ajax();
+				var params = { "time": current_dtstart };
+				last_dtstart = document.getElementById('event_dtstart').getValue();
+				ajax.responseType = Ajax.RAW;
+				ajax.onerror =
+					function(error) {
+						document.getElementById('event_dtstart_parsed').setTextValue("Error contacting server");
+					}
+				ajax.ondone =
+					function(parsed_time) {
+						document.getElementById('event_dtstart_parsed').setTextValue(parsed_time);
+						box = document.getElementById('event_dtstart');
+						
+						if (parsed_time == "") {
+							box.setStyle({ backgroundColor: "#F7E5E4", border: "1px solid #610B23" });
+						} else {
+							box.setStyle({ backgroundColor: "#e4f7e5", border: "1px solid #0b6111" });
+						}
+					}
+				ajax.post('<%= PLACES_BASEURL %>/facebook/events/parse_time/', params);
+			}
+			setTimeout(function() { event_dtstart_ajax() }, 1000);
+		}
+
+		// call our server and check dtend
+		function event_dtend_ajax() {
+			current_dtend = document.getElementById('event_dtend').getValue();
+
+			// only do Ajax calls if the current dtstart != the last dtstart
+			if (last_dtend != current_dtend) {
+				var ajax = new Ajax();
+				var params = { "time": current_dtend };
+				last_dtend = document.getElementById('event_dtend').getValue();
+				ajax.responseType = Ajax.RAW;
+				ajax.onerror =
+					function(error) {
+						document.getElementById('event_dtend_parsed').setTextValue("Error contacting server");
+					}
+				ajax.ondone =
+					function(parsed_time) {
+						document.getElementById('event_dtend_parsed').setTextValue(parsed_time);
+						box = document.getElementById('event_dtend');
+						
+						if (parsed_time == "") {
+							box.setStyle({ backgroundColor: "#F7E5E4", border: "1px solid #610B23" });
+						} else {
+							box.setStyle({ backgroundColor: "#e4f7e5", border: "1px solid #0b6111" });
+						}
+					}
+				ajax.post('<%= PLACES_BASEURL %>/facebook/events/parse_time/', params);
+			}
+			setTimeout(function() { event_dtend_ajax() }, 1000);
+		}
+
+		// script that runs every 1s to process dtstart
+		setTimeout(function() { event_dtstart_ajax() }, 1000);
+		setTimeout(function() { event_dtend_ajax() }, 1000);
+	</script>
+	<fb:editor action="<%= fbevents_url(:calendar => @calendar.uuid, :action => :create) %>" labelwidth="100" width="375">
+		<%= hidden_field_tag "create_event", "1" %>
+		<% if params["redirect"] %>
+			<%= hidden_field_tag "redirect", true %>
+			<%= hidden_field_tag "redirecturl", params[:redirecturl] %>
+		<% end %>
+		<fb:editor-text label="Event Summary" name="event_summary" value="<%= @event_summary %>" />
+		<fb:editor-textarea label="Description" name="event_description"><%= @event_description %></fb:editor-textarea>
+		<fb:editor-custom label="Start Time">
+			<% if !@event_dtstart.nil? %>
+				<%= text_field_tag "event_dtstart", @event_dtstart.to_chronic %><br />
+			<% else %>
+				<%= text_field_tag "event_dtstart" %><br />
+			<% end %>
+			<div id="event_dtstart_parsed">Type in a time such as "Monday at 5pm" or "Jan 6 2009 at 3pm"</div>
+		</fb:editor-custom>
+		<fb:editor-custom label="End Time">
+			<%= check_box_tag "event_dtend_disable", "1", @event_dtend_disable, :style => "width: 13px; height: 13px;", :onchange => "event_dtend_disable_handler();" %> This event does not have a specified ending time.
+		</fb:editor-custom>
+		<fb:editor-custom>
+			<% if !@event_dtend.nil? %>
+				<%= text_field_tag "event_dtend", @event_dtend.to_chronic, :disabled => @event_dtend_disable %><br />
+			<% else %>
+				<%= text_field_tag "event_dtend", nil, :disabled => @event_dtend_disable %><br />
+			<% end %>
+			<div id="event_dtend_parsed">Type in a time such as "Monday at 5pm" or "Jan 6 2009 at 3pm"</div>
+		</fb:editor-custom>
+
+		<fb:editor-buttonset>
+			<fb:editor-button value="Create Event" />
+			<% if @redirect %>
+				<fb:editor-cancel href="<%= @redirecturl %>" />
+			<% end %>
+		</fb:editor-buttonset>
+	</fb:editor>

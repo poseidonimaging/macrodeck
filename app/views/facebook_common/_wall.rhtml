@@ -1,0 +1,27 @@
+<h2 class="section-title sectiontop-header">The Wall</h2>
+<fb:wall>
+	<% form_tag wall_url, :class => "thewall" do %>
+		<%= hidden_field_tag "add_comment", "1" %>
+		<div class="sectiontop">
+			<div class="count">
+				<p>Displaying <%= wall.latest_comments.length %> of 
+				<%= link_to "#{wall.children.length} wall posts", wall_url %>
+				</p>
+			</div>
+			<div class="seeall">
+				<p>
+				<%= link_to "See All", wall_url %>
+				</p>
+			</div>
+		</div>
+		<div class="wallmessage">
+			<%= text_area_tag "message", nil, { :size => "43x4", :placeholder => "Write something...", :class => "textarea" } %>
+		</div>
+		<div class="wallcontrols"><%= submit_tag "Post", :class => "inputsubmit" %></div>
+	<% end %>
+	<% if wall.latest_comments.length > 0 %>
+		<%= render :partial => "facebook_common/wall_post", :collection => wall.latest_comments %>
+	<% else %>
+		<p>There are currently no wall posts. Be the first to leave a message!</p>
+	<% end %>
+</fb:wall>

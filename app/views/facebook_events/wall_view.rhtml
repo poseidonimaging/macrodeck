@@ -1,0 +1,57 @@
+<div class="content">
+	<% if @calendar.parent[:type] == "Place" %>
+		<%=
+			render :partial => "breadcrumbs", :locals => { :crumbs =>
+				[
+					@places_basecrumb,
+					Breadcrumb.from_category(:category => @calendar.parent.parent.category.parent.parent, :action => :browse, :baseurl => "#{PLACES_FBURL}/"),
+					Breadcrumb.from_category(:category => @calendar.parent.parent.category.parent, :action => :browse, :baseurl => "#{PLACES_FBURL}/", :levels => 1),
+					Breadcrumb.from_category(:category => @calendar.parent.parent.category, :action => :view, :baseurl => "#{PLACES_FBURL}/", :levels => 2),
+					Breadcrumb.from_place(:place => @calendar.parent, :action => :view, :baseurl => "#{PLACES_FBURL}/"),
+					Breadcrumb.from_calendar(:action => :events, :baseurl => "#{@baseurl}", :calendar => @calendar),
+					Breadcrumb.from_event(:action => :event, :baseurl => "#{@baseurl}", :event => @event)
+				]
+			}
+		%>
+		<h1 class="area-title">View Event Wall</h1>
+	<% elsif @calendar.parent[:type] == "City" %>
+		<%=
+			render :partial => "breadcrumbs", :locals => { :crumbs =>
+				[
+					@places_basecrumb,
+					Breadcrumb.from_category(:category => @calendar.parent.parent.category.parent.parent, :action => :browse, :baseurl => "#{PLACES_FBURL}/"),
+					Breadcrumb.from_category(:category => @calendar.parent.parent.category.parent, :action => :browse, :baseurl => "#{PLACES_FBURL}/", :levels => 1),
+					Breadcrumb.from_category(:category => @calendar.parent.parent.category, :action => :view, :baseurl => "#{PLACES_FBURL}/", :levels => 2),
+					Breadcrumb.from_calendar(:action => :events, :baseurl => "#{@baseurl}", :calendar => @calendar),
+					Breadcrumb.from_event(:action => :event, :baseurl => "#{@baseurl}", :event => @event)
+				]
+			}
+		%>
+		<h1 class="area-title">View Event Wall</h1>
+	<% else %>
+		<%= render :partial => "breadcrumbs", :locals => { :calendar => nil, :event => nil } %>
+		<%= render :partial => "breadcrumbs", :locals => { :crumbs => [ @basecrumb,
+																		Breadcrumb.from_calendar(:baseurl => @baseurl, :calendar => @calendar),
+																		Breadcrumb.from_event(:baseurl => @baseurl, :event => @event) ]
+		}
+		%>
+		<h1 class="area-title">View Wall Posts</h1>
+	<% end %>
+
+	<div class="profile-layout">
+		<!-- sidebar -->
+		<div class="profile-content">
+			<% if !@comments.nil? && @comments.length > 0 %>
+				<fb:wall>
+					<%= render :partial => "facebook_common/wall_post", :collection => @comments %>
+				</fb:wall>
+				
+				<br />
+
+				<div class="clear"><%= will_paginate @comments %></div>
+			<% else %>
+				<p>There are no posts on this wall.</p>
+			<% end %>
+		</div>
+	</div>
+</div>

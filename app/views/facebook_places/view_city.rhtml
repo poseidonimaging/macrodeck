@@ -9,8 +9,8 @@
 	<div class="content">
 		<%= render :partial => "breadcrumbs", :locals => { :country => @country, :state => @state, :city => nil, :place => nil } %>
 
-		<h1 class="area-title"><span><span><%= h(@city.title) %></span>
-				<span class="subtitle"><%= link_to "View All", fbplaces_url(:action => :browse, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part) %></span></span></h1>
+		<h1 class="area-title"><%= h(@city.title) %></h1>
+		<div class="area-subtitle"><%= link_to "View All", fbplaces_url(:action => :browse, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part) %></div>
 
 		<div class="profile-layout">
 			<%= render :partial => "city_profile_sidebar" %>
@@ -19,22 +19,40 @@
 					<div class="twocol-layout">
 						<div class="twocol-left">
 							<div class="twocol-left-padding">
-								<h2 class="section-title">Recently Added</h2>
-								<div class="places">
-									<% if @city.top_10_newest_places.length > 0 %>
-										<%= render :partial => "place_griditem", :collection => @city.top_10_newest_places, :locals => { :longtext => false } %>
-									<% else %>
-										<p>This city has no places yet! Create one!</p>
-									<% end %>
-								</div>
+								<h2 class="section-title">Upcoming Events</h2>
+								<% upcoming_events = Calendar.upcoming_events_in_category(@city.category_id) %>
+								<% if !upcoming_events.nil? && upcoming_events.length > 0 %>
+									<div class="vcalendar">
+										<%= render :partial => "facebook_events/hevent",
+											:collection => upcoming_events[0..13],
+											:locals => { :micro => true }
+										%>
+									</div>
+								<% else %>
+									<p>There's nothing happening soon in this city! Consider adding events to some places or
+									city-wide events.</p>
+								<% end %>
 							</div>
 						</div>
 						<div class="twocol-right">
 							<div class="twocol-right-padding">
+								<h2 class="section-title">Recently Added</h2>
+								<div class="places">
+									<% if @city.top_10_newest_places.length > 0 %>
+										<%= render :partial => "place_griditem",
+										:collection => @city.top_10_newest_places[0..4],
+										:locals => { :longtext => false } %>
+									<% else %>
+										<p>This city has no places yet! Create one!</p>
+									<% end %>
+								</div>
+								<div class="clear"><br /></div>
 								<h2 class="section-title">Random Places</h2>
 								<div class="places">
 									<% if @city.get_10_random_places.length > 0 %>
-										<%= render :partial => "place_griditem", :collection => @city.get_10_random_places, :locals => { :longtext => false } %>
+										<%= render :partial => "place_griditem",
+										:collection => @city.get_10_random_places[0..4],
+										:locals => { :longtext => false } %>
 									<% else %>
 										<p>This city has no places yet! Create one!</p>
 									<% end %>
@@ -43,6 +61,11 @@
 						</div> <!-- /twocol right -->
 					</div> <!-- /twocol -->
 					<div class="clear"><br /></div>
+					<%= render :partial => "facebook_common/wall", :locals => {
+					:wall => @city.wall,
+					:wall_url => fbplaces_url(:action => :wall, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part)
+					}
+					%>
 				</div> <!-- /profile-content-padding -->
 			</div> <!-- /profile-content -->
 		</div> <!-- /profile -->

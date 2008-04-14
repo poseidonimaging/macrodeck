@@ -1,6 +1,11 @@
 <div class="profile-sidebar">
 	<div class="profile-sidebar-padding">
-		<div class="profile-sidebar-image"><%= image_tag "places/no-image-large.png", :alt => "City Image" %></div>
+		<%= render :partial => "facebook_common/profile_photo",
+			:locals => {
+				:item => @city,
+				:view_url => Breadcrumb.from_category(:category => @city.category, :action => :view_photo, :baseurl => "#{PLACES_FBURL}/", :levels => 2).url
+			}
+		%>
 		<ul class="profile-links">
 			<% if @home_city.nil? || (@home_city.uuid != @city.uuid && (@secondary_city.nil? || @secondary_city.uuid != @city.uuid)) %>
 				<li>
@@ -15,7 +20,9 @@
 						fbplaces_url(:action => :set_secondary_city, :country => @city.country, :state => @city.state(:abbreviation => true), :city => @city.url_part) %>
 				</li>
 			<% end %>
+			<li><%= link_to "View calendar", fbevents_url(:action => :category, :calendar => @city.calendar.url_part) %></li>
+			<li><%= link_to "Create an event", fbevents_url(:action => :create, :calendar => @city.calendar.url_part) %></li>
 		</ul>
-		<%= render :partial => "profile_ad" %>
+		<%= render :partial => "facebook_common/profile_ad" %>
 	</div>
 </div>

@@ -1,0 +1,38 @@
+<div class="content">
+	<% if @calendar.parent[:type] == "Place" %>
+		<%#= render :partial => "facebook_places/breadcrumbs", :locals => {
+			:country => @calendar.parent.parent.category.parent.parent, :state => @calendar.parent.parent.category.parent, :city => @calendar.parent.parent, :place => @calendar.parent } %>
+		<%=
+			render :partial => "breadcrumbs", :locals => { :crumbs =>
+				[
+					@places_basecrumb,
+					Breadcrumb.from_category(:category => @calendar.parent.parent.category.parent.parent, :action => :browse, :baseurl => "#{PLACES_FBURL}/"),
+					Breadcrumb.from_category(:category => @calendar.parent.parent.category.parent, :action => :browse, :baseurl => "#{PLACES_FBURL}/", :levels => 1),
+					Breadcrumb.from_category(:category => @calendar.parent.parent.category, :action => :view, :baseurl => "#{PLACES_FBURL}/", :levels => 2),
+					Breadcrumb.from_place(:place => @calendar.parent, :action => :view, :baseurl => "#{PLACES_FBURL}/"),
+					Breadcrumb.from_calendar(:calendar => @calendar, :baseurl => @baseurl)
+				]
+			}
+		%>
+		<h1 class="area-title">Create an Event at <%= @calendar.parent.name %></h1>
+	<% elsif @calendar.parent[:type] == "City" %>
+		<%=
+			render :partial => "breadcrumbs", :locals => { :crumbs =>
+				[
+					@places_basecrumb,
+					Breadcrumb.from_category(:category => @calendar.parent.category.parent.parent, :action => :browse, :baseurl => "#{PLACES_FBURL}/"),			# country
+					Breadcrumb.from_category(:category => @calendar.parent.category.parent, :action => :browse, :baseurl => "#{PLACES_FBURL}/", :levels => 1),	# state
+					Breadcrumb.from_category(:category => @calendar.parent.category, :action => :view, :baseurl => "#{PLACES_FBURL}/", :levels => 2),			# city
+					Breadcrumb.from_calendar(:calendar => @calendar, :baseurl => @baseurl)	# calendar
+				]
+			}
+		%>
+		<h1 class="area-title">Create an Event in <%= @calendar.parent.name %>, <%= @calendar.parent.state(:abbreviation => true) %></h1>
+	<% else %>
+		<%= render :partial => "breadcrumbs", :locals => { :crumbs => [ @basecrumb, Breadcrumb.from_calendar(:baseurl => @baseurl, :calendar => @calendar) ] } %>
+		<h1 class="area-title">Create an Event</h1>
+	<% end %>
+
+	<br />
+	<%= render :partial => "facebook_common/profile_layout", :locals => { :sidebar => "facebook_events/calendar_profile_sidebar", :content => "facebook_events/create_event_content" } %>
+</div>

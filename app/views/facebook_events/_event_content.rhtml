@@ -1,0 +1,11 @@
+<h2 class="section-title">Event Details</h2>
+<div class="vcalendar eventpage">
+	<%= render :partial => "hevent", :locals => { :hevent => @event, :micro => true } %>
+</div>
+
+<%=
+	render :partial => "facebook_common/wall", :locals => {
+		:wall => @event.wall,
+		:wall_url => fbevents_url(:action => :wall, :calendar => @event.parent.url_part, :event => @event.url_part)
+	}
+%>

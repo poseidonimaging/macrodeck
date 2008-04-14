@@ -9,16 +9,6 @@
 	<div class="content">
 		<%= render :partial => "breadcrumbs", :locals => { :country => @country, :state => @state, :city => @city, :place => nil } %>
 		<h1 class="area-title">Create a Place</h1>
-		<div class="information">
-			<h2><%= image_tag "icons/small/standard-black/info.gif", :class => "inline" %> Tips for Creating Places</h2>
-			<p>Enter as much information as possible as accurately as possible. The only <em>required</em> fields are Place Name,
-			Place Type, and Address. Everything else is optional, but putting this information makes it easier to locate this
-			place. If you do not know the exact address, feel free to use an intersection (e.g. 71st and Memorial). Also, when picking
-			which features a place has, check all of the boxes you need to describe what features the place has.</p>
-			<p>Enjoy Places!</p>
-			<!-- TODO: make a button so this can go away if you would like it to -->
-		</div>
-		<br />
 		<% if @errors.length > 0 %>
 			<div class="errors">
 				<h2><%= image_tag "icons/small/standard-black/exclamation.gif", :class => "inline" %> Errors Found With This Entry</h2>
@@ -38,34 +28,34 @@
 				<div class="form-item-main-right"><%= text_field_tag "place_name", @place_name %></div>
 			</div>
 			<div class="form-item-main">
-				<div class="form-item-main-left"><p></p></div>
-				<div class="form-item-main-right"><p><%= image_tag "icons/small/standard-black/warning.gif", :class => "inline" %> Be sure to use proper spelling and capitalization.</p></div>
-			</div>
-			<div class="form-item">
-				<div class="form-item-left"><p><label for="place_description">Description</label></p></div>
-				<div class="form-item-right"><%= text_field_tag "place_description", @place_description %></div>
-			</div>
-			<div class="form-item">
-				<div class="form-item-left"><p class="faux-label">Location</p></div>
-				<div class="form-item-unformatted-right">
+				<div class="form-item-main-left"><p class="faux-label">Location</p></div>
+				<div class="form-item-main-unformatted-right" style="height: 40px;">
 					<p>
 						<label for="place_address">Address:</label> <%= text_field_tag "place_address", @place_address, :style => "width: 66%;" %> 
 						<label for="place_zipcode">Zip:</label> <%= text_field_tag "place_zipcode", @place_zipcode, :size => 5 %>
 					</p>
 				</div>
 			</div>
+			<!-- FIXME: need to fill in the blank with the proper type when this page is reloaded -->
+			<div class="form-item-main">
+				<div class="form-item-main-left"><p><label for="place_type">Type</label></p></div>
+				<div class="form-item-main-right">
+					<%= select_tag "place_type", @place_types %>
+				</div>
+			</div>
+			<div class="form-item-main">
+				<div class="form-item-main-left"><p></p></div>
+				<div class="form-item-main-right"><p><%= image_tag "icons/small/standard-black/warning.gif", :class => "inline" %> Be sure to use proper spelling and capitalization.</p></div>
+			</div>
+			<div class="form-item">
+				<div class="form-item-left"><p><label for="place_description">Description</label></p></div>
+				<div class="form-item-unformatted-right"><%= text_area_tag "place_description", @place_description, :size => "78x5", :style => "margin-top: 5px;" %></div>
+			</div>
 			<div class="form-item">
 				<div class="form-item-left"><p class="faux-label">Phone Number</p></div>
 				<div class="form-item-unformatted-right">
 					<p>(<%= text_field_tag "place_phone_number_area_code", @place_phone_number_area_code, :size => 3 %>)
 					<%= text_field_tag "place_phone_number_exchange", @place_phone_number_exchange, :size => 3 %>-<%= text_field_tag "place_phone_number_number", @place_phone_number_number, :size => 4 %></p>
-				</div>
-			</div>
-			<!-- FIXME: need to fill in the blank with the proper type when this page is reloaded -->
-			<div class="form-item">
-				<div class="form-item-left"><p><label for="place_type">Type</label></p></div>
-				<div class="form-item-right">
-					<%= select_tag "place_type", @place_types %>
 				</div>
 			</div>
 			<!-- FIXME: need to fill in the blank with the proper features when this page is reloaded -->

@@ -6,7 +6,7 @@
 #ENV['RAILS_ENV'] ||= 'development'
 
 # Specifies gem version of Rails to use when vendor/rails is not present
-RAILS_GEM_VERSION = '1.2.6'
+RAILS_GEM_VERSION = '2.0.2'
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
@@ -53,14 +53,8 @@ end
 
 # Include your application configuration below
 
-# Constants for UUIDs
-# This moved to services/lib/local_uuids.rb.
-# FIXME: See if we still need these! If not, remove them from here.
-USER_CSAKON       = "9add1be8-a635-49d7-aa0f-91b6638e9dd0"
-USER_ZIGGYTHEHAMSTER  = "c4a038aa-372a-4f5c-81b7-351660f7049b"
-GROUP_MACRODECK     = "253d41a1-8b62-4ca8-9f8d-99bb42bc0dd8"
-BLOG_MACRODECK      = "9a9fc352-89d4-4b92-a94b-45a8cac106bb"
-CREATOR_MACRODECK   = "7b7e7c62-0a56-4785-93d5-6e689c9793c9"
+# A list of months!
+MONTHS_EN = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"] 
 
 # E-mail validation regex
 #EMAIL_VALIDATION   = /^[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/
@@ -71,20 +65,33 @@ PHONE_VALIDATION	= /^[01]?[- .]?(\([2-9]\d{2}\)|[2-9]\d{2})[- .]?\d{3}[- .]?\d{4
 PASSWORD_SALT   = "giomullyoxonoind" # Random character generator
 
 # Places
-PLACES_BASEURL = "http://places.macrodeck.com" # do not use a trailing slash
-PLACES_FBURL = "http://apps.facebook.com/macrodeckplaces" # do not use a trailing slash
-PLACES_APPURL = "http://www.facebook.com/apps/application.php?id=2475497610"
-FLICKR_API_KEY = "686693e936d2bd4bfc3c5477fa3f1332"
-FLICKR_SECRET = "b9a60cf2f27ed59c"
-PLACES_TEST_SERVER = false
+PLACES_TEST_SERVER = true
+
+if PLACES_TEST_SERVER
+	PLACES_BASEURL = "http://places.intranet.ignition-project.com" # do not use a trailing slash
+	PLACES_FBURL = "http://apps.facebook.com/macrodeckplaces-test" # do not use a trailing slash
+	PLACES_APPURL = "http://www.facebook.com/apps/application.php?id=6592864647"
+	FLICKR_API_KEY = "686693e936d2bd4bfc3c5477fa3f1332"
+	FLICKR_SECRET = "b9a60cf2f27ed59c"
+	ENV['RAILS_ENV'] ||= 'development'
+	ActionController::Base.asset_host = PLACES_BASEURL
+	puts "*** Using Test Server!"
+else
+	PLACES_BASEURL = "http://places.macrodeck.com" # do not use a trailing slash
+	PLACES_FBURL = "http://apps.facebook.com/macrodeckplaces" # do not use a trailing slash
+	PLACES_APPURL = "http://www.facebook.com/apps/application.php?id=2475497610"
+	FLICKR_API_KEY = "686693e936d2bd4bfc3c5477fa3f1332"
+	FLICKR_SECRET = "b9a60cf2f27ed59c"
+end
 
 # Start services we need
 Services.startService "uuid_service"
 Services.startService "data_service"
-Services.startService "blog_service"
 Services.startService "user_service"
-Services.startService "places_service"
 Services.startService "comment_service"
+Services.startService "event_service"
+Services.startService "places_service"
+Services.startService "navigation_service"
 
 # Start web services now
 Services.startService "data_web_service"

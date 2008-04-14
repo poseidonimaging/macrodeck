@@ -21,8 +21,9 @@
 			</div>
 			<br />
 		<% end %>
-		<% form_tag "#{PLACES_FBURL}/edit/#{@country.url_part}/#{@state.url_part}/#{url_sanitize(@city.title)}/#{@place.dataid}/" do %>
+		<% form_tag "#{PLACES_FBURL}/edit/#{@country.url_part}/#{@state.url_part}/#{url_sanitize(@city.title)}/#{@place.uuid}/" do %>
 			<%= hidden_field_tag "validation_step", @validation_step %>
+			<%= hidden_field_tag "flickr_photo_id", @place_flickr_photo_id %>
 			<div class="form-item-main">
 				<div class="form-item-main-left"><p><label for="place_name">Place Name</label></p></div>
 				<div class="form-item-main-right"><%= text_field_tag "place_name", @place_name %></div>
@@ -51,14 +52,11 @@
 					<%= text_field_tag "place_phone_number_exchange", @place_phone_number_exchange, :size => 3 %>-<%= text_field_tag "place_phone_number_number", @place_phone_number_number, :size => 4 %></p>
 				</div>
 			</div>
-			<!-- FIXME: need to fill in the blank with the proper type when this page is reloaded -->
-			<div class="form-item">
 				<div class="form-item-left"><p><label for="place_type">Type</label></p></div>
 				<div class="form-item-right">
 					<%= select_tag "place_type", @place_types %>
 				</div>
 			</div>
-			<!-- FIXME: need to fill in the blank with the proper features when this page is reloaded -->
 			<div class="form-item">
 				<div class="form-item-left"><p class="faux-label">Features</p></div>
 				<div class="form-item-unformatted-right"><div class="form-multicolumn-layout"><%= @place_features %></div></div>

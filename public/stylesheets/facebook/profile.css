@@ -1,0 +1,34 @@
+/* MacroDeck Facebook Applications */
+/* Profile Layout stylesheet */
+
+/* profile modules */
+.profile-module .caption { float: left; width: 50%; padding: 0; margin: 0; }
+.profile-module .caption p { margin: 0; padding: 0; padding-left: 5px; text-align: left; }
+.profile-module .controls { float: left; width: 50%; padding: 0; margin: 0; }
+.profile-module .controls p { margin: 0; padding: 0; padding-right: 5px; text-align: right; }
+
+/* profile-style layout */
+.profile-layout { border: 0; margin: 0; padding: 0; width: 100%; }
+.profile-sidebar { float: left; margin: 0; padding: 0; border: 0; width: 25%; }
+.profile-sidebar-padding { padding-right: 5px; }
+.profile-sidebar-image { text-align: left; margin-left: 0; margin-right: auto; margin-bottom: 5px; }
+.profile-content { float: left; margin: 0; padding: 0; border: 0; width: 75%; }
+.profile-content-padding { padding-left: 5px; }
+.profile-links { list-style-type: none; margin: 0; padding: 0; }
+.profile-links li { color: #3b5998; margin: 0; padding: 0; border-bottom: 1px solid #d8dfea; }
+.profile-links li:hover { background: #3b5998; color: #fff; }
+.profile-links a { color: inherit; display: block; margin: 0; padding: 2px; padding-left: 10px; text-decoration: none; }
+
+/* the wall */
+form.thewall { width: 100%; background-color: #f7f7f7; }
+form.thewall div.wallmessage { padding: 10px; }
+form.thewall textarea { width: 98%; }
+form.thewall div.wallcontrols { margin: 10px; margin-top: 0; padding-top: 10px; border-top: 1px solid #e0e0e0; }
+
+/* for the area under the header on the wall, etc.) */
+h2.sectiontop-header { margin-bottom: 0 !important; }
+.sectiontop { background-color: #eeeeee; border-top: 1px solid #cccccc; border-bottom: 1px solid #cccccc; padding-top: 2px; padding-bottom: 2px; height: 15px; clear: both; }
+.sectiontop .count { float: left; width: 50%; padding: 0; margin: 0; }
+.sectiontop .count p { margin: 0; padding: 0; padding-left: 5px; text-align: left; }
+.sectiontop .seeall { float: left; width: 50%; padding: 0; margin: 0; }
+.sectiontop .seeall p { margin: 0; padding: 0; padding-right: 5px; text-align: right; }

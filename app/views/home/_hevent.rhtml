@@ -1,0 +1,44 @@
+<div class="vevent">
+	<h3><span class="summary"><%= h(hevent.summary) %></span></h3>
+	<dl class="eventinfo">
+		<dt>Metadata</dt>
+		<dd>
+			<dl class="hide">
+				<dt>UUID</dt>
+				<dd class="uid">
+					<%= "#{hevent.uuid}.events.macrodeck.com" %>
+				</dd>
+				<dt>Last Updated</dt>
+				<dd>
+					<abbr class="dtstamp" title="<%= hevent.updated_at.strftime("%Y-%m-%d %H:%M:%S") %>">
+						<%= hevent.updated_at.strftime("%B %d, %Y at %I:%M %p") %>
+					</abbr>
+				</dd>
+			</dl>
+		</dd>
+		<dt>Event Time</dt>
+		<dd class="event-time">
+			<abbr class="dtstart" title="<%= hevent.start_time.strftime("%Y-%m-%d %H:%M:%S") %>">
+				<%= hevent.start_time.strftime("%B %d, %Y at %I:%M %p") %>
+			</abbr>
+			<% if !hevent.no_end_time && !hevent.end_time.nil? %>
+				to
+				<abbr class="dtend" title="<%= hevent.end_time.strftime("%Y-%m-%d %H:%M:%S") %>">
+					<%= hevent.end_time.strftime("%B %d, %Y at %I:%M %p") %>
+				</abbr>
+			<% end %>
+		</dd>
+		<% if !hevent.description.nil? && hevent.description.length > 0 %>
+			<dt>Description</dt>
+			<dd>
+				<p class="description"><%= h(hevent.description) %></p>
+			</dd>
+		<% end %>
+		<% if hevent.parent.parent[:type] == "Place" %>
+			<dt>Location</dt>
+			<dd class="location vcard">
+				<%= render :partial => "hcard", :locals => { :hcard => hevent.parent.parent } %>
+			</dd>
+		<% end %>
+	</dl>
+</div>

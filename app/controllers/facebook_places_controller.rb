@@ -19,9 +19,9 @@ class FacebookPlacesController < ApplicationController
 				render :template => "facebook_places/view_city"
 			elsif params[:state] && params[:city] && params[:place]
 				get_city_info(params[:city], params[:state])
-				@place = Place.find_by_dataid(params[:place])
+				@place = Place.find_by_uuid(params[:place])
 				if @place != nil
-					patron_relationship = Relationship.find(:first, :conditions => ["source_uuid = ? AND target_uuid = ? AND relationship = 'patron'", @fbuser.uuid, @place.dataid])
+					patron_relationship = Relationship.find(:first, :conditions => ["source_uuid = ? AND target_uuid = ? AND relationship = 'patron'", @fbuser.uuid, @place.uuid])
 					if patron_relationship.nil?
 						@place_is_patron = false
 					else
@@ -62,7 +62,7 @@ class FacebookPlacesController < ApplicationController
 						# FYI: This used to be the view city page but then I realized that was dumb
 						# Browse City is now a listing of places.
 						get_city_info(params[:city], params[:state])
-						@places = Place.paginate(:conditions => ["datatype = ? AND grouping = ?", DTYPE_PLACE, @city.uuid], :order => "title ASC", :page => params[:page], :per_page => 10)
+						@places = Place.paginate(:conditions => ["type = 'Place' AND parent_id = ?", @city.id], :order => "title ASC", :page => params[:page], :per_page => 10)
 						render :template => "facebook_places/browse_city"
 					else
 						# Browse the state (all cities). Should this be explicitly allowed?
@@ -187,7 +187,7 @@ class FacebookPlacesController < ApplicationController
 						if params[:place]
 							# Edit a place.
 							get_city_info(params[:city], params[:state])
-							@place = Place.find_by_dataid(params[:place])
+							@place = Place.find_by_uuid(params[:place])
 
 							if @place.nil?
 								redirect_to fbplaces_url(:action => :view, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part)
@@ -208,6 +208,7 @@ class FacebookPlacesController < ApplicationController
 										@place_phone_number_exchange = nil
 										@place_phone_number_number = nil
 									end
+									@place_flickr_photo_id = @place_metadata[:flickr_photo_id]
 									@place_description = @place.description
 									@place_zipcode = @place_metadata[:zipcode]
 									@place_latitude = @place_metadata[:latitude]
@@ -232,6 +233,7 @@ class FacebookPlacesController < ApplicationController
 									@place_name = params[:place_name]
 									@place_address = params[:place_address]
 									@place_type = params[:place_type]
+									@place_flickr_photo_id = params[:flickr_photo_id]
 									@place_phone_number_area_code = params[:place_phone_number_area_code]
 									@place_phone_number_exchange = params[:place_phone_number_exchange]
 									@place_phone_number_number = params[:place_phone_number_number]
@@ -320,6 +322,7 @@ class FacebookPlacesController < ApplicationController
 											end
 										end
 										metadata.features = feature_array
+										metadata.flickr_photo_id = @place_flickr_photo_id
 										@place.title = @place_name
 										@place.description = @place_description
 										@place.place_metadata = metadata
@@ -497,7 +500,7 @@ class FacebookPlacesController < ApplicationController
 							else
 								city = PlacesService.createCity(@city_name, @state.title)
 								if city != nil
-									city.creator = @fbuser.uuid
+									city.created_by_id = @fbuser.id
 									city.save!
 									redirect_to fbplaces_url(:action => :view, :country => @country.url_part, :state => @state.url_part, :city => city.url_part)
 								else
@@ -527,14 +530,14 @@ class FacebookPlacesController < ApplicationController
 
 			if params[:state] && params[:city] && params[:place]
 				get_city_info(params[:city], params[:state])
-				@place = Place.find_by_dataid(params[:place])
+				@place = Place.find_by_uuid(params[:place])
 				if @place != nil
-					patron_relationship = Relationship.find(:first, :conditions => ["source_uuid = ? AND target_uuid = ? AND relationship = 'patron'", @fbuser.uuid, @place.dataid])
+					patron_relationship = Relationship.find(:first, :conditions => ["source_uuid = ? AND target_uuid = ? AND relationship = 'patron'", @fbuser.uuid, @place.uuid])
 					if patron_relationship.nil?
 						# Add patronage.
 						patronage = Relationship.new do |r|
 							r.source_uuid = @fbuser.uuid
-							r.target_uuid = @place.dataid
+							r.target_uuid = @place.uuid
 							r.relationship = "patron"
 						end
 						patronage.save!
@@ -565,9 +568,9 @@ class FacebookPlacesController < ApplicationController
 
 			if params[:state] && params[:city] && params[:place]
 				get_city_info(params[:city], params[:state])
-				@place = Place.find_by_dataid(params[:place])
+				@place = Place.find_by_uuid(params[:place])
 				if @place != nil
-					patron_relationship = Relationship.find(:first, :conditions => ["source_uuid = ? AND target_uuid = ? AND relationship = 'patron'", @fbuser.uuid, @place.dataid])
+					patron_relationship = Relationship.find(:first, :conditions => ["source_uuid = ? AND target_uuid = ? AND relationship = 'patron'", @fbuser.uuid, @place.uuid])
 					if patron_relationship != nil
 						# Remove patronage.
 						patron_relationship.destroy
@@ -592,7 +595,12 @@ class FacebookPlacesController < ApplicationController
 			
 			if params[:place].nil?
 				# Set photo for city
-				raise "TODO: Get photo for city"
+				if !@city.extended_data[:flickr_photo_id].nil? && !@city.extended_data[:flickr_photo_id].empty? && @city.extended_data[:flickr_photo_id] != 0
+					@photo = Flickr::Photo.new(@city.extended_data[:flickr_photo_id])
+					render :template => "facebook_places/view_photo_city"
+				else
+					raise "view_photo: city does not exist"
+				end
 			else
 				@place = Place.find_by_uuid(params[:place])
 				if @place != nil
@@ -610,7 +618,30 @@ class FacebookPlacesController < ApplicationController
 		get_home_city
 		get_secondary_city
 
-		if params[:country] != nil && params[:country] == "us" && params[:state] != nil && params[:city] != nil && params[:place] != nil
+		if params[:country] != nil && params[:country] == "us" && params[:state] != nil && params[:city] != nil && params[:place] == nil
+			# City wall
+			get_us_states
+			get_city_info(params[:city], params[:state])
+			
+			if params[:add_comment].nil? || params[:add_comment] == ""
+				# View wall posts.
+				comments = @city.wall.comments
+				if comments != nil && comments.length > 0
+					@comments = comments.paginate(:page => params[:page], :per_page => 10)
+				else
+					@comments = nil
+				end
+				render :template => "facebook_places/wall_view"
+			else
+				# Add a wall post
+				if params[:message] != nil && params[:message].length > 0
+					@city.wall.create_comment(params[:message], { :created_by => @fbuser, :owned_by => @fbuser })
+				end
+				# If they didn't specify a message just redirect them to the place anyway, just don't add the null message.
+				redirect_to fbplaces_url(:action => :view, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part)
+			end
+		elsif params[:country] != nil && params[:country] == "us" && params[:state] != nil && params[:city] != nil && params[:place] != nil
+			# Place wall
 			get_us_states
 			get_city_info(params[:city], params[:state])
 			
@@ -628,7 +659,7 @@ class FacebookPlacesController < ApplicationController
 				else
 					# Add a wall post
 					if params[:message] != nil && params[:message].length > 0
-						@place.wall.create_comment(params[:message], { :creator => @fbuser.uuid, :owner => @fbuser.uuid })
+						@place.wall.create_comment(params[:message], { :created_by => @fbuser, :owned_by => @fbuser })
 					end
 					# If they didn't specify a message just redirect them to the place anyway, just don't add the null message.
 					redirect_to fbplaces_url(:action => :view, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part, :place => @place.uuid)
@@ -749,6 +780,7 @@ class FacebookPlacesController < ApplicationController
 			params.delete("fb_sig_user")
 			params.delete("fb_sig_api_key")
 			params.delete("fb_sig_profile_update_time")
+			params.delete("fb_sig_locale")
 		end
 
 		# Validates a field. Field types: :email, :phone, :latitude, :longitude, :zipcode
@@ -801,11 +833,6 @@ class FacebookPlacesController < ApplicationController
 			end
 		end
 		
-		# This method takes a string and returns a suitable URL version.
-		def url_sanitize(str)
-			return str.chomp.strip.downcase.gsub(/[^0-9A-Za-z_\-\s]/, "").gsub(" ", "-")
-		end
-
 		# Takes a symbol corresponding to a place type and returns a human readable string
 		def place_type_to_string(type)
 			types = PlaceMetadata.get_place_types
@@ -817,12 +844,10 @@ class FacebookPlacesController < ApplicationController
 			types = PlaceMetadata.get_place_types
 			option_list = []
 			types.each_pair do |key, value|
-				if key != :other
-					if default_value != nil && default_value.to_s == key.to_s
-						option_list << "<option value=\"#{key.to_s}\" selected=\"selected\">#{value}</option>"
-					else
-						option_list << "<option value=\"#{key.to_s}\">#{value}</option>"
-					end
+				if default_value != nil && default_value.to_s == key.to_s
+					option_list << "<option value=\"#{key.to_s}\" selected=\"selected\">#{value}</option>"
+				else
+					option_list << "<option value=\"#{key.to_s}\">#{value}</option>"
 				end
 			end
 			option_list.sort!
@@ -924,114 +949,10 @@ class FacebookPlacesController < ApplicationController
 			return columnized_feature_list.to_s
 		end
 
-		# This method gets all of the networks for the current fbsession user
-		def get_networks
-			response = fbsession.users_getInfo(:uids => fbsession.session_user_id, :fields => ["affiliations"])
-			if response != nil && response.user != nil && response.user.affiliations_list != nil
-				# XXX: We work with cities currently, so we have to only support regional networks right now.
-				# College and work networks will be supported but we will have to have some sort of associated
-				# city with each network. We will depend on our users for this information, and this requires more
-				# UI and stuff.
-				@networks = []
-				@unsupported_networks = []
-
-				response.user.affiliations.affiliation_list.each do |affiliation|
-					# method_missing("type") is used because affiliation.type does not work
-					# because type is a reserved Ruby method
-					# Also, check for "/" as in "Dallas / Fort Worth, TX". We don't support
-					# a regional network named like that yet.
-					if affiliation.method_missing("type") == "region" && !(affiliation.name =~ /\//)
-						@networks << affiliation
-
-						# Create a city for each regional network when we detect them.
-						aff_state = affiliation.name.split(",")[-1].chomp.strip
-						aff_city = affiliation.name.split(",")[0].chomp.strip
-
-						# Unless is backwards if. the following code is run always, unless
-						# the city actually exists.
-						unless PlacesService.isCity?(aff_city, aff_state) 
-							puts "*** Places: Creating a new city: #{aff_city}, #{aff_state}"
-							c = PlacesService.createCity(aff_city, aff_state)
-							c.creator = @fbuser.uuid
-							c.save!
-						end
-					else
-						@unsupported_networks << affiliation
-					end
-				end
-				if @networks.length > 0
-					@primary_network = @networks[0].name
-					@primary_network_country = "US" # FIXME: This will need more support in the future when we support non-US places
-					@primary_network_state = @networks[0].name.split(",")[-1].chomp.strip
-					@primary_network_city = @networks[0].name.split(",")[0].chomp.strip
-				else
-					@primary_network = nil
-					@primary_network_country = nil
-					@primary_network_state = nil
-					@primary_network_city = nil
-				end
-			else
-				@primary_network = nil
-				@primary_network_country = nil
-				@primary_network_state = nil
-				@primary_network_city = nil
-				@networks = []
-			end
-		end
-
-		# Gets the home city for the current user.
-		def get_home_city
-			hcity_rel = Relationship.find(:first, :conditions => ["source_uuid = ? AND relationship = 'home_city'", @fbuser.uuid])
-			if hcity_rel.nil? && @primary_network != nil # the primary network may be nil if they don't have a regional network.
-				# home city is nil.
-				# This must mean there hasn't been one set. So we set the primary network city as the home city.
-				hcity_rel = Relationship.new do |r|
-					r.source_uuid = @fbuser.uuid
-					c = PlacesService.getCity(@primary_network_city, @primary_network_state)
-					if c != nil
-						r.target_uuid = c.uuid # FIXME: dataid can go to hell
-					else
-						raise "get_home_city: attempting to set home city to a city that does not exist!"
-					end
-					r.relationship = "home_city"
-				end
-				hcity_rel.save!
-			end
-
-			# See if we created it or not a minute ago...
-			if hcity_rel.nil?
-				@home_city = nil
-			else
-				hcity = City.find_by_uuid(hcity_rel.target_uuid)
-				@home_city = hcity
-			end
-		end
-
-		# Gets the secondary city for the current user. 
-		def get_secondary_city
-			scity_rel = Relationship.find(:first, :conditions => ["source_uuid = ? AND relationship = 'secondary_city'", @fbuser.uuid])
-			if scity_rel.nil?
-				@secondary_city = nil
-			else
-				scity = City.find_by_uuid(scity_rel.target_uuid)
-				@secondary_city = scity
-			end
-		end
-
-		# Initialize Facebook User - Creates a User if needed, maps friends, etc. Use as a
-		# before_filter.
-		def initialize_facebook_user
-			if fbsession && fbsession.is_valid?
-				user = User.find_or_create_by_facebook_session(fbsession)
-				# TODO: here we would load their friends list or whatever.
-				@fbuser = user
-			end
-		end
-
 		# Gets all US states and puts them in @states
 		def get_us_states
 			places = Category.find(:first, :conditions => ["parent_uuid IS NULL AND url_part = ?", "places"])
-			@country = places.getChildByURL("us")
+			@country = places.child("us")
 
 			if @country != nil
 				@states = @country.children
@@ -1042,9 +963,9 @@ class FacebookPlacesController < ApplicationController
 
 		def get_state(state_url_part)
 			places = Category.find(:first, :conditions => ["parent_uuid IS NULL AND url_part = ?", "places"])
-			@country = places.getChildByURL("us")
+			@country = places.child("us")
 			if @country != nil
-				@state = @country.getChildByURL(state_url_part)
+				@state = @country.child(state_url_part)
 				if @state.nil?
 					raise "State not found."
 				end
@@ -1056,9 +977,9 @@ class FacebookPlacesController < ApplicationController
 		# Gets all cities in a state and puts them in @cities
 		def get_cities(state_url_part)
 			places = Category.find(:first, :conditions => ["parent_uuid IS NULL AND url_part = ?", "places"])
-			@country = places.getChildByURL("us")
+			@country = places.child("us")
 			if @country != nil
-				@state = @country.getChildByURL(state_url_part)
+				@state = @country.child(state_url_part)
 				if @state != nil
 					@cities = @state.children
 				else
@@ -1073,37 +994,9 @@ class FacebookPlacesController < ApplicationController
 		def get_city_info(city_name, state)
 			c = PlacesService.getCity(city_name,state)
 			places = Category.find(:first, :conditions => ["parent_uuid IS NULL AND url_part = ?", "places"])
-			@country = places.getChildByURL("us")
-			@state = @country.getChild(state)
+			@country = places.child("us")
+			@state = @country.child(state)
 			@city = c
 		end
 
-		# A URL helper that will hopefully override the default fbplaces_url and let you
-		# link to crap easier.
-		#
-		# options_hash possible values:
-		#   :action => (any action you wish... used in ../action/us/ok/tulsa/
-		#   :country => (two-letter country code)
-		#   :state => (two-letter state)
-		#   :city => City object
-		#   :place => Place object
-		def fbplaces_url(options = {})
-			url = "#{PLACES_FBURL}/"
-			if options[:action] != nil && options[:action] != ""
-				url << "#{url_sanitize(options[:action].to_s)}/"
-			end
-			if options[:country] != nil && options[:country] != ""
-				url << "#{url_sanitize(options[:country])}/"
-			end
-			if options[:state] != nil && options[:state] != ""
-				url << "#{url_sanitize(options[:state])}/"
-			end
-			if options[:city] != nil && options[:city] != ""
-				url << "#{url_sanitize(options[:city])}/"
-			end
-			if options[:place] != nil && options[:place] != ""
-				url << "#{url_sanitize(options[:place])}/"
-			end
-			return url
-		end
 end
