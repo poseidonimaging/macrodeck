@@ -17,7 +17,13 @@
 				</dd>
 			</dl>
 			<% if !hevent.description.nil? && hevent.description.length > 0 %>
-				<p class="description"><%= auto_link(h(hevent.description), :all, { :target => "_blank" }) %></p>
+				<p class="description">
+					<%=
+						auto_link(h(hevent.description), :all, { :target => "_blank" }) do |link| 
+							truncate(link, 15)
+						end
+					%>
+				</p>
 			<% end %>
 			<p>
 				<abbr class="dtstart" title="<%= hevent.start_time.strftime("%Y-%m-%d %H:%M:%S") %>">
