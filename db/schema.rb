@@ -132,7 +132,7 @@ ActiveRecord::Schema.define(:version => 66) do
     t.string  "groupid"
     t.string  "userid"
     t.string  "level"
-    t.boolean "isbanned", :null => false
+    t.boolean "isbanned", :default => false, :null => false
   end
 
   create_table "groups", :force => true do |t|
@@ -164,7 +164,7 @@ ActiveRecord::Schema.define(:version => 66) do
     t.datetime "updated_at"
   end
 
-  add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
+  add_index "sessions", ["session_id"], :name => "sessions_session_id_index"
 
   create_table "storages", :force => true do |t|
     t.string  "objectid"
