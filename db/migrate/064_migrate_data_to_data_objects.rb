@@ -49,6 +49,37 @@ class MigrateDataToDataObjects < ActiveRecord::Migration
 	  if item.remote_data == true
 		  say "!!! Ignoring remote data as it's known broken! (#{item.uuid})"
 	  else
+	  	# Get IDs for each updater, creator, and owner
+		if item.created_by.nil?
+			created_by_id = 0
+		else
+			if User::find_by_uuid(item.created_by)
+				created_by_id = User::find_by_uuid(item.created_by).id
+			else
+				created_by_id = 0
+			end
+		end
+		
+		if item.updated_by.nil?
+			updated_by_id = 0
+		else
+			if User::find_by_uuid(item.updated_by)
+				updated_by_id = User::find_by_uuid(item.updated_by).id
+			else
+				updated_by_id = 0
+			end
+		end
+
+		if item.owned_by.nil?
+			owned_by_id = 0
+		else
+			if User::find_by_uuid(item.owned_by)
+				owned_by_id = User::find_by_uuid(item.owned_by).id
+			else
+				owned_by_id = 0
+			end
+		end
+
 		  data_obj = DataObject::new({
 			  :parent_id		=> parent_id,
 			  :type				=> new_type,
@@ -59,9 +90,9 @@ class MigrateDataToDataObjects < ActiveRecord::Migration
 			  :created_at		=> item.created_at,
 			  :updated_at		=> item.updated_at,
 			  # Foreign Keys!
-			  :created_by		=> User::find_by_uuid(item.created_by),
-			  :updated_by		=> User::find_by_uuid(item.updated_by),
-			  :owned_by			=> User::find_by_uuid(item.owned_by)
+			  :created_by		=> created_by_id,
+			  :updated_by		=> updated_by_id,
+			  :owned_by		=> owned_by_id
 		  })
 		  data_obj.type = new_type
 		  if !item.objectdata.nil?
@@ -103,19 +134,31 @@ class MigrateDataToDataObjects < ActiveRecord::Migration
 		if group.created_by.nil?
 			created_by_id = 0
 		else
-			created_by_id = User::find_by_uuid(group.created_by).id
+			if User::find_by_uuid(group.created_by)
+				created_by_id = User::find_by_uuid(group.created_by).id
+			else
+				created_by_id = 0
+			end
 		end
 		
 		if group.updated_by.nil?
 			updated_by_id = 0
 		else
-			updated_by_id = User::find_by_uuid(group.updated_by).id
+			if User::find_by_uuid(group.updated_by)
+				updated_by_id = User::find_by_uuid(group.updated_by).id
+			else
+				updated_by_id = 0
+			end
 		end
 
 		if group.owned_by.nil?
 			owned_by_id = 0
 		else
-			owned_by_id = User::find_by_uuid(group.owned_by).id
+			if User::find_by_uuid(group.owned_by)
+				owned_by_id = User::find_by_uuid(group.owned_by).id
+			else
+				owned_by_id = 0
+			end
 		end
 
 		  data_obj = DataObject::new({
