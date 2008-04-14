@@ -5,5 +5,5 @@
 	</div>
 <% else %>
 	<p>This place has no upcoming events. If you know about any,
-	<%= link_to "add them", fbplaces_url(:action => :view, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part, :place => @place.url_part, :place_action => :create_event) %>!</p>
+	<%= link_to "add them",  fbevents_url(:action => :create, :calendar => @place.calendar.url_part) %>!</p>
 <% end %>
