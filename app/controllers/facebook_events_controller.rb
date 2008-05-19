@@ -146,6 +146,9 @@ class FacebookEventsController < ApplicationController
 
 				@event = Event.find_by_uuid(params[:event])
 				if @event
+					if @event.concluded?
+						@event.process_recurrence
+					end
 					render
 				else
 					raise ArgumentError, "event#event - Event is missing!"
