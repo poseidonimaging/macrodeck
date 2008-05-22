@@ -113,6 +113,9 @@
 			<% end %>
 			<div id="event_dtend_parsed">Type in a time such as "Monday at 5pm" or "Jan 6 2009 at 3pm"</div>
 		</fb:editor-custom>
+		<fb:editor-custom label="Recurrence">
+			<%= render :partial => "recurrence_selector" %>
+		</fb:editor-custom>
 
 		<fb:editor-buttonset>
 			<fb:editor-button value="Create Event" />
