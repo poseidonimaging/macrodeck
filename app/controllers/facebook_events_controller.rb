@@ -229,6 +229,16 @@ class FacebookEventsController < ApplicationController
 			friendly_date << parsed.strftime(", %Y at %I:%M %p")
 			friendly_date = friendly_date.chomp.strip
 			puts friendly_date
+
+			# now for recurrence helpers
+			recurrence_yearly = parsed.strftime("%B ")
+			recurrence_yearly << ordinalize(parsed.day.to_i)
+			recurrence_monthly = ordinalize(parsed.day.to_i)
+
+			time_output = {	"friendly_date" => friendly_date,
+							"recurrence_yearly" => "(every #{recurrence_yearly})",
+							"recurrence_monthly" => "(the #{recurrence_monthly} of every month)" }
+
 			render :text => friendly_date
 		else 
 			render :text => ""
