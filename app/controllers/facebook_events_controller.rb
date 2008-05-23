@@ -69,10 +69,16 @@ class FacebookEventsController < ApplicationController
 						render :template => "facebook_events/create_event"
 					else
 						# create the event.
+						recurrence = :none # default
+						recurrence = :yearly if @recurrence_rate_yearly
+						recurrence = :monthly if @recurrence_rate_monthly
+						recurrence = :monthly_nth_nday if @recurrence_rate_monthly_nth_nday
+						recurrence = :weekly if @recurrence_rate_weekly
+
 						if @event_dtend_disable
-							extdata = { :start_time => @event_dtstart, :no_end_time => true }
+							extdata = { :start_time => @event_dtstart, :no_end_time => true, :recurrence => recurrence }
 						else
-							extdata = { :start_time => @event_dtstart, :end_time => @event_dtend, :no_end_time => false }
+							extdata = { :start_time => @event_dtstart, :end_time => @event_dtend, :no_end_time => false, :recurrence => recurrence }
 						end
 						e = Event.create(:extended_data => extdata, :title => @event_summary, :description => @event_description, :parent_id => @calendar.id,
 								:created_by => @fbuser, :owned_by => @fbuser, :category_id => @calendar.category_id)
