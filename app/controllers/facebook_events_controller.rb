@@ -63,6 +63,7 @@ class FacebookEventsController < ApplicationController
 					@errors << "Your event cannot end before it starts!" if !@event_dtstart.nil? && !@event_dtend.nil? && (!@event_dtend_disable && (@event_dtend < @event_dtstart))
 					@errors << "Your event cannot start and end at the same time!" if !@event_dtstart.nil? && !@event_dtend.nil? && !@event_dtend_disable && (@event_dtend == @event_dtstart)
 					@errors << "Your event cannot start in the past!" if !@event_dtstart.nil? && @event_dtstart < Time.now
+					@errors << "Your event is set to recur but you have not set how often it is to recur." if @event_recurrence && (!@recurrence_rate_yearly && !@recurrence_rate_monthly && !@recurrence_rate_monthly_nth_nday && !@recurrence_rate_weekly)
 
 					if @errors.length > 0
 						render :template => "facebook_events/create_event"
