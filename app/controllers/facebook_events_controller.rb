@@ -33,20 +33,20 @@ class FacebookEventsController < ApplicationController
 				@event_summary = params["event_summary"]
 				@event_description = params["event_description"]
 				@event_recurrence = params["event_recurrence"]
-				@recurrence_yearly = false
-				@recurrence_monthly = false
-				@recurrence_monthly_nth_nday = false
-				@recurrence_weekly = false
+				@recurrence_rate_yearly = false
+				@recurrence_rate_monthly = false
+				@recurrence_rate_monthly_nth_nday = false
+				@recurrence_rate_weekly = false
 				if @event_recurrence
 					case params["recurrence_rate"]
 					when "yearly"
-						@recurrence_yearly = true
+						@recurrence_rate_yearly = true
 					when "monthly"
-						@recurrence_monthly = true
+						@recurrence_rate_monthly = true
 					when "monthly_nth_nday"
-						@recurrence_monthly_nth_nday = true
+						@recurrence_rate_monthly_nth_nday = true
 					when "weekly"
-						@recurrence_weekly = true
+						@recurrence_rate_weekly = true
 					end
 				end
 				@redirect = params["redirect"]
