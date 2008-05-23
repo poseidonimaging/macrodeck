@@ -234,10 +234,16 @@ class FacebookEventsController < ApplicationController
 			recurrence_yearly = parsed.strftime("%B ")
 			recurrence_yearly << ordinalize(parsed.day.to_i)
 			recurrence_monthly = ordinalize(parsed.day.to_i)
+			nth = ordinalize((parsed.day.to_f/7.0).ceil)
+			recurrence_monthly_nth_nday = "#{nth} "
+			recurrence_monthly_nth_nday << parsed.strftime("%A")
+			recurrence_weekly = parsed.strftime("%A")
 
 			time_output = {	"friendly_date" => friendly_date,
 							"recurrence_yearly" => "(every #{recurrence_yearly})",
-							"recurrence_monthly" => "(the #{recurrence_monthly} of every month)" }
+							"recurrence_monthly" => "(the #{recurrence_monthly} of every month)",
+							"recurrence_monthly_nth_nday" => "(every #{recurrence_monthly_nth_nday})",
+							"recurrence_weekly" => "(every #{recurrence_weekly})" }
 
 			render :text => friendly_date
 		else 
