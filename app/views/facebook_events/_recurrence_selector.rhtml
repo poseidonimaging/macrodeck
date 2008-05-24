@@ -25,11 +25,11 @@
 <div id="event_recurrence_types">
 	<p style="margin: 0; margin-left: 15px;">
 		<%= radio_button_tag "recurrence_rate", "yearly", @recurrence_rate_yearly, :id => "recurrence_rate_yearly", :style => "width: 13px; height: 13px;" %>
-			Annually <span id="recurrence_rate_yearly_next"></span><br />
+			Annually <span id="recurrence_rate_yearly_help"></span><br />
 		<%= radio_button_tag "recurrence_rate", "monthly", @recurrence_rate_monthly, :id => "recurrence_rate_monthly", :style => "width: 13px; height: 13px;" %>
-			Monthly <span id="recurrence_rate_monthly_next"></span><br />
+			Monthly <span id="recurrence_rate_monthly_help"></span><br />
 		<%= radio_button_tag "recurrence_rate", "monthly_nth_nday", @recurrence_rate_monthly_nth_nday, :id => "recurrence_rate_monthly_nth_nday", :style => "width: 13px; height: 13px;" %>
-			Monthly (every Nth Nday) <span id="recurrence_rate_monthly_nth_nday_next"></span><br />
+			Monthly (every Nth Nday) <span id="recurrence_rate_monthly_nth_nday_help"></span><br />
 		<%= radio_button_tag "recurrence_rate", "weekly", @recurrence_rate_weekly, :id => "recurrence_rate_weekly", :style => "width: 13px; height: 13px;" %>
 		Weekly <span id="recurrence_rate_weekly"></span>
 	</p>

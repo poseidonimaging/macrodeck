@@ -31,21 +31,35 @@
 				var ajax = new Ajax();
 				var params = { "time": current_dtstart };
 				last_dtstart = document.getElementById('event_dtstart').getValue();
-				ajax.responseType = Ajax.RAW;
+				ajax.responseType = Ajax.JSON;
 				ajax.onerror =
 					function(error) {
 						document.getElementById('event_dtstart_parsed').setTextValue("Error contacting server");
 					}
 				ajax.ondone =
 					function(parsed_time) {
-						document.getElementById('event_dtstart_parsed').setTextValue(parsed_time);
-						box = document.getElementById('event_dtstart');
-						
-						if (parsed_time == "") {
-							box.setStyle({ backgroundColor: "#F7E5E4", border: "1px solid #610B23" });
-						} else {
+						if (parsed_time.error == "0") {
+							document.getElementById('event_dtstart_parsed').setTextValue(parsed_time.friendly_date);
+							box = document.getElementById('event_dtstart');
 							box.setStyle({ backgroundColor: "#e4f7e5", border: "1px solid #0b6111" });
+
+							// next handle the recurrence...
+							document.getElementById('recurrence_rate_yearly_help').setTextValue(parsed_time.recurrence_yearly);
+							document.getElementById('recurrence_rate_monthly_help').setTextValue(parsed_time.recurrence_monthly);
+							document.getElementById('recurrence_rate_monthly_nth_nday_help').setTextValue(parsed_time.recurrence_monthly_nth_nday);
+							document.getElementById('recurrence_rate_weekly_help').setTextValue(parsed_time.recurrence_weekly);
+						} else {
+							document.getElementById('event_dtstart_parsed').setTextValue("");
+							box = document.getElementById('event_dtstart');
+							box.setStyle({ backgroundColor: "#F7E5E4", border: "1px solid #610B23" });
+
+							// next handle the recurrence...
+							document.getElementById('recurrence_rate_yearly_help').setTextValue("");
+							document.getElementById('recurrence_rate_monthly_help').setTextValue("");
+							document.getElementById('recurrence_rate_monthly_nth_nday_help').setTextValue("");
+							document.getElementById('recurrence_rate_weekly_help').setTextValue("");
 						}
+						
 					}
 				ajax.post('<%= PLACES_BASEURL %>/facebook/events/parse_time/', params);
 			}
@@ -61,21 +75,23 @@
 				var ajax = new Ajax();
 				var params = { "time": current_dtend };
 				last_dtend = document.getElementById('event_dtend').getValue();
-				ajax.responseType = Ajax.RAW;
+				ajax.responseType = Ajax.JSON;
 				ajax.onerror =
 					function(error) {
 						document.getElementById('event_dtend_parsed').setTextValue("Error contacting server");
 					}
 				ajax.ondone =
 					function(parsed_time) {
-						document.getElementById('event_dtend_parsed').setTextValue(parsed_time);
-						box = document.getElementById('event_dtend');
-						
-						if (parsed_time == "") {
-							box.setStyle({ backgroundColor: "#F7E5E4", border: "1px solid #610B23" });
-						} else {
+						if (parsed_time.error == "0") {
+							document.getElementById('event_dtend_parsed').setTextValue(parsed_time.friendly_date);
+							box = document.getElementById('event_dtend');
 							box.setStyle({ backgroundColor: "#e4f7e5", border: "1px solid #0b6111" });
+						} else {
+							document.getElementById('event_dtend_parsed').setTextValue("");
+							box = document.getElementById('event_dtend');
+							box.setStyle({ backgroundColor: "#F7E5E4", border: "1px solid #610B23" });
 						}
+						
 					}
 				ajax.post('<%= PLACES_BASEURL %>/facebook/events/parse_time/', params);
 			}

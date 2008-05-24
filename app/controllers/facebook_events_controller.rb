@@ -232,9 +232,9 @@ class FacebookEventsController < ApplicationController
 
 			# now for recurrence helpers
 			recurrence_yearly = parsed.strftime("%B ")
-			recurrence_yearly << ordinalize(parsed.day.to_i)
-			recurrence_monthly = ordinalize(parsed.day.to_i)
-			nth = ordinalize((parsed.day.to_f/7.0).ceil)
+			recurrence_yearly << parsed.day.to_i.ordinalize
+			recurrence_monthly = parsed.day.to_i.ordinalize
+			nth = (parsed.day.to_f/7.0).ceil.ordinalize
 			recurrence_monthly_nth_nday = "#{nth} "
 			recurrence_monthly_nth_nday << parsed.strftime("%A")
 			recurrence_weekly = parsed.strftime("%A")
@@ -243,11 +243,12 @@ class FacebookEventsController < ApplicationController
 							"recurrence_yearly" => "(every #{recurrence_yearly})",
 							"recurrence_monthly" => "(the #{recurrence_monthly} of every month)",
 							"recurrence_monthly_nth_nday" => "(every #{recurrence_monthly_nth_nday})",
-							"recurrence_weekly" => "(every #{recurrence_weekly})" }
+							"recurrence_weekly" => "(every #{recurrence_weekly})",
+							"error" => "0" }
 
-			render :text => friendly_date
+			render :json => time_output.to_json
 		else 
-			render :text => ""
+			render :json => { "error" => "1" }.to_json
 		end
 	end
 
