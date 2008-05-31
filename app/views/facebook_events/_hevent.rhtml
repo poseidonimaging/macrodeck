@@ -36,7 +36,10 @@
 							<%= hevent.end_time.strftime("%I:%M %p") %>
 						</abbr>
 				<% end %>
-
+				<% if !hevent.recurrence.nil? && hevent.recurrence != :none %>
+					<% rrule = hevent.hcalendar_recurrence %>
+					<span class="recurrence"><br />repeats <abbr class="rrule" title="<%= rrule[:rrule] %>"><%= rrule[:msg] %></abbr></span>
+				<% end %>
 				<% if hevent.parent.parent[:type] == "Place" && micro %>
 					at <%= render :partial => "facebook_places/hcard_micro", :locals => { :hcard_micro => hevent.parent.parent } %>
 				<% elsif hevent.parent.parent[:type] == "City" %>
@@ -49,4 +52,5 @@
 			</p>
 		</div>
 	</div>
+	<div class="hr"></div>
 <% end %>

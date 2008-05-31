@@ -32,6 +32,8 @@ div.vcard .fn { display: none; }
 .vevent p { margin: 0; padding: 0; }
 .vevent .vcard-micro { padding-bottom: 0; }
 .vevent .vcard { padding-bottom: 0; }
+.vevent .recurrence { color: #6FBE56; }
+.vevent .recurrence abbr { border-bottom: 0; text-decoration: none; }
 
 .eventpage .summary { display: none; }
 .eventpage .description { font-style: normal; }
