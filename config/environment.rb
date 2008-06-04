@@ -69,8 +69,8 @@ PLACES_TEST_SERVER = true
 
 if PLACES_TEST_SERVER
 	PLACES_BASEURL = "http://places.intranet.ignition-project.com" # do not use a trailing slash
-	PLACES_FBURL = "http://apps.new.facebook.com/macrodeckplaces-test" # do not use a trailing slash
-	PLACES_APPURL = "http://www.new.facebook.com/apps/application.php?id=6592864647"
+	PLACES_FBURL = "http://apps.facebook.com/macrodeckplaces-test" # do not use a trailing slash
+	PLACES_APPURL = "http://www.facebook.com/apps/application.php?id=6592864647"
 	FLICKR_API_KEY = "686693e936d2bd4bfc3c5477fa3f1332"
 	FLICKR_SECRET = "b9a60cf2f27ed59c"
 	ENV['RAILS_ENV'] ||= 'development'
