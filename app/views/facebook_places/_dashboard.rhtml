@@ -11,5 +11,5 @@
 				<fb:create-button href="<%= fbplaces_url(:action => :create, :country => @country.url_part, :state => @state.url_part) %>">Add City</fb:create-button>
 			<% end %>
 		<% end %>
-		<fb:help href="http://getsatisfaction.com/macrodeck/products/macrodeck_places_for_facebook">Feedback</fb:help>
+		<fb:help href="<%= PLACES_APPURL %>">Feedback</fb:help>
 	</fb:dashboard>

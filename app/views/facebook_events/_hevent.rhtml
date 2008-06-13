@@ -19,8 +19,8 @@
 			<% if !hevent.description.nil? && hevent.description.length > 0 %>
 				<p class="description">
 					<%=
-						auto_link(h(hevent.description), :all, { :target => "_blank" }) do |link| 
-							truncate(link, 45)
+						auto_link(h(truncate(hevent.description, 250)), :all, { :target => "_blank" }) do |link| 
+							truncate(link, 30)
 						end
 					%>
 				</p>
