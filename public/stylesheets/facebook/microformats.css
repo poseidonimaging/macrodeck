@@ -26,7 +26,7 @@ div.vcard .fn { display: none; }
 .vevent dl { margin: 0; padding: 0; }
 .vevent dt { display: none; }
 .vevent dd { margin: 0; padding: 0; }
-.vevent abbr.dtstart, .vevent abbr.dtstart, .vevent abbr.dtstamp { text-decoration: none; color: #999; border-bottom: 0; }
+.vevent abbr.dtstart, .vevent abbr.dtend, .vevent abbr.dtstamp { text-decoration: none; color: #999; border-bottom: 0; }
 .vevent p { margin: 0; padding: 0; }
 .vevent .vcard-micro { padding-bottom: 0; }
 .vevent .vcard { padding-bottom: 0; }
