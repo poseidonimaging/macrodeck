@@ -1,6 +1,71 @@
-<h2 class="section-title">Event Details</h2>
 <div class="vcalendar eventpage">
-	<%= render :partial => "hevent", :locals => { :hevent => @event, :micro => true } %>
+	<h2 class="section-title">Information</h2>
+	<div class="vevent">
+		<dl>
+			<dt class="hide">Metadata</dt>
+			<dd class="hide">
+				<dl class="hide">
+					<dt>UUID</dt>
+					<dd class="uid"><%= "#{@event.uuid}.events.macrodeck.com" %></dd>
+					<dt>Summary</dt>
+					<dd class="summary"><%= @event.title %></dd>
+				</dl>
+			</dd>
+			<dt>Start Time</dt>
+			<dd>
+				<abbr class="dtstart" title="<%= @event.start_time.strftime("%Y-%m-%d %H:%M:%S") %>">
+					<%= @event.start_time.strftime("%B %d, %Y at %I:%M %p") %>
+				</abbr>
+			</dd>
+		
+			<% if !@event.no_end_time %>
+				<dt>End Time</dt>
+				<dd>
+					<abbr class="dtend" title="<%= @event.end_time.strftime("%Y-%m-%d %H:%M:%S") %>">
+						<%= @event.end_time.strftime("%B %d, %Y at %I:%M %p") %>
+					</abbr>
+				</dd>
+			<% end %>
+		
+			<% if !@event.recurrence.nil? && @event.recurrence != :none %>
+				<% rrule = @event.hcalendar_recurrence %>
+				<dt>Recurrence</dt>
+				<dd>
+					Repeats <abbr class="rrule" title="<%= rrule[:rrule] %>"><%= rrule[:msg] %></abbr>
+				</dd>
+			<% end %>
+		
+			<% if @event.parent.parent[:type] == "Place" %>
+				<dt>Event Host</dt>
+				<dd>
+					<div class="host" style="background-image: url('<%= PLACES_BASEURL %>/images/pinstripe.png'); background-repeat: repeat;">
+						<%= render :partial => "facebook_places/hcard", :locals => { :hcard => @event.parent.parent } %>
+					</div>
+				</dd>
+			<% elsif @event.parent.parent[:type] == "City" %>
+				<dt>Location</dt>
+				<dd>
+					<span class="adr">
+						<span class="locality"><%= h(@event.parent.parent.name) %></span>,
+						<abbr class="region" title="<%= @event.parent.parent.state %>"><%= @event.parent.parent.state(:abbreviation => true) %></abbr>
+					</span>
+				</dd>
+			<% end %>
+
+			<dt>Last Updated</dt>
+			<dd>
+				<abbr class="dtstamp" title="<%= @event.updated_at.strftime("%Y-%m-%d %H:%M:%S") %>">
+					<%= @event.updated_at.strftime("%B %d, %Y at %I:%M %p") %>
+				</abbr>
+			</dd>
+		</dl>
+	
+		<% if !@event.description.nil? && @event.description.length > 0 %>
+			<h2 class="section-title">Description</h2>
+			<div class="description"><%= auto_link(simple_format(h(@event.description))) %></div>
+		<% end %>
+
+	</div>
 </div>
 
 <%=

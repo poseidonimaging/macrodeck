@@ -26,9 +26,7 @@ div.vcard .fn { display: none; }
 .vevent dl { margin: 0; padding: 0; }
 .vevent dt { display: none; }
 .vevent dd { margin: 0; padding: 0; }
-.vevent abbr.dtstart { text-decoration: none; color: #999; border-bottom: 0; }
-.vevent abbr.dtend { text-decoration: none; color: #999; border-bottom: 0; }
-/* .vevent .description { font-style: italic; } */
+.vevent abbr.dtstart, .vevent abbr.dtstart, .vevent abbr.dtstamp { text-decoration: none; color: #999; border-bottom: 0; }
 .vevent p { margin: 0; padding: 0; }
 .vevent .vcard-micro { padding-bottom: 0; }
 .vevent .vcard { padding-bottom: 0; }
@@ -40,7 +38,8 @@ div.vcard .fn { display: none; }
 .eventpage dt { display: block; width: 80px; font-weight: bold; float: left; clear: left; }
 .eventpage dt:after { content: ":"; } /* MSIE unsupported */
 .eventpage dd { display: block; margin: 0 0 0 90px; padding: 0 0 0.5em 0; }
-.eventpage abbr.dtstart { display: block; color: #000; }
-.eventpage abbr.dtend { display: block; color: #000; }
-.eventpage .vcard { display: block; }
+.eventpage abbr.dtstart, .eventpage abbr.dtend, .eventpage abbr.dtstamp { display: block; color: #000; }
+.eventpage .vcard { clear: both; }
+.eventpage .host { border: 1px solid #ccc; background-color: #f7f7f7; padding: 0 10px 10px 10px;  } 
+.eventpage .vcard, .eventpage .vcard dl, .eventpage .vcard dt, .eventpage .vcard dd { display: block; }
 
