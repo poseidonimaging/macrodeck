@@ -38,13 +38,13 @@
 			<% if @event.parent.parent[:type] == "Place" %>
 				<dt>Event Host</dt>
 				<dd>
-					<div class="host" style="background-image: url('<%= PLACES_BASEURL %>/images/pinstripe.png'); background-repeat: repeat;">
+					<div class="location" style="background-image: url('<%= PLACES_BASEURL %>/images/pinstripe.png'); background-repeat: repeat;">
 						<%= render :partial => "facebook_places/hcard", :locals => { :hcard => @event.parent.parent } %>
 					</div>
 				</dd>
 			<% elsif @event.parent.parent[:type] == "City" %>
 				<dt>Location</dt>
-				<dd>
+				<dd class="location">
 					<span class="adr">
 						<span class="locality"><%= h(@event.parent.parent.name) %></span>,
 						<abbr class="region" title="<%= @event.parent.parent.state %>"><%= @event.parent.parent.state(:abbreviation => true) %></abbr>

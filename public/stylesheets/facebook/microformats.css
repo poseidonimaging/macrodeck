@@ -40,6 +40,6 @@ div.vcard .fn { display: none; }
 .eventpage dd { display: block; margin: 0 0 0 90px; padding: 0 0 0.5em 0; }
 .eventpage abbr.dtstart, .eventpage abbr.dtend, .eventpage abbr.dtstamp { display: block; color: #000; }
 .eventpage .vcard { clear: both; }
-.eventpage .host { border: 1px solid #ccc; background-color: #f7f7f7; padding: 0 10px 10px 10px;  } 
+.eventpage div.location { border: 1px solid #ccc; background-color: #f7f7f7; padding: 0 10px 10px 10px; } 
 .eventpage .vcard, .eventpage .vcard dl, .eventpage .vcard dt, .eventpage .vcard dd { display: block; }
 
