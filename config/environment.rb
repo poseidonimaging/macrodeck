@@ -65,7 +65,7 @@ PHONE_VALIDATION	= /^[01]?[- .]?(\([2-9]\d{2}\)|[2-9]\d{2})[- .]?\d{3}[- .]?\d{4
 PASSWORD_SALT   = "giomullyoxonoind" # Random character generator
 
 # Places
-PLACES_TEST_SERVER = false
+PLACES_TEST_SERVER = true
 
 if PLACES_TEST_SERVER
 	PLACES_BASEURL = "http://places.intranet.ignition-project.com" # do not use a trailing slash
@@ -86,6 +86,7 @@ else
 end
 
 # Start services we need
+# Configuration until we do dependency stuff.
 Services.startService "uuid_service"
 Services.startService "data_service"
 Services.startService "user_service"
@@ -95,7 +96,7 @@ Services.startService "places_service"
 Services.startService "navigation_service"
 
 # Start web services now
-Services.startService "data_web_service"
+#Services.startService "data_web_service"
 
 require 'flickr'
 require 'flickr_extensions'
