@@ -925,23 +925,23 @@ class FacebookPlacesController < ApplicationController
 			feature_list.sort!
 			columnized_feature_list = []
 
-			if feature_list[0..6] != nil
+			if feature_list[0..9] != nil
 				columnized_feature_list << "<div class=\"form-multicolumn-column\">"
-				feature_list[0..6].each do |feature|
+				feature_list[0..9].each do |feature|
 					columnized_feature_list << feature
 				end
 				columnized_feature_list << "</div>"
 			end
-			if feature_list[7..13] != nil
+			if feature_list[10..19] != nil
 				columnized_feature_list << "<div class=\"form-multicolumn-column\">"
-				feature_list[7..13].each do |feature|
+				feature_list[10..19].each do |feature|
 					columnized_feature_list << feature
 				end
 				columnized_feature_list << "</div>"
 			end
-			if feature_list[14..-1] != nil
+			if feature_list[20..-1] != nil
 				columnized_feature_list << "<div class=\"form-multicolumn-column\">"
-				feature_list[14..-1].each do |feature|
+				feature_list[20..-1].each do |feature|
 					columnized_feature_list << feature
 				end
 				columnized_feature_list << "</div>"
