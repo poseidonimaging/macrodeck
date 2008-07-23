@@ -1,0 +1,2 @@
+module FacebookSearchHelper
+end
