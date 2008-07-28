@@ -1,0 +1,19 @@
+<div class="content">
+	<%=
+		render :partial => "breadcrumbs", :locals => { :crumbs =>
+			[
+			@places_basecrumb,
+			Breadcrumb.from_category(:category => @object.category.parent.parent, :action => :browse, :baseurl => "#{PLACES_FBURL}/"),		# country
+			Breadcrumb.from_category(:category => @object.category.parent, :action => :browse, :baseurl => "#{PLACES_FBURL}/", :levels => 1),	# state
+			Breadcrumb.from_category(:category => @object.category, :action => :view, :baseurl => "#{PLACES_FBURL}/", :levels => 2)			# city
+			]
+		}
+	%>
+	<h1 class="area-title">Searching in <%= @object.title %></h1>
+	
+	<%= render :partial => "result", :collection => @search %>
+
+	<div class="clear">
+		<%= will_paginate @search %>
+	</div>
+</div>
