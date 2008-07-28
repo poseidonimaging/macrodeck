@@ -86,7 +86,7 @@ else
 end
 
 # Configure UltraSphinx
-UltraSphinx::Search.excerpting_options = HashWithIndifferentAccess.new({
+Ultrasphinx::Search.excerpting_options = HashWithIndifferentAccess.new({
 	:before_match => "<span class='highlight'>",
 	:after_match => "</span>",
 	:chunk_seperator => "...",

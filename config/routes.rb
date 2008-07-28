@@ -27,9 +27,9 @@ ActionController::Routing::Routes.draw do |map|
   map.fbevents 'facebook/events/:action/', :controller => "facebook_events", :conditions => { :subdomain => "places" }
 
   # Facebook Search
-  map.fbsearch 'facebook/search/:country/:state/:city', :controller => "facebook_search",
+  map.fbsearch 'facebook/search/:uuid/:action', :controller => "facebook_search",
 		:conditions => { :subdomain => "places" },
-		:defaults => { :country => "us", :state => nil, :city => nil, :place => nil }
+		:defaults => { :uuid => nil, :action => "search" }
 
   # Facebook Places
   map.fbplaces 'facebook', :controller => "facebook_places",
