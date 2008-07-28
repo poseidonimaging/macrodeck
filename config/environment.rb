@@ -85,6 +85,16 @@ else
 	ActionController::Base.asset_host = PLACES_BASEURL
 end
 
+# Configure UltraSphinx
+UltraSphinx::Search.excerpting_options = HashWithIndifferentAccess.new({
+	:before_match => "<span class='highlight'>",
+	:after_match => "</span>",
+	:chunk_seperator => "...",
+	:limit => 256,
+	:around => 3,
+	:content_methods => ['description']
+})
+
 # Start services we need
 # Configuration until we do dependency stuff.
 Services.startService "uuid_service"
