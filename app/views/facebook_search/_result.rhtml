@@ -4,6 +4,11 @@
 		<div class="type"><%= result.type %></div>
 	</div>
 	<div class="description">
-		<%= result.description %>
+		<% if !result.data.nil? %>
+			<%= result.data %>
+		<% else %>
+			<!-- TODO: summary for every datatype without data -->
+			<%= result.description %>
+		<% end %>
 	</div>
 </div>

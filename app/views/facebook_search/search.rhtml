@@ -9,11 +9,17 @@
 			]
 		}
 	%>
-	<h1 class="area-title">Searching in <%= @object.title %></h1>
-	
-	<%= render :partial => "result", :collection => @search %>
+	<h1 class="area-title">Search Results</h1>
 
-	<div class="clear">
-		<%= will_paginate @search %>
-	</div>
+	<% if !@search.nil? %>
+		<div class="search">
+			<%= render :partial	=> "result", :collection => @search %>
+		</div>
+
+		<div class="clear">
+			<%= will_paginate @search %>
+		</div>
+	<% else %>
+		<p>There were no results for that query.</p>
+	<% end %>
 </div>

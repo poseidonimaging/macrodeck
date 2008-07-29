@@ -10,17 +10,20 @@ class FacebookSearchController < ApplicationController
 		get_home_city
 		get_secondary_city
 
+		params[:page] = 1 if params[:page].nil?
+
 		if !params[:uuid].nil?
 			@object = DataObject.find_by_uuid(params[:uuid])
+			p @object
 			if params[:query]
 				# render search results
 				@query = "#{params[:query]}"
 				@search = Ultrasphinx::Search.new(
+					:filters => { "category_id" => @object.category_id.to_i },
 					:query => @query,
 					:sort_mode => "relevance",
-					:filters => { "parent_id" => @object.id },
 					:page => params[:page],
-					:per_page => 30
+					:per_page => 10
 				)
 				@search.excerpt
 			else
@@ -28,4 +31,12 @@ class FacebookSearchController < ApplicationController
 			end
 		end
 	end
+
+	private
+		# Set the basecrumbs for this controller.
+		def setup_breadcrumbs
+				@baseurl = "#{PLACES_FBURL}/search/"
+				@basecrumb = Breadcrumb.new("Search", @baseurl)
+				@places_basecrumb = Breadcrumb.new("Browse", "#{PLACES_FBURL}/browse/")
+		end
 end
