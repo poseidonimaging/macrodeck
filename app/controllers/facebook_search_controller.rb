@@ -9,6 +9,7 @@ class FacebookSearchController < ApplicationController
 		get_networks
 		get_home_city
 		get_secondary_city
+		fb_sig_cleanup
 
 		params[:page] = 1 if params[:page].nil?
 

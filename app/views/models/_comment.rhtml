@@ -1,0 +1,6 @@
+<!-- FIXME: Facebook Specific -->
+<fb:wall>
+	<fb:wallpost uid="<%= object.created_by.facebook_uid %>" t="<%= object.updated_at.to_i %>">
+		<%= simple_format(object.message) %>
+	</fb:wallpost>
+</fb:wall>

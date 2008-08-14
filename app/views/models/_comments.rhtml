@@ -1,1 +1,7 @@
-<p>A wall containing <%= object.children.length %> comments.</p>
+<% if object.children.length == 0 %>
+	<p>A wall with no posts.</p>
+<% else %>
+	<fb:wall>
+		<%= render :partial => "facebook_common/wall_post", :collection => object.latest_comments[0..2] %>
+	</fb:wall>
+<% end %>

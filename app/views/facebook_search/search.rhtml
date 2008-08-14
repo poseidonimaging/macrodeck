@@ -17,7 +17,7 @@
 		</div>
 
 		<div class="clear">
-			<%= will_paginate @search %>
+			<%= will_paginate @search, :params => { :query => params[:query] } %>
 		</div>
 	<% else %>
 		<p>There were no results for that query.</p>
