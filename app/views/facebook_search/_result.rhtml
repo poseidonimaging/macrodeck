@@ -3,12 +3,7 @@
 		<div class="title"><%= result.title %></div>
 		<div class="type"><%= result.type %></div>
 	</div>
-	<div class="description">
-		<% if !result.data.nil? %>
-			<%= result.data %>
-		<% else %>
-			<!-- TODO: summary for every datatype without data -->
-			<%= result.description %>
-		<% end %>
+	<div class="bottom">
+		<%= render :partial => result.path_of_partial, :locals => { :object => result } %>
 	</div>
 </div>

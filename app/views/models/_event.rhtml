@@ -1,0 +1,58 @@
+<% if !object.nil? %>
+	<div class="vevent">
+		<div class="leftside">
+			<dl class="hide">
+				<dt>Summary</dt>
+				<dd class="summary">
+					<%= h(object.title) %>
+				</dd>
+				<dt>UUID</dt>
+				<dd class="uid">
+					<%= "#{object.uuid}.events.macrodeck.com" %>
+				</dd>
+				<dt>Last Updated</dt>
+				<dd>
+					<abbr class="dtstamp" title="<%= object.updated_at.strftime("%Y-%m-%d %H:%M:%S") %>">
+						<%= object.updated_at.strftime("%B %d, %Y at %I:%M %p") %>
+					</abbr>
+				</dd>
+			</dl>
+			<% if !object.description.nil? && object.description.length > 0 %>
+				<p class="description">
+					<%=
+						auto_link(h(truncate(object.description, 250)), :all, { :target => "_blank" }) do |link| 
+							truncate(link, 30)
+						end
+					%>
+				</p>
+			<% end %>
+			<p>
+				<abbr class="dtstart" title="<%= object.start_time.strftime("%Y-%m-%d %H:%M:%S") %>">
+					<%= object.start_time.strftime("%B %d, %Y") %><br />
+					<%= object.start_time.strftime("%I:%M %p") %>
+				</abbr>
+				<% if !object.no_end_time %>
+					- 
+						<abbr class="dtend" title="<%= object.end_time.strftime("%Y-%m-%d %H:%M:%S") %>">
+							<%= object.end_time.strftime("%I:%M %p") %>
+						</abbr>
+				<% end %>
+				<% if !object.recurrence.nil? && object.recurrence != :none %>
+					<% rrule = object.hcalendar_recurrence %>
+					<span class="recurrence"><br />repeats <abbr class="rrule" title="<%= rrule[:rrule] %>"><%= rrule[:msg] %></abbr></span>
+				<% end %>
+				<% if object.parent.parent[:type] == "Place" && micro %>
+					<!-- FIXME: Facebook specific code -->
+					at <%= render :partial => "facebook_places/hcard_micro", :locals => { :hcard_micro => object.parent.parent } %>
+				<% elsif object.parent.parent[:type] == "City" %>
+					in
+						<span class="adr">
+							<span class="locality"><%= h(object.parent.parent.name) %></span>,
+							<abbr class="region" title="<%= object.parent.parent.state %>"><%= object.parent.parent.state(:abbreviation => true) %></abbr>
+						</span>
+				<% end %>
+			</p>
+		</div>
+	</div>
+	<div class="hr"></div>
+<% end %>
