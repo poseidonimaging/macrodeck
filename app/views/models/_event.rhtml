@@ -1,4 +1,4 @@
-<% if !object.nil? %>
+<div class="vcalendar">
 	<div class="vevent">
 		<div class="leftside">
 			<dl class="hide">
@@ -41,9 +41,9 @@
 					<% rrule = object.hcalendar_recurrence %>
 					<span class="recurrence"><br />repeats <abbr class="rrule" title="<%= rrule[:rrule] %>"><%= rrule[:msg] %></abbr></span>
 				<% end %>
-				<% if object.parent.parent[:type] == "Place" && micro %>
+				<% if object.parent.parent[:type] == "Place" %>
 					<!-- FIXME: Facebook specific code -->
-					at <%= render :partial => "facebook_places/hcard_micro", :locals => { :hcard_micro => object.parent.parent } %>
+					at <%= object.parent.parent.name %>
 				<% elsif object.parent.parent[:type] == "City" %>
 					in
 						<span class="adr">
@@ -54,5 +54,4 @@
 			</p>
 		</div>
 	</div>
-	<div class="hr"></div>
-<% end %>
+</div>

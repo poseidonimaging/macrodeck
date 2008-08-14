@@ -1,2 +1,6 @@
+.search .result				{ border: 1px solid #ccc; margin-bottom: 5px; background-color: #eee; padding: 5px; }
+.search .result .highlight	{ font-weight: bold; color: #235674; border-bottom: 1px dashed #235674; } 
+
 .search .result .top .title { float: left; width: 50%; font-weight: bold; }
 .search .result .top .type  { float: left; width: 50%; text-align: right; }
+.search .result .top		{ margin-bottom: 3px; padding-bottom: 3px; border-bottom: 1px dotted #ccc; height: 16px; }
