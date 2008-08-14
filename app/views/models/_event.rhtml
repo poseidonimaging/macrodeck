@@ -20,7 +20,7 @@
 			<% if !object.description.nil? && object.description.length > 0 %>
 				<p class="description">
 					<%=
-						auto_link(h(truncate(object.description, 250)), :all, { :target => "_blank" }) do |link| 
+						auto_link(object.description, :all, { :target => "_blank" }) do |link| 
 							truncate(link, 30)
 						end
 					%>

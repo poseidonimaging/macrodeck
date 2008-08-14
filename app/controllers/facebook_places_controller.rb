@@ -766,23 +766,6 @@ class FacebookPlacesController < ApplicationController
 	end
 
 	private
-		# Removes fb_sig values from the params
-		def fb_sig_cleanup
-			params.delete("fb_sig")
-			params.delete("fb_sig_time")
-			params.delete("fb_sig_in_canvas")
-			params.delete("fb_sig_position_fix")
-			params.delete("fb_sig_session_key")
-			params.delete("fb_sig_request_method")
-			params.delete("fb_sig_expires")
-			params.delete("fb_sig_added")
-			params.delete("fb_sig_friends")
-			params.delete("fb_sig_user")
-			params.delete("fb_sig_api_key")
-			params.delete("fb_sig_profile_update_time")
-			params.delete("fb_sig_locale")
-		end
-
 		# Validates a field. Field types: :email, :phone, :latitude, :longitude, :zipcode
 		def validate_field(value, type)
 			case type

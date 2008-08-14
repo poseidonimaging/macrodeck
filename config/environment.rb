@@ -92,7 +92,7 @@ Ultrasphinx::Search.excerpting_options = HashWithIndifferentAccess.new({
 	:chunk_seperator => "...",
 	:limit => 256,
 	:around => 3,
-	:content_methods => ['description']
+	:content_methods => ['description', 'data']
 })
 
 # Start services we need

@@ -4,3 +4,5 @@
 .search .result .top .title { float: left; width: 50%; font-weight: bold; }
 .search .result .top .type  { float: left; width: 50%; text-align: right; }
 .search .result .top		{ margin-bottom: 3px; padding-bottom: 3px; border-bottom: 1px dotted #ccc; height: 16px; }
+
+.search .result .adr		{ color: #999; }

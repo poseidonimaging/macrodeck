@@ -1,0 +1,19 @@
+<div class="vcard">
+	<div class="fn org hide"><%= object.name %></div>
+	<% if !object.description.nil? && !object.description.empty? %>
+		<div class="note">
+			<%= auto_link(simple_format(object.description), :all, { :target => "_blank" }) %>
+		</div>
+	<% end %>
+
+	<% if !object.place_metadata[:address].nil? && !object.place_metadata[:address].empty? %>
+		<span class="adr">
+				<span class="street-address"><%= h(object.place_metadata[:address]) %></span>, 
+				<span class="locality"><%= h(object.parent.name) %></span>,
+				<abbr class="region" title="<%= object.parent.state %>"><%= object.parent.state(:abbreviation => true) %></abbr>
+				<% if !object.place_metadata[:zipcode].nil? && !object.place_metadata[:zipcode].to_s.empty? %>
+					<span class="postal-code"><%= h(object.place_metadata[:zipcode]) %></span>
+				<% end %>
+		</span>
+	<% end %>
+</div>
