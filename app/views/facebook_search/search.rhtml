@@ -9,7 +9,9 @@
 			]
 		}
 	%>
-	<h1 class="area-title">Search Results</h1>
+	<h1 class="area-title">Search</h1>
+
+	<%= render :partial => "searchbox" %>
 
 	<% if !@search.nil? %>
 		<div class="search">
@@ -20,6 +22,10 @@
 			<%= will_paginate @search, :params => { :query => params[:query] } %>
 		</div>
 	<% else %>
-		<p>There were no results for that query.</p>
+		<% if params[:query] %>
+			<p>There were no results for that query.</p>
+		<% else %>
+			<p>Type your query in the box above.</p>
+		<% end %>
 	<% end %>
 </div>
