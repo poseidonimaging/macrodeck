@@ -1,6 +1,6 @@
 <div class="searchbox">
 	<% form_tag("#{PLACES_FBURL}/search/#{params[:uuid]}/") do %>
-		<p><%= text_field_tag "query", params[:query], :size => 40 %> <%= submit_tag "Search" %></p>
+		<p><%= text_field_tag "query", params[:query], :class => "searchbox" %> <%= submit_tag "Search", :class => "searchbutton" %></p>
 	<% end %>
 </div>
 <% if params[:query] %>
@@ -9,6 +9,7 @@
 			<%= link_to "Places Only", "#{PLACES_FBURL}/search/#{params[:uuid]}/?query=#{params[:query]}&type=Place", :class => "filter-Place" %>
 			<%= link_to "Events Only", "#{PLACES_FBURL}/search/#{params[:uuid]}/?query=#{params[:query]}&type=Event", :class => "filter-Event" %>
 			<%= link_to "Walls Only", "#{PLACES_FBURL}/search/#{params[:uuid]}/?query=#{params[:query]}&type=Comments", :class => "filter-Comments" %>
+			<%= link_to "No Filters", "#{PLACES_FBURL}/search/#{params[:uuid]}/?query=#{params[:query]}" %>
 		</p>
 	</div>
 	<div class="clear"><br /></div>

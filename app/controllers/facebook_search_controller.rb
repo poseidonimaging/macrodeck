@@ -19,8 +19,16 @@ class FacebookSearchController < ApplicationController
 			if params[:query]
 				# render search results
 				@query = "#{params[:query]}"
+				
+				# Set up filters
+				if !params[:type].nil?
+					filter_hash = { "category_id" => @object.category_id.to_i, "type" => params[:type] }
+				else
+					filter_hash = { "category_id" => @object.category_id.to_i }
+				end
+
 				@search = Ultrasphinx::Search.new(
-					:filters => { "category_id" => @object.category_id.to_i },
+					:filters => filter_hash,
 					:query => @query,
 					:sort_mode => "relevance",
 					:page => params[:page],

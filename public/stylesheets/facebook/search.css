@@ -9,6 +9,9 @@
 
 .filters a	{ display: block; border: 1px solid #ccc; float: left; padding: 3px; margin: 0 5px 0 0; }
 
+.searchbox input.searchbox	{ width: 89%; }
+.searchbox input.searchbutton 	{ width: 10%; }
+
 /* Data type specific color-coding */
 .search div.result-Place, .filters a.filter-Place	{ border: 1px solid #235674; background-color: #E6EEF2; }
 .search div.result-Place a, .filters a.filter-Place	{ color: #235674; }
