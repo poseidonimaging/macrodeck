@@ -12,6 +12,10 @@
 .searchbox input.searchbox	{ width: 89%; }
 .searchbox input.searchbutton 	{ width: 10%; }
 
+#searchbox		{ height: 0; float: right; }
+#searchbox div		{ position: relative; top: -40px; }
+#searchbox div p	{ text-align: right; margin: 0; padding: 0; }
+
 /* Data type specific color-coding */
 .search div.result-Place, .filters a.filter-Place	{ border: 1px solid #235674; background-color: #E6EEF2; }
 .search div.result-Place a, .filters a.filter-Place	{ color: #235674; }

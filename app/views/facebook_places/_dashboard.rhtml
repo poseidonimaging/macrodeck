@@ -4,12 +4,18 @@
 		<fb:action href="<%= PLACES_FBURL %>">Home</fb:action>
 		<fb:action href="<%= fbplaces_url(:action => :browse) %>">Browse Places</fb:action>
 		<fb:action href="<%= fbplaces_url(:action => :invite) %>">Invite Your Friends</fb:action>
-		<% if @country != nil && @state != nil && @country != "network" %>
-			<% if @city != nil %>
-				<fb:create-button href="<%= fbplaces_url(:action => :create, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part) %>">Create a Place</fb:create-button>
-			<% else %>
-				<fb:create-button href="<%= fbplaces_url(:action => :create, :country => @country.url_part, :state => @state.url_part) %>">Add City</fb:create-button>
-			<% end %>
+		<% if @country != nil && @state != nil && @country != "network" && @city.nil? %>
+			<fb:create-button href="<%= fbplaces_url(:action => :create, :country => @country.url_part, :state => @state.url_part) %>">Add City</fb:create-button>
 		<% end %>
 		<fb:help href="<%= PLACES_APPURL %>">Feedback</fb:help>
 	</fb:dashboard>
+	
+	<% if !@city.nil? %>
+		<div id="searchbox">
+			<div>
+				<% form_tag("#{PLACES_FBURL}/search/#{@city.uuid}/") do %>
+					<p><%= text_field_tag "query" %> <%= submit_tag "Search" %></p>
+				<% end %>
+			</div>
+		</div>
+	<% end %>
