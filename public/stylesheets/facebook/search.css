@@ -10,7 +10,7 @@
 .filters span	{ display: block; float: left; padding: 3px; margin: 0 5px 0 0; }
 .filters a	{ display: block; border: 1px solid #ccc; float: left; padding: 3px; margin: 0 5px 0 0; }
 
-.searchbox input.searchbox	{ width: 89%; }
+.searchbox input.searchbox	{ width: 88%; }
 .searchbox input.searchbutton 	{ width: 10%; }
 
 #searchbox		{ height: 0; float: right; }
