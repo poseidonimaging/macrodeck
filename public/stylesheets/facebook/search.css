@@ -7,13 +7,14 @@
 
 .search .result .adr		{ color: #999; }
 
+.filters span	{ display: block; float: left; padding: 3px; margin: 0 5px 0 0; }
 .filters a	{ display: block; border: 1px solid #ccc; float: left; padding: 3px; margin: 0 5px 0 0; }
 
 .searchbox input.searchbox	{ width: 89%; }
 .searchbox input.searchbutton 	{ width: 10%; }
 
 #searchbox		{ height: 0; float: right; }
-#searchbox div		{ position: relative; top: -40px; }
+#searchbox div		{ position: relative; top: -38px; }
 #searchbox div p	{ text-align: right; margin: 0; padding: 0; }
 
 /* Data type specific color-coding */

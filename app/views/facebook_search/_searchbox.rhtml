@@ -5,11 +5,11 @@
 </div>
 <% if params[:query] %>
 	<div class="filters">
-		<p>Filter by: 
-			<%= link_to "Places Only", "#{PLACES_FBURL}/search/#{params[:uuid]}/?query=#{params[:query]}&type=Place", :class => "filter-Place" %>
-			<%= link_to "Events Only", "#{PLACES_FBURL}/search/#{params[:uuid]}/?query=#{params[:query]}&type=Event", :class => "filter-Event" %>
-			<%= link_to "Walls Only", "#{PLACES_FBURL}/search/#{params[:uuid]}/?query=#{params[:query]}&type=Comments", :class => "filter-Comments" %>
-			<%= link_to "No Filters", "#{PLACES_FBURL}/search/#{params[:uuid]}/?query=#{params[:query]}" %>
+		<p><span>Filter by: </span> 
+			<%= link_to "places", "#{PLACES_FBURL}/search/#{params[:uuid]}/?query=#{params[:query]}&type=Place", :class => "filter-Place" %>
+			<%= link_to "events", "#{PLACES_FBURL}/search/#{params[:uuid]}/?query=#{params[:query]}&type=Event", :class => "filter-Event" %>
+			<%= link_to "walls", "#{PLACES_FBURL}/search/#{params[:uuid]}/?query=#{params[:query]}&type=Comments", :class => "filter-Comments" %>
+			<%= link_to "no filters", "#{PLACES_FBURL}/search/#{params[:uuid]}/?query=#{params[:query]}" %>
 		</p>
 	</div>
 	<div class="clear"><br /></div>

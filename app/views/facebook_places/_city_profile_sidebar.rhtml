@@ -22,6 +22,7 @@
 			<% end %>
 			<li><%= link_to "View calendar", fbevents_url(:action => :category, :calendar => @city.calendar.url_part) %></li>
 			<li><%= link_to "Create a citywide event", fbevents_url(:action => :create, :calendar => @city.calendar.url_part) %></li>
+			<li><%= link_to "Add a place", fbplaces_url(:action => :create, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part) %></li>
 		</ul>
 		<%= render :partial => "facebook_common/profile_ad" %>
 	</div>
