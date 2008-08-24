@@ -7,10 +7,17 @@
 
 .search .result .adr		{ color: #999; }
 
+.filters a	{ display: block; border: 1px solid #ccc; float: left; padding: 3px; margin: 0 5px 0 0; }
+
 /* Data type specific color-coding */
-.search div.result-Place	{ border: 1px solid #235674; background-color: #E6EEF2; } 
-.search div.result-Place .top	{ border-bottom: 1px dotted #235674; }
-.search div.result-Event	{ border: 1px solid #6FBE56; background-color: #ECF5E9; }
-.search div.result-Event .top	{ border-bottom: 1px dotted #6FBE56; }
-.search div.result-Comment	{ border: 1px solid #732260; background-color: #F2EDF1; }
-.search div.result-Comment .top	{ border-bottom: 1px dotted #732260; }
+.search div.result-Place, .filters a.filter-Place	{ border: 1px solid #235674; background-color: #E6EEF2; }
+.search div.result-Place a, .filters a.filter-Place	{ color: #235674; }
+.search div.result-Place .top				{ border-bottom: 1px dotted #235674; }
+
+.search div.result-Event, .filters a.filter-Event	{ border: 1px solid #6FBE56; background-color: #ECF5E9; }
+.search div.result-Event a, .filters a.filter-Event	{ color: #6FBE56; }
+.search div.result-Event .top				{ border-bottom: 1px dotted #6FBE56; }
+
+.search div.result-Comments, .filters a.filter-Comments	{ border: 1px solid #732260; background-color: #F2EDF1; }
+.search div.result-Comments a, .filters a.filter-Comments { color: #732260; }
+.search div.result-Comments .top			{ border-bottom: 1px dotted #732260; }
