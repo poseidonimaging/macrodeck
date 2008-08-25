@@ -13,7 +13,7 @@
 
 	<%= render :partial => "searchbox" %>
 
-	<% if !@search.nil? %>
+	<% if !@search.nil? && @search.length > 0  %>
 		<div class="search">
 			<%= render :partial	=> "result", :collection => @search %>
 		</div>
