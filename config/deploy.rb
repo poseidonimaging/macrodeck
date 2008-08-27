@@ -19,6 +19,8 @@ role :app, "railsapps@prometheus.poseidonimaging.com"
 role :web, "railsapps@prometheus.poseidonimaging.com"
 role :db,  "railsapps@prometheus.poseidonimaging.com", :primary => true
 
+before :deploy, "deploy:stop_ultrasphinx"
+
 # Restart functions
 desc "Restarts Apache"
 deploy.task :restart_web_server, :roles => :web do
@@ -29,12 +31,22 @@ desc "Restarts Mongrel"
 deploy.task :restart, :roles => :web do
 	sudo "/etc/init.d/mongrel.macrodeck restart"
 	reindex
-	restart_ultrasphinx
+	start_ultrasphinx
 end
         
 desc "Reindexes search engine"
 deploy.task :reindex, :roles => :web do
-	run "cd /home/railsapps/macrodeck/current && rake ultrasphinx:index"
+	run "/home/railsapps/macrodeck-reindex.sh"
+end
+
+desc "Stops search engine"
+deploy.task :stop_ultrasphinx, :roles => :web do
+	sudo "/etc/init.d/ultrasphinx.macrodeck stop"
+end
+
+desc "Starts search engine"
+deploy.task :start_ultrasphinx, :roles => :web do
+	sudo "/etc/init.d/ultrasphinx.macrodeck start"
 end
 
 desc "Restarts search engine"
