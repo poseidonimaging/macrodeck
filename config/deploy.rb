@@ -28,5 +28,16 @@ end
 desc "Restarts Mongrel"
 deploy.task :restart, :roles => :web do
 	sudo "/etc/init.d/mongrel.macrodeck restart"
+	reindex
+	restart_ultrasphinx
 end
         
+desc "Reindexes search engine"
+deploy.task :reindex, :roles => :web do
+	run "cd /home/railsapps/macrodeck/current && rake ultrasphinx:index"
+end
+
+desc "Restarts search engine"
+deploy.task :restart_ultrasphinx, :roles => :web do
+	sudo "/etc/init.d/ultrasphinx.macrodeck restart"
+end
