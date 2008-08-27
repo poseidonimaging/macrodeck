@@ -8,7 +8,11 @@
 			</dl>
 		</dd>
 		<dt class="optional-display">Name</dt>
-		<dd class="fn org"><%= hcard.name %></dd>
+		<% if !hcard.url.nil? && hcard.url != "/" %>
+			<dd class="fn org"><%= link_to(hcard.name, hcard.url(:facebook => true)) %></dd>
+		<% else %>
+			<dd class="fn org"><%= hcard.name %></dd>
+		<% end %>
 		
 		<% if !hcard.description.nil? && !hcard.description.empty? %>
 			<dt>Description</dt>
