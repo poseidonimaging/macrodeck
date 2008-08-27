@@ -21,6 +21,8 @@
 <%
 	if ENV['RAILS_ENV'] == "development"
 		path = "/home/keith/macrodeck-trunk/index/"
+	elsif ENV['RAILS_ENV'] == "production"
+		path = "/home/railsapps/macrodeck/current/index/"
 	end
 %>
 
