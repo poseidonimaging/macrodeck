@@ -19,7 +19,7 @@ if params[:action] == "browse" || params[:action] == "view" || params[:action] =
 			if @home_city != nil
 				if params[:country] != nil && params[:country].downcase == @home_city.country.downcase
 					if params[:state] != nil && params[:state].downcase == @home_city.state(:abbreviation => true).downcase
-						if params[:city] != nil && params[:city].downcase == @home_city.name.downcase
+						if params[:city] != nil && params[:city].downcase == @home_city.url_part
 							@tab_home_city = fb_tab_selected
 						end
 					end
@@ -28,7 +28,7 @@ if params[:action] == "browse" || params[:action] == "view" || params[:action] =
 			if @secondary_city != nil
 				if params[:country] != nil && params[:country].downcase == @secondary_city.country.downcase
 					if params[:state] != nil && params[:state].downcase == @secondary_city.state(:abbreviation => true).downcase
-						if params[:city] != nil && params[:city].downcase == @secondary_city.name.downcase
+						if params[:city] != nil && params[:city].downcase == @secondary_city.url_part
 							@tab_secondary_city = fb_tab_selected
 						end
 					end
