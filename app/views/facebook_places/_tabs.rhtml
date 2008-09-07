@@ -8,7 +8,8 @@
 @tab_secondary_city = fb_tab_not_selected
 @tab_welcome = fb_tab_not_selected
 
-if params[:action] == "browse" || params[:action] == "view" || params[:action] == "create" || params[:action] == "edit" || params[:action] == "events"
+if params[:action] == "browse" || params[:action] == "view" || params[:action] == "create" || params[:action] == "edit" || params[:action] == "events" || params[:action] == "change_photo" ||
+   params[:action] == "view_photo" 
 	case params[:country]
 		when "my_places"
 			@tab_my_places = fb_tab_selected
