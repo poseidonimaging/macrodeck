@@ -260,6 +260,11 @@ class FacebookEventsController < ApplicationController
 				params[:state] = calendar.parent.parent.category.parent.url_part
 				params[:country] = calendar.parent.parent.category.parent.parent.url_part
 				puts "#{params[:place]} #{params[:city]} #{params[:state]} #{params[:country]}"
+			elsif calendar.parent[:type] == "City"
+				params[:place] = nil
+				params[:city] = calendar.parent.url_part
+				params[:state] = calendar.parent.category.parent.url_part
+				params[:country] = calendar.parent.category.parent.parent.url_part
 			end
 		end
 

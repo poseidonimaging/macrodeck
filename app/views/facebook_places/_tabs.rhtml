@@ -9,7 +9,7 @@
 @tab_welcome = fb_tab_not_selected
 
 if params[:action] == "browse" || params[:action] == "view" || params[:action] == "create" || params[:action] == "edit" || params[:action] == "events" || params[:action] == "change_photo" ||
-   params[:action] == "view_photo" 
+   params[:action] == "view_photo" || params[:action] == "category" || params[:action] == "wall" || params[:action] == "event" 
 	case params[:country]
 		when "my_places"
 			@tab_my_places = fb_tab_selected
@@ -45,12 +45,13 @@ end
 		
 		<% if @home_city != nil %>
 			<fb:tab-item href="<%= fbplaces_url(:action => :view, :country => @home_city.country, :state => @home_city.state(:abbreviation => true), :city => @home_city.url_part) %>"
-			title="<%= "#{@home_city.name}, #{@home_city.state(:abbreviation => true)}" %> Places" <%= @tab_home_city %>><%= "#{@home_city.name}, #{@home_city.state(:abbreviation => true)}" %> Places</fb:tab-item>
+			title="<%= "#{@home_city.name}, #{@home_city.state(:abbreviation => true)}" %>" <%= @tab_home_city %>><%= "#{@home_city.name}, #{@home_city.state(:abbreviation => true)}" %>
+			</fb:tab-item>
 		<% end %>
 		<% if @secondary_city != nil %>
 			<fb:tab-item href="<%= fbplaces_url(:action => :view, :country => @secondary_city.country, :state => @secondary_city.state(:abbreviation => true), :city => @secondary_city.url_part) %>"
-			title="<%= "#{@secondary_city.name}, #{@secondary_city.state(:abbreviation => true)}" %> Places" <%= @tab_secondary_city %>>
-				<%= "#{@secondary_city.name}, #{@secondary_city.state(:abbreviation => true)}" %> Places
+			title="<%= "#{@secondary_city.name}, #{@secondary_city.state(:abbreviation => true)}" %>" <%= @tab_secondary_city %>>
+				<%= "#{@secondary_city.name}, #{@secondary_city.state(:abbreviation => true)}" %>
 			</fb:tab-item>
 		<% end %>
 	</fb:tabs>
