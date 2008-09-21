@@ -215,6 +215,37 @@ class FacebookEventsController < ApplicationController
 		end
 	end
 
+	def not_attending
+		get_networks
+		get_home_city
+		get_secondary_city
+
+		if params[:calendar] != nail && params[:event] != nil
+			# Mark this person as not attending this event
+			@event = Event.find_by_uuid(params[:event])
+
+			if @event != nil
+				not_attending_rel = Relationship.find(:first, :conditions => ["source_uuid = ? AND target_uuid = ? AND relationship = 'not_attending'", @fbuser.uuid, params[:event])
+				if not_attending_rel.nil?
+					# Yes we can mark them as not attending
+					not_attending = Relationship.new do |r|
+						r.source_uuid = @fbuser.uuid
+						r.target_uuid = params[:event]
+						r.relationship = "not_attending"
+					end
+					not_attending.save!
+
+					# TODO: post to facebook
+				end
+				redirect_to @event.url(:facebook => true)
+			else
+				raise ArgumentError, "event#not_attending - event not found"
+			end
+		else
+			raise ArgumentError, "event#not_attending - not enough parameters"
+		end
+	end
+
 	def wall 
 		get_networks
 		get_home_city
