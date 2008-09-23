@@ -240,6 +240,8 @@ class FacebookEventsController < ApplicationController
 				req = fbsession.notifications_send(:to_ids => @user.facebook_uid, :session_key => @user.facebook_session_key,
 					:notification => "nudged you about <a href='#{@event.url(:facebook => true)}'>#{@event.summary}</a>, an event on <a href='#{PLACES_FBURL}/'><fb:application-name /></a>")
 				redirect_to @event.url(:facebook => true)
+			elsif @event != nil && @user.nil?
+				raise ArgumentError, "event#nudge - target user not found"
 			else
 				raise ArgumentError, "event#nudge - event not found"
 			end
