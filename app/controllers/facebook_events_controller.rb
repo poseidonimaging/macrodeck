@@ -189,12 +189,12 @@ class FacebookEventsController < ApplicationController
 		get_home_city
 		get_secondary_city
 
-		if params[:calendar] != nail && params[:event] != nil
+		if params[:calendar] != nil && params[:event] != nil
 			# Mark this person as attending this event
 			@event = Event.find_by_uuid(params[:event])
 
 			if @event != nil
-				attending_rel = Relationship.find(:first, :conditions => ["source_uuid = ? AND target_uuid = ? AND relationship = 'attending'", @fbuser.uuid, params[:event])
+				attending_rel = Relationship.find(:first, :conditions => ["source_uuid = ? AND target_uuid = ? AND relationship = 'attending'", @fbuser.uuid, params[:event]])
 				if attending_rel.nil?
 					# Yes we can mark them as attending
 					attending = Relationship.new do |r|
@@ -215,34 +215,36 @@ class FacebookEventsController < ApplicationController
 		end
 	end
 
-	def not_attending
+	def nudge
 		get_networks
 		get_home_city
 		get_secondary_city
 
-		if params[:calendar] != nail && params[:event] != nil
+		if params[:calendar] != nil && params[:event] != nil && params[:name] != nil && params[:user] != nil
 			# Mark this person as not attending this event
 			@event = Event.find_by_uuid(params[:event])
+			@user = User.find_by_facebook_uid(params[:user])
 
-			if @event != nil
-				not_attending_rel = Relationship.find(:first, :conditions => ["source_uuid = ? AND target_uuid = ? AND relationship = 'not_attending'", @fbuser.uuid, params[:event])
-				if not_attending_rel.nil?
-					# Yes we can mark them as not attending
-					not_attending = Relationship.new do |r|
-						r.source_uuid = @fbuser.uuid
+			if @event != nil && @user != nil
+				nudge_rel = Relationship.find(:first, :conditions => ["source_uuid = ? AND target_uuid = ? AND relationship = 'nudged'", @user.uuid, params[:event]])
+				if nudge_rel.nil?
+					
+					nudge = Relationship.new do |r|
+						r.source_uuid = @user.uuid
 						r.target_uuid = params[:event]
-						r.relationship = "not_attending"
+						r.relationship = "nudged"
 					end
-					not_attending.save!
-
-					# TODO: post to facebook
+					nudge.save!			
 				end
+				# send a notification to the nudged person
+				req = fbsession.notifications_send(:to_ids => @user.facebook_uid, :session_key => @user.facebook_session_key,
+					:notification => "nudged you about <a href='#{@event.url(:facebook => true)}'>#{@event.summary}</a>, an event on <a href='#{PLACES_FBURL}/'><fb:application-name /></a>")
 				redirect_to @event.url(:facebook => true)
 			else
-				raise ArgumentError, "event#not_attending - event not found"
+				raise ArgumentError, "event#nudge - event not found"
 			end
 		else
-			raise ArgumentError, "event#not_attending - not enough parameters"
+			raise ArgumentError, "event#nudge - not enough parameters"
 		end
 	end
 

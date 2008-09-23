@@ -1,3 +1,5 @@
+<%= stylesheet_link_tag "facebook/events.css?v=3" %>
+
 <div class="vcalendar eventpage">
 	<h2 class="section-title">Information</h2>
 	<div class="vevent">
@@ -66,6 +68,30 @@
 		<% end %>
 
 	</div>
+</div>
+
+<h2 class="section-title sectiontop-header">Attendees</h2>
+<div class="sectiontop sectiontop-attendees">
+	<div class="attendees-controls">
+		<p>
+			<% if @event.is_attending?(@fbuser) %>
+				<%= link_to "I am no longer attending", @event.url(:facebook => true, :action => "not_attending") %>
+			<% else %>
+				<%= link_to "I am attending", @event.url(:facebook => true, :action => "attending") %>
+			<% end %>
+		</p>
+		<% form_tag @event.url(:facebook => true, :action => :nudge) do %>
+			<fb:friend-selector name="name" idname="user" /> <%= submit_tag "Nudge Friend" %>
+		<% end %>
+	</div>
+</div>
+<div class="clear"></div>
+<div class="attendees">
+	<% if @event.attendees != nil && @event.attendees.length > 0 %>
+		<%= render :partial => "attendee", :collection => @event.attendees[0..14] %>
+	<% else %>
+		<p>Nobody has said they're attending this event! Be the first below!</p>
+	<% end %>
 </div>
 
 <%=
