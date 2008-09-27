@@ -76,8 +76,41 @@ class ApplicationController < ActionController::Base
 	def initialize_facebook_user
 		if fbsession && fbsession.is_valid?
 			user = User.find_or_create_by_facebook_session(fbsession)
-			# TODO: here we would load their friends list or whatever.
+			
 			@fbuser = user
+
+			# Parse friends list.
+			if params["fb_sig_friends"]
+				friend_uids = params["fb_sig_friends"].split(",")
+				
+				# Detect deletions
+				@fbuser.friends.each do |f|
+					if f.facebook_uid && f.facebook_uid != 0
+						if !friend_uids.member?(f.facebook_uid)
+							# Delete the friend association because they are no longer
+							# friends on Facebook
+							@fbuser.friends.delete(f)
+						end
+					end
+				end
+
+				# Detect insertions
+				# step 1: is the friend even in our system?
+				friend_uids.each do |fid|
+					u = User.find_by_facebook_uid(fid)
+					if u.nil?
+						new_user = User.new do |usr|
+							usr.facebook_uid = fid
+						end
+						new_user.save!
+					end
+
+					# step 2: is friend associated?
+					if !@fbuser.friends.find(u.id)
+						@fbuser.friends << u
+					end
+				end
+			end
 		end
 	end
 
