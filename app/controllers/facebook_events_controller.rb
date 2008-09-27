@@ -227,7 +227,7 @@ class FacebookEventsController < ApplicationController
 			if @event != nil
 				attending_rel = Relationship.find(:first, :conditions => ["source_uuid = ? AND target_uuid = ? AND relationship = 'attending'", @fbuser.uuid, params[:event]])
 				if attending_rel
-					attending.destroy
+					attending_rel.destroy
 				end
 				redirect_to @event.url(:facebook => true)
 			else

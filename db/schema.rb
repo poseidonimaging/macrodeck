@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 66) do
+ActiveRecord::Schema.define(:version => 67) do
 
   create_table "categories", :force => true do |t|
     t.string  "uuid"
@@ -127,6 +127,14 @@ ActiveRecord::Schema.define(:version => 66) do
     t.text    "write_permissions"
     t.string  "layout_type"
   end
+
+  create_table "friends", :id => false, :force => true do |t|
+    t.integer "friend_id"
+    t.integer "user_id"
+  end
+
+  add_index "friends", ["friend_id"], :name => "index_friends_on_friend_id"
+  add_index "friends", ["user_id"], :name => "index_friends_on_user_id"
 
   create_table "group_members", :force => true do |t|
     t.string  "groupid"
