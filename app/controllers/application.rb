@@ -100,7 +100,7 @@ class ApplicationController < ActionController::Base
 				# Detect insertions
 				# step 1: is the friend even in our system?
 				friend_uids.each do |fid|
-					if session[:fb_friends_inschk].nil? || session[:fb_friends_inschk][fid].nil? || Time.now > session[:fb_friends_inschk] + 5.minutes
+					if session[:fb_friends_inschk].nil? || session[:fb_friends_inschk][fid].nil? || Time.now > session[:fb_friends_inschk][fid] + 5.minutes
 						# Initialize the hash if needed
 						if session[:fb_friends_inschk].nil?
 							session[:fb_friends_inschk] = {}
