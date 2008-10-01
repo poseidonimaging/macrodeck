@@ -100,18 +100,27 @@ class ApplicationController < ActionController::Base
 				# Detect insertions
 				# step 1: is the friend even in our system?
 				friend_uids.each do |fid|
-					u = User.find_by_facebook_uid(fid)
-					if u.nil?
-						new_user = User.new do |usr|
-							usr.facebook_uid = fid
+					if session[:fb_friends_inschk].nil? || session[:fb_friends_inschk][fid].nil? || Time.now > session[:fb_friends_inschk] + 5.minutes
+						# Initialize the hash if needed
+						if session[:fb_friends_inschk].nil?
+							session[:fb_friends_inschk] = {}
 						end
-						new_user.save!
-						u = new_user
-					end
 
-					# step 2: is friend associated?
-					if @fbuser.friend_ids.nil? || !@fbuser.friend_ids.member?(u.id)
-						@fbuser.friends << u
+						u = User.find_by_facebook_uid(fid)
+						if u.nil?
+							new_user = User.new do |usr|
+								usr.facebook_uid = fid
+							end
+							new_user.save!
+							u = new_user
+						end
+
+						# step 2: is friend associated?
+						if @fbuser.friend_ids.nil? || !@fbuser.friend_ids.member?(u.id)
+							@fbuser.friends << u
+						end
+
+						session[:fb_friends_inschk][fid] = Time.now
 					end
 				end
 			end
