@@ -83,15 +83,18 @@ class ApplicationController < ActionController::Base
 			if params["fb_sig_friends"]
 				friend_uids = params["fb_sig_friends"].split(",")
 				
-				# Detect deletions
-				@fbuser.friends.each do |f|
-					if f.facebook_uid && f.facebook_uid != 0
-						if !friend_uids.member?(f.facebook_uid)
-							# Delete the friend association because they are no longer
-							# friends on Facebook
-							@fbuser.friends.delete(f)
+				if session[:fb_friends_delchk].nil? || Time.now > session[:fb_friends_delchk] + 5.minutes
+					# Detect deletions
+					@fbuser.friends.each do |f|
+						if f.facebook_uid && f.facebook_uid != 0
+							if !friend_uids.member?(f.facebook_uid)
+								# Delete the friend association because they are no longer
+								# friends on Facebook
+								@fbuser.friends.delete(f)
+							end
 						end
 					end
+					session[:fb_friends_delchk] = Time.now
 				end
 
 				# Detect insertions
@@ -103,10 +106,11 @@ class ApplicationController < ActionController::Base
 							usr.facebook_uid = fid
 						end
 						new_user.save!
+						u = new_user
 					end
 
 					# step 2: is friend associated?
-					if !@fbuser.friends.find(u.id)
+					if @fbuser.friend_ids.nil? || !@fbuser.friend_ids.member?(u.id)
 						@fbuser.friends << u
 					end
 				end
