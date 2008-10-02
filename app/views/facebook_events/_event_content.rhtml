@@ -90,7 +90,7 @@
 	<% if @event.attendees != nil && @event.attendees.length > 0 %>
 		<%= render :partial => "attendee", :collection => @event.attendees[0..14] %>
 	<% else %>
-		<p>Nobody has said they're attending this event! Be the first below!</p>
+		<p>Nobody has said they're attending this event! Be the first!</p>
 	<% end %>
 </div>
 
