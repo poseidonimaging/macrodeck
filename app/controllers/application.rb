@@ -83,6 +83,10 @@ class ApplicationController < ActionController::Base
 			if params["fb_sig_friends"]
 				friend_uids = params["fb_sig_friends"].split(",")
 
+				if session[:fb_friends_delchk].nil? || session[:fb_friends_delchk].class == Time
+					session[:fb_friends_delchk] = {}
+				end
+
 				# Detect deletions
 				@fbuser.friends.each do |f|
 					if f.facebook_uid && f.facebook_uid != 0
@@ -93,10 +97,6 @@ class ApplicationController < ActionController::Base
 								@fbuser.friends.delete(f)
 							end
 
-							if session[:fb_friends_delchk].nil?
-								session[:fb_friends_delchk] = {}
-							end
-
 							session[:fb_friends_delchk][f.facebook_uid] = Time.now
 						end
 					end
@@ -104,7 +104,14 @@ class ApplicationController < ActionController::Base
 
 				# Only scan every 25 friends for insertions (doing it above would delete users inavertently
 				session[:fb_friends_start] = 0 if session[:fb_friends_start].nil?
+				total_friends = friend_uids.length
 				friend_uids = friend_uids[session[:fb_friends_start] .. session[:fb_friends_start] + 24]
+				
+				# Increment the start value
+				session[:fb_friends_start] = session[:fb_friends_start] + 25
+				if session[:fb_friends_start] > total_friends
+					session[:fb_friends_start] = 0
+				end
 
 				# Detect insertions
 				# step 1: is the friend even in our system?
