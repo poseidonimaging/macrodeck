@@ -75,6 +75,9 @@ if PLACES_TEST_SERVER
 	FLICKR_SECRET = "b9a60cf2f27ed59c"
 	ENV['RAILS_ENV'] ||= 'development'
 	ActionController::Base.asset_host = PLACES_BASEURL
+
+	FB_FEED_ATTENDING = "33152039647"
+
 	puts "*** Using Test Server!"
 else
 	PLACES_BASEURL = "http://places.macrodeck.com" # do not use a trailing slash

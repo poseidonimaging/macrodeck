@@ -211,7 +211,17 @@ class FacebookEventsController < ApplicationController
 					end
 					attending.save!
 
-					# TODO: post to facebook
+					if @event.parent.parent[:type] == "Place"
+						feed_tokens = {
+							"event"			=> @event.summary,
+							"place"			=> @event.parent.parent.name,
+							"description"	=> @event.description,
+							"eventuuid"		=> @event.uuid,
+							"calendaruuid"	=> @event.parent.uuid
+						}
+						feed_tokens = feed_tokens.to_json
+						fbsession.feed_publishUserAction( :template_bundle_id => FB_FEED_ATTENDING, :template_data => feed_tokens )
+					end
 				end
 				redirect_to @event.url(:facebook => true)
 			else
