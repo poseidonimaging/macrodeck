@@ -86,6 +86,8 @@ else
 	FLICKR_API_KEY = "686693e936d2bd4bfc3c5477fa3f1332"
 	FLICKR_SECRET = "b9a60cf2f27ed59c"
 	ActionController::Base.asset_host = PLACES_BASEURL
+
+	FB_FEED_ATTENDING = "39109862610"
 end
 
 # Configure UltraSphinx
