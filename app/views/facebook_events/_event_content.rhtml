@@ -73,13 +73,27 @@
 <h2 class="section-title sectiontop-header">Attendees</h2>
 <div class="sectiontop sectiontop-attendees">
 	<div class="attendees-controls">
-		<p>
-			<% if @event.is_attending?(@fbuser) %>
-				<%= link_to "I am no longer attending", @event.url(:facebook => true, :action => "not_attending") %>
-			<% else %>
-				<%= link_to "I am attending", @event.url(:facebook => true, :action => "attending") %>
-			<% end %>
-		</p>
+		<% if @event.recurrence != nil && @event.recurrence != :none %>
+			<p>
+				<% if @event.is_attending?(@fbuser) %>
+					<%= link_to "I am no longer attending", @event.url(:facebook => true, :action => "not_attending") %>
+				<% elsif @event.is_attending?(@fbuser, @event.start_time.strftime("%Y%m%d")) %>
+					<%= link_to "I am no longer attending", @event.url(:facebook => true, :action => "not_attending", :occurrence => @event.start_time.strftime("%Y%m%d")) %>
+				<% else %>
+					I am attending:
+					<%= link_to "just once", @event.url(:facebook => true, :action => "attending", :occurrence => @event.start_time.strftime("%Y%m%d")) %> |
+					<%= link_to "every time", @event.url(:facebook => true, :action => "attending") %>
+				<% end %>
+			</p>
+		<% else %>
+			<p>
+				<% if @event.is_attending?(@fbuser) %>
+					<%= link_to "I am no longer attending", @event.url(:facebook => true, :action => "not_attending") %>
+				<% else %>
+					<%= link_to "I am attending", @event.url(:facebook => true, :action => "attending") %>
+				<% end %>
+			</p>
+		<% end %>
 		<% form_tag @event.url(:facebook => true, :action => :nudge) do %>
 			<fb:friend-selector name="name" idname="user" /> <%= submit_tag "Nudge Friend" %>
 		<% end %>
@@ -87,10 +101,26 @@
 </div>
 <div class="clear"></div>
 <div class="attendees">
-	<% if @event.attendees != nil && @event.attendees.length > 0 %>
-		<%= render :partial => "attendee", :collection => @event.attendees[0..14] %>
+	<% if @event.recurrence != nil && @event.recurrence != :none %>
+		<h3 class="subsection-title">Attending on <%= @event.start_time.strftime("%B %d, %Y") %></h3>
+		<% if @event.attendees(@event.start_time.strftime("%Y%m%d")) != nil && @event.attendees(@event.start_time.strftime("%Y%m%d")).length > 0 %>
+			<%= render :partial => "attendee", :collection => @event.attendees(@event.start_time.strftime("%Y%m%d"))[0..14] %>
+		<% else %>
+			<p>It appears that nobody is attending on <%= @event.start_time.strftime("%B %d, %Y") %>. Be the first!</p>
+		<% end %>
+
+		<h3 class="subsection-title">Attending all occurrences</h3>
+		<% if @event.attendees != nil && @event.attendees.length > 0 %>
+			<%= render :partial => "attendee", :collection => @event.attendees[0..14] %>
+		<% else %>
+			<p>It appears that nobody is attending every occurrence of this event. Be the first!</p>
+		<% end %>	
 	<% else %>
-		<p>Nobody has said they're attending this event! Be the first!</p>
+		<% if @event.attendees != nil && @event.attendees.length > 0 %>
+			<%= render :partial => "attendee", :collection => @event.attendees[0..14] %>
+		<% else %>
+			<p>It appears that nobody is attending this event. Be the first!</p>
+		<% end %>
 	<% end %>
 </div>
 
