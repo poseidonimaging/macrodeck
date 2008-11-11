@@ -194,12 +194,19 @@ class FacebookEventsController < ApplicationController
 			@event = Event.find_by_uuid(params[:event])
 
 			if @event != nil
-				attending_rel = Relationship.find(:first, :conditions => ["source_uuid = ? AND target_uuid = ? AND relationship = 'attending'", @fbuser.uuid, params[:event]])
+
+				if params[:occurrence] != nil
+					occurrence_uuid = @event.uuid + ":" + params[:occurrence]
+				else
+					occurrence_uuid = @event.uuid
+				end
+
+				attending_rel = Relationship.find(:first, :conditions => ["source_uuid = ? AND target_uuid = ? AND relationship = 'attending'", @fbuser.uuid, occurrence_uuid])
 				if attending_rel.nil?
 					# Yes we can mark them as attending
 					attending = Relationship.new do |r|
 						r.source_uuid = @fbuser.uuid
-						r.target_uuid = params[:event]
+						r.target_uuid = occurrence_uuid
 						r.relationship = "attending"
 					end
 					attending.save!
@@ -225,7 +232,13 @@ class FacebookEventsController < ApplicationController
 			@event = Event.find_by_uuid(params[:event])
 
 			if @event != nil
-				attending_rel = Relationship.find(:first, :conditions => ["source_uuid = ? AND target_uuid = ? AND relationship = 'attending'", @fbuser.uuid, params[:event]])
+				if params[:occurrence] != nil
+					occurrence_uuid = @event.uuid + ":" + params[:occurrence]
+				else
+					occurrence_uuid = @event.uuid
+				end
+
+				attending_rel = Relationship.find(:first, :conditions => ["source_uuid = ? AND target_uuid = ? AND relationship = 'attending'", @fbuser.uuid, occurrence_uuid])
 				if attending_rel
 					attending_rel.destroy
 				end
