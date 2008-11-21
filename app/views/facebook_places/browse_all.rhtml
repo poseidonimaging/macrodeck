@@ -13,7 +13,12 @@
 			<% if @networks.length > 0 %>
 				<% @networks.each do |network| %>
 					<% net = get_network_info(network) %>
-					<li><%= link_to net[:name], fbplaces_url(:action => :view, :country => url_sanitize(net[:country]), :state => url_sanitize(net[:state]), :city => url_sanitize(net[:city])) %></li>
+					<li><%= link_to net[:name], fbplaces_url(:action => :view, :country => url_sanitize(net[:country]),
+						:state => url_sanitize(net[:state]), :city => url_sanitize(net[:city])) %>
+						<% if !network.status.nil? %>
+							<%= network.status %>
+						<% end %>
+					</li>
 				<% end %>
 			<% else %>
 				<p>You are not a part of any supported networks. Consider joining a regional network.</p>
@@ -31,7 +36,12 @@
 			This functionality will be added in the future.</p>
 			<ul>
 				<% @unsupported_networks.each do |unet| %>
-					<li><%= unet.name %></li>
+					<li>
+						<%= unet.name %>
+						<% if !unet.status.nil? %>
+							<%= unet.status %>
+						<% end %>
+					</li>
 				<% end %>
 			</ul>
 		<% end %>

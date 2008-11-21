@@ -1,0 +1,8 @@
+Facebook Feed Templates
+=======================
+
+39109862610 (live) and 33152039647 (test)
+	One-line:	<actor> is attending <event> at <place>
+	Short:		<actor> is attending <event> at <place>
+				<description>
+	Action URL:	View event (needs <calendaruuid> and <eventuuid>)

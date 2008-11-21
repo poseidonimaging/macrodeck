@@ -184,6 +184,26 @@ class ApplicationController < ActionController::Base
 			@unsupported_networks = []
 
 			response.user.affiliations.affiliation_list.each do |affiliation|
+				p affiliation
+	
+				# Hack to support network mapping
+				map_check = Relationship.find(:first, :conditions => ["source_uuid = ? AND relationship = 'maps_to'", "fb:nid:#{affiliation.nid}"])
+				if !map_check.nil?
+					puts "*** Network is changing to a regional network (city=#{map_check.target_uuid})!"
+					target_city = City.find_by_uuid(map_check.target_uuid)
+					if !target_city.nil?
+						# Get the internal Facepricot document, then modify it, then put it back into the result.
+						# Ugly, doesn't update `to_s` for some reason, but still appears to work..?
+						affiliation_name = affiliation.name
+						facedoc = affiliation.instance_variable_get("@doc")
+						facedoc.at("name").children[0] = Hpricot::Text.new("#{target_city.name}, #{target_city.state(:abbreviation => true)}")
+						facedoc.at("type").children[0] = Hpricot::Text.new("region")
+						facedoc.at("status").children[0] = Hpricot::Text.new("(#{affiliation_name})")
+						affiliation.instance_variable_set("@doc", facedoc)
+						puts "Affiliation is now #{affiliation.name}"
+					end
+				end
+
 				# method_missing("type") is used because affiliation.type does not work
 				# because type is a reserved Ruby method
 				# Also, check for "/" as in "Dallas / Fort Worth, TX". We don't support
