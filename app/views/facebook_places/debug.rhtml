@@ -1,20 +1,9 @@
-<fb:fbml>
-
-	<%= render :partial => "style" %>
-
-	<%= render :partial => "dashboard" %>
-
-	<%= render :partial => "tabs" %>
-
-	<div class="content">
-		<script src="<%= PLACES_BASEURL %>/javascripts/date.js"></script>
-		<p>DateJS test</p>
-		<div id="test">
-			DATEJS TEST
-		</div>
-		<script type="text/javascript">
-			testnode = document.getElementById('test');
-			testnode.setTextValue(Date.today());
-		</script>
-	</div>
-</fb:fbml>
+<script src="<%= PLACES_BASEURL %>/javascripts/date.js"></script>
+<p>DateJS test</p>
+<div id="test">
+	DATEJS TEST
+</div>
+<script type="text/javascript">
+	testnode = document.getElementById('test');
+	testnode.setTextValue(Date.today());
+</script>

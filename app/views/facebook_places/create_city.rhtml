@@ -1,39 +1,28 @@
-	<fb:fbml>
-
-	<%= render :partial => "style" %>
-
-	<%= render :partial => "dashboard" %>
-	
-	<%= render :partial => "tabs" %>
-
-	<div class="content">
-		<%= render :partial => "breadcrumbs", :locals => { :country => @country, :state => @state, :city => nil, :place => nil } %>
-		<h1 class="area-title">Add a City</h1>
-		<br />
-		<% if @errors.length > 0 %>
-			<div class="errors">
-				<h2><%= image_tag "icons/small/standard-black/exclamation.gif", :class => "inline" %> Errors Found With This Entry</h2>
-				<p>There were errors with your entry. Please correct the following errors:</p>
-				<ul>
-					<% @errors.each do |error| %>
-						<li><%= error %></li>
-					<% end %>
-				</ul>
-			</div>
-			<br />
-		<% end %>
-		<% form_tag "#{PLACES_FBURL}/create/#{@country.url_part}/#{@state.url_part}" do %>
-			<%= hidden_field_tag "validation_step", @validation_step %>
-			<div class="form-item-main">
-				<div class="form-item-main-left"><p><label for="city_name">City Name</label></p></div>
-				<div class="form-item-main-right"><%= text_field_tag "city_name", @city_name %></div>
-			</div>
-			<div class="form-item-main">
-				<div class="form-item-main-left"><p></p></div>
-				<div class="form-item-main-right"><p><%= image_tag "icons/small/standard-black/warning.gif", :class => "inline" %> Be sure to use proper spelling and capitalization.</p></div>
-			</div>
-			<br />
-			<div class="form-submit"><%= submit_tag "Add City", :class => "inputsubmit" %></div>
-		<% end %>
+<%= render :partial => "breadcrumbs", :locals => { :country => @country, :state => @state, :city => nil, :place => nil } %>
+<h1 class="area-title">Add a City</h1>
+<br />
+<% if @errors.length > 0 %>
+	<div class="errors">
+		<h2><%= image_tag "icons/small/standard-black/exclamation.gif", :class => "inline" %> Errors Found With This Entry</h2>
+		<p>There were errors with your entry. Please correct the following errors:</p>
+		<ul>
+			<% @errors.each do |error| %>
+				<li><%= error %></li>
+			<% end %>
+		</ul>
 	</div>
-</fb:fbml>
+	<br />
+<% end %>
+<% form_tag "#{PLACES_FBURL}/create/#{@country.url_part}/#{@state.url_part}" do %>
+	<%= hidden_field_tag "validation_step", @validation_step %>
+	<div class="form-item-main">
+		<div class="form-item-main-left"><p><label for="city_name">City Name</label></p></div>
+		<div class="form-item-main-right"><%= text_field_tag "city_name", @city_name %></div>
+	</div>
+	<div class="form-item-main">
+		<div class="form-item-main-left"><p></p></div>
+		<div class="form-item-main-right"><p><%= image_tag "icons/small/standard-black/warning.gif", :class => "inline" %> Be sure to use proper spelling and capitalization.</p></div>
+	</div>
+	<br />
+	<div class="form-submit"><%= submit_tag "Add City", :class => "inputsubmit" %></div>
+<% end %>

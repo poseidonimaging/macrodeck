@@ -1,25 +1,14 @@
-<fb:fbml>
-
-	<%= render :partial => "style" %>
-
-	<%= render :partial => "dashboard" %>
-	
-	<%= render :partial => "tabs" %>
-
-	<div class="content">
-		<fb:request-form
-			action="<%= PLACES_FBURL %>"
-			method="POST"
-			invite="true"
-			type="Places"
-			content="Places lets you find new places and let your friends know about new places.
-			Not sure what to do on a Friday night? Looking for a place to take your date? You don't
-			even have to add Places to try it out!
-			<fb:req-choice url='http://apps.facebook.com/macrodeckplaces/' label='Try Places' />">
-				<fb:multi-friend-selector
-					actiontext="Invite your friends to use Places."
-					bypass="cancel"
-					/>
-		</fb:request-form>
-	</div>
-</fb:fbml>
+<fb:request-form
+	action="<%= PLACES_FBURL %>"
+	method="POST"
+	invite="true"
+	type="Places"
+	content="Places lets you find new places and let your friends know about new places.
+	Not sure what to do on a Friday night? Looking for a place to take your date? You don't
+	even have to add Places to try it out!
+	<fb:req-choice url='http://apps.facebook.com/macrodeckplaces/' label='Try Places' />">
+		<fb:multi-friend-selector
+			actiontext="Invite your friends to use Places."
+			bypass="cancel"
+			/>
+</fb:request-form>
