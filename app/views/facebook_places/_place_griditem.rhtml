@@ -3,7 +3,10 @@
 		<%= link_to image_tag("places/no-image-small.png", :alt => h(place_griditem.name), :title => h(place_griditem.name)), place_griditem.url(:facebook => true) %>
 	<% else %>
 		<% begin %>
-			<% photo = Flickr::Photo.new(place_griditem.place_metadata[:flickr_photo_id])%>
+			<% 
+				photo = Flickr::Photo.new(place_griditem.place_metadata[:flickr_photo_id])
+				square_img = photo.sizes("Square")
+			%>
 			<%= link_to image_tag(square_img["source"], :alt => h(place_griditem.name), :title => h(place_griditem.name)), place_griditem.url(:facebook => true) %>
 		<% rescue %>
 			<%= link_to image_tag("places/no-image-small.png", :alt => h(place_griditem.name), :title => h(place_griditem.name)), place_griditem.url(:facebook => true) %>
