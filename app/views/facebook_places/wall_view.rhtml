@@ -1,43 +1,32 @@
-<fb:fbml>
+<% if params[:place] %>
+	<%= render :partial => "breadcrumbs", :locals => { :country => @country, :state => @state, :city => @city, :place => @place } %>
+<% else %>
+	<%= render :partial => "breadcrumbs", :locals => { :country => @country, :state => @state, :city => @city, :place => nil} %>
+<% end %>
 
-	<%= render :partial => "style" %>
+<h1 class="area-title">View Wall Posts</h1>
+<div class="profile-layout">
+	<% if params[:place] %>
+		<%= render :partial => "place_profile_sidebar" %>
+	<% else %>
+		<%= render :partial => "city_profile_sidebar" %>
+	<% end %>
+	<div class="profile-content">
+		<fb:wall>
+			<%= render :partial => "facebook_common/wall_post", :collection => @comments %>
+		</fb:wall>
+		
+		<br />
+		
+		<div class="clear"><%= will_paginate @comments %></div>
 
-	<%= render :partial => "dashboard" %>
-	
-	<%= render :partial => "tabs" %>
-
-	<div class="content">
-		<% if params[:place] %>
-			<%= render :partial => "breadcrumbs", :locals => { :country => @country, :state => @state, :city => @city, :place => @place } %>
-		<% else %>
-			<%= render :partial => "breadcrumbs", :locals => { :country => @country, :state => @state, :city => @city, :place => nil} %>
-		<% end %>
-
-		<h1 class="area-title">View Wall Posts</h1>
-		<div class="profile-layout">
+		<p class="clear">
 			<% if params[:place] %>
-				<%= render :partial => "place_profile_sidebar" %>
+				<%= link_to "Go back to #{@place.title}'s Profile", fbplaces_url(:action => :view, :country => "us", :state => @state.url_part, :city => @city.url_part,
+					:place => @place.url_part) %>
 			<% else %>
-				<%= render :partial => "city_profile_sidebar" %>
+				<%= link_to "Go back to #{@city.name}'s Profile", fbplaces_url(:action => :view, :country => "us", :state => @state.url_part, :city => @city.url_part) %>
 			<% end %>
-			<div class="profile-content">
-				<fb:wall>
-					<%= render :partial => "facebook_common/wall_post", :collection => @comments %>
-				</fb:wall>
-				
-				<br />
-				
-				<div class="clear"><%= will_paginate @comments %></div>
-
-				<p class="clear">
-					<% if params[:place] %>
-						<%= link_to "Go back to #{@place.title}'s Profile", fbplaces_url(:action => :view, :country => "us", :state => @state.url_part, :city => @city.url_part,
-							:place => @place.url_part) %>
-					<% else %>
-						<%= link_to "Go back to #{@city.name}'s Profile", fbplaces_url(:action => :view, :country => "us", :state => @state.url_part, :city => @city.url_part) %>
-					<% end %>
-				</p>
-			</div>
-		</div>
+		</p>
 	</div>
-</fb:fbml>
+</div>

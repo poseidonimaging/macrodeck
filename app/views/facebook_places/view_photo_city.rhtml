@@ -1,37 +1,23 @@
-<fb:fbml>
+<%= render :partial => "breadcrumbs", :locals => { :country => @country, :state => @state, :city => @city, :place => nil } %>
 
-	<%= render :partial => "style" %>
-
-	<%= render :partial => "dashboard" %>
-	
-	<%= render :partial => "tabs" %>
-
-	<div class="content">
-		<%= render :partial => "breadcrumbs", :locals => { :country => @country, :state => @state, :city => @city, :place => nil } %>
-
-		<h1 class="area-title">View Photo</h1>
-		<div class="profile-layout">
-			<%= render :partial => "city_profile_sidebar" %>
-			<div class="profile-content">
-				<div class="photo">
-					<% if @photo.nil? %>
-						<p>There is no photo associated with this city.</p>
-					<% else %>
-						<% img = @photo.sizes("Medium") %>
-						<% if img["width"].to_i > img["height"].to_i %>
-							<%= image_tag(img["source"], :alt => @photo.title, :title => @photo.title, :class => "large-wide") %>
-						<% else %>
-							<%= image_tag(img["source"], :alt => @photo.title, :title => @photo.title, :class => "large-tall") %>
-						<% end %>
-						
-						<h2 class="section-title"><%= @photo.title %></h2>
-						<p><%= @photo.description %></p>
-					<% end %>
-				</div>
-				<p class="clear">
-					<%= link_to "Go back to #{@city.name}'s Profile", fbplaces_url(:action => :view, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part) %>
-				</p>
-			</div>
+<h1 class="area-title">View Photo</h1>
+<div class="profile-layout">
+	<%= render :partial => "city_profile_sidebar" %>
+	<div class="profile-content">
+		<div class="photo">
+			<% if @photo.nil? %>
+				<p>There is no photo associated with this city.</p>
+			<% else %>
+				<% img = @photo.sizes("Medium") %>
+				<% if img["width"].to_i > img["height"].to_i %>
+					<%= image_tag(img["source"], :alt => @photo.title, :title => @photo.title, :class => "large-wide") %>
+				<% else %>
+					<%= image_tag(img["source"], :alt => @photo.title, :title => @photo.title, :class => "large-tall") %>
+				<% end %>
+				
+				<h2 class="section-title"><%= @photo.title %></h2>
+				<p><%= @photo.description %></p>
+			<% end %>
 		</div>
 	</div>
-</fb:fbml>
+</div>

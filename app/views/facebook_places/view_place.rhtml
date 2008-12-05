@@ -1,74 +1,64 @@
-<fb:fbml>
+<%= render :partial => "breadcrumbs", :locals => { :country => @country, :state => @state, :city => @city, :place => nil } %>
 
-	<%= render :partial => "style" %>
+<h1 class="area-title"><%= h(@place.title) %></h1>
+<div class="area-subtitle"><%= @place_type %></div>
+<div class="clear"></div>
+<div class="profile-layout">
+	<%= render :partial => "place_profile_sidebar" %>
+	<div class="profile-content">
+		<div class="profile-content-padding">
+			<%= render :partial => "hcard", :locals => { :hcard => @place } %>
 
-	<%= render :partial => "dashboard" %>
-	
-	<%= render :partial => "tabs" %>
+			<h2 class="section-title">Features and Services</h2>
+			<% if @place_features.nil? %>
+				<p>According to our records, this place doesn't have any features or offer any services. If you know this place does, edit this place and check which
+				features and services this place provides.</p>
+			<% else %>
+				<%= @place_features %>
+			<% end %>
+			<br />
+			<h2 class="section-title">Patrons</h2>
+			<% if @place.patrons != nil && @place.patrons.length > 0 %>
+				<div class="patrons">
+					<%= patron_table @place.patrons %>
+				</div>
+				<br />
+			<% else %>
+				<p>
+					This place has no patrons. If you like this place, 
+					<%= link_to "become a patron", fbplaces_url(:action => :add_patronage, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part, :place => @place.url_part) %>.
+				</p>
+			<% end %>
+			<br />
+			<%
+				if !@place.calendar.upcoming_events.nil?
+					upcoming_events_count = @place.calendar.upcoming_events.length
+				else
+					upcoming_events_count = 0
+				end
 
-	<div class="content">
-		<%= render :partial => "breadcrumbs", :locals => { :country => @country, :state => @state, :city => @city, :place => nil } %>
-		<h1 class="area-title"><%= h(@place.title) %></h1>
-		<div class="area-subtitle"><%= @place_type %></div>
-		<div class="clear"></div>
-		<div class="profile-layout">
-			<%= render :partial => "place_profile_sidebar" %>
-			<div class="profile-content">
-				<div class="profile-content-padding">
-					<%= render :partial => "hcard", :locals => { :hcard => @place } %>
+				if !@place.calendar.events.nil?
+					events_count = @place.calendar.events.length
+				else
+					events_count = 0
+				end
+				
+				upcoming_caption = "Displaying #{upcoming_events_count} of "
+				upcoming_caption << link_to("#{events_count} events", fbevents_url(:action => :events, :calendar => @place.calendar.url_part) + "?show_all=1")
 
-					<h2 class="section-title">Features and Services</h2>
-					<% if @place_features.nil? %>
-						<p>According to our records, this place doesn't have any features or offer any services. If you know this place does, edit this place and check which
-						features and services this place provides.</p>
-					<% else %>
-						<%= @place_features %>
-					<% end %>
-					<br />
-					<h2 class="section-title">Patrons</h2>
-					<% if @place.patrons != nil && @place.patrons.length > 0 %>
-						<div class="patrons">
-							<%= patron_table @place.patrons %>
-						</div>
-						<br />
-					<% else %>
-						<p>
-							This place has no patrons. If you like this place, 
-							<%= link_to "become a patron", fbplaces_url(:action => :add_patronage, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part, :place => @place.url_part) %>.
-						</p>
-					<% end %>
-					<br />
-					<%
-						if !@place.calendar.upcoming_events.nil?
-							upcoming_events_count = @place.calendar.upcoming_events.length
-						else
-							upcoming_events_count = 0
-						end
-
-						if !@place.calendar.events.nil?
-							events_count = @place.calendar.events.length
-						else
-							events_count = 0
-						end
-						
-						upcoming_caption = "Displaying #{upcoming_events_count} of "
-						upcoming_caption << link_to("#{events_count} events", fbevents_url(:action => :events, :calendar => @place.calendar.url_part) + "?show_all=1")
-
-						upcoming_controls = link_to("Create Event", fbevents_url(:action => :create, :calendar => @place.calendar.url_part))
-						upcoming_controls << " | "
-						upcoming_controls << link_to("See All",	fbevents_url(:action => :events, :calendar => @place.calendar.url_part) + "?show_all=1")
-					%>
-					<%= render :partial => "facebook_common/profile_module",
-						:locals => { :title => "Upcoming Events", :caption => upcoming_caption, :controls => upcoming_controls, :content => "facebook_places/place_upcoming_events_content" } %>
-					<br />
-					<%= render :partial => "facebook_common/wall",
-						:locals => {
-							:wall_url => fbplaces_url(:action => :wall, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part, :place => @place.url_part),
-							:wall => @place.wall
-						}
-					%>
-				</div> <!-- /padding -->
-			</div> <!-- /profile-content -->
-		</div> <!-- /profile-layout -->
-	</div> <!-- /content -->
-</fb:fbml>
+				upcoming_controls = link_to("Create Event", fbevents_url(:action => :create, :calendar => @place.calendar.url_part))
+				upcoming_controls << " | "
+				upcoming_controls << link_to("See All",	fbevents_url(:action => :events, :calendar => @place.calendar.url_part) + "?show_all=1")
+			%>
+			<%= render :partial => "facebook_common/profile_module",
+				:locals => { :title => "Upcoming Events", :caption => upcoming_caption, :controls => upcoming_controls, :content => "facebook_places/place_upcoming_events_content" } %>
+			<br />
+			<%= render :partial => "facebook_common/wall",
+				:locals => {
+					:wall_url => fbplaces_url(:action => :wall, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part, :place => @place.url_part),
+					:wall => @place.wall
+				}
+			%>
+		</div> <!-- /padding -->
+	</div> <!-- /profile-content -->
+</div> <!-- /profile-layout -->
