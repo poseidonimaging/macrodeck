@@ -1,49 +1,38 @@
-<fb:fbml>
-
-	<%= render :partial => "style" %>
-
-	<%= render :partial => "dashboard" %>
-	
-	<%= render :partial => "tabs" %>
-
-	<div class="content">
-		<h1 class="area-title">Browse</h1>
-		<h2>Your Networks</h2>
-		<ul>
-			<% if @networks.length > 0 %>
-				<% @networks.each do |network| %>
-					<% net = get_network_info(network) %>
-					<li><%= link_to net[:name], fbplaces_url(:action => :view, :country => url_sanitize(net[:country]),
-						:state => url_sanitize(net[:state]), :city => url_sanitize(net[:city])) %>
-						<% if !network.status.nil? %>
-							<%= network.status %>
-						<% end %>
-					</li>
+<h1 class="area-title">Browse</h1>
+<h2>Your Networks</h2>
+<ul>
+	<% if @networks.length > 0 %>
+		<% @networks.each do |network| %>
+			<% net = get_network_info(network) %>
+			<li><%= link_to net[:name], fbplaces_url(:action => :view, :country => url_sanitize(net[:country]),
+				:state => url_sanitize(net[:state]), :city => url_sanitize(net[:city])) %>
+				<% if !network.status.nil? %>
+					<%= network.status %>
 				<% end %>
-			<% else %>
-				<p>You are not a part of any supported networks. Consider joining a regional network.</p>
-			<% end %>
-		</ul>
-
-		<h2>Countries</h2>
-		<ul>
-			<li><%= link_to "United States", fbplaces_url(:action => :browse, :country => "us") %></li>
-		</ul>
-
-		<% if @unsupported_networks.length > 0 %>
-			<h2>Unsupported Networks</h2>
-			<p>You are a member of the following networks, however we cannot currently use these networks for locating places.
-			This functionality will be added in the future.</p>
-			<ul>
-				<% @unsupported_networks.each do |unet| %>
-					<li>
-						<%= unet.name %>
-						<% if !unet.status.nil? %>
-							<%= unet.status %>
-						<% end %>
-					</li>
-				<% end %>
-			</ul>
+			</li>
 		<% end %>
-	</div>
-</fb:fbml>
+	<% else %>
+		<p>You are not a part of any supported networks. Consider joining a regional network.</p>
+	<% end %>
+</ul>
+
+<h2>Countries</h2>
+<ul>
+	<li><%= link_to "United States", fbplaces_url(:action => :browse, :country => "us") %></li>
+</ul>
+
+<% if @unsupported_networks.length > 0 %>
+	<h2>Unsupported Networks</h2>
+	<p>You are a member of the following networks, however we cannot currently use these networks for locating places.
+	This functionality will be added in the future.</p>
+	<ul>
+		<% @unsupported_networks.each do |unet| %>
+			<li>
+				<%= unet.name %>
+				<% if !unet.status.nil? %>
+					<%= unet.status %>
+				<% end %>
+			</li>
+		<% end %>
+	</ul>
+<% end %>

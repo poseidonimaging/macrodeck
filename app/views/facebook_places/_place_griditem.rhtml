@@ -4,11 +4,17 @@
 			fbplaces_url(:action => :view, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part, :place => place_griditem.url_part))
 		%>
 	<% else %>
-		<% photo = Flickr::Photo.new(place_griditem.place_metadata[:flickr_photo_id]) %>
-		<% square_img = photo.sizes("Square") %>
-		<%= link_to (image_tag(square_img["source"], :alt => h(place_griditem.name), :title => h(place_griditem.name)),
-			fbplaces_url(:action => :view, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part, :place => place_griditem.url_part)) 
-		%>
+		<% begin %>
+			<% #photo = Flickr::Photo.new(place_griditem.place_metadata[:flickr_photo_id])
+				photo = Flickr::Photo.new(11234512341234123423)%>
+			<%= link_to (image_tag(square_img["source"], :alt => h(place_griditem.name), :title => h(place_griditem.name)),
+				fbplaces_url(:action => :view, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part, :place => place_griditem.url_part)) 
+			%>
+		<% rescue %>
+			<%= link_to (image_tag("places/no-image-small.png", :alt => h(place_griditem.name), :title => h(place_griditem.name)),
+				fbplaces_url(:action => :view, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part, :place => place_griditem.url_part))
+			%>
+		<% end %>
 	<% end %>
 	<div>
 		<!-- extra DIV for padding purposes -->

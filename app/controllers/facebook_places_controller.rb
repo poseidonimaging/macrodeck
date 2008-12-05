@@ -1,6 +1,7 @@
 # This controller handles the Facebook app.
 class FacebookPlacesController < ApplicationController
 	before_filter :require_facebook_login, :initialize_facebook_user
+	layout "facebook_places", :only => [:welcome, :browse]
 
 	# view takes parameters like this:
 	# view/:country/:state/:city/:place

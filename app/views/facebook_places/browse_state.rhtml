@@ -1,22 +1,11 @@
-<fb:fbml>
-
-	<%= render :partial => "style" %>
-
-	<%= render :partial => "dashboard" %>
-	
-	<%= render :partial => "tabs" %>
-
-	<div class="content">
-		<%= render :partial => "breadcrumbs", :locals => { :country => @country, :state => nil, :city => nil, :place => nil } %>
-		<h1 class="area-title"><%= @state.title %></h1>
-		<% if @cities != nil && @cities.length > 0 %>
-			<ul>
-				<% @cities.each do |city| %>
-					<li><%= link_to city.title, fbplaces_url(:action => :view, :country => "us", :state => @state.url_part, :city => city.url_part) %></li>
-				<% end %>
-			</ul>
-		<% else %>
-			<div class="information"><span></span>There are no cities currently known in <%= @state.title %>. Please add one using the button above.</div>
+<%= render :partial => "breadcrumbs", :locals => { :country => @country, :state => nil, :city => nil, :place => nil } %>
+<h1 class="area-title"><%= @state.title %></h1>
+<% if @cities != nil && @cities.length > 0 %>
+	<ul>
+		<% @cities.each do |city| %>
+			<li><%= link_to city.title, fbplaces_url(:action => :view, :country => "us", :state => @state.url_part, :city => city.url_part) %></li>
 		<% end %>
-	</div>
-</fb:fbml>
+	</ul>
+<% else %>
+	<div class="information"><span></span>There are no cities currently known in <%= @state.title %>. Please add one using the button above.</div>
+<% end %>

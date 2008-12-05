@@ -1,0 +1,16 @@
+<fb:fbml>
+
+	<%
+	# TODO: Don't render partials from other controllers (not a problem _yet_) 
+	%>
+	<%= render :partial => "facebook_places/style" %>
+
+	<%= render :partial => "facebook_places/dashboard" %>
+	
+	<%= render :partial => "facebook_places/tabs" %>
+	
+	<div class="content">
+		<%= @content_for_layout %>
+	</div>
+
+</fb:fbml>

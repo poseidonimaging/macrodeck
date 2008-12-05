@@ -1,33 +1,22 @@
-<fb:fbml>
+<%= render :partial => "breadcrumbs", :locals => { :country => @country, :state => @state, :city => @city, :place => nil } %>
 
-	<%= render :partial => "style" %>
+<h1 class="area-title">View All</h1>
 
-	<%= render :partial => "dashboard" %>
-	
-	<%= render :partial => "tabs" %>
-
-	<div class="content">
-		<%= render :partial => "breadcrumbs", :locals => { :country => @country, :state => @state, :city => @city, :place => nil } %>
-
-		<h1 class="area-title">View All</h1>
-
-		<div class="profile-layout">
-			<%= render :partial => "city_profile_sidebar" %>
-			<div class="profile-content">
-				<div class="profile-content-padding">
-					<div class="places">
-						<%= render :partial => "place_griditem", :collection => @places, :locals => { :longtext => true } %>
-					</div>
-					<div class="clear">
-						<br />
-						<%= will_paginate @places %>
-					</div>
-					<p class="clear">
-					<%= link_to "Go back to #{@city.name}'s Profile",
-						fbplaces_url(:action => :view, :country => "us", :state => @state.url_part, :city => @city.url_part) %>
-					</p>
-				</div>
+<div class="profile-layout">
+	<%= render :partial => "city_profile_sidebar" %>
+	<div class="profile-content">
+		<div class="profile-content-padding">
+			<div class="places">
+				<%= render :partial => "place_griditem", :collection => @places, :locals => { :longtext => true } %>
 			</div>
+			<div class="clear">
+				<br />
+				<%= will_paginate @places %>
+			</div>
+			<p class="clear">
+			<%= link_to "Go back to #{@city.name}'s Profile",
+				fbplaces_url(:action => :view, :country => "us", :state => @state.url_part, :city => @city.url_part) %>
+			</p>
 		</div>
 	</div>
-</fb:fbml>
+</div>
