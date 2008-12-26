@@ -1,8 +1,8 @@
 /* MacroDeck for Facebook - Events */
 
-.attendees					{ margin-top: 5px; }
-.attendees img				{ margin: 3px; border: 1px solid #000; }
-.attendees-controls			{ width: 100%; }
+.attendees			{ margin-top: 5px; }
+.attendees img			{ margin: 3px; border: 1px solid #000; }
+.attendees-controls		{ width: 100%; }
 .attendees-controls p		{ width: 40%; padding: 0; margin: 0; float: left; }
 .attendees-controls p span	{ display: block; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; }
 .attendees-controls form	{ width: 60%; padding: 0; margin: 0; float: left; text-align: right; }

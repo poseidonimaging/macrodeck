@@ -81,7 +81,7 @@
 					<% elsif @event.is_attending?(@fbuser, @event.start_time.strftime("%Y%m%d")) %>
 						<%= link_to "I am no longer attending", @event.url(:facebook => true, :action => "not_attending", :occurrence => @event.start_time.strftime("%Y%m%d")) %>
 					<% else %>
-						I am attending:
+						I am attending
 						<%= link_to "just once", @event.url(:facebook => true, :action => "attending", :occurrence => @event.start_time.strftime("%Y%m%d")) %> |
 						<%= link_to "every time", @event.url(:facebook => true, :action => "attending") %>
 					<% end %>
