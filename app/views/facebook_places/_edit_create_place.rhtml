@@ -1,0 +1,56 @@
+<% if method == :edit %>
+<fb:editor action="<%= @place.url(:action => :edit, :facebook => true) %>" labelwidth="100" width="375">
+<% elsif method == :create %>
+<fb:editor action="<%= @city.url(:action => :create, :facebook => true) %>" labelwidth="100" width="375">
+<% end %>
+	<%= hidden_field_tag "validation_step", @validation_step %>
+	<%= hidden_field_tag "flickr_photo_id", @place_flickr_photo_id %>
+	<fb:editor-text label="Place Name (required)" name="place_name" value="<%= @place_name %>" />
+	<fb:editor-custom label="Location (required)">
+		<p>
+			<label for="place_address">Address:</label> <%= text_field_tag "place_address", @place_address, :style => "width: 66%;" %> 
+			<label for="place_zipcode">Zip:</label> <%= text_field_tag "place_zipcode", @place_zipcode, :size => 5 %>
+		</p>
+	</fb:editor-custom>
+	<fb:editor-custom label="Type (required)">
+		<%= select_tag "place_type", @place_types %>
+	</fb:editor-custom>
+	<fb:editor-textarea label="Description" name="place_description" cols="78" rows="5"><%= @place_description %></fb:editor-textarea>
+	<fb:editor-custom label="Phone Number">
+		<p>
+			(<%= text_field_tag "place_phone_number_area_code", @place_phone_number_area_code, :size => 3 %>)
+			<%= text_field_tag "place_phone_number_exchange", @place_phone_number_exchange, :size => 3 %>-<%= text_field_tag "place_phone_number_number", @place_phone_number_number, :size => 4 %>
+		</p>
+	</fb:editor-custom>
+	<fb:editor-custom label="Features">
+		<div class="form-multicolumn-layout"><%= @place_features %></div>
+	</fb:editor-custom>
+	<fb:editor-text label="Website" name="place_website" value="<%= @place_website %>" />
+	<fb:editor-custom label="Geographic Coordinates">
+		<p>
+			<label for="place_latitude">Latitude:</label> <%= text_field_tag "place_latitude", @place_latitude %>
+			<label for="place_longitude">Longitude:</label> <%= text_field_tag "place_longitude", @place_longitude %>
+		</p>
+	</fb:editor-custom>
+	<fb:editor-custom label="Hours of Operation">
+		<p class="form-offset-fields">
+			<!-- TODO: make the entry field use a standard format -->
+			<label for="place_hours_sunday">Sunday:</label> <%= text_field_tag "place_hours_sunday", @place_hours_sunday %><br />
+			<label for="place_hours_monday">Monday:</label> <%= text_field_tag "place_hours_monday", @place_hours_monday %><br />
+			<label for="place_hours_tuesday">Tuesday:</label> <%= text_field_tag "place_hours_tuesday", @place_hours_tuesday %><br />
+			<label for="place_hours_wednesday">Wednesday:</label> <%= text_field_tag "place_hours_wednesday", @place_hours_wednesday %><br />
+			<label for="place_hours_thursday">Thursday:</label> <%= text_field_tag "place_hours_thursday", @place_hours_thursday %><br />
+			<label for="place_hours_friday">Friday:</label> <%= text_field_tag "place_hours_friday", @place_hours_friday %><br />
+			<label for="place_hours_saturday">Saturday:</label> <%= text_field_tag "place_hours_saturday", @place_hours_saturday %>
+		</p>
+	</fb:editor-custom>
+	<fb:editor-buttonset>
+		<% if method == :edit %>
+			<fb:editor-button value="Edit" />
+			<fb:editor-cancel href="<%= @place.url(:facebook => true) %>" />
+		<% elsif method == :create %>
+			<fb:editor-button value="Create" />
+			<fb:editor-cancel href="<%= @city.url(:facebook => true) %>" />
+		<% end %>
+	</fb:editor-buttonset>
+</fb:editor>
