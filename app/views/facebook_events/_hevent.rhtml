@@ -1,56 +1,61 @@
 <% if !hevent.nil? %>
-	<div class="vevent">
-		<div class="leftside">
-			<h3><%= link_to h(hevent.title), fbevents_url(:action => :event,
-						:calendar => hevent.parent.url_part,
-						:event => hevent.url_part), :class => "summary" %></h3>
-			<dl class="hide">
-				<dt>UUID</dt>
-				<dd class="uid">
-					<%= "#{hevent.uuid}.events.macrodeck.com" %>
-				</dd>
-				<dt>Last Updated</dt>
-				<dd>
-					<abbr class="dtstamp" title="<%= hevent.updated_at.strftime("%Y-%m-%d %H:%M:%S") %>">
-						<%= hevent.updated_at.strftime("%B %d, %Y at %I:%M %p") %>
-					</abbr>
-				</dd>
-			</dl>
-			<% if !hevent.description.nil? && hevent.description.length > 0 %>
-				<p class="description">
-					<%=
-						auto_link(h(truncate(hevent.description, 250)), :all, { :target => "_blank" }) do |link| 
-							truncate(link, 30)
-						end
-					%>
-				</p>
-			<% end %>
-			<p>
-				<abbr class="dtstart" title="<%= hevent.start_time.strftime("%Y-%m-%d %H:%M:%S") %>">
-					<%= hevent.start_time.strftime("%B %d, %Y") %><br />
-					<%= hevent.start_time.strftime("%I:%M %p") %>
-				</abbr>
-				<% if !hevent.no_end_time %>
-					- 
-						<abbr class="dtend" title="<%= hevent.end_time.strftime("%Y-%m-%d %H:%M:%S") %>">
-							<%= hevent.end_time.strftime("%I:%M %p") %>
+	<!-- Render it as class="vevent vevent-today" if it is today -->
+	<% if hevent.start_time.yday == Time.now.yday &&  hevent.start_time.year == Time.now.year %>
+		<div class="vevent vevent-today">
+	<% else %>
+		<div class="vevent">
+	<% end %>
+			<div class="leftside">
+				<h3><%= link_to h(hevent.title), fbevents_url(:action => :event,
+							:calendar => hevent.parent.url_part,
+							:event => hevent.url_part), :class => "summary" %></h3>
+				<dl class="hide">
+					<dt>UUID</dt>
+					<dd class="uid">
+						<%= "#{hevent.uuid}.events.macrodeck.com" %>
+					</dd>
+					<dt>Last Updated</dt>
+					<dd>
+						<abbr class="dtstamp" title="<%= hevent.updated_at.strftime("%Y-%m-%d %H:%M:%S") %>">
+							<%= hevent.updated_at.strftime("%B %d, %Y at %I:%M %p") %>
 						</abbr>
+					</dd>
+				</dl>
+				<% if !hevent.description.nil? && hevent.description.length > 0 %>
+					<p class="description">
+						<%=
+							auto_link(h(truncate(hevent.description, 250)), :all, { :target => "_blank" }) do |link| 
+								truncate(link, 30)
+							end
+						%>
+					</p>
 				<% end %>
-				<% if !hevent.recurrence.nil? && hevent.recurrence != :none %>
-					<% rrule = hevent.hcalendar_recurrence %>
-					<span class="recurrence"><br />repeats <abbr class="rrule" title="<%= rrule[:rrule] %>"><%= rrule[:msg] %></abbr></span>
-				<% end %>
-				<% if hevent.parent.parent[:type] == "Place" && micro %>
-					at <%= render :partial => "facebook_places/hcard_micro", :locals => { :hcard_micro => hevent.parent.parent } %>
-				<% elsif hevent.parent.parent[:type] == "City" %>
-					in
-						<span class="adr">
-							<span class="locality"><%= h(hevent.parent.parent.name) %></span>,
-							<abbr class="region" title="<%= hevent.parent.parent.state %>"><%= hevent.parent.parent.state(:abbreviation => true) %></abbr>
-						</span>
-				<% end %>
-			</p>
+				<p>
+					<abbr class="dtstart" title="<%= hevent.start_time.strftime("%Y-%m-%d %H:%M:%S") %>">
+						<%= hevent.start_time.strftime("%B %d, %Y") %><br />
+						<%= hevent.start_time.strftime("%I:%M %p") %>
+					</abbr>
+					<% if !hevent.no_end_time %>
+						- 
+							<abbr class="dtend" title="<%= hevent.end_time.strftime("%Y-%m-%d %H:%M:%S") %>">
+								<%= hevent.end_time.strftime("%I:%M %p") %>
+							</abbr>
+					<% end %>
+					<% if !hevent.recurrence.nil? && hevent.recurrence != :none %>
+						<% rrule = hevent.hcalendar_recurrence %>
+						<span class="recurrence"><br />repeats <abbr class="rrule" title="<%= rrule[:rrule] %>"><%= rrule[:msg] %></abbr></span>
+					<% end %>
+					<% if hevent.parent.parent[:type] == "Place" && micro %>
+						at <%= render :partial => "facebook_places/hcard_micro", :locals => { :hcard_micro => hevent.parent.parent } %>
+					<% elsif hevent.parent.parent[:type] == "City" %>
+						in
+							<span class="adr">
+								<span class="locality"><%= h(hevent.parent.parent.name) %></span>,
+								<abbr class="region" title="<%= hevent.parent.parent.state %>"><%= hevent.parent.parent.state(:abbreviation => true) %></abbr>
+							</span>
+					<% end %>
+				</p>
+			</div>
 		</div>
-	</div>
-	<div class="hr"></div>
+		<div class="hr"></div>
 <% end %>

@@ -2,44 +2,53 @@
 /* Microformat Styles */
 
 /* VCARD - hCard */
-div.vcard { padding-bottom: 5px; }
-div.vcard .fn { display: none; }
-.vcard .uid { display: none; }
-.vcard .hide { display: none !important; }
-.vcard dt.feedonly { display: none; }
-.vcard dd.feedonly { display: block; }
-.vcard .note p { padding: 0; margin: 0; }
-.vcard dl { margin: 0; padding: 0; }
-.vcard dt { display: block; width: 100px; font-weight: bold; float: left; clear: left; }
-.vcard dt.optional-display { display: none; }
-.vcard dt:after { content: ":"; } /* MSIE unsupported */
-.vcard dd { display: block; margin: 0 0 0 110px; padding: 0 0 0.5em 0; }
+div.vcard					{ padding-bottom: 5px; }
+div.vcard .fn				{ display: none; }
+.vcard .uid					{ display: none; }
+.vcard .hide				{ display: none !important; }
+.vcard dt.feedonly			{ display: none; }
+.vcard dd.feedonly			{ display: block; }
+.vcard .note p				{ padding: 0; margin: 0; }
+.vcard dl					{ margin: 0; padding: 0; }
+.vcard dt					{ display: block; width: 100px; font-weight: bold; float: left; clear: left; }
+.vcard dt.optional-display	{ display: none; } /* optional data that doesn't always need to be displayed (will be turned on on pages that care) */
+.vcard dt:after				{ content: ":"; } /* MSIE unsupported */
+.vcard dd					{ display: block; margin: 0 0 0 110px; padding: 0 0 0.5em 0; }
 
 /* hCard Micro - just a couple lines of data, used in event feeds for cities */
-.vcard-micro p { padding: 0; margin: 0; }
+.vcard-micro p				{ padding: 0; margin: 0; }
 
 /* VEVENT - hCalendar */
-.vevent { padding-bottom: 5px; }
-.vevent .hide { display: none !important; }
-.vevent dt.feedonly { display: none; }
-.vevent dd.feedonly { display: block; }
-.vevent dl { margin: 0; padding: 0; }
-.vevent dt { display: none; }
-.vevent dd { margin: 0; padding: 0; }
-.vevent abbr.dtstart, .vevent abbr.dtend, .vevent abbr.dtstamp { text-decoration: none; color: #999; border-bottom: 0; }
-.vevent p { margin: 0; padding: 0; }
-.vevent .vcard-micro { padding-bottom: 0; }
-.vevent .vcard { padding-bottom: 0; }
-.vevent .recurrence { color: #6FBE56; }
-.vevent .recurrence abbr { border-bottom: 0; text-decoration: none; }
+.vevent					{ padding-bottom: 5px; }
+.vevent-today			{ background-color: #FDFFE4; } /* When an event is today the hEvent view will also set this class */
+.vevent .hide			{ display: none !important; }
+.vevent dt.feedonly		{ display: none; }
+.vevent dd.feedonly		{ display: block; }
+.vevent dl				{ margin: 0; padding: 0; }
+.vevent dt				{ display: none; } /* The definition terms are hidden */
+.vevent dd				{ margin: 0; padding: 0; }
+.vevent abbr.dtstart,
+	.vevent abbr.dtend,
+	.vevent abbr.dtstamp	{ text-decoration: none; color: #999; border-bottom: 0; } /* Dates */
+.vevent p				{ margin: 0; padding: 0; }
+.vevent .vcard-micro	{ padding-bottom: 0; }
+.vevent .vcard			{ padding-bottom: 0; }
+.vevent .recurrence		{ color: #6FBE56; }
+.vevent .recurrence abbr	{ border-bottom: 0; text-decoration: none; }
 
-.eventpage .summary { display: none; }
-.eventpage .description { font-style: normal; }
-.eventpage dt { display: block; width: 80px; font-weight: bold; float: left; clear: left; }
-.eventpage dt:after { content: ":"; } /* MSIE unsupported */
-.eventpage dd { display: block; margin: 0 0 0 90px; padding: 0 0 0.5em 0; }
-.eventpage abbr.dtstart, .eventpage abbr.dtend, .eventpage abbr.dtstamp { display: block; color: #000; }
-.eventpage .vcard { clear: both; }
-.eventpage div.location { border: 1px solid #ccc; background-color: #f7f7f7; padding: 0 10px 10px 10px; } 
-.eventpage .vcard, .eventpage .vcard dl, .eventpage .vcard dt, .eventpage .vcard dd { display: block; }
+/* VEVENT displayed on a page */
+.eventpage .summary		{ display: none; }
+.eventpage .description	{ font-style: normal; }
+.eventpage dt			{ display: block; width: 80px; font-weight: bold; float: left; clear: left; }
+.eventpage dt:after		{ content: ":"; } /* MSIE unsupported */
+.eventpage dd			{ display: block; margin: 0 0 0 90px; padding: 0 0 0.5em 0; }
+.eventpage abbr.dtstart,
+	.eventpage abbr.dtend,
+	.eventpage abbr.dtstamp	{ display: block; color: #000; }
+.eventpage .vcard		{ clear: both; }
+.eventpage div.location	{ border: 1px solid #ccc; background-color: #f7f7f7; padding: 0 10px 10px 10px; } 
+.eventpage .vcard,
+	.eventpage .vcard dl,
+	.eventpage .vcard dt,
+	.eventpage .vcard dd	{ display: block; }
 
