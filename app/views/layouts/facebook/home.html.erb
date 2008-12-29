@@ -1,0 +1,17 @@
+<fb:fbml>
+	<%= stylesheet_link_tag "facebook/common.css?v=4" %>
+	<%= stylesheet_link_tag "facebook/paginator.css?v=1" %>
+	<%= stylesheet_link_tag "facebook/microformats.css?v=38" %>
+	<%= stylesheet_link_tag "facebook/layouts.css?v=1" %>
+	<%= stylesheet_link_tag "facebook/search.css?v=9" %>
+
+	<%= render :partial => "facebook/common/dashboard" %>
+	
+	<%= render :partial => "facebook/common/tabs" %>
+	
+	<div class="content">
+		<%= @content_for_layout %>
+	</div>
+
+</fb:fbml>
+
