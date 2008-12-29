@@ -1,0 +1,2 @@
+module Facebook::HomeHelper
+end

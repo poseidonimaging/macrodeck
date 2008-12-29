@@ -28,7 +28,7 @@
 #
 
 require "facebook_web_session"
-require "rfacebook_on_rails/status_manager"
+require "status_manager" # Fixed by Keith Gable
 
 module RFacebook
   module Rails

@@ -27,10 +27,11 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
-require "rfacebook_on_rails/view_extensions"
-require "rfacebook_on_rails/controller_extensions"
-require "rfacebook_on_rails/model_extensions"
-require "rfacebook_on_rails/session_extensions"
+# Edit by Keith Gable - this loaded a (now) nonexistant gem rather than using lib/
+require "view_extensions"
+require "controller_extensions"
+require "model_extensions"
+require "session_extensions"
 
 module RFacebook::Rails::Plugin
   

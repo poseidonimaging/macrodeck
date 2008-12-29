@@ -116,4 +116,3 @@ Services.startService "navigation_service"
 require 'flickr'
 require 'flickr_extensions'
 require 'string_extension'
-require 'acts_as_ferret'
