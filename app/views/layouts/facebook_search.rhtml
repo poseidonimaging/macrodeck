@@ -1,13 +1,13 @@
 <fb:fbml>
+	<%= stylesheet_link_tag "facebook/common.css?v=4" %>
+	<%= stylesheet_link_tag "facebook/paginator.css?v=1" %>
+	<%= stylesheet_link_tag "facebook/microformats.css?v=38" %>
+	<%= stylesheet_link_tag "facebook/photos.css?v=1" %>
+	<%= stylesheet_link_tag "facebook/search.css?v=9" %>
 
-	<%
-	# TODO: Don't render partials from other controllers (not a problem _yet_) 
-	%>
-	<%= render :partial => "facebook_places/style" %>
-
-	<%= render :partial => "facebook_places/dashboard" %>
+	<%= render :partial => "facebook/common/dashboard" %>
 	
-	<%= render :partial => "facebook_places/tabs" %>
+	<%= render :partial => "facebook/common/tabs" %>
 
 	<%= @content_for_layout %>
 

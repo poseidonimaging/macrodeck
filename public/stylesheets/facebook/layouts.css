@@ -1,0 +1,22 @@
+/*
+	MacroDeck for Facebook
+	layouts.css - CSS definitions for various types of layouts
+*/
+
+/* profile-style layout */
+.profile-layout				{ border: 0; margin: 0; padding: 0; width: 100%; }
+.profile-sidebar			{ float: left; margin: 0; padding: 0; border: 0; width: 25%; }
+.profile-sidebar-padding	{ padding-right: 5px; }
+.profile-sidebar-image		{ text-align: left; margin-left: 0; margin-right: auto; margin-bottom: 5px; }
+.profile-content			{ float: left; margin: 0; padding: 0; border: 0; width: 75%; }
+.profile-content-padding	{ padding-left: 5px; }
+.profile-links				{ list-style-type: none; margin: 0; padding: 0; }
+.profile-links li			{ color: #3b5998; margin: 0; padding: 0; border-bottom: 1px solid #d8dfea; }
+.profile-links li:hover		{ background: #3b5998; color: #fff; }
+.profile-links a			{ color: inherit; display: block; margin: 0; padding: 2px; padding-left: 10px; text-decoration: none; }
+
+/* Generic 2-column layout - fixes the original "profile layout" from being way too specific */
+div.layout-2col				{ border: 0; margin: 0; padding: 0; width: 100%; }
+div.layout-2col div.content	{ float: left; margin: 0; padding: 0; border: 0; width: 75%; } /* will override .content from common.css */
+div.layout-2col div.sidebar	{ float: left; margin: 0; padding: 0; border: 0; width: 25%; }
+div.layout-2col div.padding { padding: 0 3px 0 3px; } 

@@ -7,18 +7,6 @@
 .profile-module .controls { float: left; width: 50%; padding: 0; margin: 0; }
 .profile-module .controls p { margin: 0; padding: 0; padding-right: 5px; text-align: right; }
 
-/* profile-style layout */
-.profile-layout { border: 0; margin: 0; padding: 0; width: 100%; }
-.profile-sidebar { float: left; margin: 0; padding: 0; border: 0; width: 25%; }
-.profile-sidebar-padding { padding-right: 5px; }
-.profile-sidebar-image { text-align: left; margin-left: 0; margin-right: auto; margin-bottom: 5px; }
-.profile-content { float: left; margin: 0; padding: 0; border: 0; width: 75%; }
-.profile-content-padding { padding-left: 5px; }
-.profile-links { list-style-type: none; margin: 0; padding: 0; }
-.profile-links li { color: #3b5998; margin: 0; padding: 0; border-bottom: 1px solid #d8dfea; }
-.profile-links li:hover { background: #3b5998; color: #fff; }
-.profile-links a { color: inherit; display: block; margin: 0; padding: 2px; padding-left: 10px; text-decoration: none; }
-
 /* the wall */
 form.thewall { width: 100%; background-color: #f7f7f7; }
 form.thewall div.wallmessage { padding: 10px; }
