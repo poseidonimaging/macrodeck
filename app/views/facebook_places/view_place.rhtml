@@ -50,7 +50,7 @@
 				upcoming_controls << " | "
 				upcoming_controls << link_to("See All",	fbevents_url(:action => :events, :calendar => @place.calendar.url_part) + "?show_all=1")
 			%>
-			<%= render :partial => "facebook/common/module",
+			<%= render :partial => "facebook/common/layout_module",
 				:locals => { :title => "Upcoming Events", :caption => upcoming_caption, :controls => upcoming_controls, :content => "facebook_places/place_upcoming_events_content" } %>
 			<br />
 			<%= render :partial => "facebook_common/wall",
