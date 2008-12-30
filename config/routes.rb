@@ -31,11 +31,15 @@ ActionController::Routing::Routes.draw do |map|
 		:conditions => { :subdomain => "places" },
 		:defaults => { :uuid => nil, :action => "search" }
 
-  # Facebook Places
-  map.fbplaces 'facebook', :controller => "facebook_places",
-		:action => "welcome", :default => true, :country => nil, :state => nil, :city => nil, :place => nil,
+  # Facebook Home
+  map.connect 'facebook', :controller => "facebook/home",
+		:action => "index",
 		:conditions => { :subdomain => "places" }
+  map.fbhome 'facebook/home/:action', :controller => "facebook/home",
+		:conditions	=> { :subdomain => "places" },
+		:defaults	=> { :action => "index" }
 
+  # Facebook Places
   map.fbplaces 'facebook/:action/:country/:state/:city/:place', :controller => "facebook_places",
 		:conditions => { :subdomain => "places" },
 		:defaults => { :action => "browse", :country => "all", :state => nil, :city => nil, :place => nil }
