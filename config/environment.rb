@@ -68,7 +68,8 @@ PASSWORD_SALT   = "giomullyoxonoind" # Random character generator
 PLACES_TEST_SERVER = true
 
 if PLACES_TEST_SERVER
-	PLACES_BASEURL = "http://places.intranet.ignition-project.com" # do not use a trailing slash
+	PLACES_BASEURL = "http://places.macrodeck.com:3000"
+	#PLACES_BASEURL = "http://places.intranet.ignition-project.com" # do not use a trailing slash
 	PLACES_FBURL = "http://apps.facebook.com/macrodeckplaces-test" # do not use a trailing slash
 	PLACES_APPURL = "http://www.facebook.com/apps/application.php?id=6592864647"
 	FLICKR_API_KEY = "686693e936d2bd4bfc3c5477fa3f1332"
