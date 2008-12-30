@@ -3,7 +3,7 @@
 	layouts.css - CSS definitions for various types of layouts
 */
 
-/* profile-style layout */
+/* [DEPRECIATED] profile-style layout */
 .profile-layout				{ border: 0; margin: 0; padding: 0; width: 100%; }
 .profile-sidebar			{ float: left; margin: 0; padding: 0; border: 0; width: 25%; }
 .profile-sidebar-padding	{ padding-right: 5px; }
@@ -20,3 +20,11 @@ div.layout-2col				{ border: 0; margin: 0; padding: 0; width: 100%; }
 div.layout-2col div.content	{ float: left; margin: 0; padding: 0; border: 0; width: 75%; } /* will override .content from common.css */
 div.layout-2col div.sidebar	{ float: left; margin: 0; padding: 0; border: 0; width: 25%; }
 div.layout-2col div.padding { padding: 0 3px 0 3px; } 
+
+/* A module for a layout */
+div.module div.module-top	{ background-color: #eeeeee; border-top: 1px solid #cccccc; border-bottom: 1px solid #cccccc; padding-top: 2px; padding-bottom: 2px; height: 15px; clear: both; }
+div.module div.caption		{ float: left; width: 50%; padding: 0; margin: 0; }
+div.module div.caption p	{ margin: 0; padding: 0; padding-left: 5px; text-align: left; }
+div.module div.controls		{ float: left; width: 50%; padding: 0; margin: 0; }
+div.module div.controls p	{ margin: 0; padding: 0; padding-right: 5px; text-align: right; }
+div.module h2				{ font-size: 1.0em;	border-top: 1px solid #3b5998; margin: 5px 0 0 0; clear: both; padding: 2px 0 2px 5px; background-color: #d8dfea; color: #3b5998; }
