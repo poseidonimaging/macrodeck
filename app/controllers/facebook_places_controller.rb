@@ -898,11 +898,11 @@ class FacebookPlacesController < ApplicationController
 			end
 			features.each_pair do |key, value|
 				if enabled_features != nil && enabled_features.length > 0 && enabled_features[key.to_s] != nil && enabled_features[key.to_s] == "1"
-					feature_list << "<input type=\"checkbox\" name=\"place_features[#{key.to_s}]\" value=\"1\" checked=\"checked\"/>
+					feature_list << "<input type=\"checkbox\" name=\"place_features[#{key.to_s}]\" value=\"1\" checked=\"checked\" style=\"width: 1em; height: 1em;\"/>
 										<label for=\"place_#{key.to_s}\" class=\"standard\">#{value}</label><br />"
 				else
 					# feature isn't selected
-					feature_list << "<input type=\"checkbox\" name=\"place_features[#{key.to_s}]\" value=\"1\" />
+					feature_list << "<input type=\"checkbox\" name=\"place_features[#{key.to_s}]\" value=\"1\" style=\"width: 1em; height: 1em;\" />
 										<label for=\"place_#{key.to_s}\" class=\"standard\">#{value}</label><br />"
 				end
 			end
