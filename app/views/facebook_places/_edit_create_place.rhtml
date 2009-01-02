@@ -18,8 +18,8 @@
 	<fb:editor-textarea label="Description" name="place_description" cols="78" rows="5"><%= @place_description %></fb:editor-textarea>
 	<fb:editor-custom label="Phone Number">
 		<p>
-			(<%= text_field_tag "place_phone_number_area_code", @place_phone_number_area_code, :size => 3 %>)
-			<%= text_field_tag "place_phone_number_exchange", @place_phone_number_exchange, :size => 3 %>-<%= text_field_tag "place_phone_number_number", @place_phone_number_number, :size => 4 %>
+		(<%= text_field_tag "place_phone_number_area_code", @place_phone_number_area_code, :size => 3, :maxlength => 3, :style => "width: 3em;" %>)
+		<%= text_field_tag "place_phone_number_exchange", @place_phone_number_exchange, :size => 3, :maxlength => 3, :style => "width: 3em;" %>-<%= text_field_tag "place_phone_number_number", @place_phone_number_number, :size => 4, :maxlength => 4, :style => "width: 4em;" %>
 		</p>
 	</fb:editor-custom>
 	<fb:editor-custom label="Features">
