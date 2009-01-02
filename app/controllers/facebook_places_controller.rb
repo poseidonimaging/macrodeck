@@ -431,10 +431,10 @@ class FacebookPlacesController < ApplicationController
 								@errors << "Please enter a valid zip code."
 							end
 							if @place_latitude != nil && !validate_field(@place_latitude, :latitude)
-								@errors << "Please enter a valid latitude in decimal notation (e.g. 12.3456789)"
+								@errors << "Please enter a valid latitude in decimal degrees (e.g. 12.3456789)"
 							end
 							if @place_longitude != nil && !validate_field(@place_longitude, :longitude)
-								@errors << "Please enter a valid longitude in decimal notation (e.g. 98.7654321)"
+								@errors << "Please enter a valid longitude in decimal degrees (e.g. 98.7654321)"
 							end
 
 							# TODO: Test to make sure this place at this address doesn't already exist.
