@@ -1,6 +1,7 @@
 <%= render :partial => "breadcrumbs", :locals => { :country => @country, :state => @state, :city => @city, :place => nil } %>
 
 <h1 class="area-title">Create a Place</h1>
+
 <% if @errors.length > 0 %>
 	<div class="errors">
 		<h2><%= image_tag "icons/small/standard-black/exclamation.gif", :class => "inline" %> Errors Found With This Entry</h2>
@@ -13,80 +14,5 @@
 	</div>
 	<br />
 <% end %>
-<% form_tag "#{PLACES_FBURL}/create/#{@country.url_part}/#{@state.url_part}/#{url_sanitize(@city.title)}" do %>
-	<%= hidden_field_tag "validation_step", @validation_step %>
-	<div class="form-item-main">
-		<div class="form-item-main-left"><p><label for="place_name">Place Name</label></p></div>
-		<div class="form-item-main-right"><%= text_field_tag "place_name", @place_name %></div>
-	</div>
-	<div class="form-item-main">
-		<div class="form-item-main-left"><p class="faux-label">Location</p></div>
-		<div class="form-item-main-unformatted-right" style="height: 40px;">
-			<p>
-				<label for="place_address">Address:</label> <%= text_field_tag "place_address", @place_address, :style => "width: 66%;" %> 
-				<label for="place_zipcode">Zip:</label> <%= text_field_tag "place_zipcode", @place_zipcode, :size => 5 %>
-			</p>
-		</div>
-	</div>
-	<!-- FIXME: need to fill in the blank with the proper type when this page is reloaded -->
-	<div class="form-item-main">
-		<div class="form-item-main-left"><p><label for="place_type">Type</label></p></div>
-		<div class="form-item-main-right">
-			<%= select_tag "place_type", @place_types %>
-		</div>
-	</div>
-	<div class="form-item-main">
-		<div class="form-item-main-left"><p></p></div>
-		<div class="form-item-main-right"><p><%= image_tag "icons/small/standard-black/warning.gif", :class => "inline" %> Be sure to use proper spelling and capitalization.</p></div>
-	</div>
-	<div class="form-item">
-		<div class="form-item-left"><p><label for="place_description">Description</label></p></div>
-		<div class="form-item-unformatted-right"><%= text_area_tag "place_description", @place_description, :size => "78x5", :style => "margin-top: 5px;" %></div>
-	</div>
-	<div class="form-item">
-		<div class="form-item-left"><p class="faux-label">Phone Number</p></div>
-		<div class="form-item-unformatted-right">
-			<p>(<%= text_field_tag "place_phone_number_area_code", @place_phone_number_area_code, :size => 3 %>)
-			<%= text_field_tag "place_phone_number_exchange", @place_phone_number_exchange, :size => 3 %>-<%= text_field_tag "place_phone_number_number", @place_phone_number_number, :size => 4 %></p>
-		</div>
-	</div>
-	<!-- FIXME: need to fill in the blank with the proper features when this page is reloaded -->
-	<div class="form-item">
-		<div class="form-item-left"><p class="faux-label">Features</p></div>
-		<div class="form-item-unformatted-right"><div class="form-multicolumn-layout"><%= @place_features %></div></div>
-	</div>
 
-	<a id="advanced_show" href="#" clicktohide="advanced_show" clicktoshow="advanced,advanced_hide">Show Advanced Options</a>
-	<a id="advanced_hide" href="#" clicktohide="advanced,advanced_hide" clicktoshow="advanced_show" style="display: none;">Hide Advanced Options</a>
-	<div id="advanced" style="display: none;">
-		<div class="form-item">
-			<div class="form-item-left"><p><label for="place_website">Website</label></p></div>
-			<div class="form-item-right"><%= text_field_tag "place_website", @place_website %></div>
-		</div>
-		<div class="form-item">
-			<div class="form-item-left"><p class="faux-label">Geographic Coordinates</p></div>
-			<div class="form-item-unformatted-right">
-				<p>
-					<label for="place_latitude">Latitude:</label> <%= text_field_tag "place_latitude", @place_latitude %>
-					<label for="place_longitude">Longitude:</label> <%= text_field_tag "place_longitude", @place_longitude %>
-				</p>
-			</div>
-		</div>
-		<div class="form-item">
-			<div class="form-item-left"><p class="faux-label">Hours of Operation</p></div>
-			<div class="form-item-unformatted-right">
-				<p class="form-offset-fields">
-					<!-- TODO: make the entry field use a standard format -->
-					<label for="place_hours_sunday">Sunday:</label> <%= text_field_tag "place_hours_sunday", @place_hours_sunday %><br />
-					<label for="place_hours_monday">Monday:</label> <%= text_field_tag "place_hours_monday", @place_hours_monday %><br />
-					<label for="place_hours_tuesday">Tuesday:</label> <%= text_field_tag "place_hours_tuesday", @place_hours_tuesday %><br />
-					<label for="place_hours_wednesday">Wednesday:</label> <%= text_field_tag "place_hours_wednesday", @place_hours_wednesday %><br />
-					<label for="place_hours_thursday">Thursday:</label> <%= text_field_tag "place_hours_thursday", @place_hours_thursday %><br />
-					<label for="place_hours_friday">Friday:</label> <%= text_field_tag "place_hours_friday", @place_hours_friday %><br />
-					<label for="place_hours_saturday">Saturday:</label> <%= text_field_tag "place_hours_saturday", @place_hours_saturday %>
-				</p>
-			</div>
-		</div>
-	</div>
-	<div class="form-submit"><%= submit_tag "Create Place", :class => "inputsubmit" %></div>
-<% end %>
+<%= render :partial => "edit_create_place" %>
