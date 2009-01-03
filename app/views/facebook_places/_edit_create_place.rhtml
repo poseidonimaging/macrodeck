@@ -1,7 +1,7 @@
 <% if method == :edit %>
-<fb:editor action="<%= @place.url(:action => :edit, :facebook => true) %>" labelwidth="130" width="740">
+<fb:editor action="<%= @place.url(:action => :edit, :facebook => true) %>" labelwidth="130" width="610">
 <% elsif method == :create %>
-<fb:editor action="<%= @city.url(:action => :create, :facebook => true) %>" labelwidth="130" width="740">
+<fb:editor action="<%= @city.url(:action => :create, :facebook => true) %>" labelwidth="130" width="610">
 <% end %>
 	<%= hidden_field_tag "validation_step", @validation_step %>
 	<%= hidden_field_tag "flickr_photo_id", @place_flickr_photo_id %>
@@ -28,8 +28,8 @@
 	<fb:editor-text label="Website" name="place_website" value="<%= @place_website %>" />
 	<fb:editor-custom label="Geographic Coordinates">
 		<p>
-			<label for="place_latitude">Latitude:</label> <%= text_field_tag "place_latitude", @place_latitude %>
-			<label for="place_longitude">Longitude:</label> <%= text_field_tag "place_longitude", @place_longitude %>
+			<label for="place_latitude">Latitude:</label> <%= text_field_tag "place_latitude", @place_latitude, :style => "width: 50%; position: relative; left: 2em;" %>
+			<label for="place_longitude">Longitude:</label> <%= text_field_tag "place_longitude", @place_longitude, :style => "width: 50%; position: relative; left: 2em;" %>
 		</p>
 	</fb:editor-custom>
 	<fb:editor-custom label="Hours of Operation">
