@@ -27,8 +27,10 @@
 	</fb:editor-custom>
 	<fb:editor-text label="Website" name="place_website" value="<%= @place_website %>" />
 	<fb:editor-custom label="Geographic Coordinates">
-		<label for="place_latitude" style="display: block; width: 10em;">Latitude:</label> <%= text_field_tag "place_latitude", @place_latitude, :style => "display: block; width: 50%;" %><br />
-		<label for="place_longitude" style="width: 10em;">Longitude:</label> <%= text_field_tag "place_longitude", @place_longitude, :style => "width: 50%;" %>
+		<label for="place_latitude" style="display: block; float: left; width: 10em;">Latitude:</label>
+			<%= text_field_tag "place_latitude", @place_latitude, :style => "display: block; float: left; width: 30%;" %>&deg;<br />
+		<label for="place_longitude" style="display: block; float: left; width: 10em;">Longitude:</label>
+			<%= text_field_tag "place_longitude", @place_longitude, :style => "display: block; float: left; width: 30%;" %>&deg;
 	</fb:editor-custom>
 	<fb:editor-custom label="Hours of Operation">
 		<p>
