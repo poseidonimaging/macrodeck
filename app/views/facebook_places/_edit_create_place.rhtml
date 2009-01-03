@@ -7,43 +7,50 @@
 	<%= hidden_field_tag "flickr_photo_id", @place_flickr_photo_id %>
 	<fb:editor-text label="Place Name (required)" name="place_name" value="<%= @place_name %>" />
 	<fb:editor-custom label="Location (required)">
-		<p>
-			<label for="place_address">Address:</label> <%= text_field_tag "place_address", @place_address, :style => "width: 66%;" %> 
-			<label for="place_zipcode">Zip:</label> <%= text_field_tag "place_zipcode", @place_zipcode, :size => 5, :maxlength => 5, :style => "width: 5em;" %>
-		</p>
+		<label for="place_address">Address:</label> <%= text_field_tag "place_address", @place_address, :style => "width: 66%;" %> 
+		<label for="place_zipcode">Zip:</label> <%= text_field_tag "place_zipcode", @place_zipcode, :size => 5, :maxlength => 5, :style => "width: 5em;" %>
 	</fb:editor-custom>
 	<fb:editor-custom label="Type (required)">
 		<%= select_tag "place_type", @place_types %>
 	</fb:editor-custom>
 	<fb:editor-textarea label="Description" name="place_description" cols="78" rows="5"><%= @place_description %></fb:editor-textarea>
 	<fb:editor-custom label="Phone Number">
-		<p>
 		(<%= text_field_tag "place_phone_number_area_code", @place_phone_number_area_code, :size => 3, :maxlength => 3, :style => "width: 3em; text-align: center;" %>)
 		<%= text_field_tag "place_phone_number_exchange", @place_phone_number_exchange, :size => 3, :maxlength => 3, :style => "width: 3em; text-align: center;" %>-<%= text_field_tag "place_phone_number_number", @place_phone_number_number, :size => 4, :maxlength => 4, :style => "width: 4em; text-align: center;" %>
-		</p>
 	</fb:editor-custom>
 	<fb:editor-custom label="Features">
 		<div class="form-multicolumn-layout"><%= @place_features %></div>
 	</fb:editor-custom>
 	<fb:editor-text label="Website" name="place_website" value="<%= @place_website %>" />
 	<fb:editor-custom label="Geographic Coordinates">
-		<label for="place_latitude" style="display: block; float: left; width: 10em;">Latitude:</label>
-			<%= text_field_tag "place_latitude", @place_latitude, :style => "display: block; float: left; width: 30%;" %>&deg;
-		<div class="clear"></div>
-		<label for="place_longitude" style="display: block; float: left; width: 10em;">Longitude:</label>
-			<%= text_field_tag "place_longitude", @place_longitude, :style => "display: block; float: left; width: 30%;" %>&deg;
+		<label for="place_latitude" style="display: block; float: left; width: 8em;">Latitude:</label>
+			<%= text_field_tag "place_latitude", @place_latitude, :style => "display: block; float: left; width: 20%;" %>&deg;
+		<div class="clear" style="height: 5px;"></div>
+		<label for="place_longitude" style="display: block; float: left; width: 8em;">Longitude:</label>
+			<%= text_field_tag "place_longitude", @place_longitude, :style => "display: block; float: left; width: 20%;" %>&deg;
 	</fb:editor-custom>
 	<fb:editor-custom label="Hours of Operation">
-		<p>
-			<!-- TODO: make the entry field use a standard format -->
-			<label for="place_hours_sunday">Sunday:</label> <%= text_field_tag "place_hours_sunday", @place_hours_sunday, :style => "width: 50%" %><br />
-			<label for="place_hours_monday">Monday:</label> <%= text_field_tag "place_hours_monday", @place_hours_monday, :style => "width: 50%" %><br />
-			<label for="place_hours_tuesday">Tuesday:</label> <%= text_field_tag "place_hours_tuesday", @place_hours_tuesday, :style => "width: 50%" %><br />
-			<label for="place_hours_wednesday">Wednesday:</label> <%= text_field_tag "place_hours_wednesday", @place_hours_wednesday, :style => "width: 50%" %><br />
-			<label for="place_hours_thursday">Thursday:</label> <%= text_field_tag "place_hours_thursday", @place_hours_thursday, :style => "width: 50%" %><br />
-			<label for="place_hours_friday">Friday:</label> <%= text_field_tag "place_hours_friday", @place_hours_friday, :style => "width: 50%" %><br />
-			<label for="place_hours_saturday">Saturday:</label> <%= text_field_tag "place_hours_saturday", @place_hours_saturday, :style => "width: 50%" %>
-		</p>
+		<!-- TODO: make the entry field use a standard format -->
+		<label for="place_hours_sunday" style="display: block; float: left; width: 8em;">Sunday:</label>
+			<%= text_field_tag "place_hours_sunday", @place_hours_sunday, :style => "display: block; float: left; width: 30%;" %>
+		<div class="clear" style="height: 5px;"></div>
+		<label for="place_hours_monday" style="display: block; float: left; width: 8em;">Monday:</label>
+			<%= text_field_tag "place_hours_monday", @place_hours_monday, :style => "display: block; float: left; width: 30%;" %>
+		<div class="clear" style="height: 5px;"></div>
+		<label for="place_hours_tuesday" style="display: block; float: left; width: 8em;">Tuesday:</label>
+			<%= text_field_tag "place_hours_tuesday", @place_hours_tuesday, :style => "display: block; float: left; width: 30%;" %>
+		<div class="clear" style="height: 5px;"></div>	
+		<label for="place_hours_wednesday" style="display: block; float: left; width: 8em;">Wednesday:</label>
+			<%= text_field_tag "place_hours_wednesday", @place_hours_wednesday, :style => "display: block; float: left; width: 30%;" %>
+		<div class="clear" style="height: 5px;"></div>	
+		<label for="place_hours_thursday" style="display: block; float: left; width: 8em;">Thursday:</label>
+			<%= text_field_tag "place_hours_thursday", @place_hours_thursday, :style => "display: block; float: left; width: 30%;" %>
+		<div class="clear" style="height: 5px;"></div>	
+		<label for="place_hours_friday" style="display: block; float: left; width: 8em;">Friday:</label>
+			<%= text_field_tag "place_hours_friday", @place_hours_friday, :style => "display: block; float: left; width: 30%;" %>
+		<div class="clear" style="height: 5px;"></div>	
+		<label for="place_hours_saturday" style="display: block; float: left; width: 8em;">Saturday:</label>
+			<%= text_field_tag "place_hours_saturday", @place_hours_saturday, :style => "display: block; float: left; width: 30%;" %>
 	</fb:editor-custom>
 	<fb:editor-buttonset>
 		<% if method == :edit %>
