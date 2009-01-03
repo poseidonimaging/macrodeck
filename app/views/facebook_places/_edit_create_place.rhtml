@@ -1,7 +1,7 @@
 <% if method == :edit %>
-<fb:editor action="<%= @place.url(:action => :edit, :facebook => true) %>" labelwidth="130" width="425">
+<fb:editor action="<%= @place.url(:action => :edit, :facebook => true) %>" labelwidth="130" width="740">
 <% elsif method == :create %>
-<fb:editor action="<%= @city.url(:action => :create, :facebook => true) %>" labelwidth="130" width="425">
+<fb:editor action="<%= @city.url(:action => :create, :facebook => true) %>" labelwidth="130" width="740">
 <% end %>
 	<%= hidden_field_tag "validation_step", @validation_step %>
 	<%= hidden_field_tag "flickr_photo_id", @place_flickr_photo_id %>
@@ -33,15 +33,15 @@
 		</p>
 	</fb:editor-custom>
 	<fb:editor-custom label="Hours of Operation">
-		<p class="form-offset-fields">
+		<p>
 			<!-- TODO: make the entry field use a standard format -->
-			<label for="place_hours_sunday">Sunday:</label> <%= text_field_tag "place_hours_sunday", @place_hours_sunday %><br />
-			<label for="place_hours_monday">Monday:</label> <%= text_field_tag "place_hours_monday", @place_hours_monday %><br />
-			<label for="place_hours_tuesday">Tuesday:</label> <%= text_field_tag "place_hours_tuesday", @place_hours_tuesday %><br />
-			<label for="place_hours_wednesday">Wednesday:</label> <%= text_field_tag "place_hours_wednesday", @place_hours_wednesday %><br />
-			<label for="place_hours_thursday">Thursday:</label> <%= text_field_tag "place_hours_thursday", @place_hours_thursday %><br />
-			<label for="place_hours_friday">Friday:</label> <%= text_field_tag "place_hours_friday", @place_hours_friday %><br />
-			<label for="place_hours_saturday">Saturday:</label> <%= text_field_tag "place_hours_saturday", @place_hours_saturday %>
+			<label for="place_hours_sunday">Sunday:</label> <%= text_field_tag "place_hours_sunday", @place_hours_sunday, :style => "width: 50%" %><br />
+			<label for="place_hours_monday">Monday:</label> <%= text_field_tag "place_hours_monday", @place_hours_monday, :style => "width: 50%" %><br />
+			<label for="place_hours_tuesday">Tuesday:</label> <%= text_field_tag "place_hours_tuesday", @place_hours_tuesday, :style => "width: 50%" %><br />
+			<label for="place_hours_wednesday">Wednesday:</label> <%= text_field_tag "place_hours_wednesday", @place_hours_wednesday, :style => "width: 50%" %><br />
+			<label for="place_hours_thursday">Thursday:</label> <%= text_field_tag "place_hours_thursday", @place_hours_thursday, :style => "width: 50%" %><br />
+			<label for="place_hours_friday">Friday:</label> <%= text_field_tag "place_hours_friday", @place_hours_friday, :style => "width: 50%" %><br />
+			<label for="place_hours_saturday">Saturday:</label> <%= text_field_tag "place_hours_saturday", @place_hours_saturday, :style => "width: 50%" %>
 		</p>
 	</fb:editor-custom>
 	<fb:editor-buttonset>
