@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 67) do
+ActiveRecord::Schema.define(:version => 68) do
 
   create_table "categories", :force => true do |t|
     t.string  "uuid"
@@ -164,6 +164,7 @@ ActiveRecord::Schema.define(:version => 67) do
     t.string   "relationship", :null => false
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
+    t.string   "subject"
   end
 
   create_table "sessions", :force => true do |t|
