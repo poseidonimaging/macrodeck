@@ -1,0 +1,8 @@
+<% if !@minifeed.nil? && @minifeed.length > 0 %>
+	<div class="minifeed">
+		<% @minifeed.each do |feeditem| %>
+				<span class="date"><%= feeditem[0].strftime("%b %e %I:%M%p").gsub("PM", "p").gsub("AM", "a") %></span>
+				<span class="action"><%= feeditem[1] %></span>
+		<% end %>
+	</div>
+<% end %>
