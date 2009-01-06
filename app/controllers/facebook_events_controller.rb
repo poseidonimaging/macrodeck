@@ -280,12 +280,12 @@ class FacebookEventsController < ApplicationController
 			end
 
 			if @event != nil && @user != nil
-				nudge_rel = Relationship.find(:first, :conditions => ["source_uuid = ? AND target_uuid = ? AND relationship = 'nudged'", @user.uuid, params[:event]])
+				nudge_rel = Relationship.find(:first, :conditions => ["source_uuid = ? AND target_uuid = ? AND subject = ? AND relationship = 'nudged'", @fbuser.uuid, @user.uuid, params[:event]])
 				if nudge_rel.nil?
-					
 					nudge = Relationship.new do |r|
-						r.source_uuid = @user.uuid
-						r.target_uuid = params[:event]
+						r.source_uuid = @fbuser.uuid
+						r.target_uuid = @user.uuid
+						r.subject = params[:event]
 						r.relationship = "nudged"
 					end
 					nudge.save!			
