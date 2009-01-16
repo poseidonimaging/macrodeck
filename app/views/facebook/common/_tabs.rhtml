@@ -6,7 +6,7 @@
 @tab_friends = fb_tab_not_selected
 @tab_home_city = fb_tab_not_selected
 @tab_secondary_city = fb_tab_not_selected
-@tab_welcome = fb_tab_not_selected
+@tab_home = fb_tab_not_selected
 
 if params[:action] == "browse" || params[:action] == "view" || params[:action] == "create" || params[:action] == "edit" || params[:action] == "events" || params[:action] == "change_photo" ||
    params[:action] == "view_photo" || params[:action] == "category" || params[:action] == "wall" || params[:action] == "event" 
@@ -35,13 +35,13 @@ if params[:action] == "browse" || params[:action] == "view" || params[:action] =
 				end
 			end
 	end
-elsif params[:action] == "welcome"
-	@tab_welcome = fb_tab_selected
+elsif params[:controller] == "facebook/home"
+	@tab_home = fb_tab_selected
 end
 
 %>
 	<fb:tabs>
-		<fb:tab-item href="<%= PLACES_FBURL %>/welcome/" title="Welcome" <%= @tab_welcome%>>Welcome</fb:tab-item>
+		<fb:tab-item href="<%= PLACES_FBURL %>/" title="Home" <%= @tab_home%>>Home</fb:tab-item>
 		
 		<% if @home_city != nil %>
 			<fb:tab-item href="<%= fbplaces_url(:action => :view, :country => @home_city.country, :state => @home_city.state(:abbreviation => true), :city => @home_city.url_part) %>"
