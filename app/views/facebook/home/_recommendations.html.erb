@@ -1,0 +1,7 @@
+<% if !@recommendations.nil? && @recommendations.length > 0 %>
+	<ul>
+		<% @recommendations.each do |r| %>
+			<li><%= r %></li>
+		<% end %>
+	</ul>
+<% end %>

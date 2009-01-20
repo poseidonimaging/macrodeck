@@ -17,12 +17,16 @@ class Facebook::HomeController < ApplicationController
 
 		# Build the recommendations box.
 		@recommendations = []
-		@recommendations += recommendations_places unless recommendations_places.nil? || recommendations_palces.length == 0
-		@recommendations = @recommendations.sort.uniq[0..20]
-		p @recommendations
+		@recommendations += recommendations_places unless recommendations_places.nil? || recommendations_places.length == 0
+		@recommendations = @recommendations.sort.uniq[0..10]
 	end
 
 	private
+		def place_type_to_string(type)
+			types = PlaceMetadata.get_place_types
+			return types[type]
+		end
+
 		# Finds friends who have a primary or secondary city in common with this user
 		# then finds some places they patron that you haven't
 		def recommendations_places
@@ -36,7 +40,9 @@ class Facebook::HomeController < ApplicationController
 					places_to_check_out.each do |p|
 						begin
 							place = Place.find_by_uuid(p.target_uuid)
-							recommendations << "<a href='#{place.url(:facebook => true)}'>#{place.name}</a>"
+							if place.category == @home_city.category || place.category == @secondary_city.category
+								recommendations << "<a href='#{place.url(:facebook => true)}'>#{place.name}</a> (" + place_type_to_string(place.place_metadata[:type]) + ")"
+							end
 						rescue
 							nil
 						end
@@ -44,6 +50,7 @@ class Facebook::HomeController < ApplicationController
 				end
 			end
 
+			return recommendations
 		end
 
 		# Returns relationships not in common between two UUIDs
