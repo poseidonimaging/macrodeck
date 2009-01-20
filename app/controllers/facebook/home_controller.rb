@@ -57,7 +57,7 @@ class Facebook::HomeController < ApplicationController
 		def relationships_not_in_common(source1, source2, relationship)
 			rels = Relationship.find_by_sql(["SELECT * FROM relationships
 											  WHERE target_uuid NOT IN ( SELECT target_uuid FROM relationships WHERE source_uuid = ? AND relationship = ? ) AND source_uuid = ? AND relationship = ?
-											  LIMIT 0,50", source1, relationship, source2, relationship])
+											  LIMIT 0,500", source1, relationship, source2, relationship])
 			return rels
 		end
 
@@ -70,7 +70,7 @@ class Facebook::HomeController < ApplicationController
 												  WHERE source_uuid IN ( SELECT uuid FROM users AS U JOIN friends AS F ON U.id = F.user_id WHERE F.friend_id = ? )
 													AND ( relationship = 'home_city' OR relationship = 'secondary_city' )
 													AND ( target_uuid = ? OR target_uuid = ? )
-												  LIMIT 0,50", @fbuser.id, @home_city.uuid, @secondary_city.uuid])
+												  LIMIT 0,500", @fbuser.id, @home_city.uuid, @secondary_city.uuid])
 				return rels
 			elsif @home_city && !@secondary_city
 				# This query is complex so let's just do the SQL for it.
@@ -79,7 +79,7 @@ class Facebook::HomeController < ApplicationController
 												  WHERE source_uuid IN ( SELECT uuid FROM users AS U JOIN friends AS F ON U.id = F.user_id WHERE F.friend_id = ? )
 													AND ( relationship = 'home_city' OR relationship = 'secondary_city' )
 													AND ( target_uuid = ? )
-												  LIMIT 0,50", @fbuser.id, @home_city.uuid])
+												  LIMIT 0,500", @fbuser.id, @home_city.uuid])
 				return rels
 			else
 				return nil
