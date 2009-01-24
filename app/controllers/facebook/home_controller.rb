@@ -40,8 +40,22 @@ class Facebook::HomeController < ApplicationController
 					places_to_check_out.each do |p|
 						begin
 							place = Place.find_by_uuid(p.target_uuid)
+							user = User.find_by_uuid(r.source_uuid)
 							if place.category == @home_city.category || place.category == @secondary_city.category
-								recommendations << "<a href='#{place.url(:facebook => true)}'>#{place.name}</a> (" + place_type_to_string(place.place_metadata[:type]) + ")"
+								found_rec = false
+								recommendations.collect! do |rec|
+									if rec.recommended_item == place
+										rec.users_recommending << user
+										found_rec = true
+									end
+									return rec
+								end
+								# add the recommendation if it doesn't exist yet.
+								if !found_rec
+									rec = Recommendation.new(place)
+									rec.users_recommending << user
+									recommendations << rec
+								end
 							end
 						rescue
 							nil
