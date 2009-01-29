@@ -14,7 +14,8 @@ class FacebookSearchController < ApplicationController
 
 		if !params[:uuid].nil?
 			@object = DataObject.find_by_uuid(params[:uuid])
-			p @object
+			populate_params_with_location_information(@object)
+
 			if params[:query]
 				# render search results
 				@query = "#{params[:query]}"
@@ -46,5 +47,14 @@ class FacebookSearchController < ApplicationController
 				@baseurl = "#{PLACES_FBURL}/search/"
 				@basecrumb = Breadcrumb.new("Search", @baseurl)
 				@places_basecrumb = Breadcrumb.new("Browse", "#{PLACES_FBURL}/browse/")
+		end
+
+		def populate_params_with_location_information(searchroot)
+			if searchroot[:type] == "City"
+				params[:place] = nil
+				params[:city] = searchroot.url_part
+				params[:state] = searchroot.category.parent.url_part
+				params[:country] = searchroot.category.parent.parent.url_part
+			end
 		end
 end

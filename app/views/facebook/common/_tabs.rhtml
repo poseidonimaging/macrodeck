@@ -9,7 +9,7 @@
 @tab_home = fb_tab_not_selected
 
 if params[:action] == "browse" || params[:action] == "view" || params[:action] == "create" || params[:action] == "edit" || params[:action] == "events" || params[:action] == "change_photo" ||
-   params[:action] == "view_photo" || params[:action] == "category" || params[:action] == "wall" || params[:action] == "event" 
+   params[:action] == "view_photo" || params[:action] == "category" || params[:action] == "wall" || params[:action] == "event" || params[:action] == "search"
 	case params[:country]
 		when "my_places"
 			@tab_my_places = fb_tab_selected
