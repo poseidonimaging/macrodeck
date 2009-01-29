@@ -30,7 +30,7 @@ class Facebook::HomeController < ApplicationController
 		# Finds friends who have a primary or secondary city in common with this user
 		# then finds some places they patron that you haven't
 		def recommendations_places
-			recommendations = []
+			recommended_items = Array.new
 
 			rels = find_local_friend_relationships
 			if rels && rels.length > 0
@@ -43,19 +43,27 @@ class Facebook::HomeController < ApplicationController
 							user = User.find_by_uuid(r.source_uuid)
 							if place.category == @home_city.category || place.category == @secondary_city.category
 								found_rec = false
-								recommendations.collect! do |rec|
-									if rec.recommended_item == place
-										rec.users_recommending << user
-										found_rec = true
+								new_items = Array.new
+
+								if recommended_items.length > 0
+									recommended_items.each do |rec|
+										if rec.recommended_item == place
+											rec.users_recommending << user
+											found_rec = true
+										end
+										new_items << rec
 									end
-									return rec
 								end
+
 								# add the recommendation if it doesn't exist yet.
 								if !found_rec
-									rec = Recommendation.new(place)
-									rec.users_recommending << user
-									recommendations << rec
+									new_rec = Recommendation.new(place)
+									new_rec.users_recommending << user
+									new_items << new_rec
 								end
+
+								# now set the recommended items to the new items.
+								recommended_items = new_items
 							end
 						rescue
 							nil
@@ -64,7 +72,7 @@ class Facebook::HomeController < ApplicationController
 				end
 			end
 
-			return recommendations
+			return recommended_items
 		end
 
 		# Returns relationships not in common between two UUIDs

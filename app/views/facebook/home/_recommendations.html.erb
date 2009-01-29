@@ -1,7 +1,11 @@
 <% if !@recommendations.nil? && @recommendations.length > 0 %>
-	<ul>
+	<div class="recommendations">
 		<% @recommendations.each do |r| %>
-			<li><%= r %></li>
+			<% if r.recommended_item.path_of_partial != nil %>
+				<div class="recommendation">
+					<%= render :partial => r.recommended_item.path_of_partial, :locals => { :object => r.recommended_item } %>
+				</div>
+			<% end %>
 		<% end %>
-	</ul>
+	</div>
 <% end %>
