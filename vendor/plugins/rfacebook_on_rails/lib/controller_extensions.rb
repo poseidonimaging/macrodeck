@@ -482,20 +482,20 @@ module RFacebook
         # full callback rewriting
         elsif fullCallback
           options[:only_path] = true
-          path = "#{request.protocol}#{request.host}:#{request.port}#{url_for__ALIASED(options, *parameters)}"
+          path = "#{request.protocol}#{request.host}:#{request.port}#{url_for__ALIASED(options)}"
         
         # regular Rails rewriting
         else
-          path = url_for__ALIASED(options, *parameters)
+          path = url_for__ALIASED(options)
         end
 
         return path
       end
       
-      def redirect_to__RFACEBOOK(options = {}, *parameters) # :nodoc:
+      def redirect_to__RFACEBOOK(options = {}) # :nodoc:
         
         # get the url
-        redirectUrl = url_for(options, *parameters)
+        redirectUrl = url_for(options)
 
         # canvas redirect
         if in_facebook_canvas?
@@ -511,7 +511,7 @@ module RFacebook
         # otherwise, we only need to do a standard redirect
         else
           RAILS_DEFAULT_LOGGER.debug "** RFACEBOOK INFO: Regular redirect_to"
-          redirect_to__ALIASED(options, *parameters)
+          redirect_to__ALIASED(options)
         end
       end
    
