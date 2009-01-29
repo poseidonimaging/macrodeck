@@ -13,16 +13,20 @@
 
 	<%= render :partial => "searchbox" %>
 
-	<% if !@search.nil? && @search.length > 0  %>
+	<% if !@search.nil? && @search.length > 0 && !params[:query].empty? %>
 		<div class="search">
 			<%= render :partial	=> "result", :collection => @search %>
 		</div>
 
 		<div class="clear">
-			<%= will_paginate @search, :params => { :query => params[:query], :type => params[:type] } %>
+			<% begin %>
+				<%= will_paginate @search, :params => { :query => params[:query], :type => params[:type] } %>
+			<% rescue %>
+				<!-- will_paginate broke down -->
+			<% end %>
 		</div>
 	<% else %>
-		<% if params[:query] %>
+		<% if !params[:query].empty? %>
 			<p>There were no results for that query.</p>
 		<% else %>
 			<p>Type your query in the box above.</p>

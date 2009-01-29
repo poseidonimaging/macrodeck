@@ -6,7 +6,7 @@
 #ENV['RAILS_ENV'] ||= 'development'
 
 # Specifies gem version of Rails to use when vendor/rails is not present
-RAILS_GEM_VERSION = '2.0.5'
+RAILS_GEM_VERSION = '2.2.2'
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
@@ -28,6 +28,14 @@ Rails::Initializer.run do |config|
   # (create the session table with 'rake db:sessions:create')
   config.action_controller.session_store = :active_record_store
 
+  config.time_zone = 'America/Chicago'
+
+  config.action_controller.session = {
+    :session_key => '_macrodeck_session',
+    :secret      => '24d4104c707e139da8c86ce793b9de476a4a92421ff87f3354fe60722b978f7cec75a3965c70fa3f2a6f36a19613cab987bd750f019cc6bb94d7c946a17853e6'
+  }
+
+
   # Use SQL instead of Active Record's schema dumper when creating the test database.
   # This is necessary if your schema can't be completely dumped by the schema dumper, 
   # like if you have constraints or database-specific column types
@@ -40,6 +48,10 @@ Rails::Initializer.run do |config|
   # config.active_record.default_timezone = :utc
   
   # See Rails::Configuration for more options
+  
+  # Load gems
+  config.gem 'mislav-will_paginate', :version => '~> 2.2.3', :lib => 'will_paginate', :source => 'http://gems.github.com'
+
 end
 
 # Add new inflection rules using the following format 
