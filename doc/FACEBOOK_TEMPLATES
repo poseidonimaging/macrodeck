@@ -7,7 +7,7 @@ Facebook Feed Templates
 				<description>
 	Action URL:	View event (needs <calendaruuid> and <eventuuid>)
 
-46850634647 (test)
+51769422610 (live) and 46850634647 (test)
 	One-line:	{*actor*} is now a patron of {*place*}
 	Short:		{*actor*} is now a patron of {*place*}
 				{*place*} is a {*type*} located in {*location*}
