@@ -13,12 +13,12 @@ class Facebook::HomeController < ApplicationController
 		@minifeed += minifeed_nudges_outgoing unless minifeed_nudges_outgoing.nil? || minifeed_nudges_outgoing.length == 0
 		@minifeed += minifeed_patron_self unless minifeed_patron_self.nil? || minifeed_patron_self.length == 0
 		@minifeed += minifeed_patron_friends unless minifeed_patron_friends.nil? || minifeed_patron_friends.length == 0
-		@minifeed = @minifeed.sort.reverse[0..10]
+		@minifeed = @minifeed.sort.reverse[0..14]
 
 		# Build the recommendations box.
 		@recommendations = []
 		@recommendations += recommendations_places unless recommendations_places.nil? || recommendations_places.length == 0
-		@recommendations = @recommendations.sort.reverse.uniq[0..10]
+		@recommendations = @recommendations.sort.reverse.uniq[0..14]
 	end
 
 	private
