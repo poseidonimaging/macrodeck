@@ -18,7 +18,7 @@ class Facebook::HomeController < ApplicationController
 		# Build the recommendations box.
 		@recommendations = []
 		@recommendations += recommendations_places unless recommendations_places.nil? || recommendations_places.length == 0
-		@recommendations = @recommendations.sort.uniq[0..10]
+		@recommendations = @recommendations.sort.reverse.uniq[0..10]
 	end
 
 	private

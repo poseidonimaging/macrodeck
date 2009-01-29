@@ -4,6 +4,13 @@
 			<% if r.recommended_item.path_of_partial != nil %>
 				<div class="recommendation">
 					<%= render :partial => r.recommended_item.path_of_partial, :locals => { :object => r.recommended_item } %>
+					<%
+						users = []
+						r.users_recommending.each do |u|
+							users << "<fb:name uid='#{u.facebook_uid}' linked='true' ifcantsee='A user' />"
+						end
+					%>
+					<div class="via">via <%= users[0..4].to_sentence %></div>
 				</div>
 			<% end %>
 		<% end %>
