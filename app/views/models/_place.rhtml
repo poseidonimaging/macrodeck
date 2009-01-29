@@ -1,5 +1,9 @@
+<% facebook = !@fbuser.nil? %>
 <div class="vcard">
-	<div class="fn org hide"><%= object.name %></div>
+	<div class="hide">
+		<%= link_to object.name, object.url(:facebook => facebook), :class => "fn org" %>
+		(<span class="category"><%= object.place_metadata.place_type_to_s %></span>)
+	</div>
 	<% if !object.description.nil? && !object.description.empty? %>
 		<div class="note">
 			<%= auto_link(simple_format(object.description), :all, { :target => "_blank" }) %>

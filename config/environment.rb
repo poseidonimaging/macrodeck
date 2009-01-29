@@ -77,6 +77,7 @@ if PLACES_TEST_SERVER
 	ActionController::Base.asset_host = PLACES_BASEURL
 
 	FB_FEED_ATTENDING = "33152039647"
+	FB_FEED_IS_PATRON = "46850634647"
 
 	puts "*** Using Test Server!"
 else

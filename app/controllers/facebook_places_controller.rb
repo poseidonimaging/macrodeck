@@ -543,10 +543,16 @@ class FacebookPlacesController < ApplicationController
 						end
 						patronage.save!
 
-						action_message = "{actor} is now a patron of {place} using <a href=\"http://apps.facebook.com/macrodeckplaces/\">Places</a>."
-						action_place = "<a href='#{fbplaces_url(:action => :view, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part, :place => @place.url_part)}'>#{@place.name}</a>"
-						action_json = "{\"place\":\"#{action_place}\"}"
-						req = fbsession.feed_publishTemplatizedAction(:actor_id => @fbuser.facebook_uid, :title_template => action_message, :title_data => action_json)
+						feed_tokens = {
+							"place"			=> @place.name,
+							"placeurl"		=> @place.url,
+							"type"			=> @place.place_metadata.place_type_to_s,
+							"placeinfo"		=> @place.description,
+							"location"		=> "#{@place.city.name}, #{@place.city.state(:abbreviation => true)}"
+						}
+						feed_tokens = feed_tokens.to_json
+						fbsession.feed_publishUserAction( :template_bundle_id => FB_FEED_IS_PATRON, :template_data => feed_tokens )
+
 					end
 					# Don't do anything if they are already a patron.
 				end
@@ -819,6 +825,7 @@ class FacebookPlacesController < ApplicationController
 		
 		# Takes a symbol corresponding to a place type and returns a human readable string
 		def place_type_to_string(type)
+			puts "!!!!!!!!!!! DEPRECIATED USE OF PLACE TYPE TO STRING"
 			types = PlaceMetadata.get_place_types
 			return types[type]
 		end

@@ -1,4 +1,6 @@
-.recommendations div.recommendation						{ border-bottom: 1px dotted #D8DFEA; margin-bottom: 3px; padding: 3px 0 6px 0; }
-.recommendations div.recommendation div.vcard .fn		{ display: block !important; font-weight: bold; } /* show title */
+.recommendations div.recommendation						{ width: 50%; float: left; }
+.recommendations div.recommendation div.vcard			{ padding: 3px; }
+.recommendations div.recommendation div.vcard div.hide	{ display: block !important; }
+.recommendations div.recommendation div.vcard .fn		{ display: inline; font-weight: bold; } /* show title */
 .recommendations div.recommendation div.vcard .adr		{ color: #999; }
 .recommendations div.recommendation div.vcard .note		{ display: none; }

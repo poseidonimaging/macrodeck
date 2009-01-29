@@ -6,3 +6,12 @@ Facebook Feed Templates
 	Short:		<actor> is attending <event> at <place>
 				<description>
 	Action URL:	View event (needs <calendaruuid> and <eventuuid>)
+
+46850634647 (test)
+	One-line:	{*actor*} is now a patron of {*place*}
+	Short:		{*actor*} is now a patron of {*place*}
+				{*place*} is a {*type*} located in {*location*}
+	Full:		{*actor*} is now a patron of {*place*}
+				<b>Information about {*place*}, a {*type*} in {*location*}:</b><br />{*placeinfo*}
+	Action "View Place":
+				{*placeurl*}
