@@ -19,11 +19,11 @@
 		</div>
 
 		<div class="clear">
-			<% begin %>
+			<%# begin %>
 				<%= will_paginate @search, :params => { :query => params[:query], :type => params[:type] } %>
-			<% rescue %>
+			<%# rescue %>
 				<!-- will_paginate broke down -->
-			<% end %>
+			<%# end %>
 		</div>
 	<% else %>
 		<% if !params[:query].empty? %>
