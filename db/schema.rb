@@ -1,5 +1,5 @@
 # This file is auto-generated from the current state of the database. Instead of editing this file, 
-# please use the migrations feature of ActiveRecord to incrementally modify your database, and
+# please use the migrations feature of Active Record to incrementally modify your database, and
 # then regenerate this schema definition.
 #
 # Note that this schema.rb definition is the authoritative source for your database schema. If you need
@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 68) do
+ActiveRecord::Schema.define(:version => 69) do
 
   create_table "categories", :force => true do |t|
     t.string  "uuid"
@@ -100,8 +100,8 @@ ActiveRecord::Schema.define(:version => 68) do
     t.string   "url_part"
   end
 
-  add_index "data_objects", ["uuid"], :name => "index_data_objects_on_uuid", :unique => true
   add_index "data_objects", ["url_part"], :name => "index_data_objects_on_url_part"
+  add_index "data_objects", ["uuid"], :name => "index_data_objects_on_uuid", :unique => true
 
   create_table "data_sources", :force => true do |t|
     t.string  "uuid"
@@ -169,7 +169,7 @@ ActiveRecord::Schema.define(:version => 68) do
 
   create_table "sessions", :force => true do |t|
     t.string   "session_id"
-    t.text     "data"
+    t.text     "data",       :limit => 2147483647
     t.datetime "updated_at"
   end
 
@@ -247,10 +247,10 @@ ActiveRecord::Schema.define(:version => 68) do
     t.datetime "updated_at"
   end
 
-  add_index "users", ["uuid"], :name => "index_users_on_uuid", :unique => true
-  add_index "users", ["username"], :name => "index_users_on_username", :unique => true
-  add_index "users", ["facebook_uid"], :name => "index_users_on_facebook_uid"
   add_index "users", ["facebook_session_key"], :name => "index_users_on_facebook_session_key"
+  add_index "users", ["facebook_uid"], :name => "index_users_on_facebook_uid"
+  add_index "users", ["username"], :name => "index_users_on_username", :unique => true
+  add_index "users", ["uuid"], :name => "index_users_on_uuid", :unique => true
 
   create_table "widget_instances", :force => true do |t|
     t.string  "instanceid"

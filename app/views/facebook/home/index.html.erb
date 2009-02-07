@@ -1,5 +1,21 @@
 <h1 class="area-title">Home</h1>
 <br />
-<%#= render :partial => "facebook/common/layout_2col_contentleft", :locals => { :sidebar => "facebook/home/sidebar", :content => "facebook/home/content" } %>
-<%= render :partial => "facebook/home/content" %>
-
+<% if @home_city.nil? || params[:new_user_test] %>
+	<h2>Welcome to Places!</h2>
+	<p>
+		Places is a social utility that connects you with the places experienced by the people around you. It works
+		best when you have friends that use this application, however it will still be of use to you if you don't!
+		In order to use this application, you must select a home city. This should be the city you live in or otherwise
+		spend a bulk of your time in. Once you select a home city, you can set a secondary city. And you are free to
+		change your mind anytime you want!
+	</p>
+	<p>
+		<fb:name uid="loggedinuser" linked="false" firstnameonly="true" useyou="false" />, start selecting your home city
+		by selecting your state:
+	</p>
+	<p><em>Flash file goes here</em></p>
+	<p>(Live outside of the US? We're working on it!)</p>
+<% else %>
+	<%#= render :partial => "facebook/common/layout_2col_contentleft", :locals => { :sidebar => "facebook/home/sidebar", :content => "facebook/home/content" } %>
+	<%= render :partial => "facebook/home/content" %>
+<% end %>
