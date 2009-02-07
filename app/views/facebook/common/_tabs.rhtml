@@ -56,6 +56,6 @@ end
 		<% end %>
 	</fb:tabs>
 
-	<% if PLACES_TEST_SERVER %>
+	<% if PLACES_TEST_SERVER && !params[:hide_test_note] %>
 		<div class="information-compact" style="margin: 5px;"><p><strong>This is the test server.</strong> Any changes you make here, including adding cities and places, may not get moved to the real server.</div>
 	<% end %>

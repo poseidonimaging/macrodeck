@@ -13,3 +13,7 @@
 		<%= link_to place.title, fbplaces_url(:action => :view, :country => country.url_part, :state => state.url_part, :city => city.url_part, :place => place.url_part) %> /
 	<% end %>
 </div>
+<div style="position: relative; top: -10px; text-align: right; width: 100%;">
+	<%= link_to "Add a Place", fbplaces_url(:action => :create, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part),
+		:class => "button" %>
+</div>

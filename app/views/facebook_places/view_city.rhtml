@@ -2,8 +2,7 @@
 
 <h1 class="area-title"><%= h(@city.title) %></h1>
 <div class="area-subtitle">
-	<%= link_to "View All", fbplaces_url(:action => :browse, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part) %> | 
-	<%= link_to "Add a Place", fbplaces_url(:action => :create, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part) %>
+	<%= link_to "View All", fbplaces_url(:action => :browse, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part) %> 
 </div>
 
 <div class="profile-layout">

@@ -16,6 +16,16 @@
 	<p><em>Flash file goes here</em></p>
 	<p>(Live outside of the US? We're working on it!)</p>
 <% else %>
+	<% if @secondary_city.nil? || params[:no_sec_city_test] %>
+		<div class="information">
+			<h2><%= image_tag "icons/small/standard-black/info.gif", :class => "inline" %> Secondary City Not Selected</h2>
+			<p>Because of your school, regional, or work affiliations, we have
+			automatically set your home city to <%= @home_city.to_s %>. However, you have not selected a secondary city. In order to offer you the best
+			recommendations, we need you to select a secondary city. This would be a nearby city or another city you frequent.
+			<a href="browse/us">Get started!</a></p>
+		</div>
+		<br />
+	<% end %>
 	<%#= render :partial => "facebook/common/layout_2col_contentleft", :locals => { :sidebar => "facebook/home/sidebar", :content => "facebook/home/content" } %>
 	<%= render :partial => "facebook/home/content" %>
 <% end %>
