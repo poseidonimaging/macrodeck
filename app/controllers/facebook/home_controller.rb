@@ -17,7 +17,8 @@ class Facebook::HomeController < ApplicationController
 
 		# Build the recommendations box.
 		@recommendations = []
-		@recommendations += recommendations_places unless recommendations_places.nil? || recommendations_places.length == 0
+		@recommendations += recommendations_places unless recommendations_places.nil? || recommendations_places.length == 0 || params[:ignore_recs]
+		@recommendations += recommendations_popular_places unless recommendations_popular_places.nil? || recommendations_popular_places.length == 0
 		@recommendations = @recommendations.sort.reverse.uniq[0..14]
 	end
 
@@ -70,6 +71,55 @@ class Facebook::HomeController < ApplicationController
 						end
 					end
 				end
+			end
+
+			return recommended_items
+		end
+
+		# Returns popular places in primary or secondary cities.
+		def recommendations_popular_places
+			recommended_items = Array.new
+
+			if @home_city && @secondary_city
+				# multiple subqueries. here's what happens:
+				# 1) get the UUID of all places in the city/cities
+				# 2) get the most patron'ed places in that list by grouping and sorting by COUNT
+				# 3) get a valid Place out of the list of most patroned places.
+				popular_places = Place.find_by_sql(["SELECT * FROM data_objects
+													 WHERE uuid IN (
+														SELECT target_uuid FROM relationships
+														WHERE target_uuid IN (
+															SELECT uuid FROM data_objects WHERE parent_id IN (?, ?) AND type = 'Place'
+														)
+														AND relationship = 'patron'
+														GROUP BY target_uuid
+														ORDER BY COUNT(id) DESC
+													 ) LIMIT 0,500", @home_city.id, @secondary_city.id])
+			elsif @home_city && !@secondary_city
+				popular_places = Place.find_by_sql(["SELECT * FROM data_objects
+													 WHERE uuid IN (
+														SELECT target_uuid FROM relationships
+														WHERE target_uuid IN (
+															SELECT uuid FROM data_objects WHERE parent_id = ? AND type = 'Place'
+														)
+														AND relationship = 'patron'
+														GROUP BY target_uuid
+														ORDER BY COUNT(id) DESC
+													 ) LIMIT 0,500", @home_city.id])				
+			else
+				return nil
+			end
+
+			# Now iterate through this list and create a recommendation for each
+			begin
+				popular_places.each do |p|
+					rec = Recommendation.new(p)
+					rec.popularity = p.patrons.length
+					recommended_items << rec
+					#TODO: weight these slightly by being popular... probably only care about top 5 though.
+				end
+			rescue
+				nil
 			end
 
 			return recommended_items

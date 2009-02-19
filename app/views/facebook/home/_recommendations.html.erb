@@ -7,8 +7,11 @@
 					<%
 						users = []
 						r.users_recommending.each do |u|
-							users << "<fb:name uid='#{u.facebook_uid}' linked='true' ifcantsee='A user' />"
+							users << "<fb:name uid='#{u.facebook_uid}' linked='true' ifcantsee='a user' />"
 						end
+
+						# add "the community" if popularity was taken into account
+						users << "the community" if r.popularity > 0
 					%>
 					<div class="via">via <%= users[0..4].to_sentence %></div>
 				</div>
