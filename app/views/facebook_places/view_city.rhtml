@@ -59,6 +59,9 @@
 			:wall_url => fbplaces_url(:action => :wall, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part)
 			}
 			%>
+			<% if [654157670, 7921160].include? @fbuser.facebook_uid.to_i %>
+				<p style="text-align: right; color: #ccc; font-family: monospace;">UUID: <%= @city.uuid %></p>
+			<% end %>
 		</div> <!-- /profile-content-padding -->
 	</div> <!-- /profile-content -->
 </div> <!-- /profile -->
