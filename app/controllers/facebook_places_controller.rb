@@ -593,7 +593,6 @@ class FacebookPlacesController < ApplicationController
 		get_networks
 		get_home_city
 		get_secondary_city
-		fb_sig_cleanup
 
 		if params[:country] != nil && params[:country] == "us" && params[:state] != nil && params[:city] != nil
 			get_us_states
@@ -682,8 +681,7 @@ class FacebookPlacesController < ApplicationController
 		get_networks
 		get_home_city
 		get_secondary_city
-		fb_sig_cleanup
-		
+
 		if params[:country] != nil && params[:country] == "us" && params[:state] != nil && params[:city] != nil
 			get_us_states
 			get_city_info(params[:city], params[:state])
@@ -759,17 +757,6 @@ class FacebookPlacesController < ApplicationController
 				end
 			end
 		end
-	end
-
-	# RFacebook Debug Panel
-	def debug
-		get_networks
-		get_home_city
-		get_secondary_city
-		fb_sig_cleanup
-		flickr = Flickr.new(FLICKR_API_KEY)
-		photo_req = flickr.photos_search(:text => "(santa rita austin) OR (santarita austin)", :sort => "relevance")
-		p photo_req
 	end
 
 	private
