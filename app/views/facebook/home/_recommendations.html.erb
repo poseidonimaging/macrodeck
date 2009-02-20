@@ -10,8 +10,9 @@
 							users << "<fb:name uid='#{u.facebook_uid}' linked='true' ifcantsee='a user' />"
 						end
 
-						# add "the community" if popularity was taken into account
-						users << "the community" if r.popularity > 0
+						# add "the community" if popularity was taken into account (though more than the number of users
+						# recommending, because they're included in the community)
+						users << "the community" if r.popularity > r.users_recommending.length
 					%>
 					<div class="via">via <%= users[0..4].to_sentence %></div>
 				</div>
