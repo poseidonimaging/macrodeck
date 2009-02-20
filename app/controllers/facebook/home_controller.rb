@@ -19,10 +19,39 @@ class Facebook::HomeController < ApplicationController
 		@recommendations = []
 		@recommendations += recommendations_places unless recommendations_places.nil? || recommendations_places.length == 0 || params[:ignore_recs]
 		@recommendations += recommendations_popular_places unless recommendations_popular_places.nil? || recommendations_popular_places.length == 0
-		@recommendations = @recommendations.sort.reverse.uniq[0..14]
+		@recommendations = merge_recommendations(@recommendations)
+		@recommendations = @recommendations.sort.reverse[0..14]
 	end
 
+
+
 	private
+		# Takes a recommendations array and merges items with the same place.
+		def merge_recommendations(rec_arr)
+			rec_h = {}
+			new_rec_arr = []
+
+			rec_arr.each do |r|
+				# If the rec_h hash doesn't have this item in the list, add it,
+				# otherwise, do a merge
+				if rec_h[r.recommended_item].nil?
+					rec_h[r.recommended_item] = r
+				else
+					# | = set union, joins the array while removing duplicates. Users don't change that often so this works.
+					rec_h[r.recommended_item].users_recommending = rec_h[r.recommended_item].users_recommending | r.users_recommending
+					rec_h[r.recommended_item].popularity += r.popularity
+				end
+			end
+			
+			# Now go through all of the values and return our new array.
+			rec_h.each_value do |val|
+				new_rec_arr << val
+			end
+
+			return new_rec_arr
+		end
+		
+		# XXX: This needs to move to PlaceMetadata and stay there...
 		def place_type_to_string(type)
 			types = PlaceMetadata.get_place_types
 			return types[type]
