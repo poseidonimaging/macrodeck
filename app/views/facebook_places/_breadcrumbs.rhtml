@@ -1,4 +1,4 @@
-<div class="breadcrumbs" style="width: 70%; z-index: 0;">
+<div class="breadcrumbs" style="width: 70%;">
 	<%= link_to "Browse", fbplaces_url(:action => :browse) %> /
 	<% if country != nil %>
 		<%= link_to country.title, fbplaces_url(:action => :browse, :country => country.url_part) %> / 
@@ -14,7 +14,7 @@
 	<% end %>
 </div>
 <% if !@city.nil? %>
-	<div style="position: relative; top: -10px; text-align: right; width: 100%; z-index: -10">
+	<div style="position: relative; top: -10px; text-align: right; width: 30%; margin-left: 70%;">
 		<%= link_to "Add a Place", fbplaces_url(:action => :create, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part),
 			:class => "button" %>
 	</div>
