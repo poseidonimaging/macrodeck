@@ -1,4 +1,4 @@
-<div class="breadcrumbs" style="z-index: 0;">
+<div class="breadcrumbs" style="width: 70%; z-index: 0;">
 	<%= link_to "Browse", fbplaces_url(:action => :browse) %> /
 	<% if country != nil %>
 		<%= link_to country.title, fbplaces_url(:action => :browse, :country => country.url_part) %> / 
