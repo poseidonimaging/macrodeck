@@ -1,8 +1,9 @@
+<% hotness = 5.0 %>
 <% if !@recommendations.nil? && @recommendations.length > 0 %>
 	<div class="recommendations">
 		<% @recommendations.each do |r| %>
 			<% if r.recommended_item.path_of_partial != nil %>
-				<div class="recommendation">
+				<div class="recommendation hotness-<%= hotness.ceil %>">
 					<%= render :partial => r.recommended_item.path_of_partial, :locals => { :object => r.recommended_item } %>
 					<%
 						users = []
@@ -13,6 +14,9 @@
 						# add "the community" if popularity was taken into account (though more than the number of users
 						# recommending, because they're included in the community)
 						users << "the community" if r.popularity > r.users_recommending.length
+
+						# decrease hotness value until it's 1
+						hotness = hotness - 0.5 unless hotness == 1.0
 					%>
 					<div class="via">via <%= users[0..4].to_sentence %></div>
 				</div>

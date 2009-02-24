@@ -70,3 +70,10 @@ a.button:hover	{ border: 1px solid #3b5998; background-color: #6d84b4; color: #f
 
 /* make a label that is standard text and not formatted specially */
 label.standard { font-weight: normal; color: #000; }
+
+/* hotness */
+.hotness-5	{ background-color: #FEECAE; }
+.hotness-4	{ background-color: #FFF4C2; }
+.hotness-3	{ background-color: #FFF7DB; }
+.hotness-2	{ background-color: #FFFCF6; }
+.hotness-1	{ background-color: #FFFFFF; }
