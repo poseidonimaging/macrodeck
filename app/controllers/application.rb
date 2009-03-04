@@ -105,13 +105,13 @@ class ApplicationController < ActionController::Base
 					end
 				end
 
-				# Only scan every 25 friends for insertions (doing it above would delete users inavertently
+				# Only scan every 10 friends for insertions (doing it above would delete users inavertently
 				session[:fb_friends_start] = 0 if session[:fb_friends_start].nil?
 				total_friends = friend_uids.length
-				friend_uids = friend_uids[session[:fb_friends_start] .. session[:fb_friends_start] + 24]
+				friend_uids = friend_uids[session[:fb_friends_start] .. session[:fb_friends_start] + 9]
 				
 				# Increment the start value
-				session[:fb_friends_start] = session[:fb_friends_start] + 25
+				session[:fb_friends_start] = session[:fb_friends_start] + 10
 				if session[:fb_friends_start] > total_friends
 					session[:fb_friends_start] = 0
 				end
