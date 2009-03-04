@@ -46,58 +46,6 @@ module ApplicationHelper
 		return html
 	end
 
-	# A URL helper that will hopefully override the default fbplaces_url and let you
-	# link to crap easier.
-	#
-	# options_hash possible values:
-	#   :action => (any action you wish... used in ../action/us/ok/tulsa/
-	#   :country => (two-letter country code)
-	#   :state => (two-letter state)
-	#   :city => City object
-	#   :place => Place object
-	def fbplaces_url(options = {})
-		url = "#{PLACES_FBURL}/"
-		if options[:action] != nil && options[:action] != ""
-			url << "#{url_sanitize(options[:action].to_s)}/"
-		end
-		if options[:country] != nil && options[:country] != ""
-			url << "#{url_sanitize(options[:country])}/"
-		end
-		if options[:state] != nil && options[:state] != ""
-			url << "#{url_sanitize(options[:state])}/"
-		end
-		if options[:city] != nil && options[:city] != ""
-			url << "#{url_sanitize(options[:city])}/"
-		end
-		if options[:place] != nil && options[:place] != ""
-			url << "#{url_sanitize(options[:place])}/"
-		end
-		if options[:place_action] != nil && options[:place_action] != ""
-			url << "#{url_sanitize(options[:place_action].to_s)}/"
-		end
-		return url
-	end
-
-	# A URL helper that links to events
-	def fbevents_url(options = {})
-		url = "#{PLACES_FBURL}/calendar/"
-		if options[:calendar] != nil && options[:calendar] != ""
-			url << "#{url_sanitize(options[:calendar].to_s)}/"
-		end
-		if options[:action] != nil && options[:action] != ""
-			url << "#{url_sanitize(options[:action].to_s)}/"
-		end
-		if options[:event] != nil && options[:event] != ""
-			url << "#{url_sanitize(options[:event].to_s)}/"
-		end
-		return url
-	end
-
-	# This method takes a string and returns a suitable URL version.
-	def url_sanitize(str)
-		return str.chomp.strip.downcase.gsub(/[^0-9A-Za-z_\-\s]/, "").gsub(" ", "-")
-	end
-
 	# Returns HTML for an hour picker having the HTML name specified.
 	# To work around Facebook's time picker not doing timezones in the least bit
 	# correctly.

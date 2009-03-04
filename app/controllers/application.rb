@@ -2,6 +2,9 @@
 # Likewise, all the methods added will be available for all controllers.
 
 class ApplicationController < ActionController::Base
+	helper_method :fbplaces_url
+	helper_method :fbevents_url
+	helper_method :url_sanitize
 
 	def finish_facebook_login
 		redirect_to "http://places.macrodeck.com/facebook/"

@@ -3,8 +3,10 @@
 <% if @home_city.nil? || params[:new_user_test] %>
 	<h2>Welcome to Places!</h2>
 	<p>
-		Places is a social utility that connects you with the places experienced by the people around you. It works
-		best when you have friends that use this application, however it will still be of use to you if you don't!
+		Places connects you with great places in your city. It works best when you have friends that use this application,
+		however it will still be of use to you if you don't!
+	</p>
+	<p>
 		In order to use this application, you must select a home city. This should be the city you live in or otherwise
 		spend a bulk of your time in. Once you select a home city, you can set a secondary city. And you are free to
 		change your mind anytime you want!
@@ -13,7 +15,7 @@
 		<fb:name uid="loggedinuser" linked="false" firstnameonly="true" useyou="false" />, start selecting your home city
 		by selecting your state:
 	</p>
-	<p><em>Flash file goes here</em></p>
+	<p><em>An interactive map would go here</em> .. until then <%= link_to "click here to see a list of states", fbplaces_url(:action => :browse, :country => "us") %></p>
 	<p>(Live outside of the US? We're working on it!)</p>
 <% else %>
 	<% if @secondary_city.nil? || params[:no_sec_city_test] %>
