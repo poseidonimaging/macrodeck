@@ -1,24 +1,28 @@
 <div class="rating">
 	<div class="rating-stars">
-		<%
-			case @place.rating
+		<%=
+			out_stars = ""
+			case @place.rating.to_i
 			when 0..17:
-				5.times { image_tag "icons/small/silk/bullet_yellow.png", :alt => "o" }
+				5.times { out_stars += image_tag "icons/small/silk/bullet_yellow.png", :alt => "o", :class => "inline" }
 			when 18..35:
-				1.times { image_tag "icons/small/silk/star.png", :alt => "*" }
-				4.times { image_tag "icons/small/silk/bullet_yellow.png", :alt => "o" }
+				1.times { out_stars += image_tag "icons/small/silk/star.png", :alt => "*", :class => "inline" }
+				4.times { out_stars += image_tag "icons/small/silk/bullet_yellow.png", :alt => "o", :class => "inline" }
 			when 36..53:
-				2.times { image_tag "icons/small/silk/star.png", :alt => "*" }
-				3.times { image_tag "icons/small/silk/bullet_yellow.png", :alt => "o" }
+				2.times { out_stars += image_tag "icons/small/silk/star.png", :alt => "*", :class => "inline" }
+				3.times { out_stars += image_tag "icons/small/silk/bullet_yellow.png", :alt => "o", :class => "inline" }
 			when 54..71:
-				3.times { image_tag "icons/small/silk/star.png", :alt => "*" }
-				2.times { image_tag "icons/small/silk/bullet_yellow.png", :alt => "o" }
+				3.times { out_stars += image_tag "icons/small/silk/star.png", :alt => "*", :class => "inline" }
+				2.times { out_stars += image_tag "icons/small/silk/bullet_yellow.png", :alt => "o", :class => "inline" }
 			when 72..89:
-				4.times { image_tag "icons/small/silk/star.png", :alt => "*" }
-				1.times { image_tag "icons/small/silk/bullet_yellow.png", :alt => "o" }
+				4.times { out_stars += image_tag "icons/small/silk/star.png", :alt => "*", :class => "inline" }
+				1.times { out_stars += image_tag "icons/small/silk/bullet_yellow.png", :alt => "o", :class => "inline" }
 			when 89..100:
-				5.times { image_tag "icons/small/silk/star.png", :alt => "*" }
+				5.times { out_stars += image_tag "icons/small/silk/star.png", :alt => "*", :class => "inline" }
+			else
+				puts "place rating = #{@place.rating.to_i}"
 			end
+			out_stars
 		%>
 	</div>
 	<div class="rating-controls">
@@ -30,8 +34,8 @@
 		</dl>
 		<p>What do you think?</p>
 		<p>
-			<%= link_to image_tag("icons/small/silk/thumb_up.png", :alt => "Like") + " Like",			@place.url(:facebook => true, :action => :like), :class => "button" %>
-			<%= link_to image_tag("icons/small/silk/thumb_down.png", :alt => "Dislike") + " Dislike",	@place.url(:facebook => true, :action => :dislike), :class => "button" %>	
+			<%= link_to image_tag("icons/small/thumb_up.png", :alt => "Like", :class => "inline") + " Like",			@place.url(:facebook => true, :action => :like), :class => "button" %>
+			<%= link_to image_tag("icons/small/thumb_down.png", :alt => "Dislike", :class => "inline") + " Dislike",	@place.url(:facebook => true, :action => :dislike), :class => "button" %>	
 		</p>
 	</div>
 </div>
