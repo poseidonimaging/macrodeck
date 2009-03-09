@@ -15,3 +15,12 @@ Facebook Feed Templates
 				<b>Information about {*place*}, a {*type*} in {*location*}:</b><br />{*placeinfo*}
 	Action "View Place":
 				{*placeurl*}
+
+55536119647 (test)
+	One-line:	{*actor*} just gave <a href="{*placeurl*}">{*place*}</a> a {*thumb*}
+	Short:		{*actor*} just gave <a href="{*placeurl*}">{*place*}</a> a {*thumb*}
+				{*place*} is a {*type*} located in {*location*}
+	Full:		{*actor*} just gave <a href="{*placeurl*}">{*place*}</a> a {*thumb*}
+				<b>Information about {*place*}, a {*type*} in {*location*}:</b><br />{*placeinfo*}
+	Action "View Place":
+				{*placeurl*}

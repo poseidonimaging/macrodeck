@@ -30,6 +30,9 @@
 				</p>
 			<% end %>
 			<br />
+			<%= render :partial => "facebook/common/layout_module",
+				:locals => { :title => "Rating", :caption => nil, :controls => nil, :content => "facebook/places/rating" } %>
+			<br />
 			<%
 				if !@place.calendar.upcoming_events.nil?
 					upcoming_events_count = @place.calendar.upcoming_events.length
