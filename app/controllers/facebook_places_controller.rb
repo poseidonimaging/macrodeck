@@ -1,7 +1,11 @@
-# This controller handles the Facebook app.
+# This controller handles the Places part of the Facebook application
+
+require "places/ratings"
+
 class FacebookPlacesController < ApplicationController
 	before_filter :require_facebook_login, :initialize_facebook_user
 	layout "facebook_places"
+	include MacroDeck::Places::Ratings
 
 	# view takes parameters like this:
 	# view/:country/:state/:city/:place
