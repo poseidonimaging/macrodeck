@@ -6,6 +6,7 @@
 				:view_url => fbplaces_url(:action => :view_photo, :country => @country.url_part, :state => @state.url_part, :city => @city.url_part, :place => @place.url_part)
 			}
 		%>
+		
 		<ul class="profile-links">
 			<li>
 				<% if @place_is_patron %>
@@ -24,6 +25,10 @@
 				#<li><a href="#">Find similar places</a></li>
 			%>
 		</ul>
+		
+		<%= render :partial => "facebook/common/layout_module",
+			:locals => { :title => "Rating", :caption => nil, :controls => nil, :content => "facebook/places/rating" } %>
+		<br />
 		<%= render :partial => "facebook_common/profile_ad" %>
 	</div>
 </div>

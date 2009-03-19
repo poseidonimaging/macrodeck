@@ -1,25 +1,27 @@
 <div class="module">
 	<h2><%= title %></h2>
-	<div class="module-top">
-		<div class="caption">
-			<p>
-				<% begin %>
-					<%= caption %>
-				<% rescue %>
-					<!-- caption not specified -->
-				<% end %>
-			</p>
+	<% if !local_assigns[:caption].nil? || !local_assigns[:controls].nil? %>
+		<div class="module-top">
+			<div class="caption">
+				<p>
+					<% begin %>
+						<%= caption %>
+					<% rescue %>
+						<!-- caption not specified -->
+					<% end %>
+				</p>
+			</div>
+			<div class="controls">
+				<p>
+					<% begin %>
+						<%= controls %>
+					<% rescue %>
+						<!-- controls not specified -->
+					<% end %>
+				</p>
+			</div>
 		</div>
-		<div class="controls">
-			<p>
-				<% begin %>
-					<%= controls %>
-				<% rescue %>
-					<!-- controls not specified -->
-				<% end %>
-			</p>
-		</div>
-	</div>
+	<% end %>
 	<div class="module-content">
 		<%= render :partial => content %>
 	</div>

@@ -9,10 +9,6 @@
 		<div class="profile-content-padding">
 			<%= render :partial => "hcard", :locals => { :hcard => @place } %>
 
-			<%= render :partial => "facebook/common/layout_module",
-				:locals => { :title => "Rating", :caption => nil, :controls => nil, :content => "facebook/places/rating" } %>
-			<br />
-
 			<h2 class="section-title">Features and Services</h2>
 			<% if @place_features.nil? %>
 				<p>According to our records, this place doesn't have any features or offer any services. If you know this place does, edit this place and check which
