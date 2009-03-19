@@ -26,16 +26,21 @@
 		%>
 	</div>
 	<div class="rating-controls">
-		<dl>
-			<dt>Likes</dt>
-			<dd><%= @place.ratings[:likes].length %></dd>
-			<dt>Dislikes</dt>
-			<dd><%= @place.ratings[:dislikes].length %></dd>
-		</dl>
-		<p>What do you think?</p>
-		<p>
-			<%= link_to image_tag("icons/small/thumb_up.png", :alt => "Like", :class => "inline") + " Like",			@place.url(:facebook => true, :action => :like), :class => "button" %>
-			<%= link_to image_tag("icons/small/thumb_down.png", :alt => "Dislike", :class => "inline") + " Dislike",	@place.url(:facebook => true, :action => :dislike), :class => "button" %>	
-		</p>
+		<% my_rating = Relationship.find(:first, :conditions => ["source_uuid = ? AND target_uuid = ? AND relationship IN ('like','dislike')", @fbuser.uuid, @place.uuid]) %>
+		<% if my_rating.nil? %>
+			<div class="thumbs">
+				<%= link_to image_tag("icons/large/thumb-up.png", :alt => "Like", :class => "inline"),		@place.url(:facebook => true, :action => :like) %>
+				<%= link_to image_tag("icons/large/thumb-down.png", :alt => "Dislike", :class => "inline"),	@place.url(:facebook => true, :action => :dislike) %>	
+			</div>
+		<% else %>
+			<div class="result-<%= my_rating.relationship %>">
+				<p>You <strong><%= my_rating.relationship %></strong> this place.</p>
+				<% if my_rating.relationship == "like" %>
+					<%= image_tag "icons/large/thumb-up.png", :alt => "Like" %>
+				<% else %>
+					<%= image_tag "icons/large/thumb-down.png", :alt => "Dislike" %>
+				<% end %>
+			</div>
+		<% end %>
 	</div>
 </div>
