@@ -1,5 +1,6 @@
 <div class="rating">
 	<div class="rating-stars">
+		<p>Overall Rating</p>
 		<%=
 			out_stars = ""
 			case @place.rating.to_i
@@ -27,11 +28,27 @@
 	</div>
 	<div class="rating-controls">
 		<% my_rating = Relationship.find(:first, :conditions => ["source_uuid = ? AND target_uuid = ? AND relationship IN ('like','dislike')", @fbuser.uuid, @place.uuid]) %>
+		<!-- if they haven't rated -->
 		<% if my_rating.nil? %>
 			<div class="thumbs">
+				<p>What is your overall rating of this place?</p>
 				<%= link_to image_tag("icons/large/thumb-up.png", :alt => "Like", :class => "inline"),		@place.url(:facebook => true, :action => :like) %>
-				<%= link_to image_tag("icons/large/thumb-down.png", :alt => "Dislike", :class => "inline"),	@place.url(:facebook => true, :action => :dislike) %>	
+				<%= link_to image_tag("icons/large/thumb-down.png", :alt => "Dislike", :class => "inline"),	@place.url(:facebook => true, :action => :dislike) %>
+				<p>You can change your mind every 60 days.</p>
 			</div>
+		<!-- they have rated, but 60 days after the updated time is earlier than now -->
+		<% elsif 60.days.since(my_rating.updated_at) <= Time.now %>
+			<div class="result-<%= my_rating.relationship %>">
+				<p>You <strong><%= my_rating.relationship %></strong> this place.</p>
+				<% if my_rating.relationship == "like" %>
+					<%= image_tag "icons/large/thumb-up.png", :alt => "Like" %>
+					<p>Change your mind? You can <%= link_to "dislike this place", @place.url(:facebook => true, :action => :dislike) %> now.</p>
+				<% else %>
+					<%= image_tag "icons/large/thumb-down.png", :alt => "Dislike" %>
+					<p>Change your mind? You can <%= link_to "like this place", @place.url(:facebook => true, :action => :like) %> now.</p>
+				<% end %>
+			</div>
+		<!-- cannot yet change their mind -->
 		<% else %>
 			<div class="result-<%= my_rating.relationship %>">
 				<p>You <strong><%= my_rating.relationship %></strong> this place.</p>
@@ -40,6 +57,61 @@
 				<% else %>
 					<%= image_tag "icons/large/thumb-down.png", :alt => "Dislike" %>
 				<% end %>
+				<p>Change your mind? You can change your vote in <%= distance_of_time_in_words(Time.now, 60.days.since(my_rating.updated_at)) %>.</p>
+			</div>
+		<% end %>
+	</div>
+</div>
+
+<div class="experience">
+	<div class="rating-stars">
+		<p>Recent Experience</p>
+		<%=
+			out_stars = ""
+			case @place.experience.to_i
+			when 0..17:
+				5.times { out_stars += image_tag "icons/small/silk/bullet_yellow.png", :alt => "o", :class => "inline" }
+			when 18..35:
+				1.times { out_stars += image_tag "icons/small/silk/star.png", :alt => "*", :class => "inline" }
+				4.times { out_stars += image_tag "icons/small/silk/bullet_yellow.png", :alt => "o", :class => "inline" }
+			when 36..53:
+				2.times { out_stars += image_tag "icons/small/silk/star.png", :alt => "*", :class => "inline" }
+				3.times { out_stars += image_tag "icons/small/silk/bullet_yellow.png", :alt => "o", :class => "inline" }
+			when 54..71:
+				3.times { out_stars += image_tag "icons/small/silk/star.png", :alt => "*", :class => "inline" }
+				2.times { out_stars += image_tag "icons/small/silk/bullet_yellow.png", :alt => "o", :class => "inline" }
+			when 72..89:
+				4.times { out_stars += image_tag "icons/small/silk/star.png", :alt => "*", :class => "inline" }
+				1.times { out_stars += image_tag "icons/small/silk/bullet_yellow.png", :alt => "o", :class => "inline" }
+			when 89..100:
+				5.times { out_stars += image_tag "icons/small/silk/star.png", :alt => "*", :class => "inline" }
+			else
+				puts "place experience = #{@place.experience.to_i}"
+			end
+			out_stars
+		%>
+	</div>
+	<div class="rating-controls">
+		<% my_experience = Relationship.find(:first, :conditions => ["source_uuid = ? AND target_uuid = ? AND relationship IN ('good_experience','bad_experience')", @fbuser.uuid, @place.uuid]) %>
+		<!-- if they haven't given us their experience -->
+		<% if my_experience.nil? || 7.days.since(my_experience.updated_at) <= Time.now %>
+			<div class="thumbs">
+				<p>How was your most recent experience at this place?</p>
+				<%= link_to image_tag("icons/large/thumb-up.png", :alt => "Good", :class => "inline"),	@place.url(:facebook => true, :action => :good_experience) %>
+				<%= link_to image_tag("icons/large/thumb-down.png", :alt => "Bad", :class => "inline"),	@place.url(:facebook => true, :action => :bad_experience) %>
+				<p>You can vote again after a week.</p>
+			</div>
+		<!-- cannot yet change their mind -->
+		<% else %>
+			<div class="result-<%= my_experience.relationship.split("_")[0] %>">
+				<% if my_rating.relationship == "good_experience" %>
+					<p>You recently had a <strong>good experience</strong> at this place.</p>
+					<%= image_tag "icons/large/thumb-up.png", :alt => "Good" %>
+				<% else %>
+					<p>You recently had a <strong>bad experience</strong> at this place.</p>
+					<%= image_tag "icons/large/thumb-down.png", :alt => "Bad" %>
+				<% end %>
+				<p>Change your mind? You can change your vote in <%= distance_of_time_in_words(Time.now, 7.days.since(my_experience.updated_at)) %>.</p>
 			</div>
 		<% end %>
 	</div>

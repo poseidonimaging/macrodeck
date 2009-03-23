@@ -1,7 +1,16 @@
 /* Ratings stylesheet */
-.rating										{ width: 100%; }
-.rating .rating-stars						{ padding: 5px; text-align: center; }
-.rating .rating-controls					{ padding: 5px; text-align: center; }
-.rating .rating-controls .result-like		{ padding: 5px; border: 1px solid #91d638; background-color: #f2fce5; }
-.rating .rating-controls .result-dislike	{ padding: 5px; border: 1px solid #d85e2a; background-color: #f4e6e0; }
-.rating .rating-controls p					{ text-align: center; }
+.rating											{ width: 50%; float: left; }
+.rating p										{ text-align: center; }
+.rating .rating-stars							{ padding: 5px; text-align: center; }
+.rating .rating-stars p							{ font-weight: bold; }
+.rating .rating-controls						{ padding: 5px; text-align: center; }
+.rating .rating-controls .result-like			{ padding: 5px; border: 1px solid #91d638; background-color: #f2fce5; }
+.rating .rating-controls .result-dislike		{ padding: 5px; border: 1px solid #d85e2a; background-color: #f4e6e0; }
+
+.experience										{ width: 50%; float: left; }
+.experience p									{ text-align: center; }
+.experience .rating-stars						{ padding: 5px; text-align: center; }
+.experience .rating-stars p						{ font-weight: bold; }
+.experience .rating-controls					{ padding: 5px; text-align: center; }
+.experience .rating-controls .result-good		{ padding: 5px; border: 1px solid #91d638; background-color: #f2fce5; }
+.experience .rating-controls .result-bad		{ padding: 5px; border: 1px solid #d85e2a; background-color: #f4e6e0; }
