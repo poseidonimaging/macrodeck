@@ -9,8 +9,14 @@ module MacroDeck
 				if params[:place]
 					@place = Place.find_by_uuid(params[:place])
 					if @place != nil
-						relationship_exists = Relationship.find(:first, :conditions => ["source_uuid = ? AND target_uuid = ? AND (relationship = 'like' OR relationship = 'dislike')",
-																@fbuser.uuid, @place.uuid])
+						relationship_exists = Relationship.find(:first, :conditions => ["source_uuid = ? AND target_uuid = ? AND relationship IN ('like','dislike')", @fbuser.uuid, @place.uuid])
+
+						# If they're able to change their mind, let them.
+						if relationship_exists && 60.days.since(my_rating.updated_at) <= Time.now
+							relationship_exists.destroy
+							relationship_exists = nil
+						end
+
 						if relationship_exists.nil?
 							new_rel = Relationship.new do |r|
 								r.source_uuid = @fbuser.uuid
@@ -39,8 +45,14 @@ module MacroDeck
 				if params[:place]
 					@place = Place.find_by_uuid(params[:place])
 					if @place != nil
-						relationship_exists = Relationship.find(:first, :conditions => ["source_uuid = ? AND target_uuid = ? AND (relationship = 'like' OR relationship = 'dislike')",
-																@fbuser.uuid, @place.uuid])
+						relationship_exists = Relationship.find(:first, :conditions => ["source_uuid = ? AND target_uuid = ? AND relationship IN ('like','dislike')", @fbuser.uuid, @place.uuid])
+						
+						# If they're able to change their mind, let them.
+						if relationship_exists && 60.days.since(my_rating.updated_at) <= Time.now
+							relationship_exists.destroy
+							relationship_exists = nil
+						end
+
 						if relationship_exists.nil?
 							new_rel = Relationship.new do |r|
 								r.source_uuid = @fbuser.uuid
