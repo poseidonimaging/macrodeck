@@ -104,14 +104,14 @@
 		<!-- cannot yet change their mind -->
 		<% else %>
 			<div class="result-<%= my_experience.relationship.split("_")[0] %>">
-				<% if my_rating.relationship == "good_experience" %>
+				<% if my_experience.relationship == "good_experience" %>
 					<p>You recently had a <strong>good experience</strong> at this place.</p>
 					<%= image_tag "icons/large/thumb-up.png", :alt => "Good" %>
 				<% else %>
 					<p>You recently had a <strong>bad experience</strong> at this place.</p>
 					<%= image_tag "icons/large/thumb-down.png", :alt => "Bad" %>
 				<% end %>
-				<p>Change your mind? You can change your vote in <%= distance_of_time_in_words(Time.now, 7.days.since(my_experience.updated_at)) %>.</p>
+				<p>You can cast a new vote in <%= distance_of_time_in_words(Time.now, 7.days.since(my_experience.updated_at)) %>.</p>
 			</div>
 		<% end %>
 	</div>
