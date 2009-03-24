@@ -77,7 +77,7 @@ PHONE_VALIDATION	= /^[01]?[- .]?(\([2-9]\d{2}\)|[2-9]\d{2})[- .]?\d{3}[- .]?\d{4
 PASSWORD_SALT   = "giomullyoxonoind" # Random character generator
 
 # Places
-PLACES_TEST_SERVER = true
+PLACES_TEST_SERVER = false
 
 if PLACES_TEST_SERVER
 	PLACES_BASEURL = "http://places.intranet.ignition-project.com" # do not use a trailing slash
@@ -103,6 +103,7 @@ else
 
 	FB_FEED_ATTENDING = "39109862610"
 	FB_FEED_IS_PATRON = "51769422610"
+	FB_FEED_RATING = "63310062610"
 end
 
 # Configure UltraSphinx

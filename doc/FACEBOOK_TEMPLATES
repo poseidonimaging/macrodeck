@@ -16,7 +16,7 @@ Facebook Feed Templates
 	Action "View Place":
 				{*placeurl*}
 
-55536119647 (test)
+63310062610 (live) and 55536119647 (test)
 	One-line:	{*actor*} just gave <a href="{*placeurl*}">{*place*}</a> a {*thumb*}
 	Short:		{*actor*} just gave <a href="{*placeurl*}">{*place*}</a> a {*thumb*}
 				{*place*} is a {*type*} located in {*location*}
