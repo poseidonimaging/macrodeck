@@ -125,6 +125,7 @@ Services.startService "comment_service"
 Services.startService "event_service"
 Services.startService "places_service"
 Services.startService "navigation_service"
+Services.startService "content_cache_service"
 
 # Start web services now
 #Services.startService "data_web_service"

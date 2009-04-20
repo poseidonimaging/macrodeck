@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 69) do
+ActiveRecord::Schema.define(:version => 20090327031002) do
 
   create_table "categories", :force => true do |t|
     t.string  "uuid"
@@ -149,6 +149,14 @@ ActiveRecord::Schema.define(:version => 69) do
     t.string  "displayname"
     t.integer "creation"
     t.text    "description"
+  end
+
+  create_table "html_parts", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "urn"
+    t.text     "content"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "quotas", :force => true do |t|
