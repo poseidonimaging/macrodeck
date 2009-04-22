@@ -169,9 +169,8 @@ class FacebookEventsController < ApplicationController
 
 				@event = Event.find_by_uuid(params[:event])
 				if @event
-					if @event.concluded?
-						@event.process_recurrence
-					end
+					# Keep processing until we get to the lastest date.
+					@event.process_recurrence while @event.concluded?
 					render
 				else
 					raise ArgumentError, "event#event - Event is missing!"
