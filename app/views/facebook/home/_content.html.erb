@@ -1,4 +1,4 @@
 <%= render :partial => "facebook/common/layout_module",
-	:locals => { :title => "The Feed", :xxx_caption => "Showing minifeed stories", :xxx_controls => link_to("See All", :action => :feed), :content => @minifeed_content } %>
+	:locals => { :title => "The Feed", :caption => @minifeed_caption, :raw_content => @minifeed_content } %>
 <%= render :partial => "facebook/common/layout_module",
-	:locals => { :title => "Recommendations", :xxx_caption => "Showing recommendations", :content => @recommendations_content } %>
+	:locals => { :title => "Recommendations", :caption => @recommendations_caption, :raw_content => @recommendations_content } %>

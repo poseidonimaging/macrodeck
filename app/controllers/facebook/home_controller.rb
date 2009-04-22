@@ -9,15 +9,21 @@ class Facebook::HomeController < ApplicationController
 	def index
 		# Build the recommendations box.
 		if HtmlPart.find(:first, :conditions => ["user_id = ? AND urn = 'macrodeck/home/minifeed.fbml'", @fbuser.id])
-			@minifeed_content = HtmlPart.find(:first, :conditions => ["user_id = ? AND urn = 'macrodeck/home/minifeed.fbml'", @fbuser.id]).content
+			minifeed = HtmlPart.find(:first, :conditions => ["user_id = ? AND urn = 'macrodeck/home/minifeed.fbml'", @fbuser.id])
+			@minifeed_content = minifeed.content
+			@minifeed_caption = render_to_string(:partial => "facebook/home/recent_activity", :locals => { :item => minifeed })
 		else
 			@minifeed_content = "<p style='text-align: center;'>There are currently no entries in your minifeed.</p>"
+			@minifeed_caption = nil
 		end
 
 		if HtmlPart.find(:first, :conditions => ["user_id = ? AND urn = 'macrodeck/home/recommendations.fbml'", @fbuser.id])
-			@recommendations_content = HtmlPart.find(:first, :conditions => ["user_id = ? AND urn = 'macrodeck/home/recommendations.fbml'", @fbuser.id]).content
+			recs = HtmlPart.find(:first, :conditions => ["user_id = ? AND urn = 'macrodeck/home/recommendations.fbml'", @fbuser.id])
+			@recommendations_content = recs.content
+			@recommendations_caption = render_to_string(:partial => "facebook/home/recent_activity", :locals => { :item => recs })
 		else
 			@recommendations_content = "<p style='text-align: center;'>There are currently no recommendations to show.</p>"
+			@recommendations_caption = nil
 		end
 	end
 

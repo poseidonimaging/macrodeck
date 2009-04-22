@@ -4,25 +4,25 @@
 		<div class="module-top">
 			<div class="caption">
 				<p>
-					<% begin %>
+					<% if local_assigns[:caption] %>
 						<%= caption %>
-					<% rescue %>
-						<!-- caption not specified -->
 					<% end %>
 				</p>
 			</div>
 			<div class="controls">
 				<p>
-					<% begin %>
+					<% if local_assigns[:controls] %>
 						<%= controls %>
-					<% rescue %>
-						<!-- controls not specified -->
 					<% end %>
 				</p>
 			</div>
 		</div>
 	<% end %>
 	<div class="module-content">
-		<%= render :partial => content %>
+		<% if local_assigns[:raw_content] %>
+			<%= raw_content %>
+		<% else %>
+			<%= render :partial => content %>
+		<% end %>
 	</div>
 </div>
