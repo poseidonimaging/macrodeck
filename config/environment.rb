@@ -52,7 +52,6 @@ Rails::Initializer.run do |config|
   # Load gems
   config.gem 'mislav-will_paginate', :version => '~> 2.2.3', :lib => 'will_paginate', :source => 'http://gems.github.com'
   config.gem 'sparklines'
-  config.gem 'sparklines_generator'
 end
 
 # Add new inflection rules using the following format 
@@ -78,7 +77,7 @@ PHONE_VALIDATION	= /^[01]?[- .]?(\([2-9]\d{2}\)|[2-9]\d{2})[- .]?\d{3}[- .]?\d{4
 PASSWORD_SALT   = "giomullyoxonoind" # Random character generator
 
 # Places
-PLACES_TEST_SERVER = false
+PLACES_TEST_SERVER = true
 
 if PLACES_TEST_SERVER
 	PLACES_BASEURL = "http://places.intranet.ignition-project.com" # do not use a trailing slash
