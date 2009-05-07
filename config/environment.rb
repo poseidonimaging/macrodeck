@@ -51,7 +51,8 @@ Rails::Initializer.run do |config|
   
   # Load gems
   config.gem 'mislav-will_paginate', :version => '~> 2.2.3', :lib => 'will_paginate', :source => 'http://gems.github.com'
-
+  config.gem 'sparklines'
+  config.gem 'sparklines_generator'
 end
 
 # Add new inflection rules using the following format 
@@ -133,3 +134,4 @@ Services.startService "content_cache_service"
 require 'flickr'
 require 'flickr_extensions'
 require 'string_extension'
+require 'sparklines'
