@@ -223,8 +223,10 @@ class ApplicationController < ActionController::Base
 					unless PlacesService.isCity?(aff_city, aff_state) 
 						puts "*** Places: Creating a new city: #{aff_city}, #{aff_state}"
 						c = PlacesService.createCity(aff_city, aff_state)
-						c.created_by_id = @fbuser.id
-						c.save!
+						if c
+							c.created_by_id = @fbuser.id
+							c.save!
+						end
 					end
 				else
 					@unsupported_networks << affiliation
