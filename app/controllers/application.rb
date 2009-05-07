@@ -177,78 +177,96 @@ class ApplicationController < ActionController::Base
 
 	# This method gets all of the networks for the current fbsession user
 	def get_networks
-		response = fbsession.users_getInfo(:uids => fbsession.session_user_id, :fields => ["affiliations"])
-		if response != nil && response.user != nil && response.user.affiliations_list != nil
-			# XXX: We work with cities currently, so we have to only support regional networks right now.
-			# College and work networks will be supported but we will have to have some sort of associated
-			# city with each network. We will depend on our users for this information, and this requires more
-			# UI and stuff.
-			@networks = []
-			@unsupported_networks = []
+		# Only do the network crap once every 5 minutes.
+		if session[:fb_network_check_time].nil? || session[:fb_network_check] <= 5.minutes.ago
+			response = fbsession.users_getInfo(:uids => fbsession.session_user_id, :fields => ["affiliations"])
+			if response != nil && response.user != nil && response.user.affiliations_list != nil
+				# XXX: We work with cities currently, so we have to only support regional networks right now.
+				# College and work networks will be supported but we will have to have some sort of associated
+				# city with each network. We will depend on our users for this information, and this requires more
+				# UI and stuff.
+				@networks = []
+				@unsupported_networks = []
 
-			response.user.affiliations.affiliation_list.each do |affiliation|
-				p affiliation
-	
-				# Hack to support network mapping
-				map_check = Relationship.find(:first, :conditions => ["source_uuid = ? AND relationship = 'maps_to'", "fb:nid:#{affiliation.nid}"])
-				if !map_check.nil?
-					puts "*** Network is changing to a regional network (city=#{map_check.target_uuid})!"
-					target_city = City.find_by_uuid(map_check.target_uuid)
-					if !target_city.nil?
-						# Get the internal Facepricot document, then modify it, then put it back into the result.
-						# Ugly, doesn't update `to_s` for some reason, but still appears to work..?
-						affiliation_name = affiliation.name
-						facedoc = affiliation.instance_variable_get("@doc")
-						facedoc.at("name").children[0] = Hpricot::Text.new("#{target_city.name}, #{target_city.state(:abbreviation => true)}")
-						facedoc.at("type").children[0] = Hpricot::Text.new("region")
-						facedoc.at("status").children[0] = Hpricot::Text.new("(#{affiliation_name})")
-						affiliation.instance_variable_set("@doc", facedoc)
-						puts "Affiliation is now #{affiliation.name}"
-					end
-				end
-
-				# method_missing("type") is used because affiliation.type does not work
-				# because type is a reserved Ruby method
-				# Also, check for "/" as in "Dallas / Fort Worth, TX". We don't support
-				# a regional network named like that yet.
-				if affiliation.method_missing("type") == "region" && !(affiliation.name =~ /\//)
-					@networks << affiliation
-
-					# Create a city for each regional network when we detect them.
-					aff_state = affiliation.name.split(",")[-1].chomp.strip
-					aff_city = affiliation.name.split(",")[0].chomp.strip
-
-					# Unless is backwards if. the following code is run always, unless
-					# the city actually exists.
-					unless PlacesService.isCity?(aff_city, aff_state) 
-						puts "*** Places: Creating a new city: #{aff_city}, #{aff_state}"
-						c = PlacesService.createCity(aff_city, aff_state)
-						if c
-							c.created_by_id = @fbuser.id
-							c.save!
+				response.user.affiliations.affiliation_list.each do |affiliation|
+					p affiliation
+		
+					# Hack to support network mapping
+					map_check = Relationship.find(:first, :conditions => ["source_uuid = ? AND relationship = 'maps_to'", "fb:nid:#{affiliation.nid}"])
+					if !map_check.nil?
+						puts "*** Network is changing to a regional network (city=#{map_check.target_uuid})!"
+						target_city = City.find_by_uuid(map_check.target_uuid)
+						if !target_city.nil?
+							# Get the internal Facepricot document, then modify it, then put it back into the result.
+							# Ugly, doesn't update `to_s` for some reason, but still appears to work..?
+							affiliation_name = affiliation.name
+							facedoc = affiliation.instance_variable_get("@doc")
+							facedoc.at("name").children[0] = Hpricot::Text.new("#{target_city.name}, #{target_city.state(:abbreviation => true)}")
+							facedoc.at("type").children[0] = Hpricot::Text.new("region")
+							facedoc.at("status").children[0] = Hpricot::Text.new("(#{affiliation_name})")
+							affiliation.instance_variable_set("@doc", facedoc)
+							puts "Affiliation is now #{affiliation.name}"
 						end
 					end
-				else
-					@unsupported_networks << affiliation
+
+					# method_missing("type") is used because affiliation.type does not work
+					# because type is a reserved Ruby method
+					# Also, check for "/" as in "Dallas / Fort Worth, TX". We don't support
+					# a regional network named like that yet.
+					if affiliation.method_missing("type") == "region" && !(affiliation.name =~ /\//)
+						@networks << affiliation
+
+						# Create a city for each regional network when we detect them.
+						aff_state = affiliation.name.split(",")[-1].chomp.strip
+						aff_city = affiliation.name.split(",")[0].chomp.strip
+
+						# Unless is backwards if. the following code is run always, unless
+						# the city actually exists.
+						unless PlacesService.isCity?(aff_city, aff_state) 
+							puts "*** Places: Creating a new city: #{aff_city}, #{aff_state}"
+							c = PlacesService.createCity(aff_city, aff_state)
+							if c
+								c.created_by_id = @fbuser.id
+								c.save!
+							end
+						end
+					else
+						@unsupported_networks << affiliation
+					end
 				end
-			end
-			if @networks.length > 0
-				@primary_network = @networks[0].name
-				@primary_network_country = "US" # FIXME: This will need more support in the future when we support non-US places
-				@primary_network_state = @networks[0].name.split(",")[-1].chomp.strip
-				@primary_network_city = @networks[0].name.split(",")[0].chomp.strip
+				if @networks.length > 0
+					@primary_network = @networks[0].name
+					@primary_network_country = "US" # FIXME: This will need more support in the future when we support non-US places
+					@primary_network_state = @networks[0].name.split(",")[-1].chomp.strip
+					@primary_network_city = @networks[0].name.split(",")[0].chomp.strip
+				else
+					@primary_network = nil
+					@primary_network_country = nil
+					@primary_network_state = nil
+					@primary_network_city = nil
+				end
 			else
 				@primary_network = nil
 				@primary_network_country = nil
 				@primary_network_state = nil
 				@primary_network_city = nil
+				@networks = []
 			end
+			session[:fb_network_check_time] = Time.now
+			session[:fb_network_check_networks] = @networks
+			session[:fb_network_check_primary_network] = @primary_network
+			session[:fb_network_check_primary_network_country] = @primary_network_country
+			session[:fb_network_check_primary_network_state] = @primary_network_state
+			session[:fb_network_check_primary_network_city] = @primary_network_city
+			session[:fb_network_check_unsupported_networks] = @unsupported_networks
 		else
-			@primary_network = nil
-			@primary_network_country = nil
-			@primary_network_state = nil
-			@primary_network_city = nil
-			@networks = []
+			# Time has not expired, pull this crap from the session
+			@networks = session[:fb_network_check_networks]
+			@primary_network = session[:fb_network_check_primary_network]
+			@primary_network_country = session[:fb_network_check_primary_network_country]
+			@primary_network_state = session[:fb_network_check_primary_network_state]
+			@primary_network_city = session[:fb_network_check_primary_network_city]
+			@unsupported_networks = session[:fb_network_check_unsupported_networks]
 		end
 	end
 
