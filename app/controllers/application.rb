@@ -178,7 +178,7 @@ class ApplicationController < ActionController::Base
 	# This method gets all of the networks for the current fbsession user
 	def get_networks
 		# Only do the network crap once every 5 minutes.
-		if session[:fb_network_check_time].nil? || session[:fb_network_check] <= 5.minutes.ago
+		if session[:fb_network_check_time].nil? || session[:fb_network_check_time] <= 5.minutes.ago
 			response = fbsession.users_getInfo(:uids => fbsession.session_user_id, :fields => ["affiliations"])
 			if response != nil && response.user != nil && response.user.affiliations_list != nil
 				# XXX: We work with cities currently, so we have to only support regional networks right now.
