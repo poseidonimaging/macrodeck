@@ -31,6 +31,9 @@ ActionController::Routing::Routes.draw do |map|
 		:conditions => { :subdomain => "places" },
 		:defaults => { :uuid => nil, :action => "search" }
 
+  # Sparklines.
+  map.sparklines 'sparklines', :controller => "sparklines"
+
   # Facebook Home
   map.connect 'facebook', :controller => "facebook/home",
 		:action => "index",

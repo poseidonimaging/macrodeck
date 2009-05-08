@@ -66,7 +66,10 @@
 <div class="experience">
 	<div class="rating-stars">
 		<p>Recent Experience</p>
-		<%= sparkline_tag @place.experience_for_sparklines, :type => "area", :height => 40, :target => 50, :target_color => "black", :step => 5, :above_color => "#f2fce5", :below_color => "#f4e6e0" %>
+		<% experiences = @place.experience_for_sparklines %>
+		<% if experiences != [] %>
+			<%= sparkline_tag experiences, :type => "area", :height => 40, :target => 50, :target_color => "black", :step => 5, :above_color => "#91d638", :below_color => "#d85e2a" %>
+		<% end %>
 	</div>
 	<div class="rating-controls">
 		<% my_experience = Relationship.find(:first, :conditions => ["source_uuid = ? AND target_uuid = ? AND relationship IN ('good_experience','bad_experience')", @fbuser.uuid, @place.uuid], :order => "updated_at DESC") %>

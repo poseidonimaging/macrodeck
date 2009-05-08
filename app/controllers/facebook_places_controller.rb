@@ -3,6 +3,8 @@
 require "places/ratings"
 
 class FacebookPlacesController < ApplicationController
+	helper :sparklines
+
 	before_filter :require_facebook_login, :initialize_facebook_user
 	layout "facebook_places"
 	include MacroDeck::Places::Ratings
