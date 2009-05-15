@@ -4,7 +4,11 @@
 		<% recommendations.each do |r| %>
 			<% if r.recommended_item.path_of_partial != nil %>
 				<div class="recommendation hotness-<%= hotness.ceil %>">
-					<%= render :partial => r.recommended_item.path_of_partial, :locals => { :object => r.recommended_item } %>
+					<% if local_assigns[:facebook] %>
+						<%= render :partial => r.recommended_item.path_of_partial, :locals => { :object => r.recommended_item, :facebook => facebook } %>
+					<% else %>
+						<%= render :partial => r.recommended_item.path_of_partial, :locals => { :object => r.recommended_item } %>
+					<% end %>
 					<%
 						users = []
 						r.users_recommending.each do |u|

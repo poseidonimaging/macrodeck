@@ -9,12 +9,12 @@ namespace :macrodeck do
 				recommendations = MacroDeck::Places::Recommendations::generate_recommendations_for(user)
 				fbml = MacroDeck::Places::Recommendations::generate_fbml_for(recommendations)
 				if fbml
-					part = HtmlPart.find(:first, :conditions => ["user_id = ? AND urn = 'macrodeck/home/recommendations.fbml'", user.id])
-					if part.nil?
-						part = HtmlPart.new(:user => user, :urn => "macrodeck/home/recommendations.fbml")
+					part = HtmlPart.find_or_initialize_by_user_id_and_urn(user.id, "macrodeck/home/recommendations.fbml")
+					if part.content == fbml
+						"--- Content does not differ"
+					else
+						part.update_attributes!(:content => fbml)
 					end
-					part.content = fbml
-					part.save!
 				else
 					puts "--- No data for user, skipping"
 				end

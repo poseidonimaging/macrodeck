@@ -1,4 +1,4 @@
-<% facebook = !@fbuser.nil? %>
+<% facebook = !@fbuser.nil? if local_assigns[:facebook].nil? %>
 <div class="vcard">
 	<div class="hide">
 		<%= link_to object.name, object.url(:facebook => facebook), :class => "fn org" %>

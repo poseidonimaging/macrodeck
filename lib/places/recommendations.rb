@@ -2,7 +2,7 @@ module MacroDeck
 	module Places
 		class Recommendations
 			def self.generate_fbml_for(recommendations)
-				fbml = ActionView::Base.new(Rails::Configuration.new.view_path).render(:partial => 'facebook/home/recommendations', :locals => {:recommendations => recommendations}) unless recommendations.length == 0
+				fbml = ActionView::Base.new(Rails::Configuration.new.view_path).render(:partial => 'facebook/home/recommendations', :locals => {:recommendations => recommendations, :facebook => true}) unless recommendations.length == 0
 			end
 
 			# Returns an array of recommendations.
