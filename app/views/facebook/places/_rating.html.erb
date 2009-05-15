@@ -1,30 +1,12 @@
 <div class="rating">
-	<div class="rating-stars">
-		<p>Overall Rating</p>
-		<%=
-			out_stars = ""
-			case @place.rating.to_i
-			when 0..17:
-				5.times { out_stars += image_tag "icons/small/silk/bullet_yellow.png", :alt => "o", :class => "inline" }
-			when 18..35:
-				1.times { out_stars += image_tag "icons/small/silk/star.png", :alt => "*", :class => "inline" }
-				4.times { out_stars += image_tag "icons/small/silk/bullet_yellow.png", :alt => "o", :class => "inline" }
-			when 36..53:
-				2.times { out_stars += image_tag "icons/small/silk/star.png", :alt => "*", :class => "inline" }
-				3.times { out_stars += image_tag "icons/small/silk/bullet_yellow.png", :alt => "o", :class => "inline" }
-			when 54..71:
-				3.times { out_stars += image_tag "icons/small/silk/star.png", :alt => "*", :class => "inline" }
-				2.times { out_stars += image_tag "icons/small/silk/bullet_yellow.png", :alt => "o", :class => "inline" }
-			when 72..89:
-				4.times { out_stars += image_tag "icons/small/silk/star.png", :alt => "*", :class => "inline" }
-				1.times { out_stars += image_tag "icons/small/silk/bullet_yellow.png", :alt => "o", :class => "inline" }
-			when 89..100:
-				5.times { out_stars += image_tag "icons/small/silk/star.png", :alt => "*", :class => "inline" }
-			else
-				puts "place rating = #{@place.rating.to_i}"
-			end
-			out_stars
-		%>
+	<div class="rating-sparkline">
+		<h3>Overall Rating</h3>
+		<% ratings = @place.rating_for_sparklines %>
+		<% if ratings.length > 1 %>
+			<%= sparkline_tag ratings, :type => "area", :height => 40, :target => 50, :target_color => "black", :step => 5, :above_color => "#91d638", :below_color => "#d85e2a" %>
+		<% else %>
+			<p>There is not enough data to show a graph.</p>
+		<% end %>
 	</div>
 	<div class="rating-controls">
 		<% my_rating = Relationship.find(:first, :conditions => ["source_uuid = ? AND target_uuid = ? AND relationship IN ('like','dislike')", @fbuser.uuid, @place.uuid]) %>
@@ -64,11 +46,13 @@
 </div>
 
 <div class="experience">
-	<div class="rating-stars">
-		<p>Recent Experience</p>
+	<div class="rating-sparkline">
+		<h3>Recent Experience</h3>
 		<% experiences = @place.experience_for_sparklines %>
-		<% if experiences != [] %>
+		<% if experiences.length > 1 %>
 			<%= sparkline_tag experiences, :type => "area", :height => 40, :target => 50, :target_color => "black", :step => 5, :above_color => "#91d638", :below_color => "#d85e2a" %>
+		<% else %>
+			<p>There is not enough data to show a graph.</p>
 		<% end %>
 	</div>
 	<div class="rating-controls">
