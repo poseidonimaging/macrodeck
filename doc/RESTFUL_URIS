@@ -1,0 +1,39 @@
+= RESTful URIs
+
+We've been using unRESTful URIs and it sort of sucks, so I'm going to redo it.
+
+== /countries resource
+
+Members:
+   supported countries by code (us, uk, mx, etc.)
+No member specified:
+   lists all countries supported (currently us)
+
+== /countries/<code>/states and /countries/<code>/provinces resource
+
+Members:
+   supported states or provinces by code
+No member specified:
+   shows a map to pick from
+
+== /countries/<code>/states/<state>/cities and province equivalent resource
+
+Members:
+   cities by url_part
+No member specified:
+   shows a map or something, currently just a list.
+
+== /countries/<code>/states/<state>/cities/<city>/places resource
+
+Members:
+   places, duh?
+No member specified:
+   shows all of the places
+
+== Shorter links
+
+The following shorter links will exist:
+/city/<uuid-or-blessed-urlpart>: same as .../cities/xxx/
+/place/<uuid>: same as .../cities/xxx/places/xxx/
+
+Of course I'm currently looking into how to implement that RESTfully.
