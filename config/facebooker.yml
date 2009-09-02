@@ -9,41 +9,24 @@
 # This should only be necessary until the final version of the new profile is released.
 
 development:
-  api_key: 
-  secret_key: 
-  canvas_page_name:
-  callback_url:
+  api_key: 23f03621e79a1979e3ea25dcac04b293
+  secret_key: d1c2c27d8375a6300a99ec408bfde121
+  canvas_page_name: /macrodeckplaces-test/
+  callback_url: /
   pretty_errors: true
   set_asset_host_to_callback_url: true
-  tunnel:
-    public_host_username: 
-    public_host: 
-    public_port: 4007
-    local_port: 3000
-    server_alive_interval: 0
 
 test:
-  api_key: 
-  secret_key: 
-  canvas_page_name: 
-  callback_url:
+  api_key: d90f27cab1014065a8c90630186b9776
+  secret_key: 8564bcd16141d4c650dd4dc55725b291
+  canvas_page_name: /macrodeckplaces/
+  callback_url: /
   set_asset_host_to_callback_url: true
-  tunnel:
-    public_host_username: 
-    public_host: 
-    public_port: 4007
-    local_port: 3000
-    server_alive_interval: 0
 
 production:
-  api_key: 
-  secret_key: 
-  canvas_page_name: 
-  callback_url: 
-  set_asset_host_to_callback_url: true   
-  tunnel:
-    public_host_username: 
-    public_host: 
-    public_port: 4007
-    local_port: 3000
-    server_alive_interval: 0
+  api_key: d90f27cab1014065a8c90630186b9776
+  secret_key: 8564bcd16141d4c650dd4dc55725b291
+  canvas_page_name: /macrodeckplaces/
+  callback_url: /
+  set_asset_host_to_callback_url: true
+
