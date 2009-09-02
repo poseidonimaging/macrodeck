@@ -37,3 +37,5 @@ The following shorter links will exist:
 /place/<uuid>: same as .../cities/xxx/places/xxx/
 
 Of course I'm currently looking into how to implement that RESTfully.
+
+(Looks like I can use :shallow => true)
