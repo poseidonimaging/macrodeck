@@ -11,7 +11,7 @@ class CountriesController < ApplicationController
 
 	# Show a country's states...
 	def show
-		@country = Category.find_by_parent_uuid_and_url_part(Category.find(:first, :conditions => ["parent_uuid IS NULL AND url_part = ?", "places"]).uuid, params[:id])
+		@country = Category.find_by_parent_uuid_and_url_part(Category.find(:first, :conditions => ["parent_uuid IS NULL AND url_part = ?", "places"]).uuid, params[:id].downcase)
 		@states = @country.children
 	end
 end
