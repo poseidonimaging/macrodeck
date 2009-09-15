@@ -1,16 +1,34 @@
-# This controller handles Places through a web browser.
-# For the Facebook app, see FacebookPlacesController.
+# This is a resource for a place.
 class PlacesController < ApplicationController
 	layout 'default'
 
+	# List places
 	def index
-		# Do nothing. This is an advertisement page for the Places Facebook app right now.
+		
 	end
 
-	def debug
-		u = User.find_by_facebook_uid(654157670)
-		p u
+	# Show a place
+	def show
+		puts "id is: '#{params[:id]}'"
+	end
 
-		render :text => "SUCCESS"
+	# Show the HTML to create a place
+	def new
+	end
+
+	# Actually create the place
+	def create
+	end
+
+	# Show the HTML to edit a place.
+	def edit
+	end
+
+	# Actually update a place
+	def update
+	end
+
+	# Delete a place.
+	def destroy
 	end
 end
