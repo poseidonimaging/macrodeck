@@ -28,7 +28,7 @@ Rails::Initializer.run do |config|
   # (create the session table with 'rake db:sessions:create')
   config.action_controller.session_store = :active_record_store
 
-  config.time_zone = 'America/Chicago'
+  config.time_zone = 'Central Time (US & Canada)'
 
   config.action_controller.session = {
     :session_key => '_macrodeck_session',
