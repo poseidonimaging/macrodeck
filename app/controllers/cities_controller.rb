@@ -14,10 +14,12 @@ class CitiesController < ApplicationController
 		end
 	end
 
-	# Show a state's cities
+	# This is the "main page" for a city.
 	def show
-		@state = Category.find_by_parent_uuid_and_url_part(@country.uuid, params[:id].downcase)
-		@cities = @state.children
+		respond_to do |format|
+			format.html
+			format.xml { render :xml => @city }
+		end
 	end
 
 	private
