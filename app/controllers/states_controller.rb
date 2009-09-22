@@ -12,8 +12,6 @@ class StatesController < ApplicationController
 
 	# Show a state's cities
 	def show
-		@country = Category.find_by_parent_uuid_and_url_part(Category.find(:first, :conditions => ["parent_uuid IS NULL AND url_part = ?", "places"]).uuid, params[:country_id].downcase)
-		@state = Category.find_by_parent_uuid_and_url_part(@country.uuid, params[:id].downcase)
-		@cities = @state.children
+		redirect_to country_state_cities_path(params[:country_id], params[:id])
 	end
 end

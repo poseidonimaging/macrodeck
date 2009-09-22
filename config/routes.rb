@@ -3,7 +3,9 @@ ActionController::Routing::Routes.draw do |map|
 
 	# Resources
 	map.resources :countries do |countries|
-		countries.resources :states
+		countries.resources :states do |states|
+			states.resources :cities
+		end
 	end
 	map.resources :places
 
