@@ -2,7 +2,9 @@ ActionController::Routing::Routes.draw do |map|
 	# The priority is based upon order of creation: first created -> highest priority.
 
 	# Resources
-	map.resources :countries
+	map.resources :countries do |countries|
+		countries.resources :states
+	end
 	map.resources :places
 
   # Allow downloading Web Service WSDL as a file with an extension

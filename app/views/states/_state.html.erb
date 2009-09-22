@@ -1,0 +1,8 @@
+<% if state.children.size > 1 %>
+	<li><%= link_to state.name, country_state_path(state.parent.url_part, state.url_part) %> (<%= state.children.size %> cities)</li>
+<% elsif state.children.size == 1 %>
+	<li><%= link_to state.name, country_state_path(state.parent.url_part, state.url_part) %> (<%= state.children.size %> city)</li>
+<% else %>
+	<li><%= link_to state.name, country_state_path(state.parent.url_part, state.url_part) %></li>
+<% end %>
+
