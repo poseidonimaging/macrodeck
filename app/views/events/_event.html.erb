@@ -1,1 +1,23 @@
-<li><%= event.summary %></li>
+<li class="vevent">
+	<h4><%= link_to h(event.summary), "#", :class => "summary" %></h4>
+	<span class="event-time">
+		<abbr class="dtstart" title="<%= event.start_time.strftime("%Y-%m-%d %H:%M:%S") %>">
+			<%= event.start_time.strftime("%b %d, %Y") %>
+			<%= event.start_time.strftime("%I:%M%p").downcase %>
+		</abbr>
+		<% if !event.no_end_time && !event.end_time.nil? %>
+			&mdash;
+			<abbr class="dtend" title="<%= event.end_time.strftime("%Y-%m-%d %H:%M:%S") %>">
+				<%= event.start_time.strftime("%b %d, %Y") %>
+				<%= event.start_time.strftime("%I:%M%p").downcase %>
+			</abbr>
+		<% end %>
+	</span>
+	<span class="description">
+		<%=
+			auto_link(truncate(h(event.description), 150), :href_options => { :target => "_blank"} ) do |link| 
+				"<link>"
+			end
+		%>
+	</span>
+</li>

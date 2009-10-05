@@ -2,16 +2,12 @@
 
 <div class="two-column">
 	<div class="column">
-		<div class="padding">
-			<h3>Upcoming Events</h3>
-			<ol>
-				<%= render :partial => "events/event", :collection => @events %>
-			</ol>
-		</div>
+		<h3>Upcoming Events</h3>
+		<ol class="feed">
+			<%= render :partial => "events/event", :collection => @city.upcoming_events %>
+		</ol>
 	</div>
 	<div class="column">
-		<div class="padding">
-			<h3>Interesting Places</h3>
-		</div>
+		<h3>Interesting Places</h3>
 	</div>
 </div>
