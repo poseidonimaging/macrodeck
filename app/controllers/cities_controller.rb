@@ -33,12 +33,13 @@ class CitiesController < ApplicationController
 			@state = Category.find_by_parent_uuid_and_url_part(@country.uuid, params[:state_id].downcase) if params[:country_id] && params[:state_id]
 		end
 
-		# Finds the city associated with the request
+		# Finds the city associated with the request (and its associated metainformation)
 		def find_city
 			if params[:country_id] && params[:state_id] && params[:id]
 				# Walk the tree 
 				city_category = Category.find_by_parent_uuid_and_url_part(@state.uuid, params[:id].downcase)
 				@city = City.find(:first, :conditions => { :category_id => city_category.id })
+				@events = Event.find(:all, :conditions => { :category_id => city_category.id })
 			end
 		end
 end

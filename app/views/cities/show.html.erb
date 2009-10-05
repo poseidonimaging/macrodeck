@@ -1,0 +1,17 @@
+<%= render :partial => "city", :locals => { :viewmode => :full, :city => @city } %>
+
+<div class="two-column">
+	<div class="column">
+		<div class="padding">
+			<h3>Upcoming Events</h3>
+			<ol>
+				<%= render :partial => "events/event", :collection => @events %>
+			</ol>
+		</div>
+	</div>
+	<div class="column">
+		<div class="padding">
+			<h3>Interesting Places</h3>
+		</div>
+	</div>
+</div>

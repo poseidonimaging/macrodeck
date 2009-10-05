@@ -1,5 +1,14 @@
-<% if city.class == Category %>
-	<li><%= link_to city.name, country_state_city_path(@country.url_part, @state.url_part, city.url_part) %></li>
-<% elsif city.class == City %>
-	<li><%= link_to city.name, country_state_city_path(@country.url_part, @state.url_part, city.category.url_part) %></li>
+<% viewmode = :compact if local_assigns[:viewmode].nil? %>
+
+<% if viewmode == :compact %>
+	<% if city.class == Category %>
+		<li><%= link_to city.name, country_state_city_path(@country.url_part, @state.url_part, city.url_part) %></li>
+	<% elsif city.class == City %>
+		<li><%= link_to city.name, country_state_city_path(@country.url_part, @state.url_part, city.category.url_part) %></li>
+	<% end %>
+<% elsif viewmode == :full %>
+	<h2><%= city.name %></h2>
+	<% if city.description %>
+		<%= simple_format h(city.description) %>
+	<% end %>
 <% end %>

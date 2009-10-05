@@ -10,7 +10,7 @@
 		<%= render :partial => "layouts/menubar" %>
 
 		<div id="content">
-			<%= @content_for_layout %>
+			<%= yield %>
 		</div>
 
 		<%= render :partial => "layouts/footer" %>
