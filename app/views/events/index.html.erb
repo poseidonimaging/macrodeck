@@ -4,6 +4,6 @@
 	<h2>Events in <%=h @city.name %></h2>
 <% end %>
 
-<ul>
+<ol class="feed">
 	<%= render :partial => "event", :collection => @events %>
-</ul>
+</ol>
