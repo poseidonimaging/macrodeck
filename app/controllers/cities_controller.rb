@@ -16,9 +16,13 @@ class CitiesController < ApplicationController
 
 	# This is the "main page" for a city.
 	def show
-		respond_to do |format|
-			format.html
-			format.xml { render :xml => @city }
+		if @city.nil?
+			raise ActiveRecord::RecordNotFound
+		else
+			respond_to do |format|
+				format.html
+				format.xml { render :xml => @city }
+			end
 		end
 	end
 
@@ -38,7 +42,7 @@ class CitiesController < ApplicationController
 			if params[:country_id] && params[:state_id] && params[:id]
 				# Walk the tree 
 				city_category = Category.find_by_parent_uuid_and_url_part(@state.uuid, params[:id].downcase)
-				@city = City.find(:first, :conditions => { :category_id => city_category.id })
+				@city = City.find(:first, :conditions => { :category_id => city_category.id }) if city_category
 			end
 		end
 end
