@@ -4,7 +4,18 @@
 	<li class="vevent"><%= link_to h(event.summary), "#", :class => "summary" %></li>
 <% elsif viewmode == :compact %>
 	<li class="vevent">
-		<h4><%= link_to h(event.summary), "#", :class => "summary" %></h4>
+		<% if @city && !@place %>
+			<h4>
+				<%= link_to h(event.summary),
+					country_state_city_event_path(	params[:country_id],
+									params[:state_id],
+									params[:id], event.uuid
+								     ),
+					:class => "summary"
+				%>
+			</h4>
+		<% else %>
+		<% end %>
 		<span class="event-time">
 			<abbr class="dtstart" title="<%= event.start_time.strftime("%Y-%m-%d %H:%M:%S") %>">
 				<%= event.start_time.strftime("%b %d, %Y") %>
