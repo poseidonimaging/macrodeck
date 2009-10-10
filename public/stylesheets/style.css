@@ -4,12 +4,15 @@
  * Colors: #235674, #2A7983, #43A793, #6FBE56, #B4D365
  */
 
-body {
+html {
 	font-family: 'Lucida Grande', 'Bitstream Vera Sans', 'Lucida Sans Unicode', 'Tahoma', 'Verdana', 'Arial', sans-serif;
-	margin: 0;
-	padding: 1em;
 	background-color: #000305;
 	color: #fff;
+}
+
+body {
+	margin: 0;
+	padding: 1em;
 }
 
 /* Headers */
