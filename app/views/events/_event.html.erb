@@ -1,23 +1,61 @@
-<li class="vevent">
-	<h4><%= link_to h(event.summary), "#", :class => "summary" %></h4>
-	<span class="event-time">
-		<abbr class="dtstart" title="<%= event.start_time.strftime("%Y-%m-%d %H:%M:%S") %>">
-			<%= event.start_time.strftime("%b %d, %Y") %>
-			<%= event.start_time.strftime("%I:%M%p").downcase %>
-		</abbr>
-		<% if !event.no_end_time && !event.end_time.nil? %>
-			&mdash;
-			<abbr class="dtend" title="<%= event.end_time.strftime("%Y-%m-%d %H:%M:%S") %>">
+<% viewmode = :compact if local_assigns[:viewmode].nil? %>
+
+<% if viewmode == :micro %>
+	<li class="vevent"><%= link_to h(event.summary), "#", :class => "summary" %></li>
+<% elsif viewmode == :compact %>
+	<li class="vevent">
+		<h4><%= link_to h(event.summary), "#", :class => "summary" %></h4>
+		<span class="event-time">
+			<abbr class="dtstart" title="<%= event.start_time.strftime("%Y-%m-%d %H:%M:%S") %>">
 				<%= event.start_time.strftime("%b %d, %Y") %>
 				<%= event.start_time.strftime("%I:%M%p").downcase %>
 			</abbr>
+			<% if !event.no_end_time && !event.end_time.nil? %>
+				&mdash;
+				<abbr class="dtend" title="<%= event.end_time.strftime("%Y-%m-%d %H:%M:%S") %>">
+					<%= event.start_time.strftime("%b %d, %Y") %>
+					<%= event.start_time.strftime("%I:%M%p").downcase %>
+				</abbr>
+			<% end %>
+		</span>
+		<span class="description">
+			<%=
+				auto_link(truncate(h(event.description), 150), :href_options => { :target => "_blank"} ) do |link| 
+					"<link>"
+				end
+			%>
+		</span>
+	</li>
+<% elsif viewmode == :full %>
+	<div class="vevent">
+		<h2><%= h(event.summary) %></h2>
+		<% unless event.description.empty? %>
+			<%= auto_link(simple_format(h(event.description), :class => "description"),
+				:href_options => { :target => "_blank" }) %>
 		<% end %>
-	</span>
-	<span class="description">
-		<%=
-			auto_link(truncate(h(event.description), 150), :href_options => { :target => "_blank"} ) do |link| 
-				"<link>"
-			end
-		%>
-	</span>
-</li>
+		<dl>
+			<dt>Start Time</dt>
+			<dd>
+				<abbr class="dtstart" title="<%= event.start_time.strftime("%Y-%m-%d %H:%M:%S") %>">
+					<%= event.start_time.strftime("%b %d, %Y") %>
+					<%= event.start_time.strftime("%I:%M%p").downcase %>
+				</abbr>
+			</dd>
+			<% if !event.no_end_time && !event.end_time.nil? %>
+				<dt>End Time</dt>
+				<dd>
+					<abbr class="dtend" title="<%= event.end_time.strftime("%Y-%m-%d %H:%M:%S") %>">
+						<%= event.end_time.strftime("%b %d, %Y") %>
+						<%= event.end_time.strftime("%I:%M%p").downcase %>
+					</abbr>
+				</dd>
+				</dd>
+			<% end %>
+		</dl>
+
+		<h3>Attendees</h3>
+		<p>Placeholder.</p>
+
+		<h3>Wall</h3>
+	</div>
+<% end %>
