@@ -14,7 +14,18 @@
 					:class => "summary"
 				%>
 			</h4>
-		<% else %>
+		<% elsif @city && @place %>
+			<h4>
+				<%= link_to h(event.summary),
+					country_state_city_place_event_path(	params[:country_id],
+										params[:state_id],
+										params[:city_id],
+										params[:id],
+										event.uuid
+									   ),
+					:class => "summary"
+				%>
+			</h4>
 		<% end %>
 		<span class="event-time">
 			<abbr class="dtstart" title="<%= event.start_time.strftime("%Y-%m-%d %H:%M:%S") %>">
