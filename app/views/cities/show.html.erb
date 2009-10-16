@@ -10,5 +10,9 @@
 	</div>
 	<div class="column">
 		<h3>Interesting Places</h3>
+		<ul class="feed">
+			<%= render :partial => "places/place", :collection => @city.get_10_random_places %>
+		</ul>
+		<%= link_to "View All Places", country_state_city_places_path(params[:country_id], params[:state_id], params[:id]) %>
 	</div>
 </div>
