@@ -1,3 +1,33 @@
-<li>
-	<%= place.name %>
-</li>
+<% viewmode = :compact if local_assigns[:viewmode].nil? %>
+
+<% if viewmode == :micro %>
+	<li class="vcard"><%= link_to h(place.name), country_state_city_place_path(params[:country_id], params[:state_id], params[:city_id], place.uuid), :class => "fn org" %></li>
+<% elsif viewmode == :compact %>
+	<li class="vcard">
+		<h4><%= link_to h(place.name), country_state_city_place_path(params[:country_id], params[:state_id], params[:city_id], place.uuid), :class => "fn org" %></h4>
+		<a href="http://maps.google.com/maps?q=<%= "#{h(place.place_metadata[:address])}, #{h(place.parent.name)}, #{h(place.parent.state(:abbreviation => true))}" %>" class="adr" target="_blank">
+			<span class="street-address"><%= h(place.place_metadata[:address]) %></span>, 
+			<span class="locality"><%= h(place.parent.name) %></span>,
+			<abbr class="region" title="<%= place.parent.state %>"><%= place.parent.state(:abbreviation => true) %></abbr>
+			<% if !place.place_metadata[:zipcode].nil? && !place.place_metadata[:zipcode].to_s.empty? %>
+				<span class="postal-code"><%= h(place.place_metadata[:zipcode]) %></span>
+			<% end %>
+		</a>
+		<span class="note">
+			<%=
+				auto_link(truncate(h(place.description), 150), :href_options => { :target => "_blank"} ) do |link| 
+					"<link>"
+				end
+			%>
+		</span>
+	</li>
+<% elsif viewmode == :full %>
+	<div class="vcard">
+		<h2><%= h(place.name) %></h2>
+		<% unless place.description.empty? %>
+			<%= auto_link(simple_format(h(place.description), :class => "note"),
+				:href_options => { :target => "_blank" }) %>
+		<% end %>
+		<p>Placeholder.</p>
+	</div>
+<% end %>
