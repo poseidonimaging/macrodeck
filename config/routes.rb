@@ -6,6 +6,7 @@ ActionController::Routing::Routes.draw do |map|
 		countries.resources :states do |states|
 			states.resources :cities do |cities|
 				cities.resources :events
+				cities.resources :places
 			end
 		end
 	end
