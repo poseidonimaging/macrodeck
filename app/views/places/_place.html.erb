@@ -1,10 +1,10 @@
 <% viewmode = :compact if local_assigns[:viewmode].nil? %>
 
 <% if viewmode == :micro %>
-	<li class="vcard"><%= link_to h(place.name), country_state_city_place_path(params[:country_id], params[:state_id], params[:city_id], place.uuid), :class => "fn org" %></li>
+	<li class="vcard"><%= link_to h(place.name), country_state_city_place_path(params[:country_id], params[:state_id], place.parent.url_part, place.uuid), :class => "fn org" %></li>
 <% elsif viewmode == :compact %>
 	<li class="vcard">
-		<h4><%= link_to h(place.name), country_state_city_place_path(params[:country_id], params[:state_id], params[:city_id], place.uuid), :class => "fn org" %></h4>
+		<h4><%= link_to h(place.name), country_state_city_place_path(params[:country_id], params[:state_id], place.parent.url_part, place.uuid), :class => "fn org" %></h4>
 		<a href="http://maps.google.com/maps?q=<%= "#{h(place.place_metadata[:address])}, #{h(place.parent.name)}, #{h(place.parent.state(:abbreviation => true))}" %>" class="adr" target="_blank">
 			<span class="street-address"><%= h(place.place_metadata[:address]) %></span>, 
 			<span class="locality"><%= h(place.parent.name) %></span>,
