@@ -28,7 +28,7 @@ class PlacesController < ApplicationController
 
 	# Show the HTML to create a place
 	def new
-		@place = Place.new # TODO: something like @city.place.new ?
+		@place = @city.places.build
 		respond_to do |format|
 			format.html # new.html.erb
 		end
@@ -36,15 +36,49 @@ class PlacesController < ApplicationController
 
 	# Actually create the place
 	def create
+		@place = @city.places.build(params[:place])
+		# Place metadata needs to be set here
 		
+		if @place.save
+			flash[:success] = "#{@place.name} created sucessfully."
+			respond_to do |format|
+				format.html { redirect_to country_state_city_place_path(params[:country_id], params[:state_id], params[:city_id], @place.uuid) }
+				format.xml  { head :created, :location => country_state_city_place_path(params[:country_id], params[:state_id], params[:city_id], @place.uuid) }
+			end
+		else
+			respond_to do |format|
+				format.html { render :action => "new" }
+				format.xml  { render :xml => @place.errors, :status => :unprocessable_entity }
+			end
+		end
 	end
 
 	# Show the HTML to edit a place.
 	def edit
+		if @place.nil?
+			raise ActiveRecord::RecordNotFound
+		else
+			respond_to do |format|
+				format.html # edit.html.erb
+			end
+		end
 	end
 
 	# Actually update a place
 	def update
+		@place.attributes = params[:place]
+		if @place.save
+			flash[:success] = "#{@place.name} updated successfully."
+			respond_to do |format|
+				format.html { redirect_to country_state_city_place_path(params[:country_id], params[:state_id], params[:city_id], @place.uuid) }
+				format.xml  { head :ok }
+			end
+		else
+			respond_to do |format|
+				format.html { render :action => "edit" }
+				format.xml  { render :xml => @place.errors, :status => :unprocessable_entity }
+			end
+		end
 	end
 
 	# Delete a place.
