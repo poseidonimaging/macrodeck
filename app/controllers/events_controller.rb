@@ -5,6 +5,7 @@ class EventsController < ApplicationController
 	before_filter :find_state
 	before_filter :find_city
 	before_filter :find_place
+	before_filter :find_calendar
 	before_filter :find_event
 
 	# List events
@@ -34,7 +35,7 @@ class EventsController < ApplicationController
 		end
 	end
 	
-	# Handles updating a place.
+	# Handles updating an event
 	def update
 		if @event.update_attributes(params[:event])
 			if @place.nil?
@@ -54,6 +55,10 @@ class EventsController < ApplicationController
 				format.xml  { render :xml => @event.errors, :status => :unprocessable_entity }
 			end
 		end
+	end
+	
+	# Handles creating an event.
+	def create
 	end
 	
 	# This is the ajax action that gets called when someone types in the date field
@@ -112,6 +117,16 @@ class EventsController < ApplicationController
 		def find_place
 			if params[:country_id] && params[:state_id] && params[:city_id] && params[:place_id] && params[:place_id].length > 0
 				@place = Place.find(:first, :conditions => ["url_part = ? OR uuid = ?", params[:place_id], params[:place_id]])
+			end
+		end
+		
+		# Finds the calendar associated with the request
+		def find_calendar
+			if @place.nil?
+				# We need to get the city's calendar.
+				@calendar = @city.calendar
+			else
+				@calendar = @place.calendar
 			end
 		end
 
