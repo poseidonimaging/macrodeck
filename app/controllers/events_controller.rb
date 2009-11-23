@@ -26,6 +26,66 @@ class EventsController < ApplicationController
 			format.html # index.html.erb
 		end
 	end
+	
+	# Shows the interface for editing an event.
+	def edit
+		respond_to do |format|
+			format.html # edit.html.erb
+		end
+	end
+	
+	# Handles updating a place.
+	def update
+		if @event.update_attributes(params[:event])
+			if @place.nil?
+				respond_to do |format|
+					format.html { redirect_to(country_state_city_event_path(params[:country_id], params[:state_id], params[:city_id], params[:id])) }
+					format.xml  { head :ok }
+				end
+			else
+				respond_to do |format|
+					format.html { redirect_to(country_state_city_place_event_path(params[:country_id], params[:state_id], params[:city_id], params[:place_id], params[:id])) }
+					format.xml  { head :ok }
+				end
+			end
+		else
+			respond_to do |format|
+				format.html { render :action => "edit" }
+				format.xml  { render :xml => @event.errors, :status => :unprocessable_entity }
+			end
+		end
+	
+	# This is the ajax action that gets called when someone types in the date field
+	def ajax_parse_time
+		parsed = EventService.parse_time(params[:time].chomp.strip.gsub(",", "").downcase)
+		if !parsed.nil?
+			# Day, Month 1st, 2008 at 12:00PM
+			friendly_date = parsed.strftime("%A, %B ")
+			friendly_date << parsed.day.to_s
+			friendly_date << parsed.strftime(", %Y at %I:%M %p")
+			friendly_date = friendly_date.chomp.strip
+
+			# now for recurrence helpers
+			recurrence_yearly = parsed.strftime("%B ")
+			recurrence_yearly << parsed.day.to_i.ordinalize
+			recurrence_monthly = parsed.day.to_i.ordinalize
+			nth = (parsed.day.to_f/7.0).ceil.ordinalize
+			recurrence_monthly_nth_nday = "#{nth} "
+			recurrence_monthly_nth_nday << parsed.strftime("%A")
+			recurrence_weekly = parsed.strftime("%A")
+
+			time_output = {	"friendly_date" => friendly_date,
+							"recurrence_yearly" => "(every #{recurrence_yearly})",
+							"recurrence_monthly" => "(the #{recurrence_monthly} of every month)",
+							"recurrence_monthly_nth_nday" => "(every #{recurrence_monthly_nth_nday})",
+							"recurrence_weekly" => "(every #{recurrence_weekly})",
+							"error" => "0" }
+
+			render :json => time_output.to_json
+		else 
+			render :json => { "error" => "1" }.to_json
+		end
+	end
 
 	private
 		# Finds the country associated with the request.

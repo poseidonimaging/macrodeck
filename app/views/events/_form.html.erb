@@ -3,6 +3,8 @@
 	var last_dtstart = "";
 	var last_dtend = "";
 
+	// NB: the getters and setters are only supported in FBJS
+
 	// Handles the dtend checkbox
 	function event_dtend_disable_handler() {
 		chkDtEnd = document.getElementById('event_dtend_disable');
@@ -49,7 +51,7 @@
 					}
 					
 				}
-			ajax.post('<%= PLACES_BASEURL %>/facebook/events/parse_time/', params);
+			ajax.post('<%= url_for(:controller => "events", :action => "ajax_parse_time" %>', params);
 		}
 		setTimeout(function() { event_dtstart_ajax() }, 1000);
 	}
@@ -81,7 +83,7 @@
 					}
 					
 				}
-			ajax.post('<%= PLACES_BASEURL %>/facebook/events/parse_time/', params);
+			ajax.post('<%= url_for(:controller => "events", :action => "ajax_parse_time" %>', params);
 		}
 		setTimeout(function() { event_dtend_ajax() }, 1000);
 	}
