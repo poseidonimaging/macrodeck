@@ -54,6 +54,7 @@ class EventsController < ApplicationController
 				format.xml  { render :xml => @event.errors, :status => :unprocessable_entity }
 			end
 		end
+	end
 	
 	# This is the ajax action that gets called when someone types in the date field
 	def ajax_parse_time
