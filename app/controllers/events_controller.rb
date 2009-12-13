@@ -59,6 +59,25 @@ class EventsController < ApplicationController
 	
 	# Handles creating an event.
 	def create
+		@event = @calendar.events.build(params[:event])
+		if @event.save
+			if @place.nil?
+				respond_to do |format|
+					format.html { redirect_to(country_state_city_event_path(params[:country_id], params[:state_id], params[:city_id], @event.url_part)) }
+					format.xml  { head :ok }
+				end
+			else
+				respond_to do |format|
+					format.html { redirect_to(country_state_city_place_event_path(params[:country_id], params[:state_id], params[:city_id], params[:place_id], @event.url_part)) }
+					format.xml  { head :ok }
+				end
+			end
+		else
+			respond_to do |format|
+				format.html { render :action => "edit" }
+				format.xml  { render :xml => @event.errors, :status => :unprocessable_entity }
+			end
+		end
 	end
 	
 	# This is the ajax action that gets called when someone types in the date field
