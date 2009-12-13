@@ -5,8 +5,13 @@ ActionController::Routing::Routes.draw do |map|
 	map.resources :countries do |countries|
 		countries.resources :states do |states|
 			states.resources :cities do |cities|
-				cities.resources :events
-				cities.resources :places
+				cities.resources :events do |events|
+					events.resources :comments
+				end
+				cities.resources :places do |places|
+					places.resources :comments
+				end
+				cities.resources :comments
 			end
 		end
 	end
