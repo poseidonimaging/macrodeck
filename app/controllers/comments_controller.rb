@@ -62,6 +62,19 @@ class CommentsController < ApplicationController
 	
 	# Handles creating a comment.
 	def create
+		@comment = @wall.comments.build(params[:comment])
+		
+		if @comment.save
+			respond_to do |format|
+				# FIXME: format.html { redirect_to(country_state_city_event_path(params[:country_id], params[:state_id], params[:city_id], @event.url_part)) }
+				format.xml  { head :ok }
+			end
+		else
+			respond_to do |format|
+				format.html { render :action => "edit" }
+				format.xml  { render :xml => @event.errors, :status => :unprocessable_entity }
+			end
+		end
 	end
 
 	private
@@ -103,8 +116,23 @@ class CommentsController < ApplicationController
 
 		# Finds the event associated with the request (if any)
 		def find_event
+			if params[:event_id] && params[:event_id].length > 0
+				@event = Event.find(:first, :conditions => ["url_part = ? OR uuid = ?", params[:event_id], params[:event_id]])
+			end
+		end
+		
+		# Finds the wall associated with the request
+		def find_wall
+			@wall = @city.wall unless @city.nil?
+			@wall = @place.wall unless @place.nil?
+			@wall = @calendar.wall unless @calendar.nil?
+			@wall = @event.wall unless @event.nil?
+		end
+		
+		# Finds the comment associated with the request
+		def find_comment
 			if params[:id] && params[:id].length > 0
-				@event = Event.find(:first, :conditions => ["url_part = ? OR uuid = ?", params[:id], params[:id]])
+				@comment = Comment.find(:first, :conditions => ["url_part = ? OR uuid = ?", params[:id], params[:id]])
 			end
 		end
 end
