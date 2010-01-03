@@ -123,10 +123,9 @@ class CommentsController < ApplicationController
 		
 		# Finds the wall associated with the request
 		def find_wall
-			@wall = @city.wall unless @city.nil?
-			@wall = @place.wall unless @place.nil?
-			@wall = @calendar.wall unless @calendar.nil?
-			@wall = @event.wall unless @event.nil?
+			[@calendar, @event, @city, @place].each do |parent|
+				@wall = parent.wall if !parent.nil? && parent.respond_to?(:wall)
+			end
 		end
 		
 		# Finds the comment associated with the request
