@@ -44,5 +44,6 @@
 				:href_options => { :target => "_blank" }) %>
 		<% end %>
 		<h3>Wall</h3>
+		<%= render :partial => "comments/comments", :locals => { :comments => place.comments } %>
 	</div>
 <% end %>

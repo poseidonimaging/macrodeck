@@ -1,7 +1,12 @@
 <% viewmode = :compact if local_assigns[:viewmode].nil? %>
+<% url = nil if local_assigns[:url].nil? %>
 
 <% if viewmode == :micro %>
-	<li><%= link_to "Comments (#{comments.comments.count})", get_comments_path %></li>
+	<% if url.nil? %>
+		<li>Comments (<%= comments.comments.count %>)</li>
+	<% else %>
+		<li><%= link_to "Comments (#{comments.comments.count})", url %></li>
+	<% end %>
 <% elsif viewmode == :compact %>
 	<%= render :partial => "comment", :locals => { :comment => comments.comments[0] } %>
 <% elsif viewmode == :full %>
