@@ -1,1 +1,3 @@
-<%= comment.message %>
+<% unless comment.nil? %>
+	<%= comment.message %>
+<% end %>
