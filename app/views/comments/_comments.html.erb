@@ -8,7 +8,15 @@
 		<li><%= link_to "Comments (#{comments.comments.count})", url %></li>
 	<% end %>
 <% elsif viewmode == :compact %>
-	<%= render :partial => "comments/comment", :locals => { :comment => comments.comments[0] } %>
+	<% if comments.comments.count > 0 %>
+		<%= render :partial => "comments/comment", :locals => { :comment => comments.comments[0] } %>
+	<% else %>
+		<p>There are no comments on this wall.</p>
+	<% end %>
 <% elsif viewmode == :full %>
-	<%= render :partial => "comments/comment", :collection => comments.comments %>
+	<% if comments.comments.count > 0 %>
+		<%= render :partial => "comments/comment", :collection => comments.comments %>
+	<% else %>
+		<p>There are no comments on this wall.</p>
+	<% end %>
 <% end %>
