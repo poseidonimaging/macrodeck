@@ -106,6 +106,10 @@ else
 	FB_FEED_RATING = "63310062610"
 end
 
+# Time/date formats
+Time::DATE_FORMATS[:human] = lambda { |time| time.strftime("%B #{time.day.ordinalize}, %Y %I:%M%p") }
+
+
 # Configure UltraSphinx
 Ultrasphinx::Search.excerpting_options = HashWithIndifferentAccess.new({
 	:before_match => "<span class='highlight'>",

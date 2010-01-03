@@ -1,3 +1,8 @@
 <% unless comment.nil? %>
-	<%= comment.message %>
+	<div>
+		<%= comment.updated_at.to_s(:human) %>
+	</div>
+	<div>
+		<%= comment.message %>
+	</div>
 <% end %>
