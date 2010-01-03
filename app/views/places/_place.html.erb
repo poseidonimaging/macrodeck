@@ -36,6 +36,9 @@
 				</a>
 			</span>
 		</h2>
+		<ul class="controls">
+			<li><%= link_to "edit", edit_country_state_city_place_path(params[:country_id], params[:state_id], params[:city_id], params[:id]) %></li>
+		</ul>
 		<% unless place.description.empty? %>
 			<%= auto_link(simple_format(h(place.description), :class => "note"),
 				:href_options => { :target => "_blank" }) %>

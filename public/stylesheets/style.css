@@ -34,10 +34,19 @@ h2 {
 	border-bottom: 1px solid #B4D365;
 }
 h3	{ margin: 0; padding: 0; color: #2A7983; }
-h2 .subtitle, h3 .subtitle { font-size: 80%; color: #999; display: block; }
+h2 .subtitle,
+h3 .subtitle,
+h2 .subtitle a:link,
+h3 .subtitle a:link {
+	font-size: 70%;
+	color: #999;
+	text-decoration: none;
+	display: inline;
+	font-weight: normal;
+}
 
 /* Links */
-a	{ color: #6FBE56; }
+a		{ color: #6FBE56; }
 a:hover	{ color: #B4D365; }
 
 /* Menubar */
@@ -58,6 +67,14 @@ ul.menubar li a {
 	text-decoration: none;
 }
 ul.menubar li a:hover {	border-bottom: 5px solid #B4D365; }
+
+/* Page controls */
+ul.controls							{ margin: 0; padding: 0; font-size: 75%; text-align: right; }
+ul.controls li						{ margin: 0.25em 0.5em 0 0.5em; list-style-type: none; color: #235674; }
+ul.controls li:first-child			{ margin: 0.25em 0.5em 0 0; }
+ul.controls li:first-child:before	{ content: ""; }
+ul.controls li:before				{ content: "|"; }
+ul.controls li a:link				{ color: #999; }
 
 /* Whole Page */
 div#macrodeck {
