@@ -36,14 +36,19 @@ h2 {
 h3	{ margin: 0; padding: 0; color: #2A7983; }
 h2 .subtitle,
 h3 .subtitle,
+h4 .subtitle,
 h2 .subtitle a:link,
-h3 .subtitle a:link {
+h3 .subtitle a:link,
+h4 .subtitle a:link {
 	font-size: 70%;
 	color: #999;
 	text-decoration: none;
 	display: inline;
 	font-weight: normal;
 }
+h2 .subtitle a:hover,
+h3 .subtitle a:hover,
+h4 .subtitle a:hover { color: #B4D365; }
 
 /* Links */
 a		{ color: #6FBE56; }
@@ -75,6 +80,7 @@ ul.controls li:first-child			{ margin: 0.25em 0.5em 0 0; }
 ul.controls li:first-child:before	{ content: ""; }
 ul.controls li:before				{ content: "|"; }
 ul.controls li a:link				{ color: #999; }
+ul.controls li a:hover				{ color: #B4D365; }
 
 /* Whole Page */
 div#macrodeck {
