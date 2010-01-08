@@ -9,13 +9,18 @@
 	<% end %>
 <% elsif viewmode == :compact %>
 	<% if comments.comments.count > 0 %>
-		<%= render :partial => "comments/comment", :locals => { :comment => comments.comments[0] } %>
+		<div class="comments">
+			<%= render :partial => "comments/comment", :locals => { :comment => comments.comments[0] } %>
+		</div>
 	<% else %>
 		<p>There are no comments on this wall.</p>
 	<% end %>
 <% elsif viewmode == :full %>
 	<% if comments.comments.count > 0 %>
-		<%= render :partial => "comments/comment", :collection => comments.comments %>
+		<div class="comments">
+			<%= render :partial => "comments/form" %>
+			<%= render :partial => "comments/comment", :collection => comments.comments %>
+		</div>
 	<% else %>
 		<p>There are no comments on this wall.</p>
 	<% end %>

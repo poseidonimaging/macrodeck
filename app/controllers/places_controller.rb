@@ -20,6 +20,7 @@ class PlacesController < ApplicationController
 		if @place.nil?
 			raise ActiveRecord::RecordNotFound
 		else
+			@comment = @place.wall.comments.build()
 			respond_to do |format|
 				format.html # show.html.erb
 			end

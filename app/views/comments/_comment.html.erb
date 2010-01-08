@@ -1,8 +1,24 @@
 <% unless comment.nil? %>
-	<div>
-		<%= comment.updated_at.to_s(:human) %>
-	</div>
-	<div>
-		<%= comment.message %>
+	<div class="comment">
+		<h4>
+			<% if !comment.title.nil? && !comment.title.empty? && comment.title != "Untitled Comment" %>
+				<%= h(comment.title) %>
+			<% end %>
+			<span class="subtitle">
+				<% if !comment.created_by.displayname.nil? && !comment.created_by.displayname.empty? %>
+					<%= h(comment.created_by.displayname) %>
+				<% elsif (!comment.created_by.first_name.nil? && !comment.created_by.first_name.empty?) && (!comment.created_by.last_name.nil? && !comment.created_by.last_name.empty?) %>
+					<%= h(comment.created_by.first_name) %> <%= h(comment.created_by.last_name) %>
+				<% elsif !comment.created_by.username.nil? && !comment.created_by.username.empty? %>
+					<%= h(comment.created_by.username) %>
+				<% elsif !comment.created_by.facebook_uid.nil? && !comment.created_by.facebook_uid.empty? %>
+					Facebook User
+				<% end %>
+				- <%= comment.updated_at.to_s(:human) %>
+			</span>
+		</h4>
+		<blockquote>
+			<%= simple_format h(comment.message) %>
+		</blockquote>
 	</div>
 <% end %>

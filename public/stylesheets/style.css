@@ -34,6 +34,7 @@ h2 {
 	border-bottom: 1px solid #B4D365;
 }
 h3	{ margin: 0; padding: 0; color: #2A7983; }
+h4	{ margin: 0.5em 0; padding: 0; }
 h2 .subtitle,
 h3 .subtitle,
 h4 .subtitle,
@@ -97,3 +98,18 @@ div#content	{ clear: both; }
 .block		{ display: block; }
 .clear		{ clear: both; }
 .hide		{ display: none; }
+
+/* Forms */
+textarea				{ border: 1px solid #235674; }
+input[type="text"]		{ border: 1px solid #235674; }
+
+/* Typography */
+blockquote {
+	border-left: 3px solid #43A793;
+	margin: 0;
+	padding: 0 0 0 0.5em;
+}
+blockquote p			{ padding: 0; margin: 0 0 0.5em 0; }
+
+/* Comments */
+div.comments div.comment				{ border-top: 1px solid #235674; }
