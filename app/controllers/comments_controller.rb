@@ -1,4 +1,4 @@
-# This controller handles comments.
+# This controller handles Comment objects.
 class CommentsController < ApplicationController
 	layout 'default'
 	before_filter :find_country
@@ -66,7 +66,7 @@ class CommentsController < ApplicationController
 		
 		if @comment.save
 			respond_to do |format|
-				# FIXME: format.html { redirect_to(country_state_city_event_path(params[:country_id], params[:state_id], params[:city_id], @event.url_part)) }
+				format.html { redirect_to(get_wall_path)) }
 				format.xml  { head :ok }
 			end
 		else

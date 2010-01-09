@@ -1,0 +1,27 @@
+<% viewmode = :compact if local_assigns[:viewmode].nil? %>
+<% url = nil if local_assigns[:url].nil? %>
+
+<% if viewmode == :micro %>
+	<% if url.nil? %>
+		<li>Comments (<%= wall.comments.count %>)</li>
+	<% else %>
+		<li><%= link_to "Comments (#{wall.comments.count})", url %></li>
+	<% end %>
+<% elsif viewmode == :compact %>
+	<% if wall.comments.count > 0 %>
+		<div class="comments">
+			<%= render :partial => "comments/comment", :locals => { :comment => wall.comments[0] } %>
+		</div>
+	<% else %>
+		<p>There are no comments on this wall.</p>
+	<% end %>
+<% elsif viewmode == :full %>
+	<% if wall.comments.count > 0 %>
+		<div class="comments">
+			<%= render :partial => "comments/form" %>
+			<%= render :partial => "comments/comment", :collection => wall.comments %>
+		</div>
+	<% else %>
+		<p>There are no comments on this wall.</p>
+	<% end %>
+<% end %>
