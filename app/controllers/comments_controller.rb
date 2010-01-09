@@ -66,7 +66,7 @@ class CommentsController < ApplicationController
 		
 		if @comment.save
 			respond_to do |format|
-				format.html { redirect_to(get_wall_path)) }
+				format.html { redirect_to(get_wall_path) }
 				format.xml  { head :ok }
 			end
 		else
