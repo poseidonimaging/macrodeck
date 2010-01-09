@@ -125,7 +125,7 @@ Ultrasphinx::Search.excerpting_options = HashWithIndifferentAccess.new({
 Services.startService "uuid_service"
 Services.startService "data_service"
 Services.startService "user_service"
-Services.startService "comment_service"
+Services.startService "wall_service"
 Services.startService "event_service"
 Services.startService "places_service"
 Services.startService "navigation_service"
