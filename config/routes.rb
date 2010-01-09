@@ -6,12 +6,18 @@ ActionController::Routing::Routes.draw do |map|
 		countries.resources :states do |states|
 			states.resources :cities do |cities|
 				cities.resources :events do |events|
-					events.resources :comments
+					events.resource :wall do |wall|
+						wall.resources :comments
+					end
 				end
 				cities.resources :places do |places|
-					places.resources :comments
+					places.resource :wall do |wall|
+						wall.resources :comments
+					end
 				end
-				cities.resources :comments
+				cities.resource :wall do |wall|
+					wall.resources :comments
+				end
 			end
 		end
 	end
