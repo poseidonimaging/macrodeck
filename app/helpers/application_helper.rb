@@ -150,4 +150,21 @@ module ApplicationHelper
 		return html
 	end
 
+	# Outputs a content module. Usage:
+	# <% content_module "Title" do %>
+	#	Content here
+	# <% end %>
+	#
+	# Options:
+	# +box_size+	: 25, 50, 75, or 100, specifies the width. Default is 100.
+	# +altbox+		: true/false, renders the box in a different color.
+	def content_module(title, options = { :box_size => 100 }, &block)
+		block_to_partial 'common/content_module', options.merge(:title => title), &block
+	end
+
+	# Supports the new layout's module functions.
+	def block_to_partial(partial_name, options = {}, &block)
+		options.merge!(:body => capture(&block))
+		concat(render(:partial => partial_name, :locals => options), block.binding)
+	end
 end
