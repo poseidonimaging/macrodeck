@@ -4,7 +4,11 @@
 	
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
         <meta http-equiv="content-style-type" content="text/css" />
-        <meta http-equiv="content-script-type" content="text/javascript" />
+		<meta http-equiv="content-script-type" content="text/javascript" />
+		<%= javascript_include_tag "https://ajax.googleapis.com/ajax/libs/jquery/1.4.0/jquery.min.js" %>
+		<% javascript_tag do %>
+			var $J = jQuery.noConflict();
+		<% end %>
         
         <title>The Restless Napkin</title>
         
@@ -28,8 +32,7 @@
 			</script>
 		<![endif]-->
 		<script type="text/javascript">
-			/* this is jquery - we use prototype
-			$(document).ready(function() {
+			$J(document).ready(function($) {
 			    // Search input text handling on focus
 					var $searchq = $("#search-q").attr("value");
 				    $('#search-q.text').css('color', '#999');
@@ -75,7 +78,6 @@
 						return false;
 					});
 					});
-			*/
 		</script>
 		
     </head>
@@ -128,7 +130,7 @@
 					<fieldset>
 						<label class="a-hidden" for="search-q">Search query:</label>
 						<input id="search-q" class="text fl" type="text" name="search-q" size="20" value="search&hellip;" />
-						<input class="hand fr" type="image" src="css/img/search-button.png" alt="Search" />
+						<input class="hand fr" type="image" src="/images/search-button.png" alt="Search" />
 					</fieldset>
 				</form>
 			</div><!-- .inner-container -->
