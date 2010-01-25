@@ -1,17 +1,19 @@
-<h2>Welcome to MacroDeck!</h2>
-<p><strong>MacroDeck</strong> is another social networking website. Unlike other social networking websites, the innovative stuff we create doesn't require you to switch services.
-If you already use Facebook, you shouldn't be required to create yet another account and go to yet another website to get some cool feature. Have friends on Facebook and MySpace?
-Want to show them a <%= link_to "place", "http://places.macrodeck.com/" %>? With MacroDeck, this won't be a problem. But, if you don't already use Facebook or MySpace, the most important
-parts of both are available here, like blogging and friends.</p>
-<p>We are currently in the process of developing MacroDeck. The core of MacroDeck, called Services, is open source and released under the terms of the GNU General Public License,
-version 2.0. If you think you have what it takes to develop a cool new service, or want to take a look at our existing code, please see our
-<a href="http://developer.macrodeck.com/">development Wiki</a>.</p>
+<% content_module "Welcome to The Restless Napkin", { :altbox => true, :box_size => 100 } do %>
+	<p><strong>MacroDeck</strong> is another social networking website. Unlike other social networking websites, the innovative stuff we create doesn't require you to switch services.
+	If you already use Facebook, you shouldn't be required to create yet another account and go to yet another website to get some cool feature. Have friends on Facebook and MySpace?
+	Want to show them a <%= link_to "place", "http://places.macrodeck.com/" %>? With MacroDeck, this won't be a problem. But, if you don't already use Facebook or MySpace, the most important
+	parts of both are available here, like blogging and friends.</p>
+	<p>We are currently in the process of developing MacroDeck. The core of MacroDeck, called Services, is open source and released under the terms of the GNU General Public License,
+	version 2.0. If you think you have what it takes to develop a cool new service, or want to take a look at our existing code, please see our
+	<a href="http://developer.macrodeck.com/">development Wiki</a>.</p>
+<% end %>
 
-<h3>A List of Future Plans, in No Particular Order</h3>
-<ul>
-	<li><a href="http://www.openid.net/">OpenID</a> support for all users</li>
-	<li>Consume data from MySpace and Facebook</li>
-	<li>Provide data to Facebook through Applications</li>
-	<li>Attempt to provide some sort of data to MySpace given their limited capabilities.</li>
-	<li>Consume data from other sources (got one to suggest? e-mail ziggy at ignition dash project dot com)</li>
-</ul>
+<% content_module "A List of Future Plans, in No Particular Order" do %>
+	<ul>
+		<li><a href="http://www.openid.net/">OpenID</a> support for all users</li>
+		<li>Consume data from MySpace and Facebook</li>
+		<li>Provide data to Facebook through Applications</li>
+		<li>Attempt to provide some sort of data to MySpace given their limited capabilities.</li>
+		<li>Consume data from other sources (got one to suggest? e-mail ziggy at ignition dash project dot com)</li>
+	</ul>
+<% end %>

@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
-	layout 'default'
+	layout 'restlessnapkin'
 
 	def index
 		# static content
