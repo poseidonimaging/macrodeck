@@ -9,7 +9,7 @@ dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,
 table, caption, tbody, tfoot, thead, tr, th, td {border: 0; margin: 0; padding: 0; vertical-align: baseline; font-weight: inherit; font-style: inherit; font-size: 100%; font-family: inherit;}
 
-body {background: #ddd; font: 75%/1.5 "myriad pro", helvetica, arial, sans-serif; color: #333;}
+body {background: #ddd; font: 75%/1.5 "Segoe UI", Candara, "Bitstream Vera Sans", "DejaVu Sans", "Bitstream Vera Sans", "Trebuchet MS", Verdana, "Verdana Ref", sans-serif;; color: #333;}
 
 table {border-collapse: separate; border-spacing: 0;}
 caption, th, td {text-align: left; font-weight: normal;}
