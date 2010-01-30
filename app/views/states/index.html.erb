@@ -1,5 +1,5 @@
-<h2><%=h @country.name %></h2>
-<h3>States</h3>
-<ul>
+<% content_module h(@country.name), { :altbox => true, :box_size => 100 } do %>
+    <ul class="simple">
 	<%= render :partial => "state", :collection => @states %>
-</ul>
+    </ul>
+<% end %>
