@@ -353,7 +353,7 @@ ul.actions li {display: inline; margin-right: 5px;}
 	table.calendar .inactive {color: #aaa;}
 	table.calendar div.items a {border: 0; margin: 0 1px;}
 	/* Text */
-	.box .text { padding: 0.5em; }
+	.box .content .text { padding: 0.5em; }
 	
 /* login page */
 #login {background: #222; padding: 100px;}
