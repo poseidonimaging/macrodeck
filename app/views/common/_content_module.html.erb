@@ -4,7 +4,9 @@
 			<h3><%= title %></h3>
 		</div>
 		<div class="content">
-			<%= body %>
+			<%= '<div class="text">' if local_assigns[:text] %>
+			    <%= body %>
+			<%= '</div>' if local_assigns[:text] %>
 		</div>
 	</div>
 </div>
