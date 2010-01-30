@@ -1,9 +1,5 @@
 <% content_module "Countries", { :altbox => true, :box_size => 100 } do %>
-	<p>
-		The following is a list of all of the countries supported by The Restless Napkin.
-	</p>
-
-	<ul>
+	<ul class="simple">
 		<%= render :partial => "country", :collection => @countries %>
 	</ul>
 <% end %>
