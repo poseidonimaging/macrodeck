@@ -1,8 +1,8 @@
 <% if state.children.size > 1 %>
-	<li<%= css_class if local_assigns[:css_class] %>><%= link_to state.name, country_state_path(state.parent.url_part, state.url_part) %> (<%= state.children.size %> cities)</li>
+	<li<%= ' class="#{css_class}"' if local_assigns[:css_class] %>><%= link_to state.name, country_state_path(state.parent.url_part, state.url_part) %> (<%= state.children.size %> cities)</li>
 <% elsif state.children.size == 1 %>
-	<li<%= css_class if local_assigns[:css_class] %>><%= link_to state.name, country_state_path(state.parent.url_part, state.url_part) %> (<%= state.children.size %> city)</li>
+	<li<%= ' class="#{css_class}"' if local_assigns[:css_class] %>><%= link_to state.name, country_state_path(state.parent.url_part, state.url_part) %> (<%= state.children.size %> city)</li>
 <% else %>
-	<li<%= css_class if local_assigns[:css_class] %>><%= link_to state.name, country_state_path(state.parent.url_part, state.url_part) %></li>
+	<li<%= ' class="#{css_class}"' if local_assigns[:css_class] %>><%= link_to state.name, country_state_path(state.parent.url_part, state.url_part) %></li>
 <% end %>
 
