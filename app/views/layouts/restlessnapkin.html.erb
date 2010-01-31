@@ -10,7 +10,10 @@
 			var $J = jQuery.noConflict();
 		<% end %>
         
-        <title>The Restless Napkin</title>
+        <title>
+	    <%= h(@page_title) + " : " if @page_title %>
+	    The Restless Napkin
+	</title>
         
 		<%= stylesheet_link_tag "restlessnapkin" %>
 		<!--[if lte IE 7.0]><%= stylesheet_link_tag "restlessnapkin_ie" %><![endif]-->
