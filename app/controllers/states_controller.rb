@@ -6,8 +6,8 @@ class StatesController < ApplicationController
 
 	# List states
 	def index
-		@page_title = "#{@country.name} > States"
 		@country = Category.find_by_parent_uuid_and_url_part(Category.find(:first, :conditions => ["parent_uuid IS NULL AND url_part = ?", "places"]).uuid, params[:country_id].downcase)
+		@page_title = "#{@country.name} > States"
 		@states = @country.children
 	end
 
