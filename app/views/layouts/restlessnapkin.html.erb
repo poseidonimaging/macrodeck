@@ -4,11 +4,11 @@
 	
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
         <meta http-equiv="content-style-type" content="text/css" />
-		<meta http-equiv="content-script-type" content="text/javascript" />
-		<%= javascript_include_tag "https://ajax.googleapis.com/ajax/libs/jquery/1.4.0/jquery.min.js" %>
-		<% javascript_tag do %>
-			var $J = jQuery.noConflict();
-		<% end %>
+	<meta http-equiv="content-script-type" content="text/javascript" />
+	<%= javascript_include_tag "https://ajax.googleapis.com/ajax/libs/jquery/1.4.0/jquery.min.js" %>
+	<% javascript_tag do %>
+	    var $J = jQuery.noConflict();
+	<% end %>
         
         <title>
 	    <%= h(@page_title) + " : " if @page_title %>
@@ -16,6 +16,10 @@
 	</title>
         
 		<%= stylesheet_link_tag "restlessnapkin" %>
+		<%= stylesheet_link_tag "microformats" %>
+		<%= stylesheet_link_tag "layout" %>
+		<%= stylesheet_link_tag "feeds" %>
+	    
 		<!--[if lte IE 7.0]><%= stylesheet_link_tag "restlessnapkin_ie" %><![endif]-->
 		<!--[if IE 8.0]>
 			<style type="text/css">
