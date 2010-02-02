@@ -1,4 +1,4 @@
-<% content_module "Welcome to The Restless Napkin", { :altbox => true, :box_size => 100 } do %>
+<% content_module "Welcome to The Restless Napkin", { :altbox => true, :box_size => 100, :text => true } do %>
 	<p><strong>MacroDeck</strong> is another social networking website. Unlike other social networking websites, the innovative stuff we create doesn't require you to switch services.
 	If you already use Facebook, you shouldn't be required to create yet another account and go to yet another website to get some cool feature. Have friends on Facebook and MySpace?
 	Want to show them a <%= link_to "place", "http://places.macrodeck.com/" %>? With MacroDeck, this won't be a problem. But, if you don't already use Facebook or MySpace, the most important
@@ -8,7 +8,7 @@
 	<a href="http://developer.macrodeck.com/">development Wiki</a>.</p>
 <% end %>
 
-<% content_module "A List of Future Plans, in No Particular Order" do %>
+<% content_module "A List of Future Plans, in No Particular Order", { :text => true } do %>
 	<ul>
 		<li><a href="http://www.openid.net/">OpenID</a> support for all users</li>
 		<li>Consume data from MySpace and Facebook</li>
