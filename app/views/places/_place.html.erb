@@ -1,9 +1,9 @@
 <% viewmode = :compact if local_assigns[:viewmode].nil? %>
 
 <% if viewmode == :micro %>
-	<li class="vcard"><%= link_to h(place.name), country_state_city_place_path(params[:country_id], params[:state_id], place.parent.url_part, place.uuid), :class => "fn org" %></li>
+	<li class="vcard<%= " #{css_class}" if local_assigns[:css_class] %>"><%= link_to h(place.name), country_state_city_place_path(params[:country_id], params[:state_id], place.parent.url_part, place.uuid), :class => "fn org" %></li>
 <% elsif viewmode == :compact %>
-	<li class="vcard">
+	<li class="vcard<%= " #{css_class}" if local_assigns[:css_class] %>">
 		<h4>
 			<%= link_to h(place.name), country_state_city_place_path(params[:country_id], params[:state_id], place.parent.url_part, place.uuid), :class => "fn org" %>
 			<a href="http://maps.google.com/maps?q=<%= "#{h(place.place_metadata[:address])}, #{h(place.parent.name)}, #{h(place.parent.state(:abbreviation => true))}" %>" class="adr subtitle" target="_blank">
@@ -18,7 +18,7 @@
 		<span class="note">
 			<%=
 				auto_link(truncate(h(place.description), 150), :href_options => { :target => "_blank"} ) do |link| 
-					"<link>"
+					"[#]"
 				end
 			%>
 		</span>
