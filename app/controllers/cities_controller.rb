@@ -1,6 +1,6 @@
 # This controller does all of the magic for cities.
 class CitiesController < ApplicationController
-	layout 'default'
+	layout 'restlessnapkin'
 	before_filter :find_country
 	before_filter :find_state
 	before_filter :find_city
@@ -8,6 +8,7 @@ class CitiesController < ApplicationController
 	# List cities
 	def index
 		@cities = @state.children
+		@page_title = "#{@country.name} > #{@state.name} > Cities"
 
 		respond_to do |format|
 			format.html # index.html.erb 
@@ -19,6 +20,7 @@ class CitiesController < ApplicationController
 		if @city.nil?
 			raise ActiveRecord::RecordNotFound
 		else
+			@page_title = "#{@city.name}, #{@state.name}"
 			respond_to do |format|
 				format.html
 				format.xml { render :xml => @city }
