@@ -1,18 +1,1 @@
 <%= render :partial => "city", :locals => { :viewmode => :full, :city => @city } %>
-
-<div class="two-column">
-	<div class="column">
-		<h3>Upcoming Events</h3>
-		<ol class="feed">
-			<%= render :partial => "events/event", :collection => @city.upcoming_events[0..9] %>
-		</ol>
-		<%= link_to "View All Events", country_state_city_events_path(params[:country_id], params[:state_id], params[:id]) %>
-	</div>
-	<div class="column">
-		<h3>Interesting Places</h3>
-		<ul class="feed">
-			<%= render :partial => "places/place", :collection => @city.get_10_random_places %>
-		</ul>
-		<%= link_to "View All Places", country_state_city_places_path(params[:country_id], params[:state_id], params[:id]) %>
-	</div>
-</div>
