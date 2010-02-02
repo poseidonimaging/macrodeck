@@ -302,11 +302,14 @@ ul.actions li {display: inline; margin-right: 5px;}
 	.box .content table tfoot th,
 	.box .content table tfoot td {border-top: 1px solid #ccc; background: #fff url("/images/tfoot.gif") repeat-x;}
 	/* boxes' content types – simple list */
-	.box .content ul.simple li {clear: both; padding: 10px 20px 8px 20px; overflow: hidden;}
+	.box .content ul.simple li,
+	.box .content ol.simple li { clear: both; padding: 10px 20px 8px 20px; overflow: hidden; }
 	.box .content table tr.even th,
-	.box .content ul.simple li.even {background: #f5f5f5;}
+	.box .content ul.simple li.even,
+	.box .content ol.simple li.even { background: #f5f5f5; }
 	.altbox .content table tr.even th,
-	.altbox .content ul.simple li.even {background: #fff0f0;}
+	.altbox .content ul.simple li.even,
+	.altbox .cotnent ol.simple li.even { background: #fff0f0; }
 	.box .content ul.simple strong {float: left; font-weight: normal;}
 	.box .content ul.simple span {float: right;}
 	/* boxes' content types – grid */
