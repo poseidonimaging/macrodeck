@@ -1,3 +1,10 @@
 /* Feed styles */
 
-ol.feed			{ list-style-type: none; margin: 0; padding: 0; }
+ol.feed,
+ul.feed			{ list-style-type: none; margin: 0; padding: 0; }
+ol.feed li,
+ul.feed li		{ padding: 10px 20px 8px 20px; }
+ol.feed li.even,
+ul.feed li.even		{ background: #f5f5f5; }
+.altbox ol.feed li.even,
+.altbox ul.feed li.even	{ background: #fff0f0; }
