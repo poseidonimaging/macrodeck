@@ -24,7 +24,9 @@
 	<% end %>
 	<% content_module "Interesting Places", { :box_size => 50 } do %>
 	    <ul class="feed">
-		<%= render :partial => "places/place", :collection => city.get_10_random_places %>
+		<% city.get_10_random_places.each do |place| %>
+		    <%= render :partial => "places/place", :object => place, :locals => { :css_class => cycle("odd", "even") } %>
+		<% end %>
 	    </ul>
 	    <%= link_to "View All Places", country_state_city_places_path(params[:country_id], params[:state_id], params[:id]) %>
 	<% end %>
