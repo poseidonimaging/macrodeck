@@ -16,7 +16,9 @@
 	<% end %>
 	<% content_module "Upcoming Events", { :box_size => 50 } do %>
 	    <ol class="feed">
-		<%= render :partial => "events/event", :collection => city.upcoming_events[0..9] %>
+		<% city.upcoming_events[0..9].each do |event| %>
+		    <%= render :partial => "events/event", :object => event, :locals => { :css_class => cycle("odd", "even") } %>
+		<% end %>
 	    </ol>
 	    <%= link_to "View All Events", country_state_city_events_path(params[:country_id], params[:state_id], params[:id]) %>
 	<% end %>
