@@ -4,12 +4,11 @@
 			<h3><%= title %></h3>
 			<% if local_assigns[:buttons] %>
 			    <% buttons.each do |button| %>
-				<%= link_to button[0], button[1], :class => "button" %>
-			    <% end %>
-			<% end %>
-			<% if local_assigns[:green_buttons] %>
-			    <% green_buttons.each do |button| %>
-				<%= link_to button[0], button[1], :class => "green button" %>
+				<% if button[2] %>
+				    <%= link_to button[0], button[1], :class => "button #{button[2]}" %>
+				<% else %>
+				    <%= link_to button[0], button[1], :class => "button" %>
+				<% end %>
 			    <% end %>
 			<% end %>
 		</div>
