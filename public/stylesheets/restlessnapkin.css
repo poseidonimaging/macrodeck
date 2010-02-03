@@ -164,6 +164,15 @@ a img {border: none;}
 	.altbox .altbutton:hover,
 	.altbox .altbutton:focus,
 	.altbox .altbutton:active {border-color: #272727; background: #2a2a2a url("/images/altbutton.gif") repeat-x; text-shadow: #000 1px 1px 0; color: #fff;}
+	/* green buttons */
+	.button.green { border-color: #386b00; background: #52801f url("/images/button_green.gif") repeat-x; text-shadow: #2f5d0b 1px 1px 0; color: #fff; }
+	.button.green:hover,
+	.button.green:focus,
+	.button.green:active { border-color: #272727; background: #2a2a2a url("/images/altbutton.gif") repeat-x; text-shadow: #000 1px 1px 0; color: #fff;}
+	.altbox .button.green { border: 1px solid #272727; background: #2a2a2a url("/images/altbutton.gif") repeat-x; text-shadow: #000 1px 1px 0; }
+	.altbox .button.green:hover,
+	.altbox .button.green:focus,
+	.altbox .button.green:active { border-color: #386b00; background: #52801f url("/images/button_green.gif") repeat-x; text-shadow: #2f5d0b 1px 1px 0; color: #fff; }
 
 /* icons for content links etc. */
 .ico { border: 0 !important; }
