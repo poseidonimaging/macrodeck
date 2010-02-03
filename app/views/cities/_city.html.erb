@@ -18,17 +18,25 @@
 	    </p>
 	<% end %>
 	<% content_module "Upcoming Events", { :box_size => 50, :buttons => [ ["view all &raquo;", country_state_city_events_path(params[:country_id], params[:state_id], params[:id]) ] ] } do %>
-	    <ol class="feed">
-		<% city.upcoming_events[0..9].each do |event| %>
-		    <%= render :partial => "events/event", :object => event, :locals => { :css_class => cycle("odd", "even") } %>
-		<% end %>
-	    </ol>
+	    <% if city.upcoming_events.nil? || city.upcoming_events.size == 0 %>
+		<p class="text">There are no upcoming events in this city.</p>
+	    <% else %>
+		<ol class="feed">
+		    <% city.upcoming_events[0..9].each do |event| %>
+			<%= render :partial => "events/event", :object => event, :locals => { :css_class => cycle("odd", "even") } %>
+		    <% end %>
+		</ol>
+	    <% end %>
 	<% end %>
 	<% content_module "Interesting Places", { :box_size => 50, :buttons => [ ["view all &raquo;", country_state_city_places_path(params[:country_id], params[:state_id], params[:id]) ] ] } do %>
-	    <ul class="feed">
-		<% city.get_10_random_places.each do |place| %>
-		    <%= render :partial => "places/place", :object => place, :locals => { :css_class => cycle("odd", "even") } %>
-		<% end %>
-	    </ul>
+	    <% if city.get_10_random_places.nil? || city.get_10_random_places.size == 0 %>
+		<p class="text">There are no places inthis city.</p>
+	    <% else %>
+		<ul class="feed">
+		    <% city.get_10_random_places.each do |place| %>
+			<%= render :partial => "places/place", :object => place, :locals => { :css_class => cycle("odd", "even") } %>
+		    <% end %>
+		</ul>
+	    <% end %>
 	<% end %>
 <% end %>
