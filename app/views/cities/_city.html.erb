@@ -17,7 +17,13 @@
 		A Facebook wall-style feed will go here.
 	    </p>
 	<% end %>
-	<% content_module "Upcoming Events", { :box_size => 50, :buttons => [ ["view all &raquo;", country_state_city_events_path(params[:country_id], params[:state_id], params[:id]) ] ] } do %>
+	<% content_module "Upcoming Events", {
+		:box_size => 50,
+		:buttons => [
+		    ["view all &raquo;", country_state_city_events_path(params[:country_id], params[:state_id], params[:id])],
+		    ["+", new_country_state_city_event_path(params[:country_id], params[:state_id], params[:id]), "green add"]
+		]
+	} do %>
 	    <% if city.upcoming_events.nil? || city.upcoming_events.size == 0 %>
 		<p class="text">There are no upcoming events in this city.</p>
 	    <% else %>
