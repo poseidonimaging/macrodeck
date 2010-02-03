@@ -30,7 +30,7 @@
 	<% end %>
 	<% content_module "Interesting Places", { :box_size => 50, :buttons => [ ["view all &raquo;", country_state_city_places_path(params[:country_id], params[:state_id], params[:id]) ] ] } do %>
 	    <% if city.get_10_random_places.nil? || city.get_10_random_places.size == 0 %>
-		<p class="text">There are no places inthis city.</p>
+		<p class="text">There are no places in this city.</p>
 	    <% else %>
 		<ul class="feed">
 		    <% city.get_10_random_places.each do |place| %>
