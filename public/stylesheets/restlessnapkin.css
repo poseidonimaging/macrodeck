@@ -173,6 +173,7 @@ a img {border: none;}
 	.altbox .button.green:hover,
 	.altbox .button.green:focus,
 	.altbox .button.green:active { border-color: #386b00; background: #52801f url("/images/button_green.gif") repeat-x; text-shadow: #2f5d0b 1px 1px 0; color: #fff; }
+	.button.add { float: right; margin: 0 10px 0 0; font-size: 150%; padding: 1px 9px 1px; }
 
 /* icons for content links etc. */
 .ico { border: 0 !important; }
