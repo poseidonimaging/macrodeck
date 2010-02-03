@@ -7,6 +7,11 @@
 				<%= link_to button[0], button[1], :class => "button" %>
 			    <% end %>
 			<% end %>
+			<% if local_assigns[:green_buttons] %>
+			    <% green_buttons.each do |button| %>
+				<%= link_to button[0], button[1], :class => "green button" %>
+			    <% end %>
+			<% end %>
 		</div>
 		<div class="content">
 			<%= '<div class="text">' if local_assigns[:text] %>
