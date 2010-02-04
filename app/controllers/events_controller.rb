@@ -1,6 +1,6 @@
 # This controller does all of the magic for events
 class EventsController < ApplicationController
-	layout 'default'
+	layout 'restlessnapkin'
 	before_filter :find_country
 	before_filter :find_state
 	before_filter :find_city
