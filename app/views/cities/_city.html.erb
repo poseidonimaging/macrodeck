@@ -17,11 +17,15 @@
 		A Facebook wall-style feed will go here.
 	    </p>
 	<% end %>
-	<% content_module "Upcoming Events", {
+	<% content_module "Happenings", {
 		:box_size => 50,
 		:buttons => [
-		    ["view all &raquo;", country_state_city_events_path(params[:country_id], params[:state_id], params[:id])],
-		    ["+", new_country_state_city_event_path(params[:country_id], params[:state_id], params[:id]), "green add"]
+		    ["+ add happening", new_country_state_city_event_path(params[:country_id], params[:state_id], params[:id]), "green"]
+		],
+		:tabs => [
+		    [image_tag("icons/small/silk/house.png", :alt => "Home", :title => "Home"), "#", "active"],
+		    ["Friends", "#"],
+		    ["All", "#"]
 		]
 	} do %>
 	    <% if city.upcoming_events.nil? || city.upcoming_events.size == 0 %>
