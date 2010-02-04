@@ -49,35 +49,58 @@
 		</span>
 	</li>
 <% elsif viewmode == :full %>
+    <div style="width: 75%; float: left;">
 	<div class="vevent">
-		<h2><%= h(event.summary) %></h2>
-		<% unless event.description.empty? %>
-			<%= auto_link(simple_format(h(event.description), :class => "description"),
-				:href_options => { :target => "_blank" }) %>
+		<% content_module h(event.summary), { :box_size => 75, :altbox => true, :class_name => "summary", :text => true } do %>
+		    <% unless event.description.empty? %>
+			    <%= auto_link(simple_format(h(event.description), :class => "description"),
+				    :href_options => { :target => "_blank" }) %>
+		    <% end %>
+		    <dl>
+			    <dt>Start Time</dt>
+			    <dd>
+				    <abbr class="dtstart" title="<%= event.start_time.strftime("%Y-%m-%d %H:%M:%S") %>">
+					    <%= event.start_time.strftime("%b %d, %Y") %>
+					    <%= event.start_time.strftime("%I:%M%p").downcase %>
+				    </abbr>
+			    </dd>
+			    <% if !event.no_end_time && !event.end_time.nil? %>
+				    <dt>End Time</dt>
+				    <dd>
+					    <abbr class="dtend" title="<%= event.end_time.strftime("%Y-%m-%d %H:%M:%S") %>">
+						    <%= event.end_time.strftime("%b %d, %Y") %>
+						    <%= event.end_time.strftime("%I:%M%p").downcase %>
+					    </abbr>
+				    </dd>
+				    </dd>
+			    <% end %>
+		    </dl>
 		<% end %>
-		<dl>
-			<dt>Start Time</dt>
-			<dd>
-				<abbr class="dtstart" title="<%= event.start_time.strftime("%Y-%m-%d %H:%M:%S") %>">
-					<%= event.start_time.strftime("%b %d, %Y") %>
-					<%= event.start_time.strftime("%I:%M%p").downcase %>
-				</abbr>
-			</dd>
-			<% if !event.no_end_time && !event.end_time.nil? %>
-				<dt>End Time</dt>
-				<dd>
-					<abbr class="dtend" title="<%= event.end_time.strftime("%Y-%m-%d %H:%M:%S") %>">
-						<%= event.end_time.strftime("%b %d, %Y") %>
-						<%= event.end_time.strftime("%I:%M%p").downcase %>
-					</abbr>
-				</dd>
-				</dd>
-			<% end %>
-		</dl>
-
-		<h3>Attendees</h3>
-		<p>Placeholder.</p>
-
-		<h3>Wall</h3>
 	</div>
+	<% content_module "Wall", { :box_size => 75 } do %>
+	    <p>Wall goes here</p>
+	<% end %>
+    </div>
+    <div style="width: 25%; float: left;">
+	<% content_module "Location", { :box_size => 25, :altbox => true, :text => true } do %>
+	    <h1>Name of Place</h1>
+	    <p>1234 Street</p>
+	    <p>Phone Number</p>
+	<% end %>
+	<% content_module "Attendees", { :box_size => 25 } do %>
+	    <p>Placeholder.</p>
+	    <p>Placeholder.</p>
+	    <p>Placeholder.</p>
+	    <p>Placeholder.</p>
+	    <p>Placeholder.</p>
+	    <p>Placeholder.</p>
+	    <p>Placeholder.</p>
+	    <p>Placeholder.</p>
+	    <p>Placeholder.</p>
+	    <p>Placeholder.</p>
+	    <p>Placeholder.</p>
+	    <p>Placeholder.</p>
+	    <p>Placeholder.</p>
+	<% end %>
+    </div>
 <% end %>
