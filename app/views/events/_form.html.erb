@@ -118,7 +118,7 @@ end
 	</dd>
     </dl>
 
-    <% if [:create, :new].include? params[:action].to.sym %>
+    <% if [:create, :new].include? params[:action].to_sym %>
 	<%= f.submit "Add Happening" %>
     <% elsif [:update, :edit].include? params[:action].to_sym %>
 	<%= f.submit "Edit Happening" %>
