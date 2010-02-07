@@ -1,0 +1,36 @@
+<script type="text/javascript">
+    // is called when you check the box
+    function event_recurrence_handler() {
+	if ($("event_recurrence").readAttribute("checked") == "checked") {
+	    var disabled = null;
+	} else {
+	    var disabled = "disabled";
+	}
+
+	$('recurrence_rate_yearly').writeAttribute("disabled", disabled);
+	$('recurrence_rate_monthly').writeAttribute("disabled", disabled);
+	$('recurrence_rate_monthly_nth_nday').writeAttribute("disabled", disabled);
+	$('recurrence_rate_weekly').writeAttribute("disabled", disabled);
+    }
+</script>
+
+<%= check_box_tag "event_recurrence", true, @event_recurrence, :id => "event_recurrence", :style => "width: 13px; height: 13px;", :onchange => "event_recurrence_handler();" %>
+	This event recurs:
+
+<script type="text/javascript">
+    // run the checkbox handler
+    event_recurrence_handler();
+</script>
+
+<div id="event_recurrence_types">
+    <p style="margin: 0; margin-left: 15px;">
+	<%= radio_button_tag "recurrence_rate", "yearly", @recurrence_rate_yearly, :id => "recurrence_rate_yearly", :style => "width: 13px; height: 13px;" %>
+			Annually <span id="recurrence_rate_yearly_help"></span><br />
+	<%= radio_button_tag "recurrence_rate", "monthly", @recurrence_rate_monthly, :id => "recurrence_rate_monthly", :style => "width: 13px; height: 13px;" %>
+			Monthly <span id="recurrence_rate_monthly_help"></span><br />
+	<%= radio_button_tag "recurrence_rate", "monthly_nth_nday", @recurrence_rate_monthly_nth_nday, :id => "recurrence_rate_monthly_nth_nday", :style => "width: 13px; height: 13px;" %>
+			Monthly <span id="recurrence_rate_monthly_nth_nday_help"></span><br />
+	<%= radio_button_tag "recurrence_rate", "weekly", @recurrence_rate_weekly, :id => "recurrence_rate_weekly", :style => "width: 13px; height: 13px;" %>
+		Weekly <span id="recurrence_rate_weekly_help"></span>
+    </p>
+</div>
