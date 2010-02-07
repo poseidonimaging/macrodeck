@@ -93,53 +93,36 @@
 		end
 	end
 %>
-<% form_for @event, :url => url do |f| %>
-	<%= f.error_messages %>
-	
-	<table>
-		<tr>
-			<td>
-				<%= f.label :summary, "Event Summary" %>
-			</td>
-			<td>
-				<%= f.text_field :summary %>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<%= f.label :description %>
-			</td>
-			<td>
-				<%= f.text_field :description %>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<%= f.label :start_time, "Start Time" %>
-			</td>
-			<td>
-				<%= f.text_field :start_time %><br />
-				<div id="event_dtstart_parsed">Type in a time such as "Monday at 5pm" or "Jan 6 2009 at 3pm"</div>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<%= f.label :end_time, "End Time" %>
-			</td>
-			<td>
-				<%= f.check_box :no_end_time, :onchange => "event_dtend_disable_handler();" %> This event does not have a specified ending time.<br />
-				<%= f.text_field :end_time %><br />
-				<div id="event_dtend_parsed">Type in a time such as "Monday at 5pm" or "Jan 6 2009 at 3pm"</div>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<%= f.label :recurrence %>
-			</td>
-			<td>
-				<%= render :partial => "recurrence_selector" %>
-			</td>
-		</tr>
-	</table>
-	<%= f.submit "Create Event" %>
+<% form_for @event, :url => url, :html => { :class => "basic" } do |f| %>
+    <%= f.error_messages({ :header_message => nil, :class => "msg msg-error" }) %>
+
+    <dl>
+	<dt><%= f.label :summary, "Summary" %></dt>
+	<dd><%= f.text_field :summary %></dd>
+
+	<dt><%= f.label :description, "Description" %></dt>
+	<dd><%= f.text_area :description %></dd>
+
+	<dt><%= f.label :start_time, "Start Time" %></dt>
+	<dd>
+	    <p><%= f.text_field :start_time %></p>
+	    <div id="event_dtstart_parsed">Type in a time such as "Monday at 5pm" or "Jan 6 2009 at 3pm".</div>
+	</dd>
+	<dt><%= f.label :end_time, "End Time" %></dt>
+	<dd>
+	    <p><%= f.check_box :no_end_time, :onchange => "event_dtend_disable_handler();" %> <%= f.label :no_end_time, "This event does not have a specified ending time." %></p>
+	    <p><%= f.text_field :end_time %></p>
+	    <div id="event_dtend_parsed">Type in a time such as "Monday at 5pm" or "Jan 6 2009 at 3pm"</div>
+	</dd>
+	<dt><%= f.label :recurrence, "Recurrence" %></dt>
+	<dd>
+	    <%= render :partial => "recurrence_selector" %>
+	</dd>
+    </dl>
+
+    <% if [:create, :new].include? params[:method].to.sym %>
+	<%= f.submit "Add Happening" %>
+    <% elsif [:update, :edit].include? params[:method].to_sym %>
+	<%= f.submit "Edit Happening" %>
+    <% end %>
 <% end %>
