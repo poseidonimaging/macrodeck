@@ -100,12 +100,14 @@ class EventsController < ApplicationController
 	    recurrence_monthly_nth_nday << parsed.strftime("%A")
 	    recurrence_weekly = parsed.strftime("%A")
 
-	    time_output = {	"friendly_date" => friendly_date,
+	    time_output = {
+		"friendly_date" => friendly_date,
 		"recurrence_yearly" => "(every #{recurrence_yearly})",
 		"recurrence_monthly" => "(the #{recurrence_monthly} of every month)",
 		"recurrence_monthly_nth_nday" => "(every #{recurrence_monthly_nth_nday})",
 		"recurrence_weekly" => "(every #{recurrence_weekly})",
-		"error" => "0" }
+		"error" => "0"
+	    }
 
 	    render :json => time_output.to_json
 	else
