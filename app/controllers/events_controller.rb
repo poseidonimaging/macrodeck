@@ -34,6 +34,14 @@ class EventsController < ApplicationController
 	    format.html # edit.html.erb
 	end
     end
+
+    # Shows the interface for creating an event.
+    def new
+	@event = @calendar.events.new
+	respond_to do |format|
+	    format.html # new.html.erb
+	end
+    end
 	
     # Handles updating an event
     def update
