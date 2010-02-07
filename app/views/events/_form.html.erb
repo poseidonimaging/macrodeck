@@ -73,25 +73,20 @@
     new PeriodicalExecuter(event_dtend_ajax, 1.0);
 </script>
 <% 
-	url = []
-	method = nil
-	if params[:place_id]
-		if params[:id]
-			url = country_state_city_place_event_path(params[:country_id], params[:state_id], params[:city_id], params[:place_id], params[:id])
-			method = :update
-		else
-			url = country_state_city_place_events_path(params[:country_id], params[:state_id], params[:city_id], params[:place_id])
-			method = :create
-		end
-	elsif params[:city_id]
-		if params[:id]
-			url = country_state_city_event_path(params[:country_id], params[:state_id], params[:city_id], params[:id])
-			method = :update
-		else
-			url = country_state_city_events_path(params[:country_id], params[:state_id], params[:city_id])
-			method = :create
-		end
-	end
+url = []
+if params[:place_id]
+    if params[:id]
+	url = country_state_city_place_event_path(params[:country_id], params[:state_id], params[:city_id], params[:place_id], params[:id])
+    else
+	url = country_state_city_place_events_path(params[:country_id], params[:state_id], params[:city_id], params[:place_id])
+    end
+elsif params[:city_id]
+    if params[:id]
+	url = country_state_city_event_path(params[:country_id], params[:state_id], params[:city_id], params[:id])
+    else
+	url = country_state_city_events_path(params[:country_id], params[:state_id], params[:city_id])
+    end
+end
 %>
 <% form_for @event, :url => url, :html => { :class => "basic" } do |f| %>
     <%= f.error_messages({ :header_message => nil, :class => "msg msg-error" }) %>
