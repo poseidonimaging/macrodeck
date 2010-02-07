@@ -68,6 +68,9 @@
 	}
     }
 
+    function event_dtstart_ajax() { return event_time_ajax("start"); }
+    function event_dtend_ajax() { return event_time_ajax("end"); }
+
     // script that runs every 1s to process dtstart
     new PeriodicalExecuter(event_dtstart_ajax, 1.0);
     new PeriodicalExecuter(event_dtend_ajax, 1.0);
