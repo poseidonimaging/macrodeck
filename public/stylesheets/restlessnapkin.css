@@ -286,6 +286,8 @@ ul.actions li {display: inline; margin-right: 5px;}
 	.box .header ul a:hover,
 	.box .header ul a:focus,
 	.box .header ul a:active {background: #fff url("/images/headertab.png") repeat-x; color: #444;}
+	.box .header ul img,
+	.altbox .header ul img { height: 13px; margin-bottom: -3px; }
 	.altbox .header ul a {background-color: #d44848;}
 	.altbox .header ul a.active,
 	.altbox .header ul a:hover,
