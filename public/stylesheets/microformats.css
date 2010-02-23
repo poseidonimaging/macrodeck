@@ -10,3 +10,4 @@
 .vevent dl dd				{ float: left; }
 .vevent .description,
 .vevent .nodescription			{ margin: 0 0 1em 0; }
+.vevent .approximation			{ color: #999; }
