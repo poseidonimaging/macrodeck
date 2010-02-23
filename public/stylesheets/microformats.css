@@ -4,3 +4,9 @@
 .vevent .description			{ margin: 0; padding: 0; display: block; font-weight: normal; }
 .vevent abbr				{ text-decoration: none; border-bottom: 0; }
 .feed .vcard .adr			{ display: block; font-size: 75%; color: #999; text-decoration: none; border: none; }
+.vevent dl				{ overflow: auto; }
+.vevent dl dt				{ clear: both; float: left; font-weight: bold; width: 100px; }
+.vevent dl dt:after			{ content: ":"; }
+.vevent dl dd				{ float: left; }
+.vevent .description,
+.vevent .nodescription			{ margin: 0 0 1em 0; }
