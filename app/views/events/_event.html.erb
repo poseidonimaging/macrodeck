@@ -50,7 +50,7 @@
     <div class="vevent">
 	<div style="width: 75%; float: left;">
 	    <div>
-		<% content_module h(event.summary), { :box_size => 75, :altbox => true, :class_name => "summary", :text => true } do %>
+		<% content_module h(event.summary), { :box_size => 75, :altbox => true, :class_name => "summary", :text => true, :buttons => [["edit", "#"]] } do %>
 		    <% if event.description.empty? %>
 			<p class="nodescription">There is no description for this event. <%= link_to "Please add one.", "#" %></p>
 		    <% else %>
