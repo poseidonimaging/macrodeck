@@ -9,7 +9,7 @@ dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,
 table, caption, tbody, tfoot, thead, tr, th, td {border: 0; margin: 0; padding: 0; vertical-align: baseline; font-weight: inherit; font-style: inherit; font-size: 100%; font-family: inherit;}
 
-body {background: #ddd; font: 75%/1.5 "Lucida Sans", "Lucida Grande", "Lucida Sans Unicode", Verdana, sans-serif; color: #333;}
+body {background: #ddd; font: 75%/1.5 "Lucida Sans", "Lucida Grande", "Bitstream Vera Sans", "Lucida Sans Unicode", Verdana, sans-serif; color: #333; } /* *nix gets a bad experience if they use LSU */
 h1, h2, h3, h4, h5, h6 { font-family: "Segoe UI", Candara, "Bitstream Vera Sans", "DejaVu Sans", "Bitstream Vera Sans", "Trebuchet MS", Verdana, "Verdana Ref", sans-serif;}
 
 table {border-collapse: separate; border-spacing: 0;}
