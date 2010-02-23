@@ -4,42 +4,40 @@
 	<li class="vevent<%= " #{css_class}" if local_assigns[:css_class] %>"><%= link_to h(event.summary), "#", :class => "summary" %></li>
 <% elsif viewmode == :compact %>
 	<li class="vevent<%= " #{css_class}" if local_assigns[:css_class] %>">
-		<% if @city && !@place %>
-			<h4>
-				<%= link_to h(event.summary),
-					country_state_city_event_path(	params[:country_id],
+		<h4>
+		    <% if @city && !@place %>
+			<%= link_to h(event.summary),
+				country_state_city_event_path(	params[:country_id],
+								params[:state_id],
+								params[:id], event.uuid
+							     ),
+				:class => "summary"
+			%>
+		    <% elsif @city && @place %>
+			<%= link_to h(event.summary),
+				country_state_city_place_event_path(	params[:country_id],
 									params[:state_id],
-									params[:id], event.uuid
-								     ),
-					:class => "summary"
-				%>
-			</h4>
-		<% elsif @city && @place %>
-			<h4>
-				<%= link_to h(event.summary),
-					country_state_city_place_event_path(	params[:country_id],
-										params[:state_id],
-										params[:city_id],
-										params[:id],
-										event.uuid
-									   ),
-					:class => "summary"
-				%>
-			</h4>
-		<% end %>
-		<span class="event-time">
-			<abbr class="dtstart" title="<%= event.start_time.strftime("%Y-%m-%d %H:%M:%S") %>">
-				<%= event.start_time.strftime("%b %d, %Y") %>
-				<%= event.start_time.strftime("%I:%M%p").downcase %>
-			</abbr>
-			<% if !event.no_end_time && !event.end_time.nil? %>
-				&mdash;
-				<abbr class="dtend" title="<%= event.end_time.strftime("%Y-%m-%d %H:%M:%S") %>">
-					<%= event.start_time.strftime("%b %d, %Y") %>
-					<%= event.start_time.strftime("%I:%M%p").downcase %>
-				</abbr>
-			<% end %>
-		</span>
+									params[:city_id],
+									params[:id],
+									event.uuid
+								   ),
+				:class => "summary"
+			%>
+		    <% end %>
+		    <span class="event-time">
+			    <abbr class="dtstart" title="<%= event.start_time.getlocal.strftime("%Y-%m-%d %H:%M:%S") %>">
+				    <%= event.start_time.strftime("%b %d, %Y") %>
+				    <%= event.start_time.strftime("%I:%M%p").downcase %>
+			    </abbr>
+			    <% if !event.no_end_time && !event.end_time.nil? %>
+				    &mdash;
+				    <abbr class="dtend" title="<%= event.end_time.getlocal.strftime("%Y-%m-%d %H:%M:%S") %>">
+					    <%= event.end_time.strftime("%b %d, %Y") %>
+					    <%= event.end_time.strftime("%I:%M%p").downcase %>
+				    </abbr>
+			    <% end %>
+		    </span>
+		</h4>
 		<span class="description">
 			<%=
 				auto_link(truncate(h(event.description), 150), :href_options => { :target => "_blank"} ) do |link| 
@@ -49,58 +47,66 @@
 		</span>
 	</li>
 <% elsif viewmode == :full %>
-    <div style="width: 75%; float: left;">
-	<div class="vevent">
+    <div class="vevent">
+	<div style="width: 75%; float: left;">
+	    <div>
 		<% content_module h(event.summary), { :box_size => 75, :altbox => true, :class_name => "summary", :text => true } do %>
-		    <% unless event.description.empty? %>
-			    <%= auto_link(simple_format(h(event.description), :class => "description"),
-				    :href_options => { :target => "_blank" }) %>
+		    <% if event.description.empty? %>
+			<p class="nodescription">There is no description for this event. <%= link_to "Please add one.", "#" %></p>
+		    <% else %>
+		        <%= auto_link(simple_format(h(event.description), :class => "description"),
+			    :href_options => { :target => "_blank" }) %>
 		    <% end %>
+
 		    <dl>
-			    <dt>Start Time</dt>
+			<dt>Start Time</dt>
+			<dd>
+			    <abbr class="dtstart" title="<%= event.start_time.getlocal.strftime("%Y-%m-%d %H:%M:%S") %>">
+				    <%= event.start_time.strftime("%b %d, %Y") %>
+				    <%= event.start_time.strftime("%I:%M%p").downcase %>
+			    </abbr>
+			</dd>
+
+			<% if !event.no_end_time && !event.end_time.nil? %>
+			    <dt>End Time</dt>
 			    <dd>
-				    <abbr class="dtstart" title="<%= event.start_time.strftime("%Y-%m-%d %H:%M:%S") %>">
-					    <%= event.start_time.strftime("%b %d, %Y") %>
-					    <%= event.start_time.strftime("%I:%M%p").downcase %>
-				    </abbr>
+				<abbr class="dtend" title="<%= event.end_time.getlocal.strftime("%Y-%m-%d %H:%M:%S") %>">
+				    <%= event.end_time.strftime("%b %d, %Y") %>
+				    <%= event.end_time.strftime("%I:%M%p").downcase %>
+				</abbr>
+				<span class="approximation">(<%= distance_of_time_in_words(event.start_time.getlocal, event.end_time.getlocal, false) %> later)</span>
 			    </dd>
-			    <% if !event.no_end_time && !event.end_time.nil? %>
-				    <dt>End Time</dt>
-				    <dd>
-					    <abbr class="dtend" title="<%= event.end_time.strftime("%Y-%m-%d %H:%M:%S") %>">
-						    <%= event.end_time.strftime("%b %d, %Y") %>
-						    <%= event.end_time.strftime("%I:%M%p").downcase %>
-					    </abbr>
-				    </dd>
-				    </dd>
-			    <% end %>
+			<% end %>
 		    </dl>
 		<% end %>
+	    </div>
+	    <% content_module "Wall", { :box_size => 75 } do %>
+		<p>Wall goes here</p>
+	    <% end %>
 	</div>
-	<% content_module "Wall", { :box_size => 75 } do %>
-	    <p>Wall goes here</p>
-	<% end %>
-    </div>
-    <div style="width: 25%; float: left;">
-	<% content_module "Location", { :box_size => 25, :altbox => true, :text => true } do %>
-	    <h1>Name of Place</h1>
-	    <p>1234 Street</p>
-	    <p>Phone Number</p>
-	<% end %>
-	<% content_module "Attendees", { :box_size => 25 } do %>
-	    <p>Placeholder.</p>
-	    <p>Placeholder.</p>
-	    <p>Placeholder.</p>
-	    <p>Placeholder.</p>
-	    <p>Placeholder.</p>
-	    <p>Placeholder.</p>
-	    <p>Placeholder.</p>
-	    <p>Placeholder.</p>
-	    <p>Placeholder.</p>
-	    <p>Placeholder.</p>
-	    <p>Placeholder.</p>
-	    <p>Placeholder.</p>
-	    <p>Placeholder.</p>
-	<% end %>
+	<div style="width: 25%; float: left;">
+	    <% content_module "Location", { :box_size => 25, :altbox => true, :text => true } do %>
+		<div class="location">
+		    <% if @place %>
+			<%= render :partial => "places/place", :object => @place %>
+		    <% end %>
+		</div>
+	    <% end %>
+	    <% content_module "Attendees", { :box_size => 25 } do %>
+		<p>Placeholder.</p>
+		<p>Placeholder.</p>
+		<p>Placeholder.</p>
+		<p>Placeholder.</p>
+		<p>Placeholder.</p>
+		<p>Placeholder.</p>
+		<p>Placeholder.</p>
+		<p>Placeholder.</p>
+		<p>Placeholder.</p>
+		<p>Placeholder.</p>
+		<p>Placeholder.</p>
+		<p>Placeholder.</p>
+		<p>Placeholder.</p>
+	    <% end %>
+	</div>
     </div>
 <% end %>
