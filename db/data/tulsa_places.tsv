@@ -1,0 +1,7 @@
+"[""875de01b-edb9-47a4-aabc-7acd97ecde43"", ""875de01b-edb9-47a4-aabc-7acd97ecde43"", ""4eaa4e73-f56d-4629-9e45-59d07c8cc75e""]"
+_id	parent (or blank)[1]	title	description	address	postal_code	phone_number	url	fare (ARRAY)	features (ARRAY)	parking	atmosphere	alcohol (ARRAY)	credit_cards_accepted (ARRAY)	reservations
+8f17285a-b121-41c6-94ed-8f8e34bd13bd	a68e0bb6-008f-4770-9012-f5125474a0a3	Joe Momma's Pizza	The only pizza place ever to be in serious competition with Hideaway Pizza.	112 S. Elgin Ave.			http://www.joemommas.com/	"Pizza, Pasta"	"Live Music, Daily Specials"	Street	Casual	"Bar, Beer"	"Visa, MasterCard"	Accepted
+
+
+
+[1] Leave this blank if the parent is supposed to be the city, otherwise put the neighborhood here. --ziggythehamster Tue Jul 06 2010 22:16:55 GMT-0500 (CDT)
