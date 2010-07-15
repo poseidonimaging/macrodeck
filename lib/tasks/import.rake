@@ -32,8 +32,8 @@ end
 
 namespace :macrodeck do
 	namespace :import do
-		desc "Imports countries from COUNTRIES=path file."
-		task :countries do
+		desc "Imports countries from COUNTRIES=path file (default is ./db/data/countries.tsv)."
+		task :countries => :environment do
 			# File layout is:
 			# First line is root path
 			# second is column headers
@@ -47,6 +47,18 @@ namespace :macrodeck do
 				path = root << line["_id"]
 				title = line["title"]
 				abbreviation = line["abbreviation"]
+
+				country = Country.new
+				country._id = id
+				country.created_by = "_system"
+				country.updated_by = "_system"
+				country.owned_by = "_system"
+				country.tags = []
+				country.path = path
+				country.title = title
+				country.abbreviation = abbreviation
+				country.save
+
 				puts "id: #{id}"
 				puts "path: #{path.inspect}"
 				puts "title: #{title}"
