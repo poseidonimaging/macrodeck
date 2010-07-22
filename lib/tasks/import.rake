@@ -9,7 +9,7 @@ def read_file(file_name)
 	while (line = file.gets)
 		line_number = line_number + 1
 		if line_number == 1
-			root = line.strip.gsub(/^"/, "").gsub(/"$/, "")
+			root = line.strip.gsub(/^"/, "").gsub(/"$/, "").gsub('""', '"')
 			root = eval(root.to_s)
 		elsif line_number == 2
 			fields = line.strip.split("\t")
@@ -49,7 +49,7 @@ namespace :macrodeck do
 				abbreviation = line["abbreviation"]
 
 				country = Country.new
-				country._id = id
+				country["_id"] = id
 				country.created_by = "_system"
 				country.updated_by = "_system"
 				country.owned_by = "_system"
@@ -58,6 +58,35 @@ namespace :macrodeck do
 				country.title = title
 				country.abbreviation = abbreviation
 				country.save
+
+				puts "id: #{id}"
+				puts "path: #{path.inspect}"
+				puts "title: #{title}"
+				puts "abbr: #{abbreviation}"
+			end
+		end
+
+		desc "Imports regions (states) from REGIONS=path file (no default)"
+		task :regions => :environment do
+			raise "Please specify REGIONS file path on command line" if ENV['REGIONS'].nil?
+			parsed = read_file(ENV['REGIONS'])
+			parsed[:lines].each do |line|
+				id = line["_id"]
+				root = parsed[:root].dup
+				path = root << line["_id"]
+				title = line["title"]
+				abbreviation = line["abbreviation"]
+
+				region = Region.new
+				region["_id"] = id
+				region.created_by = "_system"
+				region.updated_by = "_system"
+				region.owned_by = "_system"
+				region.tags = []
+				region.path = path
+				region.title = title
+				region.abbreviation = abbreviation
+				region.save
 
 				puts "id: #{id}"
 				puts "path: #{path.inspect}"
