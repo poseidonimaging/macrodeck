@@ -77,6 +77,11 @@ namespace :macrodeck do
 				title = line["title"]
 				abbreviation = line["abbreviation"]
 
+				puts "id: #{id}"
+				puts "path: #{path.inspect}"
+				puts "title: #{title}"
+				puts "abbr: #{abbreviation}"
+
 				region = Region.new
 				region["_id"] = id
 				region.created_by = "_system"
@@ -87,11 +92,6 @@ namespace :macrodeck do
 				region.title = title
 				region.abbreviation = abbreviation
 				region.save
-
-				puts "id: #{id}"
-				puts "path: #{path.inspect}"
-				puts "title: #{title}"
-				puts "abbr: #{abbreviation}"
 			end
 		end
 	end
