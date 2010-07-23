@@ -120,5 +120,31 @@ namespace :macrodeck do
 				locality.save
 			end
 		end
+
+		desc "Imports neighborhoods NEIGHBORHOODS=path file (no default)"
+		task :neighborhoods => :environment do
+			raise "Please specify NEIGHBORHOODS file path on command line" if ENV['NEIGHBORHOODS'].nil?
+			parsed = read_file(ENV['NEIGHBORHOODS'])
+			parsed[:lines].each do |line|
+				id = line["_id"]
+				root = parsed[:root].dup
+				path = root << id
+				title = line["title"]
+
+				puts "id: #{id}"
+				puts "path: #{path.inspect}"
+				puts "title: #{title}"
+
+				neighborhood = Neighborhood.get(id) || Neighborhood.new
+				neighborhood["_id"] = id
+				neighborhood.created_by = "_system"
+				neighborhood.updated_by = "_system"
+				neighborhood.owned_by = "_system"
+				neighborhood.tags = []
+				neighborhood.path = path
+				neighborhood.title = title
+				neighborhood.save
+			end
+		end
 	end
 end
