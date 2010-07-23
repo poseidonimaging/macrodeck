@@ -44,9 +44,14 @@ namespace :macrodeck do
 			parsed[:lines].each do |line|
 				id = line["_id"]
 				root = parsed[:root].dup
-				path = root << line["_id"]
+				path = root << id
 				title = line["title"]
 				abbreviation = line["abbreviation"]
+
+				puts "id: #{id}"
+				puts "path: #{path.inspect}"
+				puts "title: #{title}"
+				puts "abbr: #{abbreviation}"
 
 				country = Country.get(id) || Country.new
 				country["_id"] = id
@@ -58,11 +63,6 @@ namespace :macrodeck do
 				country.title = title
 				country.abbreviation = abbreviation
 				country.save
-
-				puts "id: #{id}"
-				puts "path: #{path.inspect}"
-				puts "title: #{title}"
-				puts "abbr: #{abbreviation}"
 			end
 		end
 
@@ -73,7 +73,7 @@ namespace :macrodeck do
 			parsed[:lines].each do |line|
 				id = line["_id"]
 				root = parsed[:root].dup
-				path = root << line["_id"]
+				path = root << id
 				title = line["title"]
 				abbreviation = line["abbreviation"]
 
@@ -92,6 +92,32 @@ namespace :macrodeck do
 				region.title = title
 				region.abbreviation = abbreviation
 				region.save
+			end
+		end
+
+		desc "Imports localities (cities) from LOCALITIES=path file (no default)"
+		task :localities => :environment do
+			raise "Please specify LOCALITIES file path on command line" if ENV['LOCALITIES'].nil?
+			parsed = read_file(ENV['LOCALITIES'])
+			parsed[:lines].each do |line|
+				id = line["_id"]
+				root = parsed[:root].dup
+				path = root << id
+				title = line["title"]
+
+				puts "id: #{id}"
+				puts "path: #{path.inspect}"
+				puts "title: #{title}"
+
+				locality = Locality.get(id) || Locality.new
+				locality["_id"] = id
+				locality.created_by = "_system"
+				locality.updated_by = "_system"
+				locality.owned_by = "_system"
+				locality.tags = []
+				locality.path = path
+				locality.title = title
+				locality.save
 			end
 		end
 	end
