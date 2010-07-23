@@ -48,7 +48,7 @@ namespace :macrodeck do
 				title = line["title"]
 				abbreviation = line["abbreviation"]
 
-				country = Country.new
+				country = Country.get(id) || Country.new
 				country["_id"] = id
 				country.created_by = "_system"
 				country.updated_by = "_system"
@@ -82,7 +82,7 @@ namespace :macrodeck do
 				puts "title: #{title}"
 				puts "abbr: #{abbreviation}"
 
-				region = Region.new
+				region = Region.get(id) || Region.new
 				region["_id"] = id
 				region.created_by = "_system"
 				region.updated_by = "_system"
