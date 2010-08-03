@@ -1,9 +1,0 @@
-<% if @place.calendar.upcoming_events != nil && @place.calendar.upcoming_events.length > 0 %>
-	<br />
-	<div class="vcalendar">
-		<%= render :partial => "facebook_events/hevent", :collection => @place.calendar.upcoming_events[0..10], :locals => { :micro => false } %>
-	</div>
-<% else %>
-	<p>This place has no upcoming events. If you know about any,
-	<%= link_to "add them",  fbevents_url(:action => :create, :calendar => @place.calendar.url_part) %>!</p>
-<% end %>

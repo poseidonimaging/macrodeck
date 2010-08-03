@@ -1,7 +1,0 @@
-<%= render :partial => "breadcrumbs", :locals => { :country => nil, :state => nil, :city => nil, :place => nil } %>
-<h1 class="area-title"><%= @country.title %></h1>
-<ul>
-	<% @states.each do |state| %>
-		<li><%= link_to state.title, fbplaces_url(:action => :browse, :country => "us", :state => state.url_part) %></li>
-	<% end %>
-</ul>

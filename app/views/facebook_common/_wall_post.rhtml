@@ -1,5 +1,0 @@
-<% if !wall_post.nil? %>
-	<fb:wallpost uid="<%= wall_post.created_by.facebook_uid %>" t="<%= wall_post.updated_at.to_i %>">
-		<%= simple_format(h(wall_post.message)) %>
-	</fb:wallpost>
-<% end %>
