@@ -7,7 +7,7 @@ class CountriesController < ApplicationController
 	# List countries
 	def index
 		@page_title = "Countries"
-		@countries = Category.find(:all, :conditions => ["parent_uuid = ?", Category.find(:first, :conditions => ["parent_uuid IS NULL AND url_part = ?", "places"]).uuid])
+		@countries = Country.view("by_title") 
 	end
 
 	# Show a country's states...
