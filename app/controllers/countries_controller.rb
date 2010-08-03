@@ -1,6 +1,4 @@
-# This controller maps country categories to real countries.
-# A country is a category whose immediate parent is "MacroDeck Places".
-# Really this is a stub because the interface for categories behaves differently.
+# This controller pulls countries from CouchDB.
 class CountriesController < ApplicationController
 	layout 'restlessnapkin'
 
