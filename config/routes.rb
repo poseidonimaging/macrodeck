@@ -3,8 +3,8 @@ ActionController::Routing::Routes.draw do |map|
 
 	# Resources
 	map.resources :countries do |countries|
-		countries.resources :states do |states|
-			states.resources :cities do |cities|
+		countries.resources :regions do |regions|
+			regions.resources :cities do |cities|
 				cities.resources :events do |events|
 					events.resource :wall do |wall|
 						wall.resources :comments
