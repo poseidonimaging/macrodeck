@@ -1,0 +1,8 @@
+<% if region.children.size > 1 %>
+	<li<%= ' class="#{css_class}"' if local_assigns[:css_class] %>><%= link_to region.title, "#" %> (<%= region.children.size %> cities)</li>
+<% elsif region.children.size == 1 %>
+	<li<%= ' class="#{css_class}"' if local_assigns[:css_class] %>><%= link_to region.title, "#" %> (<%= region.children.size %> city)</li>
+<% else %>
+	<li<%= ' class="#{css_class}"' if local_assigns[:css_class] %>><%= link_to region.title, "#" %></li>
+<% end %>
+
