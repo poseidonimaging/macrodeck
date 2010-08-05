@@ -5,7 +5,8 @@ class RegionsController < ApplicationController
 	# List states
 	def index
 		@country = Country.get(params[:country_id])
-		@regions = Region.view("by_path_and_type")
+		startkey = @country.path.dup.push(0)
+		@regions = Region.view("by_path_and_type", :reduce => false, :startkey => startkey)
 		@page_title = "#{@country.title} > States"
 	end
 
