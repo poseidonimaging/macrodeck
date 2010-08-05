@@ -8,8 +8,8 @@ class CountriesController < ApplicationController
 		@countries = Country.view("by_title") 
 	end
 
-	# Show a country's states...
+	# Show a country's states/regions...
 	def show
-		redirect_to country_states_path(params[:id])
+		redirect_to country_regions_path(params[:id])
 	end
 end
