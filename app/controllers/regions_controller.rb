@@ -1,18 +1,16 @@
-# This controller maps state categories to real states.
-# A state is a category whose parent is a country
-# Really this is a stub because the interface for categories behaves differently.
-class StatesController < ApplicationController
+# Pulls regions.
+class RegionsController < ApplicationController
 	layout 'restlessnapkin'
 
 	# List states
 	def index
-		@country = Category.find_by_parent_uuid_and_url_part(Category.find(:first, :conditions => ["parent_uuid IS NULL AND url_part = ?", "places"]).uuid, params[:country_id].downcase)
-		@page_title = "#{@country.name} > States"
-		@states = @country.children
+		@country = Country.get(params[:country_id])
+		@regions = Region.view("by_path_and_type")
+		@page_title = "#{@country.title} > States"
 	end
 
 	# Show a state's cities
 	def show
-		redirect_to country_state_cities_path(params[:country_id], params[:id])
+		redirect_to country_region_localities_path(params[:country_id], params[:id])
 	end
 end
