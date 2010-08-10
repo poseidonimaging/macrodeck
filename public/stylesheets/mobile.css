@@ -599,7 +599,7 @@ li:last-child.store .image, .store:last-child a {
     background-color: #fff;
     background-image: none!important;
 }
-.list #footer {
+.list>footer {
     margin-top: 24px!important;
 }
 
