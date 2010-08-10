@@ -1,8 +1,0 @@
-/* MacroDeck for Facebook
- * Facebook Mini-Feed styles
- */
-.minifeed .date-divider			{ width: 100%; clear: both; padding: 5px 0 5px 0; }
-.minifeed .date-divider .date	{ color: #999999; width: 8%; float: left; font-weight: bold; font-size: 80%; }
-.minifeed .date-divider .line	{ border-top: 1px solid #D8DFEA; height: 1px; margin: 5px 0 4px 0; width: 92%; float: left; }
-.minifeed .item					{ color: #333333; margin: 0 0 0 8%; }
-.minifeed .item .time			{ color: #999999; font-size: 80%; }
