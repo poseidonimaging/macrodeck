@@ -620,10 +620,10 @@ li:last-child.store .image, .store:last-child a {
     height: 70px;
     margin-bottom: 1px;
 }
-.feed #content li {
+.feed>section li {
     height: 75px;
 }
-.feed #content {
+.feed>section {
     background: -webkit-gradient(radial, 50% -70, 0, 50% 0, 200, from(#444444), to(rgb(13, 13, 13)));
     top: 16px;
 }
