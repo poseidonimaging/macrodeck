@@ -274,7 +274,7 @@ fieldset {
     -webkit-border-bottom-left-radius: 8px;
     -webkit-border-bottom-right-radius: 8px;
 }
-/*.menu:hover, .store:hover, .list #content li a:hover, .list .withimage:hover, .applist li:hover:nth-child(n),.feed li:hover:nth-child(n) {
+/*.menu:hover, .store:hover, .list>section li a:hover, .list .withimage:hover, .applist li:hover:nth-child(n),.feed li:hover:nth-child(n) {
 	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#058cf5), to(#015fe6));
 }
 .feed li:hover:nth-child(n) .name,.feed li:hover:nth-child(n) .star{border:0}
@@ -607,16 +607,16 @@ li:last-child.store .image, .store:last-child a {
 .feed li:nth-child(odd) {
     background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#414041), color-stop(3%, rgba(50,50,50,0.4)), to(rgba(50,50,50,0.4)))
 }
-.musiclist #content li, .feed #content li, .applist #content li {
+.musiclist>section li, .feed>section li, .applist>section li {
     list-style: none;
     width: auto;
     position: relative;
 }
-.musiclist #content li {
+.musiclist>section li {
     height: 44px;
     border-bottom: 1px solid #e6e6e6;
 }
-.applist #content li {
+.applist>section li {
     height: 70px;
     margin-bottom: 1px;
 }
@@ -627,14 +627,14 @@ li:last-child.store .image, .store:last-child a {
     background: -webkit-gradient(radial, 50% -70, 0, 50% 0, 200, from(#444444), to(rgb(13, 13, 13)));
     top: 16px;
 }
-.musiclist #content li a, .feed #content li a {
+.musiclist>section li a, .feed>section li a {
     text-decoration: none;
     color: white;
     width: 100%!important;
     height: 100%;
     display: block;
 }
-.applist #content li a {
+.applist>section li a {
     text-decoration: none;
     color: #000;
     width: 100%;
@@ -708,7 +708,7 @@ li:last-child.store .image, .store:last-child a {
     padding: 0;
     margin: 0;
 }
-.list #content li {
+.list>section li {
     height: 40px;
     border-bottom: 1px solid #e1e1e1;
     list-style: none;
@@ -723,7 +723,7 @@ li:last-child.store .image, .store:last-child a {
 .feed #footer {
     margin-top: 48px!important;
 }
-.list #content li a {
+.list>section li a {
     padding: 9px 0 0 20px;
     font-size: large;
     font-weight: bold;
@@ -733,20 +733,20 @@ li:last-child.store .image, .store:last-child a {
     text-decoration: none;
     height: 32px;
 }
-.list #content li a .name {
+.list>section li a .name {
     text-overflow: ellipsis;
     overflow: hidden;
     max-width: 93%;
     white-space: nowrap;
     display: block;
 }
-.list #content li a:hover {
+.list>section li a:hover {
     color: #fff;
 }
-.list #content {
+.list>section {
     margin-top: -13px!important;
 }
-.feed #content, .musiclist #content, .applist #content {
+.feed>section, .musiclist>section, .applist>section {
     margin-top: -29px!important;
 }
 .list ul img {
