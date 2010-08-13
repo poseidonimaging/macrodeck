@@ -1,8 +1,8 @@
 <% if region.children.size > 1 %>
-	<li class="<%= css_class if local_assigns[:css_class] %>"><span class="name"><%= link_to region.title, "#" %></span> (<%= region.children.size %> cities)</li>
+	<li class="<%= css_class if local_assigns[:css_class] %>"><span class="name"><%= link_to region.title, country_region_localities_path(country.id, region.id) %></span> (<%= region.children.size %> cities)</li>
 <% elsif region.children.size == 1 %>
-	<li class="<%= css_class if local_assigns[:css_class] %>"><span class="name"><%= link_to region.title, "#" %></span> (<%= region.children.size %> city)</li>
+	<li class="<%= css_class if local_assigns[:css_class] %>"><span class="name"><%= link_to region.title, country_region_localities_path(country.id, region.id) %></span> (<%= region.children.size %> city)</li>
 <% else %>
-	<li class="<%= css_class if local_assigns[:css_class] %>"><span class="name"><%= link_to region.title, "#" %></span></li>
+	<li class="<%= css_class if local_assigns[:css_class] %>"><span class="name"><%= link_to region.title, country_region_localities_path(country.id, region.id) %></span></li>
 <% end %>
 
