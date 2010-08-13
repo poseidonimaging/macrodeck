@@ -1,6 +1,6 @@
 # Pulls regions.
 class RegionsController < ApplicationController
-	layout 'restlessnapkin'
+	layout :select_layout
 
 	# List states
 	def index
