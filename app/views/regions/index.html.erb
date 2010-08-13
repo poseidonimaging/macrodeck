@@ -1,7 +1,7 @@
 <% content_module h(@country.title), { :altbox => true, :box_size => 100 } do %>
     <ul class="simple">
 	<% @regions.each do |region| %>
-	    <%= render :partial => "region", :object => region, :locals => { :css_class => cycle("odd", "even") } %>
+	    <%= render :partial => "region", :object => region, :locals => { :css_class => cycle("odd", "even"), :country => @country } %>
 	<% end %>
     </ul>
 <% end %>
