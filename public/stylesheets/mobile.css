@@ -98,7 +98,7 @@ body>footer a, body>footer {
 }
 #tributton .links, #duobutton .links {
     height: 30px;
-    -webkit-border-image: url("../images/tributton.png") 0 4 0 4;
+    -webkit-border-image: url("/images/iwebkit/tributton.png") 0 4 0 4;
     border-width: 0 4px 0 4px;
     margin: 0 auto 0px auto;
     position: relative;
@@ -140,7 +140,7 @@ body>footer a, body>footer {
     text-shadow: black 0 -1px 0;
 }
 #triselectionbuttons, #duoselectionbuttons {
-    -webkit-border-image: url('../images/navbuttonblack.png') 0 5 0 5;
+    -webkit-border-image: url('/images/iwebkit/navbuttonblack.png') 0 5 0 5;
     border-width: 0 5px 0 5px;
     position: relative;
     margin: auto;
@@ -209,7 +209,7 @@ li#doublead:hover {
 }
 .searchbox form {
     height: 24px;
-    -webkit-border-image: url('../images/searchfield.png') 4 14 1 24;
+    -webkit-border-image: url('/images/iwebkit/searchfield.png') 4 14 1 24;
     border-width: 4px 14px 1px 24px;
     display: block;
     position: relative;
@@ -325,7 +325,7 @@ fieldset {
     right: 10px;
     top: 15px;
     margin: 0!important;
-    background: url("../images/arrow.png") 0 0 no-repeat;
+    background: url("/images/iwebkit/arrow.png") 0 0 no-repeat;
 }
 .feed .arrow {
     position: absolute;
@@ -334,7 +334,7 @@ fieldset {
     right: 10px;
     top: 29px;
     margin: 0!important;
-    background: url("../images/arrow.png") 0 0 no-repeat;
+    background: url("/images/iwebkit/arrow.png") 0 0 no-repeat;
 }
 .store {
     height: 90px;
@@ -424,22 +424,22 @@ li:last-child.store .image, .store:last-child a {
     display: block!important;
 }
 .store .stars0 {
-    background: url('../images/0starsborder.png');
+    background: url('/images/iwebkit/0starsborder.png');
 }
 .store .stars1 {
-    background: url('../images/1starsborder.png');
+    background: url('/images/iwebkit/1starsborder.png');
 }
 .store .stars2 {
-    background: url('../images/2starsborder.png');
+    background: url('/images/iwebkit/2starsborder.png');
 }
 .store .stars3 {
-    background: url('../images/3starsborder.png');
+    background: url('/images/iwebkit/3starsborder.png');
 }
 .store .stars4 {
-    background: url('../images/4starsborder.png');
+    background: url('/images/iwebkit/4starsborder.png');
 }
 .store .stars5, .applist .stars5 {
-    background: url('../images/5stars.png');
+    background: url('/images/iwebkit/5stars.png');
 }
 .applist .stars0, .applist .stars1, .applist .stars2, .applist .stars3, .applist .stars4, .applist .stars5 {
     position: absolute;
@@ -450,19 +450,19 @@ li:last-child.store .image, .store:last-child a {
     display: block!important;
 }
 .applist .stars0 {
-    background: url('../images/0stars.png');
+    background: url('/images/iwebkit/0stars.png');
 }
 .applist .stars1 {
-    background: url('../images/1stars.png');
+    background: url('/images/iwebkit/1stars.png');
 }
 .applist .stars2 {
-    background: url('../images/2stars.png');
+    background: url('/images/iwebkit/2stars.png');
 }
 .applist .stars3 {
-    background: url('../images/3stars.png');
+    background: url('/images/iwebkit/3stars.png');
 }
 .applist .stars4 {
-    background: url('../images/4stars.png');
+    background: url('/images/iwebkit/4stars.png');
 }
 .place {
     position: absolute;
@@ -669,23 +669,23 @@ li:last-child.store .image, .store:last-child a {
     text-decoration: none;
 }
 body>header #leftnav a:first-child, .transparent #leftnav a:first-child {
-    -webkit-border-image: url("../images/navleftblack.png") 0 5 0 13;
+    -webkit-border-image: url("/images/iwebkit/navleftblack.png") 0 5 0 13;
 }
 body>header #leftnav a, .transparent #leftnav a {
-    -webkit-border-image: url("../images/navlinkleftblack.png") 0 5 0 13;
+    -webkit-border-image: url("/images/iwebkit/navlinkleftblack.png") 0 5 0 13;
 }
 body>header #rightnav a:first-child, .transparent #rightnav a:first-child {
-    -webkit-border-image: url("../images/navrightblack.png") 0 13 0 5;
+    -webkit-border-image: url("/images/iwebkit/navrightblack.png") 0 13 0 5;
 }
 body>header #rightnav a, .transparent #rightnav a {
-    -webkit-border-image: url("../images/navlinkrightblack.png") 0 13 0 5;
+    -webkit-border-image: url("/images/iwebkit/navlinkrightblack.png") 0 13 0 5;
 }
 body>header #leftbutton a, body>header #rightbutton a, .transparent #leftbutton a, .transparent #rightbutton a {
-    -webkit-border-image: url("../images/navbuttonblack.png") 0 5 0 5;
+    -webkit-border-image: url("/images/iwebkit/navbuttonblack.png") 0 5 0 5;
 }
 #leftnav a:first-child {
     z-index: 2;
-    -webkit-border-image: url("../images/navleft.png") 0 5 0 13;
+    -webkit-border-image: url("/images/iwebkit/navleft.png") 0 5 0 13;
     border-width: 0 5px 0 13px;
     -webkit-border-top-left-radius: 16px;
     -webkit-border-bottom-left-radius: 16px;
@@ -694,7 +694,7 @@ body>header #leftbutton a, body>header #rightbutton a, .transparent #leftbutton 
     width: auto;
 }
 #leftnav a {
-    -webkit-border-image: url("../images/navlinkleft.png") 0 5 0 13;
+    -webkit-border-image: url("/images/iwebkit/navlinkleft.png") 0 5 0 13;
     z-index: 3;
     margin-left: -4px;
     border-width: 0 5px 0 13px;
@@ -712,7 +712,7 @@ body>header #leftbutton a, body>header #rightbutton a, .transparent #leftbutton 
     font-weight: bold;
 }
 #rightnav a {
-    -webkit-border-image: url("../images/navlinkright.png") 0 13 0 5;
+    -webkit-border-image: url("/images/iwebkit/navlinkright.png") 0 13 0 5;
     z-index: 3;
     margin-right: -4px;
     border-width: 0 13px 0 5px;
@@ -727,25 +727,25 @@ body>header #leftbutton a, body>header #rightbutton a, .transparent #leftbutton 
     z-index: 2;
     -webkit-border-top-left-radius: 6px;
     -webkit-border-bottom-left-radius: 6px;
-    -webkit-border-image: url("../images/navright.png") 0 13 0 5;
+    -webkit-border-image: url("/images/iwebkit/navright.png") 0 13 0 5;
     border-width: 0 13px 0 5px;
     -webkit-border-top-right-radius: 16px;
     -webkit-border-bottom-right-radius: 16px;
 }
 #leftbutton a, #rightbutton a {
-    -webkit-border-image: url("../images/navbutton.png") 0 5 0 5;
+    -webkit-border-image: url("/images/iwebkit/navbutton.png") 0 5 0 5;
     border-width: 0 5px;
     -webkit-border-radius: 6px;
 }
 #blueleftbutton a, #bluerightbutton a {
-    -webkit-border-image: url("../images/navbuttonblue.png") 0 5 0 5;
+    -webkit-border-image: url("/images/iwebkit/navbuttonblue.png") 0 5 0 5;
     border-width: 0 5px;
     -webkit-border-radius: 6px;
 }
 input[type="checkbox"] {
     width: 94px;
     height: 27px;
-    background: url('../images/checkbox.png');
+    background: url('/images/iwebkit/checkbox.png');
     -webkit-appearance: none;
     border: 0;
     float: right;
@@ -766,7 +766,7 @@ input[type="radio"] {
     -webkit-border-radius: 0;
 }
 input[type="radio"]:checked {
-    background: url('../images/radiobutton.png') no-repeat;
+    background: url('/images/iwebkit/radiobutton.png') no-repeat;
     background-position: right center;
 }
 .radiobutton .name {
@@ -788,7 +788,7 @@ select {
     max-width: 90%;
 }
 .select .arrow {
-    background: url('../images/arrow.png');
+    background: url('/images/iwebkit/arrow.png');
     width: 8px;
     height: 13px;
     display: block;
@@ -914,7 +914,7 @@ select {
 
 .xgrid { width: 960px; margin: 0 auto; padding: 15px 0 0 0;}
 .xfluid { width: 96%; }
-.showgrid { background: url(../images/12_col.gif) repeat-y 0 0;  }
+.showgrid { background: url(/images/iwebkit/12_col.gif) repeat-y 0 0;  }
 
 .x1 				{ width: 60px; }
 .x2 				{ width: 140px; }
