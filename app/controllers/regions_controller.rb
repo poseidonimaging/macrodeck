@@ -7,7 +7,8 @@ class RegionsController < ApplicationController
 		@country = Country.get(params[:country_id])
 		startkey = @country.path.dup.push(0)
 		@regions = Region.view("by_path_and_type", :reduce => false, :startkey => startkey)
-		@page_title = "#{@country.title} > States"
+		@page_title = "States"
+		@back_button = ["Countries", countries_path]
 	end
 
 	# Show a state's cities
