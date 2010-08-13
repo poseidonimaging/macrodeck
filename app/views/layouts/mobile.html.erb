@@ -16,9 +16,16 @@
     <body class="feed">
 	<header>
 	    <h1><%= @page_title.nil? ? "The Restless Napkin" : h(@page_title) %></h1>
-	    <div id="rightbutton">
-		<a href="placefeed.html">Places</a>
-	    </div>
+	    <% if @back_button && @back_button.respond_to?(:"[]") %>
+		<div id="leftnav">
+		    <%= link_to @back_button[0], @back_button[1] %>
+		</div>
+	    <% end %>
+	    <% if @button && @button.respond_to?(:"[]") %>
+		<div id="rightbutton">
+		    <%= link_to @button[0], @button[1] %>
+		</div>
+	    <% end %>
 	</header>
 
 	<section>
