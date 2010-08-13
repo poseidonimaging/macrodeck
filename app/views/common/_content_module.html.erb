@@ -1,32 +1,36 @@
-<div class="box <%= "box-#{box_size}" %> <%= "altbox" if local_assigns[:altbox] %>">
-	<div class="boxin">
-		<div class="header">
-			<h3><%= title %></h3>
-			<% if local_assigns[:buttons] %>
-			    <% buttons.each do |button| %>
-				<% if button[2] %>
-				    <%= link_to button[0], button[1], :class => "button #{button[2]}" %>
-				<% else %>
-				    <%= link_to button[0], button[1], :class => "button" %>
-				<% end %>
-			    <% end %>
-			<% end %>
-			<% if local_assigns[:tabs] %>
-			    <ul>
-				<% tabs.each do |tab| %>
-				    <% if tab[2] %>
-					<li><%= link_to tab[0], tab[1], :class => "#{tab[2]}" %></li>
+<% if mobile? %>
+    <%= body %>
+<% else %>
+    <div class="box <%= "box-#{box_size}" %> <%= "altbox" if local_assigns[:altbox] %>">
+	    <div class="boxin">
+		    <div class="header">
+			    <h3><%= title %></h3>
+			    <% if local_assigns[:buttons] %>
+				<% buttons.each do |button| %>
+				    <% if button[2] %>
+					<%= link_to button[0], button[1], :class => "button #{button[2]}" %>
 				    <% else %>
-					<li><%= link_to tab[0], tab[1] %></li>
+					<%= link_to button[0], button[1], :class => "button" %>
 				    <% end %>
 				<% end %>
-			    </ul>
-			<% end %>
-		</div>
-		<div class="content">
-			<%= '<div class="text">' if local_assigns[:text] %>
-			    <%= body %>
-			<%= '</div>' if local_assigns[:text] %>
-		</div>
-	</div>
-</div>
+			    <% end %>
+			    <% if local_assigns[:tabs] %>
+				<ul>
+				    <% tabs.each do |tab| %>
+					<% if tab[2] %>
+					    <li><%= link_to tab[0], tab[1], :class => "#{tab[2]}" %></li>
+					<% else %>
+					    <li><%= link_to tab[0], tab[1] %></li>
+					<% end %>
+				    <% end %>
+				</ul>
+			    <% end %>
+		    </div>
+		    <div class="content">
+			    <%= '<div class="text">' if local_assigns[:text] %>
+				<%= body %>
+			    <%= '</div>' if local_assigns[:text] %>
+		    </div>
+	    </div>
+    </div>
+<% end %>
