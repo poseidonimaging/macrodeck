@@ -668,19 +668,19 @@ li:last-child.store .image, .store:last-child a {
     text-shadow: rgba(0,0,0,0.6) 0 -1px 0;
     text-decoration: none;
 }
-.black #leftnav a:first-child, .transparent #leftnav a:first-child {
+body>header #leftnav a:first-child, .transparent #leftnav a:first-child {
     -webkit-border-image: url("../images/navleftblack.png") 0 5 0 13;
 }
-.black #leftnav a, .transparent #leftnav a {
+body>header #leftnav a, .transparent #leftnav a {
     -webkit-border-image: url("../images/navlinkleftblack.png") 0 5 0 13;
 }
-.black #rightnav a:first-child, .transparent #rightnav a:first-child {
+body>header #rightnav a:first-child, .transparent #rightnav a:first-child {
     -webkit-border-image: url("../images/navrightblack.png") 0 13 0 5;
 }
-.black #rightnav a, .transparent #rightnav a {
+body>header #rightnav a, .transparent #rightnav a {
     -webkit-border-image: url("../images/navlinkrightblack.png") 0 13 0 5;
 }
-.black #leftbutton a, .black #rightbutton a, .transparent #leftbutton a, .transparent #rightbutton a {
+body>header #leftbutton a, body>header #rightbutton a, .transparent #leftbutton a, .transparent #rightbutton a {
     -webkit-border-image: url("../images/navbuttonblack.png") 0 5 0 5;
 }
 #leftnav a:first-child {
