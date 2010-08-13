@@ -1,6 +1,6 @@
 # This controller pulls countries from CouchDB.
 class CountriesController < ApplicationController
-	layout 'restlessnapkin'
+	layout :select_layout
 
 	# List countries
 	def index
