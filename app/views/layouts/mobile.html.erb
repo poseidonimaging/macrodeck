@@ -2,20 +2,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
 	<meta name="apple-mobile-web-app-capable" content="yes" />
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"  />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="minimum-scale=1.0, width=device-width, maximum-scale=0.6667, user-scalable=no" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black"/>
 
-	<%= stylesheet_link_tag "mobile", "mobile.feeds" %>
+	<%= stylesheet_link_tag "mobile" %>
 	<%= stylesheet_link_tag "mobile.lowres", :media => "screen and (max-width: 320px)" %>
 	<%= stylesheet_link_tag "mobile.hires", :media => "screen and (min-width: 321px)" %>
+	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+	<script type="text/javascript"> google.load("jquery", "1.4.2"); </script>
 	<%= javascript_include_tag "mobile" %>
-
-	<title>The Restless Napkin <%= @page_title.nil? ? nil : h(": #{@page_title}") %></title>
+	<title>restless napkin</title>
     </head>
 
     <body class="feed">
-	<header>
-	    <h1><%= @page_title.nil? ? "The Restless Napkin" : h(@page_title) %></h1>
+
+	<div id="topbar" class="black">
+	    <div id="title"><%= @page_title.nil? ? "The Restless Napkin" : h(@page_title) %></div>
 	    <% if @back_button && @back_button.respond_to?(:"[]") %>
 		<div id="leftnav">
 		    <%= link_to @back_button[0], @back_button[1] %>
@@ -26,14 +29,16 @@
 		    <%= link_to @button[0], @button[1] %>
 		</div>
 	    <% end %>
-	</header>
+	</div>
 
-	<section>
+	<div id="content">
 	    <%= yield %>
-	</section>
+	</div>
 
-	<footer>
-	    <a href="http://www.macrodeck.com/" class="noeffect">powered by MacroDeck</a>
-	</footer>
+	<div id="footer">
+	    <a class="noeffect" href="http://www.macrodeck.com/">Powered by MacroDeck</a>
+	</div>
+
     </body>
+
 </html>
