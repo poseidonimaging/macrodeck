@@ -1,6 +1,6 @@
-# This controller does all of the magic for cities.
-class CitiesController < ApplicationController
-	layout 'restlessnapkin'
+# This controller does all of the magic for localities.
+class LocalitiesController < ApplicationController
+	layout :select_layout
 	before_filter :find_country
 	before_filter :find_state
 	before_filter :find_city
