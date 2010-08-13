@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+    helper_method :"mobile?"
 
     # Stub. Returns true for now to activate the mobile layout.
     def mobile?
