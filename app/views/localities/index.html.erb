@@ -1,4 +1,4 @@
-<% content_module h(@state.name), { :altbox => true, :box_size => 100 } do %>
+<% content_module h(@region.title), { :altbox => true, :box_size => 100 } do %>
     <ul class="simple arrows">
 	<%= render :partial => "locality", :collection => @localities, :locals => { :country => @country, :region => @region } %>
     </ul>
