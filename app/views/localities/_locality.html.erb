@@ -1,17 +1,17 @@
 <% viewmode = :compact if local_assigns[:viewmode].nil? %>
 
 <% if viewmode == :compact %>
-	<% if city.class == Category %>
-		<li<%= ' class="#{css_class}"' if local_assigns[:css_class] %>><%= link_to city.name, country_state_city_path(@country.url_part, @state.url_part, city.url_part) %></li>
-	<% elsif city.class == City %>
-		<li<%= ' class="#{css_class}"' if local_assigns[:css_class] %>><%= link_to city.name, country_state_city_path(@country.url_part, @state.url_part, city.category.url_part) %></li>
+	<% if locality.class == Category %>
+		<li<%= ' class="#{css_class}"' if local_assigns[:css_class] %>><%= link_to locality.name, country_state_city_path(@country.url_part, @state.url_part, locality.url_part) %></li>
+	<% elsif locality.class == City %>
+		<li<%= ' class="#{css_class}"' if local_assigns[:css_class] %>><%= link_to locality.name, country_state_city_path(@country.url_part, @state.url_part, locality.category.url_part) %></li>
 	<% end %>
 <% elsif viewmode == :full %>
-	<% content_module h(city.name), { :altbox => true, :box_size => 100, :text => true } do %>
-	    <% if city.description %>
-		<%= simple_format h(city.description) %>
+	<% content_module h(locality.name), { :altbox => true, :box_size => 100, :text => true } do %>
+	    <% if locality.description %>
+		<%= simple_format h(locality.description) %>
 	    <% else %>
-		<p><%=h city.name %> has no description entered yet! <%= link_to "Enter one now!", edit_country_state_city_path(@country.url_part, @state.url_part, city.category.url_part) %>
+		<p><%=h locality.name %> has no description entered yet! <%= link_to "Enter one now!", edit_country_state_city_path(@country.url_part, @state.url_part, locality.category.url_part) %>
 	    <% end %>
 	    <p>
 		A Facebook wall-style feed will go here.
@@ -28,22 +28,22 @@
 		    ["All", "#"]
 		]
 	} do %>
-	    <% if city.upcoming_events.nil? || city.upcoming_events.size == 0 %>
-		<p class="text">There are no upcoming events in this city.</p>
+	    <% if locality.upcoming_events.nil? || locality.upcoming_events.size == 0 %>
+		<p class="text">There are no upcoming events in this locality.</p>
 	    <% else %>
 		<ol class="feed">
-		    <% city.upcoming_events[0..9].each do |event| %>
+		    <% locality.upcoming_events[0..9].each do |event| %>
 			<%= render :partial => "events/event", :object => event, :locals => { :css_class => cycle("odd", "even") } %>
 		    <% end %>
 		</ol>
 	    <% end %>
 	<% end %>
 	<% content_module "Interesting Places", { :box_size => 50, :buttons => [ ["view all &raquo;", country_state_city_places_path(params[:country_id], params[:state_id], params[:id]) ] ] } do %>
-	    <% if city.get_10_random_places.nil? || city.get_10_random_places.size == 0 %>
-		<p class="text">There are no places in this city.</p>
+	    <% if locality.get_10_random_places.nil? || locality.get_10_random_places.size == 0 %>
+		<p class="text">There are no places in this locality.</p>
 	    <% else %>
 		<ul class="feed">
-		    <% city.get_10_random_places.each do |place| %>
+		    <% locality.get_10_random_places.each do |place| %>
 			<%= render :partial => "places/place", :object => place, :locals => { :css_class => cycle("odd", "even") } %>
 		    <% end %>
 		</ul>
