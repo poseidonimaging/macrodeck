@@ -1,11 +1,9 @@
 <% viewmode = :compact if local_assigns[:viewmode].nil? %>
 
 <% if viewmode == :compact %>
-	<% if locality.class == Category %>
-		<li<%= ' class="#{css_class}"' if local_assigns[:css_class] %>><%= link_to locality.name, country_state_city_path(@country.url_part, @state.url_part, locality.url_part) %></li>
-	<% elsif locality.class == City %>
-		<li<%= ' class="#{css_class}"' if local_assigns[:css_class] %>><%= link_to locality.name, country_state_city_path(@country.url_part, @state.url_part, locality.category.url_part) %></li>
-	<% end %>
+    <li class="<%= cycle("odd", "even") %>">
+	<%= link_to "<span class='name'>#{locality.title}</span>", country_region_locality_path(country.id, region.id, locality.id) %>
+    </li>
 <% elsif viewmode == :full %>
 	<% content_module h(locality.name), { :altbox => true, :box_size => 100, :text => true } do %>
 	    <% if locality.description %>
