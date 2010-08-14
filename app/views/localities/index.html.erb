@@ -1,7 +1,5 @@
 <% content_module h(@state.name), { :altbox => true, :box_size => 100 } do %>
-    <ul class="simple">
-	<% @cities.each do |city| %>
-	    <%= render :partial => "city", :object => city, :locals => { :css_class => cycle("odd", "even") } %>
-	<% end %>
+    <ul class="simple arrows">
+	<%= render :partial => "locality", :collection => @localities, :locals => { :country => @country, :region => @region } %>
     </ul>
 <% end %>
