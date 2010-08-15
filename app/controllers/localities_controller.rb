@@ -2,13 +2,17 @@
 class LocalitiesController < ApplicationController
 	layout :select_layout
 	before_filter :find_country
-	before_filter :find_state
-	before_filter :find_city
+	before_filter :find_region
+	before_filter :find_locality
 
 	# List cities
 	def index
-		@cities = @state.children
-		@page_title = "#{@country.name} > #{@state.name} > Cities"
+		startkey = @region.path.dup.push(0)
+		endkey = @region.path.dup.push({})
+
+		@localities = Locality.view("by_path_and_type", :reduce => false, :startkey => startkey, :endkey => endkey)
+		@page_title = @region.title
+		@back_button = [@country.title, country_regions_path(params[:country_id])]
 
 		respond_to do |format|
 			format.html # index.html.erb 
@@ -31,21 +35,19 @@ class LocalitiesController < ApplicationController
 	private
 		# Finds the country associated with the request.
 		def find_country
-			@country = Category.find_by_parent_uuid_and_url_part(Category.find(:first, :conditions => ["parent_uuid IS NULL AND url_part = ?", "places"]).uuid, params[:country_id].downcase) if params[:country_id]
+		    @country = Country.get(params[:country_id]) unless params[:country_id].nil?
 		end
 
-		# Finds the state associated with the request.
-		def find_state
-			@state = Category.find_by_parent_uuid_and_url_part(@country.uuid, params[:state_id].downcase) if params[:country_id] && params[:state_id]
+		# Finds the region associated with the request.
+		def find_region
+		    @region = Region.get(params[:region_id]) unless params[:region_id].nil?
 		end
 
 		# Finds the city associated with the request
-		def find_city
-			if params[:country_id] && params[:state_id] && params[:id]
-				# Walk the tree 
-				city_category = Category.find_by_parent_uuid_and_url_part(@state.uuid, params[:id].downcase)
-				@city = City.find(:first, :conditions => { :category_id => city_category.id }) if city_category
-			end
+		def find_locality
+		    if @country && @region && !params[:id].nil?
+			@back_button = ["States", country_regions_path(params[:country_id])]
+		    end
 		end
 end
 
