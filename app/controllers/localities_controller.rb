@@ -10,7 +10,7 @@ class LocalitiesController < ApplicationController
 		startkey = @region.path.dup.push(0)
 		endkey = @region.path.dup.push({})
 
-		@localities = Locality.view("by_path_and_type", :reduce => false, :startkey => startkey, :endkey => endkey)
+		@localities = Locality.view("by_path_and_type_alpha", :reduce => false, :startkey => startkey, :endkey => endkey)
 		@page_title = @region.title
 		@back_button = [@country.title, country_regions_path(params[:country_id])]
 
