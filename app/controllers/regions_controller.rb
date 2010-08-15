@@ -7,7 +7,7 @@ class RegionsController < ApplicationController
 		@country = Country.get(params[:country_id])
 		startkey = @country.path.dup.push(0)
 		endkey = @country.path.dup.push({})
-		@regions = Region.view("by_path_and_type", :reduce => false, :startkey => startkey, :endkey => endkey)
+		@regions = Region.view("by_path_and_type_alpha", :reduce => false, :startkey => startkey, :endkey => endkey)
 		@page_title = @country.title
 		@back_button = ["Countries", countries_path]
 	end
