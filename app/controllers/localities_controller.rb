@@ -21,13 +21,13 @@ class LocalitiesController < ApplicationController
 
     # This is the "main page" for a city.
     def show
-	if @city.nil?
-	    raise ActiveRecord::RecordNotFound
+	if @locality.nil?
+	    render_404
 	else
-	    @page_title = "#{@city.name}, #{@state.name}"
+	    @page_title = "#{@locality.title}"
+	    @back_button = [@region.title, country_region_localities_path(params[:country_id], params[:region_id])]
 	    respond_to do |format|
-		format.html
-		format.xml { render :xml => @city }
+		format.html { render :text => "", :layout => true}
 	    end
 	end
     end
@@ -46,7 +46,7 @@ class LocalitiesController < ApplicationController
 	# Finds the city associated with the request
 	def find_locality
 	    if @country && @region && !params[:id].nil?
-		@back_button = ["States", country_regions_path(params[:country_id])]
+		@locality = Locality.get(params[:id])
 	    end
 	end
 end
