@@ -336,15 +336,6 @@ fieldset {
 	margin: 0!important;
 	background: url("/images/iwebkit/arrow.png") 0 0 no-repeat;
 }
-.feed .arrow {
-	position: absolute;
-	width: 8px!important;
-	height: 13px!important;
-	right: 10px;
-	top: 29px;
-	margin: 0!important;
-	background: url("/images/iwebkit/arrow.png") 0 0 no-repeat;
-}
 .store {
 	height: 90px;
 	border-top: #878787 solid 1px;
@@ -368,18 +359,7 @@ fieldset {
 	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#eff1f5), to(#d6dce6));
 	-webkit-background-size: 90px;
 }
-.feed .image {
-	width: 57px;
-	height: 57px;
-	display: block;
-	position: absolute;
-	top: 7px;
-	left: 11px;
-	-webkit-border-radius: 8px;
-	-webkit-box-shadow: 0 2px 3px rgb(0,0,0);
-	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#7c7c7c), color-stop(3%, #858585), color-stop(97%, #a4a4a4),to(#c2c2c2));
-	-webkit-background-size: 57px;
-}
+
 li:first-child.store .image, .store:first-child a {
 	-webkit-border-top-left-radius: 8px 8px;
 }
@@ -401,71 +381,7 @@ li:last-child.store .image, .store:last-child a {
 	left: 95px;
 	top: 35px;
 }
-.feed .name {
-	position: absolute;
-	font-size: 18px;
-	top: 25px;
-	left: 20px;
-}
-.feed .comment {
-	position: absolute;
-	top: 10px;
-	left: 20px;
-	color: #7f7f7f;
-}
-.feed .number {
-	width: 23px;
-	display: block;
-	float: left;
-	height: 42px;
-	margin-right: 3px;
-	text-align: right;
-	line-height: 43px;
-}
-.feed .numberattending {
-	width: 48px;
-	float: right;
-	display: block;
-	height: 42px;
-	text-align: center;
-	line-height: 43px;
-}
-.feed .share {
-	width: 48px;
-	float: right;
-	display: block;
-	height: 42px;
-	text-align: center;
-	line-height: 75px;
-}
-.feed .thumbsup {
-	padding: 17px 5px 0 0;
-	width: 35px;
-	float: right;
-	display: block;
-	height: 42px;
-	text-align: center;
-	line-height: 55px;
-}
-.feed .extras {
-	padding: 17px 5px 0 0;
-	width: 35px;
-	float: right;
-	display: block;
-	height: 42px;
-	text-align: center;
-	line-height: 50px;
-}
-.feed .thumbsdown {
-	padding: 17px 5px 0 0;
-	width: 35px;
-	float: right;
-	display: block;
-	height: 42px;
-	text-align: center;
-	line-height: 60px;
-}
-.store .comment, .list .withimage .comment, .feed .comment, .feed .price {
+.store .comment, .list .withimage .comment {
 	font-size: 14px;
 	color: #7f7f7f;
 	display: block;
@@ -483,29 +399,6 @@ li:last-child.store .image, .store:last-child a {
 	font-color:white;
 	top: 180px;
 	left: 25px;
-}
-.feed .foursqtitle {
-	position: absolute;
-	top: 165px;
-	left: 20px;
-	color: #7f7f7f;
-}
-.feed .tips {
-	position: relative;
-	font-color:white;
-	top: 5px;
-	left: 5px;
-}
-.feed .tipgiver {
-	color: #727E8A;
-}
-.feed .price {
-	position: absolute;
-	top: 29px;
-	right: 26px;
-	text-shadow: #eeeeee 0 1px 0;
-	text-align: right;
-	color: #3b3b3b;
 }
 .store .arrow, .list .withimage .arrow {
 	top: 39px!important;
@@ -559,19 +452,6 @@ li:last-child.store .image, .store:last-child a {
 .applist .stars4 {
 	background: url('/images/iwebkit/4stars.png');
 }
-.feed .place {
-	left: 20px;
-	top: 46px;
-	color: #727E8A;
-}
-.feed .time {
-	color: #E7902B;
-}
-.place {
-	position: absolute;
-	font-size: 12px;
-	font-weight: lighter;
-}
 .applist a:hover .name, .applist a:hover .place, .applist a:hover .comment, .applist a:hover .price {
 	color: white;
 	text-shadow: none;
@@ -597,9 +477,6 @@ li:last-child.store .image, .store:last-child a {
 .musiclist ul, .feed ul, .applist ul {
 	padding: 0;
 }
-.feed ul {
-	margin: 0;
-}
 .musiclist li:nth-child(odd) {
 	background: #dddee0
 }
@@ -610,13 +487,7 @@ li:last-child.store .image, .store:last-child a {
 	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#98989c), color-stop(98%, #98989c), to(#898a8d))
 
 }
-.feed li:nth-child(even) {
-	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#414041), color-stop(3%, rgba(45,45,45,0.2)), to(rgba(45,45,45,0.2)))
-}
-.feed li:nth-child(odd) {
-	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#414041), color-stop(3%, rgba(50,50,50,0.4)), to(rgba(50,50,50,0.4)))
-}
-.musiclist #content li, .feed #content li, .applist #content li {
+.musiclist #content li, .applist #content li {
 	list-style: none;
 	width: auto;
 	position: relative;
@@ -629,14 +500,7 @@ li:last-child.store .image, .store:last-child a {
 	height: 70px;
 	margin-bottom: 1px;
 }
-.feed #content li {
-	height: 75px;
-}
-.feed #content {
-	background: -webkit-gradient(radial, 50% -70, 0, 50% 0, 200, from(#444444), to(rgb(13, 13, 13)));
-	top: 16px;
-}
-.musiclist #content li a, .feed #content li a {
+.musiclist #content li a {
 	text-decoration: none;
 	color: white;
 	width: 100%!important;
@@ -677,18 +541,9 @@ li:last-child.store .image, .store:last-child a {
 	background-image: none!important;
 	background-color: #cbcccf;
 }
-.feed {
-	background-image: none!important;
-	background-color: black;
-}
 .applist {
 	background-image: none!important;
 	background-color: #98989c;
-}
-.feed span {
-	color: white;
-	font-weight: bold;
-	font-size: 14px;
 }
 .musiclist .name {
 	text-overflow: ellipsis;
@@ -729,9 +584,6 @@ li:last-child.store .image, .store:last-child a {
 .list #footer {
 	margin-top: 24px!important;
 }
-.feed #footer {
-	margin-top: 48px!important;
-}
 .list #content li a {
 	padding: 9px 0 0 20px;
 	font-size: large;
@@ -755,7 +607,7 @@ li:last-child.store .image, .store:last-child a {
 .list #content {
 	margin-top: -13px!important;
 }
-.feed #content, .musiclist #content, .applist #content {
+.musiclist #content, .applist #content {
 	margin-top: -29px!important;
 }
 .list ul img {
