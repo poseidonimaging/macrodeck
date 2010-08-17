@@ -24,10 +24,16 @@ class LocalitiesController < ApplicationController
 	if @locality.nil?
 	    render_404
 	else
+	    @start_item = params[:start_item].nil? ? 0 : params[:start_item].to_i
 	    @page_title = "#{@locality.title}"
 	    @back_button = [@region.title, country_region_localities_path(params[:country_id], params[:region_id])]
+	    @button = ["Happenings", "#"]
+	    startkey = @locality.path.dup.push(0)
+	    endkey = @locality.path.dup.push({})
+	    @places = Place.view("by_path_and_type_alpha", :reduce => false, :startkey => startkey, :endkey => endkey, :limit => 10, :skip => @start_item)
+
 	    respond_to do |format|
-		format.html { render :text => "", :layout => true}
+		format.html
 	    end
 	end
     end
