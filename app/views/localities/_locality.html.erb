@@ -1,11 +1,26 @@
 <% viewmode = :compact if local_assigns[:viewmode].nil? %>
+<% start_item = 0 if local_assigns[:start_item].nil? %>
 
 <% if viewmode == :compact %>
     <li class="<%= cycle("odd", "even") %>">
 	<%= link_to "<span class='name'>#{locality.title}</span>", country_region_locality_path(country.id, region.id, locality.id) %>
     </li>
 <% elsif viewmode == :full %>
-    <ul class="feed">
+    <ul>
 	<%= render :partial => "places/place", :collection => @places, :locals => { :view_mode => :compact, :locality => locality } %>
+	<li class="alt">
+	    <% link_to country_region_locality_path(country.id, region.id, locality.id, :start_item => (start_item + 10)) do %>
+		<span class="name">Next Page</span>
+		<span class="arrow"></span>
+	    <% end %>
+	</li>
+	<% if start_item > 0 %>
+	    <li class="alt">
+		<% link_to country_region_locality_path(country.id, region.id, locality.id, :start_item => (start_item - 10)) do %>
+		    <span class="name">Previous Page</span>
+		    <span class="arrow"></span>
+		<% end %>
+	    </li>
+	<% end %>
     </ul>
 <% end %>
