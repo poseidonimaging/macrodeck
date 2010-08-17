@@ -8,11 +8,11 @@
 	    <span class="comment">
 		<%= place.fare.join(", ") %>
 	    </span>
-	    <span class="name fn org">
+	    <span class="fn org">
 		<%= h(place.title) %>
 	    </span>
-	    <span class="place adr">
-		<%= h(place.address) %>
+	    <span class="adr">
+		<%= content_tag :span, h(place.address), :class => "street-address" %>
 	    </span>
 	<% end %>
     </li>
