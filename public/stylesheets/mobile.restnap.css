@@ -1,0 +1,173 @@
+/* Restless Napkin specific styles for mobile */
+.feed .arrow {
+	position: absolute;
+	width: 8px!important;
+	height: 13px!important;
+	right: 10px;
+	top: 29px;
+	margin: 0!important;
+	background: url("/images/iwebkit/arrow.png") 0 0 no-repeat;
+}
+.feed .image {
+	width: 57px;
+	height: 57px;
+	display: block;
+	position: absolute;
+	top: 7px;
+	left: 11px;
+	-webkit-border-radius: 8px;
+	-webkit-box-shadow: 0 2px 3px rgb(0,0,0);
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#7c7c7c), color-stop(3%, #858585), color-stop(97%, #a4a4a4),to(#c2c2c2));
+	-webkit-background-size: 57px;
+}
+.feed .name {
+	position: absolute;
+	font-size: 18px;
+	top: 25px;
+	left: 20px;
+}
+.feed .comment {
+	position: absolute;
+	top: 10px;
+	left: 20px;
+	color: #7f7f7f;
+}
+.feed .number {
+	width: 23px;
+	display: block;
+	float: left;
+	height: 42px;
+	margin-right: 3px;
+	text-align: right;
+	line-height: 43px;
+}
+.feed .numberattending {
+	width: 48px;
+	float: right;
+	display: block;
+	height: 42px;
+	text-align: center;
+	line-height: 43px;
+}
+.feed .share {
+	width: 48px;
+	float: right;
+	display: block;
+	height: 42px;
+	text-align: center;
+	line-height: 75px;
+}
+.feed .thumbsup {
+	padding: 17px 5px 0 0;
+	width: 35px;
+	float: right;
+	display: block;
+	height: 42px;
+	text-align: center;
+	line-height: 55px;
+}
+.feed .extras {
+	padding: 17px 5px 0 0;
+	width: 35px;
+	float: right;
+	display: block;
+	height: 42px;
+	text-align: center;
+	line-height: 50px;
+}
+.feed .thumbsdown {
+	padding: 17px 5px 0 0;
+	width: 35px;
+	float: right;
+	display: block;
+	height: 42px;
+	text-align: center;
+	line-height: 60px;
+}
+.feed .comment, .feed .price {
+	font-size: 14px;
+	color: #7f7f7f;
+	display: block;
+	width: 60%;
+	font-weight: bold;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+.feed .foursqtitle {
+	position: absolute;
+	top: 165px;
+	left: 20px;
+	color: #7f7f7f;
+}
+.feed .tips {
+	position: relative;
+	font-color:white;
+	top: 5px;
+	left: 5px;
+}
+.feed .tipgiver {
+	color: #727E8A;
+}
+.feed .price {
+	position: absolute;
+	top: 29px;
+	right: 26px;
+	text-shadow: #eeeeee 0 1px 0;
+	text-align: right;
+	color: #3b3b3b;
+}
+.feed .place {
+	left: 20px;
+	top: 46px;
+	color: #727E8A;
+	position: absolute;
+	font-size: 12px;
+	font-weight: lighter;
+}
+.feed .time {
+	color: #E7902B;
+}
+.feed ul {
+	margin: 0;
+}
+.feed li:nth-child(even) {
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#414041), color-stop(3%, rgba(45,45,45,0.2)), to(rgba(45,45,45,0.2)))
+}
+.feed li:nth-child(odd) {
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#414041), color-stop(3%, rgba(50,50,50,0.4)), to(rgba(50,50,50,0.4)))
+}
+.feed #content li {
+	list-style: none;
+	width: auto;
+	position: relative;
+}
+.feed #content li {
+	height: 75px;
+}
+.feed #content {
+	background: -webkit-gradient(radial, 50% -70, 0, 50% 0, 200, from(#444444), to(rgb(13, 13, 13)));
+	top: 16px;
+}
+.feed #content li a {
+	text-decoration: none;
+	color: white;
+	width: 100%!important;
+	height: 100%;
+	display: block;
+}
+.feed {
+	background-image: none!important;
+	background-color: black;
+}
+.feed span {
+	color: white;
+	font-weight: bold;
+	font-size: 14px;
+}
+.feed #footer {
+	margin-top: 48px!important;
+}
+.feed #content {
+	margin-top: -29px!important;
+}
