@@ -5,46 +5,7 @@
 	<%= link_to "<span class='name'>#{locality.title}</span>", country_region_locality_path(country.id, region.id, locality.id) %>
     </li>
 <% elsif viewmode == :full %>
-	<% content_module h(locality.name), { :altbox => true, :box_size => 100, :text => true } do %>
-	    <% if locality.description %>
-		<%= simple_format h(locality.description) %>
-	    <% else %>
-		<p><%=h locality.name %> has no description entered yet! <%= link_to "Enter one now!", edit_country_state_city_path(@country.url_part, @state.url_part, locality.category.url_part) %>
-	    <% end %>
-	    <p>
-		A Facebook wall-style feed will go here.
-	    </p>
-	<% end %>
-	<% content_module "Happenings", {
-		:box_size => 50,
-		:buttons => [
-		    ["+ add happening", new_country_state_city_event_path(params[:country_id], params[:state_id], params[:id]), "green"]
-		],
-		:tabs => [
-		    [image_tag("icons/small/silk/house.png", :alt => "Home", :title => "Home"), "#", "active"],
-		    ["Friends", "#"],
-		    ["All", "#"]
-		]
-	} do %>
-	    <% if locality.upcoming_events.nil? || locality.upcoming_events.size == 0 %>
-		<p class="text">There are no upcoming events in this locality.</p>
-	    <% else %>
-		<ol class="feed">
-		    <% locality.upcoming_events[0..9].each do |event| %>
-			<%= render :partial => "events/event", :object => event, :locals => { :css_class => cycle("odd", "even") } %>
-		    <% end %>
-		</ol>
-	    <% end %>
-	<% end %>
-	<% content_module "Interesting Places", { :box_size => 50, :buttons => [ ["view all &raquo;", country_state_city_places_path(params[:country_id], params[:state_id], params[:id]) ] ] } do %>
-	    <% if locality.get_10_random_places.nil? || locality.get_10_random_places.size == 0 %>
-		<p class="text">There are no places in this locality.</p>
-	    <% else %>
-		<ul class="feed">
-		    <% locality.get_10_random_places.each do |place| %>
-			<%= render :partial => "places/place", :object => place, :locals => { :css_class => cycle("odd", "even") } %>
-		    <% end %>
-		</ul>
-	    <% end %>
-	<% end %>
+    <ul class="feed">
+	<%= render :partial => "places/place", :collection => @places, :locals => { :view_mode => :compact } %>
+    </ul>
 <% end %>
