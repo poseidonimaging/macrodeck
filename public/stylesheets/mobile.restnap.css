@@ -20,7 +20,7 @@
 	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#7c7c7c), color-stop(3%, #858585), color-stop(97%, #a4a4a4),to(#c2c2c2));
 	-webkit-background-size: 57px;
 }
-.feed .name {
+.feed .fn, .feed .summary, .feed .name {
 	position: absolute;
 	font-size: 18px;
 	top: 25px;
@@ -117,7 +117,7 @@
 	text-align: right;
 	color: #3b3b3b;
 }
-.feed .place {
+.feed .adr {
 	left: 20px;
 	top: 46px;
 	color: #727E8A;
@@ -132,10 +132,19 @@
 	margin: 0;
 }
 .feed li:nth-child(even) {
-	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#414041), color-stop(3%, rgba(45,45,45,0.2)), to(rgba(45,45,45,0.2)))
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#414041), color-stop(3%, rgba(45,45,45,0.2)), to(rgba(45,45,45,0.2)));
 }
 .feed li:nth-child(odd) {
-	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#414041), color-stop(3%, rgba(50,50,50,0.4)), to(rgba(50,50,50,0.4)))
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#414041), color-stop(3%, rgba(50,50,50,0.4)), to(rgba(50,50,50,0.4)));
+}
+.feed li.alt:nth-child(even) {
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#414041), color-stop(3%, rgba(0,0,0,0.5)), to(rgba(20,20,20,0.5)));
+}
+.feed li.alt:nth-child(odd) {
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#414041), color-stop(3%, rgba(0,0,0,0.3)), to(rgba(20,20,20,0.3)));
+}
+.feed li.alt a {
+    color: #E7902B !important;
 }
 .feed #content li {
 	list-style: none;
@@ -161,7 +170,6 @@
 	background-color: black;
 }
 .feed span {
-	color: white;
 	font-weight: bold;
 	font-size: 14px;
 }
