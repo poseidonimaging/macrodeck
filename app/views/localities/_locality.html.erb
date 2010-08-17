@@ -6,6 +6,6 @@
     </li>
 <% elsif viewmode == :full %>
     <ul class="feed">
-	<%= render :partial => "places/place", :collection => @places, :locals => { :view_mode => :compact } %>
+	<%= render :partial => "places/place", :collection => @places, :locals => { :view_mode => :compact, :locality => locality } %>
     </ul>
 <% end %>
