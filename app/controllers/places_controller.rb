@@ -1,121 +1,49 @@
 # This is a resource for a place.
 class PlacesController < ApplicationController
-	layout 'default'
-	before_filter :find_country
-	before_filter :find_state
-	before_filter :find_city
-	before_filter :find_place	
+    layout 'default'
+    before_filter :find_country
+    before_filter :find_region
+    before_filter :find_locality
+    before_filter :find_place
 
-	# List places
-	def index
-		@places = @city.places
+    # List places
+    def index
+	@places = @city.places
 		
-		respond_to do |format|
-			format.html # index.html.erb
-		end
+	respond_to do |format|
+	    format.html # index.html.erb
+	end
+    end
+
+    # Show a place
+    def show
+	if @place.nil?
+	    raise ActiveRecord::RecordNotFound
+	else
+	    respond_to do |format|
+		format.html # show.html.erb
+	    end
+	end
+    end
+
+    private
+	# Finds the country associated with the request.
+	def find_country
+	    @country = Country.get(params[:country_id])
 	end
 
-	# Show a place
-	def show
-		if @place.nil?
-			raise ActiveRecord::RecordNotFound
-		else
-			@comment = @place.wall.comments.build()
-			respond_to do |format|
-				format.html # show.html.erb
-			end
-		end
+	# Finds the region associated with the request.
+	def find_region
+	    @region = Region.get(params[:region_id])
 	end
 
-	# Show the HTML to create a place
-	def new
-		@place = @city.places.build
-		respond_to do |format|
-			format.html # new.html.erb
-		end
+	# Finds the locality associated with the request
+	def find_locality
+	    @locality = Locality.get(params[:locality_id])
 	end
 
-	# Actually create the place
-	def create
-		@place = @city.places.build(params[:place])
-		# Place metadata needs to be set here
-		
-		if @place.save
-			flash[:success] = "#{@place.name} created sucessfully."
-			respond_to do |format|
-				format.html { redirect_to country_state_city_place_path(params[:country_id], params[:state_id], params[:city_id], @place.uuid) }
-				format.xml  { head :created, :location => country_state_city_place_path(params[:country_id], params[:state_id], params[:city_id], @place.uuid) }
-			end
-		else
-			respond_to do |format|
-				format.html { render :action => "new" }
-				format.xml  { render :xml => @place.errors, :status => :unprocessable_entity }
-			end
-		end
+	# Finds the place associated with the request.
+	def find_place
+	    @place = Place.get(params[:id]) unless params[:id].nil?
 	end
-
-	# Show the HTML to edit a place.
-	def edit
-		if @place.nil?
-			raise ActiveRecord::RecordNotFound
-		else
-			respond_to do |format|
-				format.html # edit.html.erb
-			end
-		end
-	end
-
-	# Actually update a place
-	def update
-		@place.attributes = params[:place]
-		if @place.save
-			flash[:success] = "#{@place.name} updated successfully."
-			respond_to do |format|
-				format.html { redirect_to country_state_city_place_path(params[:country_id], params[:state_id], params[:city_id], @place.uuid) }
-				format.xml  { head :ok }
-			end
-		else
-			respond_to do |format|
-				format.html { render :action => "edit" }
-				format.xml  { render :xml => @place.errors, :status => :unprocessable_entity }
-			end
-		end
-	end
-
-	# Delete a place.
-	def destroy
-		@place.destroy
-		flash[:success] = "#{@place.name} deleted successfully."
-		redirect_to country_state_city_places_path(params[:country_id], params[:state_id], params[:city_id])
-	end
-
-	private
-                # Finds the country associated with the request.
-                def find_country
-                        @country = Category.find_by_parent_uuid_and_url_part(Category.find(:first, :conditions => ["parent_uuid IS NULL AND url_part = ?", "places"]).uuid, params[:country_id].downcase) if
- params[:country_id]
-                end
-
-                # Finds the state associated with the request.
-                def find_state
-                        @state = Category.find_by_parent_uuid_and_url_part(@country.uuid, params[:state_id].downcase) if params[:country_id] && params[:state_id]
-                end
-
-                # Finds the city associated with the request
-                def find_city
-                        if params[:country_id] && params[:state_id] && params[:city_id]
-                                # Walk the tree 
-                                city_category = Category.find_by_parent_uuid_and_url_part(@state.uuid, params[:city_id].downcase)
-                                @city = City.find(:first, :conditions => { :category_id => city_category.id }) if city_category
-                        end
-                end
-		
-		# Finds the place associated with the request.
-		def find_place
-			if params[:id] && !@city.nil?
-				@place = Place.find(:first, :conditions => ["(uuid = ? OR url_part = ?) AND parent_id = ?", params[:id], params[:id], @city.id])
-			elsif params[:id] && @city.nil?
-				@place = Place.find_by_uuid(params[:id])
-			end
-		end
 end
