@@ -17,8 +17,8 @@
 	<% end %>
     </li>
 <% elsif viewmode == :full %>
-    <ul>
-        <li class="vcard <%= cycle("odd", "even") %>">
+    <ul class="vcard">
+        <li>
 	    <span class="comment">
 		<%= place.fare.join(", ") %>
 	    </span>
@@ -28,6 +28,37 @@
 	    <span class="adr">
 		<%= content_tag :span, h(place.address), :class => "street-address" %>
 	    </span>
+	</li>
+	<li class="actions">
+	    <% unless place.description.nil? %>
+		<span class="action">
+		    <a href="#info" class="info noeffect"><span>Information</span></a>
+		</span>
+	    <% end %>
+	    <% unless place.phone_number.nil? %>
+		<span class="action"><a href="tel:<%= h(place.phone_number) %>" class="tel noeffect"><span><%= h(place.phone_number) %></span></a></span>
+	    <% end %>
+	    <% unless place.url.nil? %>
+		<span class="action">
+		    <% if place.url =~ /^http/ %>
+			<% link_to place.url, :class => "url noeffect" do %>
+			    <span><%= h(place.url) %></span>
+			 <% end %>
+		    <% else %>
+			<% link_to "http://#{place.url}", :class => "url noeffect" do %>
+			    <span><%= h(place.url) %></span>
+			<% end %>
+		    <% end %>
+		</span>
+	    <% end %>
+	    <span class="action">
+		<% link_to "http://maps.google.com/maps?q=#{place.address}, #{locality.title}, #{region.abbreviation}, #{country.abbreviation}", :class => "map noeffect" do %>
+		    <span><%= h("#{place.address}, #{locality.title}, #{region.abbreviation}, #{country.abbreviation}") %></span>
+		<% end %>
+	    </span>
+	</li>
+	<li id="info" style="display: none;">
+	    <%=h place.description %>
 	</li>
     </ul>
 <% end %>
