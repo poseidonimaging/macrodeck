@@ -4,7 +4,7 @@
     <li class="vcard<%= " #{css_class}" if local_assigns[:css_class] %>"><%= link_to h(place.name), country_state_city_place_path(params[:country_id], params[:state_id], place.parent.url_part, place.uuid), :class => "fn org" %></li>
 <% elsif viewmode == :compact %>
     <li class="vcard <%= cycle("odd", "even") %>">
-	<% link_to("#") do %>
+	<% link_to(country_region_locality_place_path(country.id, region.id, locality.id, place.id)) do %>
 	    <span class="comment">
 		<%= place.fare.join(", ") %>
 	    </span>
