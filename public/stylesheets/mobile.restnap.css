@@ -190,3 +190,6 @@
 .actions a.tel	    { background: transparent url("/images/icons/restnap/phone_2_small@2x.png") no-repeat center center; }
 .actions a.map	    { background: transparent url("/images/icons/restnap/street_sign_small@2x.png") no-repeat center center; }
 .actions a.url	    { background: transparent url("/images/icons/restnap/chain_small@2x.png") no-repeat center center; }
+
+/* The info box */
+#info		    { color: #eee; font-size: 14px; font-weight: bold; padding: 25px 20px 0 20px; }
