@@ -193,7 +193,7 @@ module MacroDeck
 						  "function(doc) {
 						  	if (doc.path && doc['couchrest-type'] && doc['couchrest-type'] == 'Place') {
 								if (doc.path.length == 4) {
-									emit(doc.path, 1); // No neighborhood.
+									emit(doc.path, 1);
 								} else if (doc.path.length == 5) {
 									emit([doc.path[0], doc.path[1], doc.path[2], doc.path[4]], 1);
 								} else {
@@ -209,11 +209,13 @@ module MacroDeck
 						  "function(doc) {
 						  	if (doc.path && doc['couchrest-type'] && doc['couchrest-type'] == 'Place') {
 								if (doc.path.length == 4) {
-									doc.path[3] = doc.title + '/' + doc.path[3];
-									emit(doc.path, 1);
+									var path = eval(doc.path.toSource());
+									path[3] = doc.title + '/' + path[3];
+									emit(path, 1);
 								} else if (doc.path.length == 5) {
-									doc.path[4] = doc.title + '/' + doc.path[4];
-									emit([doc.path[0], doc.path[1], doc.path[2], doc.path[4]], 1);
+									var path = eval(doc.path.toSource());
+									path[4] = doc.title + '/' + path[4];
+									emit([path[0], path[1], path[2], path[4]], 1);
 								} else {
 									emit(doc.path, 'ERROR');
 								}
