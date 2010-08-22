@@ -7,9 +7,10 @@ module MacroDeck
 		module DataObjectDefinition
 			def self.included(base)
 				base.unique_id :object_type
-				base.property :object_type
+				base.property :object_type,	:type => "String"
 				base.property :fields
 				base.property :validations
+				base.property :views
 
 				base.view_by :object_type
 
@@ -22,12 +23,14 @@ module MacroDeck
 				base.validates_true_for :object_type, :logic => lambda { object_type.is_a?(String) }
 				base.validates_true_for :fields, :logic => :validate_fields, :message => "is not valid"
 				base.validates_true_for :validations, :logic => :validate_validations, :message => "is not valid"
+				base.validates_true_for :views, :logic => :validate_views, :message => "is not valid"
 			end
 
 			# Executes the code necessary to define this object
 			def define!
 				properties = ""
 				validations = ""
+				views = ""
 				class_body = ""
 
 				@defined = false if @defined.nil?
@@ -62,6 +65,14 @@ module MacroDeck
 							end
 						end
 
+						# Iterate the views and define them.
+						unless self.views.nil?
+							self.views.each do |view|
+								symbol = view["view_by"].to_sym.inspect
+								views << "view_by #{symbol}, { :map => #{view["map"].to_s.inspect}, :reduce => #{view["reduce"].to_s.inspect} }\n"
+							end
+						end
+
 						# Define the class.
 						klass = self.object_type.split(" ")[0]
 						class_body =
@@ -69,6 +80,7 @@ module MacroDeck
 								include ::MacroDeck::PlatformSupport::DataObject
 								#{properties}
 								#{validations}
+								#{views}
 							end"
 						Kernel.eval(class_body)
 					else
@@ -78,6 +90,33 @@ module MacroDeck
 			end
 
 			private
+				# Returns true if the views array looks valid.
+				# Should be an array of hashes like this:
+				#    [ { "view_by" => "name_of_view", "map" => "map_function", "reduce" => "reduce_function" }, { ... } ]
+				def validate_views
+					if self.views.is_a?(Array)
+						if self.views.length == 0
+							return true
+						else
+							valid = false
+							self.views.each do |view|
+								if view.is_a?(Hash) && !view["view_by"].nil? && !view["map"].nil? && !view["reduce"].nil?
+									valid = true
+								else
+									valid = false
+								end
+							end
+							return valid
+						end
+					else
+						if self.views.nil?
+							return true
+						else
+							return false
+						end
+					end
+				end
+
 				# Returns true if the fields array is at least visibly valid.
 				# We won't know for sure since we don't check every detail.
 				def validate_fields
@@ -85,13 +124,15 @@ module MacroDeck
 						if self.fields.length == 0
 							return true
 						else
+							valid = false
 							self.fields.each do |field|
 								if field.is_a?(Array) && field.length == 3 && field[0].is_a?(String) && field[1].is_a?(String) && (field[2].is_a?(TrueClass) || field[2].is_a?(FalseClass))
-									return true
+									valid = true
 								else
-									return false
+									valid = false
 								end
 							end
+							return valid
 						end
 					else
 						return false
@@ -104,20 +145,22 @@ module MacroDeck
 						if self.validations.length == 0
 							return true
 						else
+							valid = false
 							self.validations.each do |validation|
 								if validation.is_a?(Array) && validation.length == 3 &&
 									validation[0].is_a?(String) && validation[0] =~ /^validates_/ &&
 									(validation[1].is_a?(Symbol) || validation[1].is_a?(String)) && # TODO: Validate the field exists.
 									validation[2].is_a?(Hash)
-									return true
+									valid = true
 								elsif validation.is_a?(Array) && validation.length == 2 &&
 									validation[0].is_a?(String) && validation[0] =~ /^validates_/ &&
 									(validation[1].is_a?(Symbol) || validation[1].is_a?(String)) # TODO: Validate the field exists.
-									return true
+									valid = true
 								else
-									return false
+									valid = false
 								end
 							end
+							return valid
 						end
 					else
 						return false
