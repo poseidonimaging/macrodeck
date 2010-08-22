@@ -17,28 +17,17 @@
 	<% end %>
     </li>
 <% elsif viewmode == :full %>
-	<div class="vcard">
-		<h2>
-			<span class="fn org"><%= h(place.name) %></span>
-			<span class="subtitle">
-				<a href="http://maps.google.com/maps?q=<%= "#{h(place.place_metadata[:address])}, #{h(place.parent.name)}, #{h(place.parent.state(:abbreviation => true))}" %>" class="adr" target="_blank">
-					<span class="street-address"><%= h(place.place_metadata[:address]) %></span>, 
-					<span class="locality"><%= h(place.parent.name) %></span>,
-					<abbr class="region" title="<%= place.parent.state %>"><%= place.parent.state(:abbreviation => true) %></abbr>
-					<% if !place.place_metadata[:zipcode].nil? && !place.place_metadata[:zipcode].to_s.empty? %>
-						<span class="postal-code"><%= h(place.place_metadata[:zipcode]) %></span>
-					<% end %>
-				</a>
-			</span>
-		</h2>
-		<ul class="controls">
-			<li><%= link_to "edit", edit_country_state_city_place_path(params[:country_id], params[:state_id], params[:city_id], params[:id]) %></li>
-		</ul>
-		<% unless place.description.empty? %>
-			<%= auto_link(simple_format(h(place.description), :class => "note"),
-				:href_options => { :target => "_blank" }) %>
-		<% end %>
-		<h3>Wall</h3>
-		<%= render :partial => "comments/comments", :locals => { :comments => place.wall, :viewmode => :full } %>
-	</div>
+    <ul>
+        <li class="vcard <%= cycle("odd", "even") %>">
+	    <span class="comment">
+		<%= place.fare.join(", ") %>
+	    </span>
+	    <span class="fn org">
+		<%= h(place.title) %>
+	    </span>
+	    <span class="adr">
+		<%= content_tag :span, h(place.address), :class => "street-address" %>
+	    </span>
+	</li>
+    </ul>
 <% end %>
