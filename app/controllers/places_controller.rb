@@ -1,6 +1,6 @@
 # This is a resource for a place.
 class PlacesController < ApplicationController
-    layout 'default'
+    layout 'mobile'
     before_filter :find_country
     before_filter :find_region
     before_filter :find_locality
