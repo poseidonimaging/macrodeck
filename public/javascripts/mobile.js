@@ -4,4 +4,8 @@ var iWebkit;if(!iWebkit){iWebkit=window.onload=function(){function fullscreen(){
 // Our functions.
 jQuery(document).ready(function() {
     jQuery("ul.arrows li a").append("<span class='arrow'></span>");
+    jQuery("a[href=#info]").click(function(event) {
+	event.preventDefault();
+	jQuery("#info").toggle();
+    });
 });
