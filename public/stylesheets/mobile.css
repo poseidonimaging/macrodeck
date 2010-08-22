@@ -879,7 +879,7 @@ select {
 	color: white;
 }
 
-.info, .hours, .address, .website{
+.hours, .address, .website{
 	position:absolute;
 	width:200px;
 	margin:135px 0 0 20px;
