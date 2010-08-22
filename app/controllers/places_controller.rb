@@ -9,7 +9,7 @@ class PlacesController < ApplicationController
     # List places
     def index
 	@start_item = params[:start_item].nil? ? 0 : params[:start_item].to_i
-	@page_title = "#{@locality.title}"
+	@page_title = @locality.title
 	@back_button = [@region.title, country_region_localities_path(params[:country_id], params[:region_id])]
 	@button = ["Happenings", "#"]
 	startkey = @locality.path.dup.push(0)
@@ -26,6 +26,7 @@ class PlacesController < ApplicationController
 	if @place.nil?
 	    raise ActiveRecord::RecordNotFound
 	else
+	    @page_title = @place.title
 	    respond_to do |format|
 		format.html # show.html.erb
 	    end
