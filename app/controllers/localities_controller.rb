@@ -30,7 +30,7 @@ class LocalitiesController < ApplicationController
 	    @button = ["Happenings", "#"]
 	    startkey = @locality.path.dup.push(0)
 	    endkey = @locality.path.dup.push({})
-	    @places = Place.view("by_path_and_type_alpha", :reduce => false, :startkey => startkey, :endkey => endkey, :limit => 10, :skip => @start_item)
+	    @places = Place.view("by_path_and_type_without_neighborhood_alpha", :reduce => false, :startkey => startkey, :endkey => endkey, :limit => 10, :skip => @start_item)
 
 	    respond_to do |format|
 		format.html
