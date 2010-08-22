@@ -186,7 +186,8 @@
 .actions .action    { display: block; width: 25%; height: 42px; float: left; margin: 16px 0 0 0; }
 .actions a	    { display: block; height: 42px; }
 .actions a span	    { display: none; }
-.actions a.info	    { background: transparent url("/images/icons/restnap/clipboard_small@2x.png") no-repeat center center; } /* I prefer info */
+.actions a.info	    { background: transparent url("/images/icons/restnap/info_small@2x.png") no-repeat center center; }
+.actions a.infochad { background: transparent url("/images/icons/restnap/clipboard_small@2x.png") no-repeat center center; }
 .actions a.tel	    { background: transparent url("/images/icons/restnap/phone_2_small@2x.png") no-repeat center center; }
 .actions a.map	    { background: transparent url("/images/icons/restnap/street_sign_small@2x.png") no-repeat center center; }
 .actions a.url	    { background: transparent url("/images/icons/restnap/chain_small@2x.png") no-repeat center center; }
