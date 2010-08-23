@@ -144,9 +144,7 @@
 .feed li.alt:nth-child(odd) {
 	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#414041), color-stop(3%, rgba(0,0,0,0.3)), to(rgba(20,20,20,0.3)));
 }
-.feed li.alt a, .feed li.alt a .name {
-    color: #E7902B !important;
-}
+.feed li.alt a, .feed li.alt .name, .feed li.alt a .name { color: #E7902B !important; }
 .feed #content li {
 	list-style: none;
 	width: auto;
