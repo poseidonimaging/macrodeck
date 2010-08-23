@@ -1,6 +1,19 @@
 <% @start_item = 0 if @start_item.nil? %>
 
 <ul>
+    <% if !params[:fare].nil? || !params[:neighborhood].nil? %>
+	<li class="alt">
+	    <span class="name">
+		Showing everything
+		<% unless params[:fare].nil? %>
+		    <%= h(params[:fare]) %>
+		<% end %>
+		<% unless params[:neighborhood].nil? %>
+		    in <%= h(Neighborhood.get(params[:neighborhood])["title"]) %>
+		<% end %>
+	    </span>
+	</li>
+    <% end %>
     <%= render :partial => "place", :collection => @places, :locals => { :view_mode => :compact, :country => @country, :region => @region, :locality => @locality } %>
     <li class="alt">
 	<% link_to country_region_locality_places_path(@country.id, @region.id, @locality.id, :start_item => (@start_item + 10)) do %>
