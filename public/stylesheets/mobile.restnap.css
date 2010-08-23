@@ -27,11 +27,11 @@
 	top: 25px;
 	left: 20px;
 }
+.feed .comment, .feed .comment a { color: #7f7f7f; }
 .feed .comment {
 	position: absolute;
 	top: 10px;
 	left: 20px;
-	color: #7f7f7f;
 }
 .feed .number {
 	width: 23px;
@@ -144,7 +144,7 @@
 .feed li.alt:nth-child(odd) {
 	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#414041), color-stop(3%, rgba(0,0,0,0.3)), to(rgba(20,20,20,0.3)));
 }
-.feed li.alt a {
+.feed li.alt a, .feed li.alt a .name {
     color: #E7902B !important;
 }
 .feed #content li {
@@ -161,10 +161,8 @@
 }
 .feed #content li a {
 	text-decoration: none;
-	color: white;
-	width: 100%!important;
+	width: 100% !important;
 	height: 100%;
-	display: block;
 }
 .feed {
 	background-image: none!important;
