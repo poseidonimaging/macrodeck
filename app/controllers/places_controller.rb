@@ -14,7 +14,9 @@ class PlacesController < ApplicationController
 	@button = ["Happenings", "#"]
 	startkey = @locality.path.dup.push(0)
 	endkey = @locality.path.dup.push({})
-	@places = Place.view("by_path_and_type_without_neighborhood_alpha", :reduce => false, :startkey => startkey, :endkey => endkey, :limit => 10, :skip => @start_item)
+	if params[:fare].nil? && params[:neighborhood].nil?
+	    @places = Place.view("by_path_and_type_without_neighborhood_alpha", :reduce => false, :startkey => startkey, :endkey => endkey, :limit => 10, :skip => @start_item)
+	end
 
 	respond_to do |format|
 	    format.html
