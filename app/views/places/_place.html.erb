@@ -6,7 +6,7 @@
     <li class="vcard <%= cycle("odd", "even") %>">
 	<span class="comment">
 	    <% place.fare.each do |fare| %>
-		<%= link_to fare, country_region_locality_places_path(country.id, region.id, locality.id, :fare => fare, :neighborhood => params[:neighborhood].nil? ? nil : params[:neighborhood]) %>
+		<%= link_to fare, country_region_locality_places_path(country.id, region.id, locality.id, :fare => fare, :neighborhood => params[:neighborhood]) %>
 	    <% end %>
 	</span>
 	<% link_to(country_region_locality_place_path(country.id, region.id, locality.id, place.id)) do %>
@@ -17,7 +17,7 @@
 	<span class="adr">
 	    <% neighborhood = Neighborhood.view("by_path_and_type", :startkey => place.parent, :limit => 1, :reduce => false, :include_docs => true) %>
 	    <% if neighborhood.length == 1 %>
-		<%= link_to h(neighborhood[0]["title"]), country_region_locality_places_path(country.id, region.id, locality.id, :neighborhood => neighborhood[0]["_id"], :fare => params[:fare].nil? ? nil : params[:fare]) %>
+		<%= link_to h(neighborhood[0]["title"]), country_region_locality_places_path(country.id, region.id, locality.id, :neighborhood => neighborhood[0]["_id"], :fare => params[:fare]) %>
 	    <% else %>
 		<%= h locality.title %>
 	    <% end %>
