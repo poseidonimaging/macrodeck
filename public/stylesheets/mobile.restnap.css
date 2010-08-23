@@ -118,13 +118,13 @@
 	text-align: right;
 	color: #3b3b3b;
 }
+.feed .adr, .feed .adr a { color: #727E8A; }
 .feed .adr {
 	left: 20px;
 	top: 46px;
-	color: #727E8A;
 	position: absolute;
-	font-size: 12px;
-	font-weight: lighter;
+	font-weight: bold;
+	font-size: 14px;
 }
 .feed .time {
 	color: #E7902B;
