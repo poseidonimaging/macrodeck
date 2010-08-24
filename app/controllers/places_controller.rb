@@ -12,10 +12,16 @@ class PlacesController < ApplicationController
 	@page_title = @locality.title
 	@back_button = [@region.title, country_region_localities_path(params[:country_id], params[:region_id])]
 	@button = ["Happenings", "#"]
-	startkey = @locality.path.dup.push(0)
-	endkey = @locality.path.dup.push({})
 	if params[:fare].nil? && params[:neighborhood].nil?
+	    startkey = @locality.path.dup.push(0)
+	    endkey = @locality.path.dup.push({})
 	    @places = Place.view("by_path_and_type_without_neighborhood_alpha", :reduce => false, :startkey => startkey, :endkey => endkey, :limit => 10, :skip => @start_item)
+	    @places_count = Place.view("by_path_and_type_without_neighborhood_alpha", :reduce => true, :startkey => startkey, :endkey => endkey)["rows"][0]["value"]
+	elsif params[:fare].nil? && !params[:neighborhood].nil?
+	    startkey = @locality.path.dup.push(params[:neighborhood]).push(0)
+	    endkey = @locality.path.dup.push(params[:neighborhood]).push({})
+	    @places = Place.view("by_path_and_type", :reduce => false, :startkey => startkey, :endkey => endkey, :limit => 10, :skip => @start_item)
+	    @places_count = Place.view("by_path_and_type", :reduce => true, :startkey => startkey, :endkey => endkey)["rows"][0]["value"]
 	end
 
 	respond_to do |format|
