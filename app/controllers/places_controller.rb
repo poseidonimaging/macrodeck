@@ -27,6 +27,11 @@ class PlacesController < ApplicationController
 	    endkey = @locality.path.dup.push(params[:fare]).push({})
 	    @places = Place.view("by_fare_alpha", :reduce => false, :startkey => startkey, :endkey => endkey, :limit => 10, :skip => @start_item)
 	    @places_count = Place.view("by_fare_alpha", :reduce => true, :startkey => startkey, :endkey => endkey)["rows"][0]["value"]
+	elsif !params[:fare].nil? && !params[:neighborhood].nil?
+	    startkey = @locality.path.dup.push(params[:neighborhood]).push(params[:fare]).push(0)
+	    endkey = @locality.path.dup.push(params[:neighborhood]).push(params[:fare]).push({})
+	    @places = Place.view("by_fare_alpha", :reduce => false, :startkey => startkey, :endkey => endkey, :limit => 10, :skip => @start_item)
+	    @places_count = Place.view("by_fare_alpha", :reduce => true, :startkey => startkey, :endkey => endkey)["rows"][0]["value"]
 	end
 
 	respond_to do |format|
