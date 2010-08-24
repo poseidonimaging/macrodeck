@@ -9,7 +9,7 @@
 		<%= link_to fare, country_region_locality_places_path(country.id, region.id, locality.id, :fare => fare, :neighborhood => params[:neighborhood]) %>
 	    <% end %>
 	</span>
-	<% link_to(country_region_locality_place_path(country.id, region.id, locality.id, place.id)) do %>
+	<% link_to(country_region_locality_place_path(country.id, region.id, locality.id, place.id, :fare => params[:fare], :neighborhood => params[:neighborhood])) do %>
 	    <span class="fn org">
 		<%= h(place.title) %>
 	    </span>
