@@ -1,0 +1,94 @@
+html { background: #020202 url("/images/mobile_desktop_bg.jpg") repeat-x top center; }
+body {
+    width: 320px;
+    margin: 1% auto;
+    -moz-box-shadow: 3px 3px 3px #000;
+    -webkit-box-shadow: 3px 3px 3px #000;
+    box-shadow: 3px 3px 3px #000;
+}
+#topbar {
+    height: 44px;
+}
+#title {
+    line-height: 44px;
+    height: 44px;
+    font-size: 16pt;
+}
+#tributton a:first-child, #duobutton a:first-child {
+    width: 101px;
+}
+#tributton a:last-child, #duobutton a:last-child {
+    width: 101px;
+}
+#tributton a {
+    width: 106px;
+}
+#duobutton .links {
+    width: 195px;
+}
+#tributton .links {
+    width: 302px;
+}
+#doublead {
+    width: 300px!important;
+}
+#duoselectionbuttons {
+    width: 191px;
+    height: 30px;
+    top: 7px;
+}
+#triselectionbuttons {
+    width: 290px;
+    height: 30px;
+    top: 7px;
+}
+#triselectionbuttons a:first-child, #duoselectionbuttons a:first-child {
+    width: 99px;
+    height: 28px;
+    line-height: 28px;
+}
+#triselectionbuttons a {
+    width: 98px;
+    height: 28px;
+    line-height: 28px;
+}
+#triselectionbuttons a:last-child, #duoselectionbuttons a:last-child {
+    width: 99px;
+    height: 28px;
+    line-height: 28px;
+}
+.searchbox form {
+    width: 272px;
+}
+.searchbox input[type="text"] {
+    width: 275px;
+}
+.menu .name {
+    max-width: 77%;
+}.checkbox .name {
+    max-width: 190px;
+}.radiobutton .name {
+    max-width: 190px;
+}
+#leftnav a, #rightnav a, #leftbutton a, #rightbutton a, #blueleftbutton a, #bluerightbutton a {
+    line-height: 30px;
+    height: 30px;
+}
+#leftnav img, #rightnav img {
+    margin-top: 4px;
+}
+#leftnav, #leftbutton, #blueleftbutton {
+    top: 7px;
+}
+#rightnav, #rightbutton, #bluerightbutton {
+    top: 7px;
+}
+.musiclist .name {
+    max-width:55%
+}
+.textbox textarea {
+    width: 280px;
+}
+.bigfield input {
+    width:295px
+}
