@@ -177,6 +177,25 @@
 	margin-top: -29px!important;
 }
 
+/* filters */
+.filters {
+    display: block;
+    padding: 10px;
+    height: 20px !important;
+    background: rgba(0,0,0,0.5) !important;
+}
+.filters a {
+    padding: 3px 6% 3px 3px;
+    border: 1px solid #E7902B;
+    background: rgba(231,144,43,0.1) url("/images/cancel_item.png") no-repeat 94% 50%;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    color: #E7902B;
+    font-weight: bold;
+    font-size: 12px;
+}
+
 /* Actions */
 .actions	    { width: 100%; }
 .actions .action    { display: block; width: 25%; height: 42px; float: left; margin: 16px 0 0 0; }
