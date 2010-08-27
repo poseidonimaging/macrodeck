@@ -14,7 +14,7 @@ def read_file(file_name)
 	    root = line.strip.gsub(/^"/, "").gsub(/"$/, "").gsub('""', '"')
 	    root = eval(root.to_s)
 	elsif line_number == 2
-	    fields = line.strip.split("\t")
+	    fields = line.split("\t")
 	    fields.each_index do |field_id|
 		fields[field_id] = fields[field_id].split(" ")[0].split("[")[0]
 	    end
@@ -33,7 +33,7 @@ def read_file(file_name)
 	end
     end
 
-    return { :root => root, :lines => lines }
+    return { :root => root, :lines => lines, :fields => fields }
 end
 
 # Strips the items of the array.
@@ -269,13 +269,15 @@ namespace :macrodeck do
 		start_time = Time.parse(start_time).utc.iso8601 if !start_time.nil? && start_time != ""
 		end_time = Time.parse(end_time).utc.iso8601 if !end_time.nil? && end_time != ""
 
-		puts "id: #{id}"
+		puts "\nid: #{id}"
 		puts "path: #{path.inspect}"
 		puts "type: #{event_type}"
 		puts "title: #{title}"
 		puts "start_time: #{start_time}"
 
 		if start_time.nil?
+		    puts line.inspect
+		    puts parsed[:fields].inspect
 		    puts "*** START TIME IS NIL! ***"
 		else
 		    event = Event.get(id) || Event.new
