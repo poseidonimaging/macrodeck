@@ -78,9 +78,27 @@ module MacroDeck
 					"fields" => [
 						["start_time", "Time", true],
 						["end_time", "Time", false],
-						["recurrence", "Symbol", false]
+						["recurrence", "String", false],
+						["event_type", "String", false]
 					],
-					"validations" => []
+					"validations" => [
+						["validates_list_items_in_list", "event_type",
+							{ "allow_nil" => true,
+							  "list" => [	"Drink Special",
+									"Food and Drink Special",
+									"Food Special",
+									"Entertainment",
+									"Featured",
+									"Event"
+								    ]
+							}
+						],
+						["validates_list_items_in_list", "recurrence",
+							{ "allow_nil" => true,
+							  "list" => [ "weekly", "monthly", "none", "yearly", "monthly_nth_nday" ]
+							}
+						]
+					]
 				}.freeze
 			end
 
@@ -204,7 +222,7 @@ module MacroDeck
 						   "reduce" => "_count"
 						},
 						# Same as above but alphabetically.
-						{ "view_by" => "path__without_neighborhood_alpha",
+						{ "view_by" => "path_without_neighborhood_alpha",
 						  "map" =>
 						  "function(doc) {
 						  	if (doc.path && doc['couchrest-type'] && doc['couchrest-type'] == 'Place') {
