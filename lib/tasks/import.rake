@@ -275,20 +275,24 @@ namespace :macrodeck do
 		puts "title: #{title}"
 		puts "start_time: #{start_time}"
 
-		event = Event.get(id) || Event.new
-		event["_id"] = id
-		event.created_by = "_system"
-		event.updated_by = "_system"
-		event.owned_by = "_system"
-		event.tags = []
-		event.path = path
-		event.title = title
-		event.event_type = event_type
-		event.description = description
-		event.start_time = start_time
-		event.end_time = end_time
-		event.recurrence = recurrence
-		event.save
+		if start_time.nil?
+		    puts "*** START TIME IS NIL! ***"
+		else
+		    event = Event.get(id) || Event.new
+		    event["_id"] = id
+		    event.created_by = "_system"
+		    event.updated_by = "_system"
+		    event.owned_by = "_system"
+		    event.tags = []
+		    event.path = path
+		    event.title = title
+		    event.event_type = event_type
+		    event.description = description
+		    event.start_time = start_time
+		    event.end_time = end_time
+		    event.recurrence = recurrence
+		    event.save
+		end
 	    end
 	end
     end
