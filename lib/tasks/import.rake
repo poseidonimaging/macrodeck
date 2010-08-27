@@ -254,10 +254,11 @@ namespace :macrodeck do
 		parent_neighborhood = line["parent_neighborhood"]
 		parent_place = line["parent_place"]
 		root = parsed[:root].dup
-		path = root << id
+		path = root
 
 		path.push(parent_neighborhood) if !parent_neighborhood.nil? && parent_neighborhood != ""
 		path.push(parent_place) if !parent_place.nil? && parent_place != ""
+		path.push(id)
 
 		title = line["title"]
 		event_type = line["event_type"]
@@ -270,6 +271,8 @@ namespace :macrodeck do
 		end_time = Time.parse(end_time).utc.iso8601 if !end_time.nil? && end_time != ""
 
 		puts "\nid: #{id}"
+		puts "hood: #{parent_neighborhood}"
+		puts "place: #{parent_place}"
 		puts "path: #{path.inspect}"
 		puts "type: #{event_type}"
 		puts "title: #{title}"
