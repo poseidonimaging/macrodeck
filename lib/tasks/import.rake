@@ -16,12 +16,12 @@ def read_file(file_name)
 		elsif line_number == 2
 			fields = line.strip.split("\t")
 			fields.each_index do |field_id|
-				fields[field_id] = fields[field_id].split(" ")[0]
+			    fields[field_id] = fields[field_id].split(" ")[0].split("[")[0]
 			end
 		elsif line_number > 2 && !done
-			line_arr = line.strip.split("\t")
+			line_arr = line.split("\t")
 			line_hsh = {}
-			if line_arr == []
+			if line_arr == [] || line_arr == ["\n"]
 				done = true
 			else
 				line_arr.each_index do |item_id|
@@ -276,6 +276,7 @@ namespace :macrodeck do
 				puts "path: #{path.inspect}"
 				puts "type: #{event_type}"
 				puts "title: #{title}"
+				puts "start_time: #{start_time}"
 
 				event = Event.get(id) || Event.new
 				event["_id"] = id
