@@ -1,0 +1,150 @@
+"[""875de01b-edb9-47a4-aabc-7acd97ecde43"", ""ea46e21f-889c-4960-b0eb-3cf65a093a1c"", ""bfff92eb-d35c-4df3-ae8f-01e68c3f8fc6""]"
+timestamp	_id	parent neighborhood[1]	parent place[2]	event_type[3]	title	description	start_time	end_time	recurrence (*)[4]	recurrence_note	place_note
+	a8f2d157-f6e7-4329-96aa-da8c4626cb3a	274a82d0-9d01-43ee-a239-02dd28d726f0	0b26e65b-f1a2-4ee4-9a03-00cc4e526376	Drink Special	$2 off Pitchers and Buckets of Beer		2010-08-23T11:00:00-0500		weekly	Mondays	Black Sheep Lodge
+	53f1f7fa-6de0-492b-80c4-5ff7686ccfdf	274a82d0-9d01-43ee-a239-02dd28d726f0	0b26e65b-f1a2-4ee4-9a03-00cc4e526376	Drink Special	"$2 MexiCans, $7 Domestic Pitchers"		2010-08-24T11:00:00-0500		weekly	Tuesdays
+	0d45a9b1-b6f3-4dcd-8739-7ba0bbdc0397	274a82d0-9d01-43ee-a239-02dd28d726f0	0b26e65b-f1a2-4ee4-9a03-00cc4e526376	Drink Special	"$1 White Trash Cans, $4 Deep Eddy Sweet Tea Vodka"		2010-08-25T11:00:00-0500		weekly	Wednesdays
+	0c29305f-c82f-4bfc-9252-eba40589b8d7	274a82d0-9d01-43ee-a239-02dd28d726f0	0b26e65b-f1a2-4ee4-9a03-00cc4e526376	Drink Special	"$1 off Drafts, $3 Titos, $2 Frozen Margs"		2010-08-26T11:00:00-0500		weekly	Thursdays
+	16bef6c0-a74a-45a2-8f85-0f2c5e20eb01	274a82d0-9d01-43ee-a239-02dd28d726f0	0b26e65b-f1a2-4ee4-9a03-00cc4e526376	Drink Special	"$2 off Tx Pitchers, $2 White Trash Cans"		2010-08-27T11:00:00-0500		weekly	Fridays
+	e0dfe6fa-0c34-41e5-9da5-88839e232d0b	274a82d0-9d01-43ee-a239-02dd28d726f0	0b26e65b-f1a2-4ee4-9a03-00cc4e526376	Drink Special	$3 Well Drinks		2010-08-28T11:00:00-0500		weekly	Saturdays
+	c966b30f-5e2f-49e1-a906-b960d7be51f9	274a82d0-9d01-43ee-a239-02dd28d726f0	0b26e65b-f1a2-4ee4-9a03-00cc4e526376	Drink Special	"$3 Bl Marys, $3 Sangria, $1 off Micheladas"		2010-08-29T11:00:00-0500		weekly	Sundays
+	947954ba-da52-4b55-9d86-1ed7f8fee4b1	274a82d0-9d01-43ee-a239-02dd28d726f0	8ebdc305-711f-4fdc-9904-4f64318f2703	Food and Drink Special	Sangria $3 gl - $15 pitch & Half Priced Apps		2010-08-26T21:00:00-0500	2010-08-27T00:00:00-0500	weekly	Thursdays	Paggi House
+	1e1b8d4f-1730-4e2d-b753-a86bb51ce119	32356c8e-3d7b-4626-ba86-fee0d0073d04	ce7d355a-17fa-49a3-bf69-038a93c65c29	Food and Drink Special	"$1 off Drafts, $5-8 Martini Shakers, 1/2 Price American Tapas"		2010-08-23T17:00:00-0500	2010-08-23T21:00:00-0500	weekly	Mondays	219 West
+	c24ba985-1ee0-415d-8dfd-a498dd4be7dd	32356c8e-3d7b-4626-ba86-fee0d0073d04	ce7d355a-17fa-49a3-bf69-038a93c65c29	Food and Drink Special	"$1 off Drafts, $5-8 Martini Shakers, 1/2 Price American Tapas"		2010-08-24T17:00:00-0500	2010-08-24T21:00:00-0500	weekly	Tuesdays
+	c8b60695-375c-4347-ad71-5768172089f2	32356c8e-3d7b-4626-ba86-fee0d0073d04	ce7d355a-17fa-49a3-bf69-038a93c65c29	Food and Drink Special	"$1 off Drafts, $5-8 Martini Shakers, 1/2 Price American Tapas"		2010-08-25T17:00:00-0500	2010-08-25T21:00:00-0500	weekly	Wednesdays
+	fda850f2-3bb8-41fd-8597-6cb456ddb004	32356c8e-3d7b-4626-ba86-fee0d0073d04	ce7d355a-17fa-49a3-bf69-038a93c65c29	Food and Drink Special	"$1 off Drafts, $5-8 Martini Shakers, 1/2 Price American Tapas"		2010-08-26T17:00:00-0500	2010-08-26T21:00:00-0500	weekly	Thursdays
+	d7cebeb2-a031-4a8a-ab1d-8766caabadfb	32356c8e-3d7b-4626-ba86-fee0d0073d04	ce7d355a-17fa-49a3-bf69-038a93c65c29	Food and Drink Special	"$1 off Drafts, $5-8 Martini Shakers, 1/2 Price American Tapas"		2010-08-27T17:00:00-0500	2010-08-27T21:00:00-0500	weekly	Fridays
+	77f5398b-1e83-4243-8498-c9359e4e101f	32356c8e-3d7b-4626-ba86-fee0d0073d04	ce7d355a-17fa-49a3-bf69-038a93c65c29	Food and Drink Special	"$1 off Drafts, $5-8 Martini Shakers, 1/2 Price American Tapas"		2010-08-28T17:00:00-0500	2010-08-28T20:00:00-0500	weekly	Saturdays
+	25389822-3403-480d-a7d4-e68727e64ce7	f96dfa50-d6be-4255-b882-0c9ffc3e65d4	fd2aa9d4-a1fe-4951-b8f9-972cb91c9282	Food and Drink Special	"$6 Pitchers, $10 Buckets (Lone Star - High Life) and 1/2 Price Apps"		2010-08-23T15:00:00-0500		weekly	Mondays	Dirty Martin's
+	41c9f6c5-087b-4423-9f47-ef2458fb1e6e	f96dfa50-d6be-4255-b882-0c9ffc3e65d4	fd2aa9d4-a1fe-4951-b8f9-972cb91c9282	Food and Drink Special	"$6 Pitchers, $10 Buckets (Lone Star - High Life) and 1/2 Price Apps"		2010-08-24T15:00:00-0500		weekly	Tuesdays
+	d086c5e1-bc03-4fe1-a042-37cfce5dcca7	f96dfa50-d6be-4255-b882-0c9ffc3e65d4	fd2aa9d4-a1fe-4951-b8f9-972cb91c9282	Food and Drink Special	"$6 Pitchers, $10 Buckets (Lone Star - High Life) and 1/2 Price Apps"		2010-08-25T15:00:00-0500		weekly	Wednesdays
+	373a744c-e02d-486c-963e-a816b18a6add	f96dfa50-d6be-4255-b882-0c9ffc3e65d4	fd2aa9d4-a1fe-4951-b8f9-972cb91c9282	Food and Drink Special	"$6 Pitchers, $10 Buckets (Lone Star - High Life) and 1/2 Price Apps"		2010-08-26T15:00:00-0500		weekly	Thursdays
+	17127c9a-5bcd-4de3-a7ac-df2fec3a0c0c	f96dfa50-d6be-4255-b882-0c9ffc3e65d4	fd2aa9d4-a1fe-4951-b8f9-972cb91c9282	Food and Drink Special	"$6 Pitchers, $10 Buckets (Lone Star - High Life) and 1/2 Price Apps"		2010-08-27T15:00:00-0500		weekly	Fridays
+	f9f57ab0-0068-4257-a5a5-b7cb7b0226c0	f96dfa50-d6be-4255-b882-0c9ffc3e65d4	fd2aa9d4-a1fe-4951-b8f9-972cb91c9282	Food and Drink Special	"$6 Pitchers, $10 Buckets (Lone Star - High Life) and 1/2 Price Apps"		2010-08-28T15:00:00-0500		weekly	Saturdays
+	c7f021f0-54ce-418c-928b-8507870c4516	f96dfa50-d6be-4255-b882-0c9ffc3e65d4	fd2aa9d4-a1fe-4951-b8f9-972cb91c9282	Food and Drink Special	"$6 Pitchers, $10 Buckets (Lone Star - High Life) and 1/2 Price Apps"		2010-08-29T15:00:00-0500		weekly	Sundays
+	9d5b0b02-f610-442d-8218-08ce90385f49	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	41c8217f-4fdd-4c4f-aa95-49673656b8cd	Drink Special	$2 Domestics $2 Lonestar & Long Islands 		2010-08-23T19:00:00-0500	2010-08-24T02:00:00-0500	weekly	Mondays	Maggie Mae's
+	4774bad7-81de-462f-9865-dc27e33c0b5b	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	41c8217f-4fdd-4c4f-aa95-49673656b8cd	Drink Special	$2 Domestics $2 Lonestar & Long Islands 		2010-08-24T14:00:00-0500	2010-08-25T02:00:00-0500	weekly	Tuesdays
+	1edb1bf9-6f40-446e-aef4-965392a99941	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	41c8217f-4fdd-4c4f-aa95-49673656b8cd	Drink Special	$2 Domestics $2 Lonestar & Long Islands 		2010-08-25T14:00:00-0500	2010-08-26T02:00:00-0500	weekly	Wednesdays
+	c371df29-491f-4b15-ae25-2c19047959af	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	41c8217f-4fdd-4c4f-aa95-49673656b8cd	Drink Special	$2 You Call It $2 Lonestar & Long Islands 		2010-08-26T14:00:00-0500	2010-08-27T02:00:00-0500	weekly	Thursdays
+	8099c922-90b3-4aba-96da-979c59cb050e	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	41c8217f-4fdd-4c4f-aa95-49673656b8cd	Drink Special	$2 Domestics $2 Wells		2010-08-27T14:00:00-0500	2010-08-27T21:00:00-0500	weekly	Fridays
+	0e9873c6-752b-4edd-a92d-805193b47e86	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	41c8217f-4fdd-4c4f-aa95-49673656b8cd	Drink Special	$2 Domestics $2 Wells		2010-08-28T14:00:00-0500	2010-08-28T21:00:00-0500	weekly	Saturdays
+	165e2f15-6be0-4291-b652-16d11f92dbe4	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	41c8217f-4fdd-4c4f-aa95-49673656b8cd	Drink Special	$2 Domestics $2 Lonestar & Long Islands 		2010-08-29T19:00:00-0500	2010-08-30T02:00:00-0500	weekly	Sundays
+	680781b3-4403-4872-ab32-9c6a2dcab7ac	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	8529e14f-ec18-4a39-96bb-7525c7532215	Drink Special	"$2 wells, $2 Domestics, $4 Everything Else "		2010-08-24T22:00:00-0500	2010-08-25T02:00:00-0500	weekly	Tuesdays	Firehouse Lounge
+	1ca3e28f-0f45-4bf4-b58d-756424ff99ef	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	8529e14f-ec18-4a39-96bb-7525c7532215	Drink Special	$2 Wells 		2010-08-25T22:00:00-0500	2010-08-26T02:00:00-0500	weekly	Wednesdays
+	95fdd576-c45f-4030-aee2-afc8add8c13a	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	8529e14f-ec18-4a39-96bb-7525c7532215	Drink Special	"25 cent wells, $2 specialty shots, $4 patron "		2010-08-26T22:00:00-0500	2010-08-27T02:00:00-0500	weekly	Thursdays
+	381ddc28-27d7-4797-93dc-cace8a4781ff	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	8529e14f-ec18-4a39-96bb-7525c7532215	Drink Special	"$1 wells, $2 Bud lt. $3 Yeah Babys"		2010-08-27T22:00:00-0500	2010-08-28T02:00:00-0500	weekly	Fridays
+	2a58a6d4-e10b-404f-919c-a19906fbea7e	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	8529e14f-ec18-4a39-96bb-7525c7532215	Drink Special	"$1 wells, $2 Bud lt. $3 Yeah Babys 
+"		2010-08-28T22:00:00-0500	2010-08-29T02:00:00-0500	weekly	Saturdays
+	0a34f483-690a-4de8-8244-9be97c7faaff	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	88c7fdd2-74cc-4f93-bd0c-986f30e8badb	Drink Special	$2 Flavored Shots	$2 Flavored Vodka Bombs and Flavored Kazis	2010-08-23T19:00:00-0500	2010-08-24T02:00:00-0500	weekly	Mondays	Friends
+	c9cbcd1e-ca03-4faf-9e63-4a9a886c91de	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	88c7fdd2-74cc-4f93-bd0c-986f30e8badb	Drink Special	$2 Flavored Shots	$2 Flavored Vodka Bombs and Flavored Kazis	2010-08-24T19:00:00-0500	2010-08-25T02:00:00-0500	weekly	Tuesdays
+	34c79c6b-f71d-4d57-a212-67680d368300	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	88c7fdd2-74cc-4f93-bd0c-986f30e8badb	Drink Special	$2 Flavored Shots	$2 Flavored Vodka Bombs and Flavored Kazis	2010-08-25T19:00:00-0500	2010-08-26T02:00:00-0500	weekly	Wednesdays
+	cb5e05d3-0490-4add-a83e-5a6c8dfe2a9f	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	88c7fdd2-74cc-4f93-bd0c-986f30e8badb	Drink Special	$2 Flavored Shots	$2 Flavored Vodka Bombs and Flavored Kazis	2010-08-26T19:00:00-0500	2010-08-27T02:00:00-0500	weekly	Thursdays
+	fffc7ce0-8b4d-47a6-bf5a-50ae2519b773	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	88c7fdd2-74cc-4f93-bd0c-986f30e8badb	Drink Special	$2 Flavored Shots	$2 Flavored Vodka Bombs and Flavored Kazis	2010-08-27T16:00:00-0500	2010-08-28T02:00:00-0500	weekly	Fridays
+	e066349d-2825-4ca1-92b0-6a3c61d15dc3	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	88c7fdd2-74cc-4f93-bd0c-986f30e8badb	Drink Special	$2 and $3 Specials	$2 Flavored Vodka Bombs and Flavored Kazis :: $3 Long Islands and Frozen Drinks	2010-08-28T16:00:00-0500	2010-08-29T02:00:00-0500	weekly	Saturdays
+	f9632ca8-4ef9-4867-b393-1dd42c90ea5f	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	88c7fdd2-74cc-4f93-bd0c-986f30e8badb	Drink Special	$2 and $3 Specials	$2 Flavored Vodka Bombs and Flavored Kazis :: $3 Long Islands and Frozen Drinks	2010-08-29T16:00:00-0500	2010-08-30T02:00:00-0500	weekly	Sundays
+	ebf69631-0c68-4860-87cf-bf02ba520521	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	aac80660-8b15-443a-84ca-b22ef5a28a25	Drink Special	Big Ass Beer Night 		2010-08-23T20:00:00-0500	2010-08-24T02:00:00-0500	weekly	Mondays	Mooseknuckle
+	e3961832-e55a-4d55-b0c3-da7f30d3824c	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	aac80660-8b15-443a-84ca-b22ef5a28a25	Drink Special	$2 You Call It		2010-08-24T20:00:00-0500	2010-08-25T02:00:00-0500	weekly	Tuesdays
+	1b767871-1422-48a5-9ffa-2a6ea17309bf	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	aac80660-8b15-443a-84ca-b22ef5a28a25	Drink Special	$2 Pint Night 		2010-08-25T20:00:00-0500	2010-08-26T02:00:00-0500	weekly	Wednesdays
+	c82f2b94-8327-40b8-a4f1-18a0bdc4ec0d	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	aac80660-8b15-443a-84ca-b22ef5a28a25	Drink Special	$2 You Call It		2010-08-26T20:00:00-0500	2010-08-27T02:00:00-0500	weekly	Thursdays
+	29db7465-25f2-4b7f-bf3f-8d184b548bc5	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	aac80660-8b15-443a-84ca-b22ef5a28a25	Drink Special	"$2 You Call It
+"		2010-08-27T20:00:00-0500	2010-08-28T02:00:00-0500	weekly	Fridays
+	82845d63-b4e6-440f-b0b9-d0057c1599a7	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	aac80660-8b15-443a-84ca-b22ef5a28a25	Drink Special	$2 You Call It		2010-08-28T20:00:00-0500	2010-08-29T02:00:00-0500	weekly	Saturdays
+	0bd73233-9e4a-4c13-924c-3a376db87f8a	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	aac80660-8b15-443a-84ca-b22ef5a28a25	Drink Special	$2 Lonestar & Long Islands 		2010-08-29T20:00:00-0500	2010-08-30T02:00:00-0500	weekly	Sundays
+	16d02c8d-4cf4-42d5-aed4-5286fc601f06	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	f3154545-4dea-417b-a9ea-7c93a99539d4	Drink Special	$2 wells and $3 domestics		2010-08-23T20:00:00-0500	2010-08-24T02:00:00-0500	weekly	Mondays	Chuggin Monkey
+	5c7ccc4f-15bb-4faa-8dda-6ac344233801	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	f3154545-4dea-417b-a9ea-7c93a99539d4	Drink Special	$2 wells and $3 domestics		2010-08-24T20:00:00-0500	2010-08-25T02:00:00-0500	weekly	Tuesdays
+	0730195b-b666-4aa1-ac04-711e0b92da0d	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	f3154545-4dea-417b-a9ea-7c93a99539d4	Drink Special	$2 wells and $3 domestics		2010-08-25T20:00:00-0500	2010-08-26T02:00:00-0500	weekly	Wednesdays
+	aca48e52-bcc0-4fdf-957d-38b4562e486b	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	f3154545-4dea-417b-a9ea-7c93a99539d4	Drink Special	$1 domestics and $3 bombs		2010-08-26T20:00:00-0500	2010-08-27T02:00:00-0500	weekly	Thursdays
+	cd2e3827-2b43-4b4c-b05a-3cdc62ffec48	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	f3154545-4dea-417b-a9ea-7c93a99539d4	Drink Special	$2 wells and $3 domestics		2010-08-27T20:00:00-0500	2010-08-28T02:00:00-0500	weekly	Fridays
+	6393691d-ac17-4939-8a0b-6edae301fd31	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	f3154545-4dea-417b-a9ea-7c93a99539d4	Drink Special	$2 wells and $3 domestics		2010-08-28T20:00:00-0500	2010-08-29T02:00:00-0500	weekly	Saturdays
+	8b01bbcc-444f-44fe-ae00:00-e6786cb610b0	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	f3154545-4dea-417b-a9ea-7c93a99539d4	Drink Special	$2 wells and $3 domestics		2010-08-29T20:00:00-0500	2010-08-30T02:00:00-0500	weekly	Sundays
+	0afc6997-88fa-45a9-a105-43806c4e0ba7	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	5963f641-08bc-4724-a9db-b00eb50f235c	Drink Special	"Champagne Mondays: $2 Champagne, $2.50 Wells "		2010-08-23T19:00:00-0500	2010-08-24T02:00:00-0500	weekly	Mondays	Trophy Room
+	d5964d39-fb98-4f34-a617-e0849d15a388	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	5963f641-08bc-4724-a9db-b00eb50f235c	Drink Special and Entertainment	"$2.50 Wells, Live Music "		2010-08-24T19:00:00-0500	2010-08-25T02:00:00-0500	weekly	Tuesdays
+	9df54a86-431e-4ec1-9f1a-f0de6e37c138	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	5963f641-08bc-4724-a9db-b00eb50f235c	Drink Special and Entertainment	College Country Night: $1.75 Wells		2010-08-25T19:00:00-0500	2010-08-26T02:00:00-0500	weekly	Wednesdays
+	475d8268-6ca0-40b2-869a-5573926f6f9d	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	5963f641-08bc-4724-a9db-b00eb50f235c	Drink Special	$2.50 Wells and $150 bottles of Dom		2010-08-26T19:00:00-0500	2010-08-27T02:00:00-0500	weekly	Thursdays
+	f33bd105-f670-48ac-8043-f7fda227bf47	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	5963f641-08bc-4724-a9db-b00eb50f235c	Drink Special	$2 Domestics		2010-08-27T19:00:00-0500	2010-08-27T23:00:00-0500	weekly	Fridays
+	19c87726-353b-4ea5-a9d1-7783615cfc9b	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	5963f641-08bc-4724-a9db-b00eb50f235c	Drink Special	$2 Domestics		2010-08-28T19:00:00-0500	2010-08-28T23:00:00-0500	weekly	Saturdays
+	7b453d64-a4d0-4f57-bc47-3a1c06c0826d	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	5963f641-08bc-4724-a9db-b00eb50f235c	Drink Special	SIN: $3 Everything 		2010-08-29T19:00:00-0500	2010-08-30T02:00:00-0500	weekly	Sundays
+	c0aee6c3-e07f-43f1-b31a-a97481de4dde	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	53a0a1d9-a14d-4399-8933-eefda667cc97	Drink Special	$2.50 Domestics 		2010-08-24T19:00:00-0500	2010-08-25T02:00:00-0500	weekly	Tuesdays	Soho
+	313f3369-15e9-4fe5-a7bd-34bf138d4c54	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	53a0a1d9-a14d-4399-8933-eefda667cc97	Drink Special	$2 Well Shots and Domestics 		2010-08-25T19:00:00-0500	2010-08-26T02:00:00-0500	weekly	Wednesdays
+	6efc2867-abb5-4a67-b602-1e90c63ea07b	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	53a0a1d9-a14d-4399-8933-eefda667cc97	Drink Special	$1 Wells		2010-08-26T19:00:00-0500	2010-08-27T02:00:00-0500	weekly	Thursdays
+	11887d2c-3f31-46f3-beed-d5718c7c7946	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	53a0a1d9-a14d-4399-8933-eefda667cc97	Drink Special	$1 Wells and $2 Domestics		2010-08-27T19:00:00-0500	2010-08-27T23:00:00-0500	weekly	Fridays
+	4175c4fd-8e03-4161-99a1-d8a4bef9eef0	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	53a0a1d9-a14d-4399-8933-eefda667cc97	Drink Special	$1 Wells and $2 Domestics		2010-08-28T19:00:00-0500	2010-08-28T23:00:00-0500	weekly	Saturdays
+	e0ae710b-f665-49cb-b737-10c7b5b83cdc	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	53a0a1d9-a14d-4399-8933-eefda667cc97	Drink Special	$2 Wells and Well Shots 		2010-08-29T19:00:00-0500	2010-08-30T02:00:00-0500	weekly	Sundays
+	ca210b20-b11c-4e65-a4a3-1750b3745cea	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	6d2779ef-4e12-4fd3-b93b-8be7a9951daa	Drink Special	$2 Wells and Domestics 		2010-08-23T20:00:00-0500	2010-08-24T02:00:00-0500	weekly	Mondays	Thirsty Nickel
+	9bdeada9-01cf-42fb-9c4e-087f54df92b9	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	6d2779ef-4e12-4fd3-b93b-8be7a9951daa	Drink Special	"$1 Tecate and Lonestar, $3 any Tequila "		2010-08-24T20:00:00-0500	2010-08-25T02:00:00-0500	weekly	Tuesdays
+	02b6fa5c-6b22-4f7d-9e0b-344b36f2f7ad	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	6d2779ef-4e12-4fd3-b93b-8be7a9951daa	Drink Special	$1 Well Drinks 		2010-08-25T20:00:00-0500	2010-08-26T02:00:00-0500	weekly	Wednesdays
+	b907061f-2443-475a-9c4e-56770d475356	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	6d2779ef-4e12-4fd3-b93b-8be7a9951daa	Drink Special	$2 anything 		2010-08-26T20:00:00-0500	2010-08-27T02:00:00-0500	weekly	Thursdays
+	aabcadd8-0693-4ad5-9559-211639b08edd	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	6d2779ef-4e12-4fd3-b93b-8be7a9951daa	Drink Special	$2 Wells and Domestics		2010-08-27T20:00:00-0500	2010-08-27T23:00:00-0500	weekly	Fridays
+	76cfa8fc-dfd3-45f8-ab2b-4e41a3b4f50e	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	6d2779ef-4e12-4fd3-b93b-8be7a9951daa	Drink Special	$2 Wells and Domestics		2010-08-28T20:00:00-0500	2010-08-28T23:00:00-0500	weekly	Saturdays
+	678158f3-2603-4fb9-a93a-b7499e932f29	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	6d2779ef-4e12-4fd3-b93b-8be7a9951daa	Drink Special	"$2 Wells and Domestics
+"		2010-08-29T20:00:00-0500	2010-08-30T02:00:00-0500	weekly	Sundays
+	c169c411-26ef-4071-9266-395e02aceae9	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	9a397fd7-9f89-4c63-bfce-8c72e7cc7e28	Drink Special	$1.50 Domestic Drafts & Well Drinks		2010-08-23T19:00:00-0500	2010-08-24T02:00:00-0500	weekly	Mondays	Library Bar
+	706de0eb-3f71-4992-8a89-8058f20fd6eb	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	9a397fd7-9f89-4c63-bfce-8c72e7cc7e28	Drink Special	"$1.50 Domestic Drafts & Well Drinks
+"		2010-08-24T19:00:00-0500	2010-08-25T02:00:00-0500	weekly	Tuesdays
+	8624420f-6aea-4f79-b7e9-49f2474ff188	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	9a397fd7-9f89-4c63-bfce-8c72e7cc7e28	Drink Special	"$1.50 Domestic Drafts & Well Drinks, $2.00 Import Drafts "		2010-08-25T16:00:00-0500	2010-08-26T02:00:00-0500	weekly	Wednesdays
+	174641d8-be3d-47f4-8f8e-ebfab1b9ee9a	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	9a397fd7-9f89-4c63-bfce-8c72e7cc7e28	Drink Special	"$2 Import Bottles, $2.50 You Call It"		2010-08-26T16:00:00-0500	2010-08-26T23:00:00-0500	weekly	Thursdays
+	30fa1bf2-293e-4d18-8ff5-615e8b64331b	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	9a397fd7-9f89-4c63-bfce-8c72e7cc7e28	Drink Special	$3 Long Island Teas		2010-08-27T16:00:00-0500	2010-08-28T02:00:00-0500	weekly	Fridays
+	cbb9829c-1cb2-42a4-ac56-063bdff85667	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	9a397fd7-9f89-4c63-bfce-8c72e7cc7e28	Drink Special	$3 Long Island Teas		2010-08-28T16:00:00-0500	2010-08-29T02:00:00-0500	weekly	Saturdays
+	6b962ccf-5065-4eaa-ba38-fab4386cd623	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	9a397fd7-9f89-4c63-bfce-8c72e7cc7e28	Drink Special	$1.50 Domestic Drafts & Well Drinks 		2010-08-29T19:00:00-0500	2010-08-30T02:00:00-0500	weekly	Sundays
+	e6b609b2-8e2c-45ee-b9c6-7edbd45b738d	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	269a4f83-b3e3-41ea-bfe5-e42bcfb869cb	Drink Special	"$2 Any Liquor, $3 Domestics"		2010-08-23T21:00:00-0500	2010-08-24T02:00:00-0500	weekly	Mondays	Spill
+	54d3745a-67fb-4e26-a4ca-67430091a52a	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	269a4f83-b3e3-41ea-bfe5-e42bcfb869cb	Drink Special	"$1 Miller HL, $2 Whisky and Tall Boys"		2010-08-24T21:00:00-0500	2010-08-25T02:00:00-0500	weekly	Tuesdays
+	60215580-7b92-4c28-b317-5237c79ebb5c	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	269a4f83-b3e3-41ea-bfe5-e42bcfb869cb	Drink Special	"$1 You Call It, $2 Any Beer"		2010-08-25T21:00:00-0500	2010-08-26T02:00:00-0500	weekly	Wednesdays
+	6d6cbf34-d0c8-4ebc-a996-564eff751da2	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	269a4f83-b3e3-41ea-bfe5-e42bcfb869cb	Drink Special	"$1 Miller HL, $2 You Call It"		2010-08-26T21:00:00-0500	2010-08-26T23:00:00-0500	weekly	Thursdays
+	728986f9-2fba-44b9-babd-70a27b3e9a2a	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	269a4f83-b3e3-41ea-bfe5-e42bcfb869cb	Drink Special	"$1 Miller HL, $3 Margs"		2010-08-27T21:00:00-0500	2010-08-28T02:00:00-0500	weekly	Fridays
+	bcc508c5-8bea-4927-b701-400b2e001ffc	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	269a4f83-b3e3-41ea-bfe5-e42bcfb869cb	Drink Special	"$1 Miller HL, $3 Margs"		2010-08-28T21:00:00-0500	2010-08-29T02:00:00-0500	weekly	Saturdays
+	b5ee88d3-28bb-477b-b99c-e5bf78c0126a	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	269a4f83-b3e3-41ea-bfe5-e42bcfb869cb	Drink Special	"$1 Miller HL, $1 Wells"		2010-08-29T21:00:00-0500	2010-08-30T02:00:00-0500	weekly	Sundays
+	ebcab408-fc03-49e1-991f-1f6c661a254c	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	12a8fede-4fb6-45d2-a3db-5165b1cb6705	Drink Special and Entertainment	$2 Domestics and Live Music		2010-08-24T17:00:00-0500	2010-08-25T02:00:00-0500	weekly	Tuesdays	One 2 One
+	b27de6d1-59d3-4d80-97d6-b8a1b6d3fb94	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	12a8fede-4fb6-45d2-a3db-5165b1cb6705	Drink Special and Entertainment	$2 Wells and Live Music		2010-08-25T17:00:00-0500	2010-08-26T02:00:00-0500	weekly	Wednesdays
+	9da03ee2-222a-43eb-90b8-e39638120460	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	12a8fede-4fb6-45d2-a3db-5165b1cb6705	Drink Special and Entertainment	"$3 Jager, 3 Olives Vodka and Live Music"		2010-08-26T17:00:00-0500	2010-08-26T23:00:00-0500	weekly	Thursdays
+	e4099cee-d1e8-4eb3-ab6f-6c8ccfbd6a57	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	bdbe94da-bda4-42eb-af60-8df80e6dace9	Drink Special and Entertainment	Karaoke and $2 Long Islands		2010-08-24T22:00:00-0500	2010-08-25T02:00:00-0500	weekly	Tuesdays	Shakespeare's
+	c1637015-1d35-45ad-9188-840807a28702	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	bdbe94da-bda4-42eb-af60-8df80e6dace9	Entertainment	"Beer Pong Tourney
+"	$10 buy-in per team	2010-08-25T22:00:00-0500	2010-08-26T02:00:00-0500	weekly	Wednesdays
+	c533c9ff-c6b7-47ea-8944-0f301ce93be6	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	bdbe94da-bda4-42eb-af60-8df80e6dace9	Drink Special	$5 liquor pitchers		2010-08-26T22:00:00-0500	2010-08-27T02:00:00-0500	weekly	Thursdays
+	d063e6a1-02ba-44b7-8f66-340e11635838	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	bdbe94da-bda4-42eb-af60-8df80e6dace9	Drink Special	$3 Crown		2010-08-27T22:00:00-0500	2010-08-28T02:00:00-0500	weekly	Fridays
+	33e89ae3-e626-4589-ac2e-91d4a7ad0a08	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	bdbe94da-bda4-42eb-af60-8df80e6dace9	Drink Special	$4 Bombs		2010-08-28T22:00:00-0500	2010-08-29T02:00:00-0500	weekly	Saturdays
+	eccab171-e3e2-4524-bb7a-67e3c6d6f198	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	061f1d96-d0ad-48d9-8372-f27b333b6fa5	Drink Special	Happy Hour $2 Drafts		2010-08-27T13:00:00-0500	2010-08-27T21:00:00-0500	weekly	Fridays	Blind Pig Pub
+	76b8e7c6-55b3-4dfa-925b-cd2280f0b668	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	061f1d96-d0ad-48d9-8372-f27b333b6fa5	Drink Special	Happy Hour $2 Drafts		2010-08-28T13:00:00-0500	2010-08-28T21:00:00-0500	weekly	Saturdays
+	995225d0-d04e-43fa-9671-2ef2eb5f4012	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	061f1d96-d0ad-48d9-8372-f27b333b6fa5	Drink Special	Happy Hour All Day $1 off all Drinks		2010-08-29T13:00:00-0500	2010-08-30T02:00:00-0500	weekly	Sundays
+	2930b7a5-83fe-4a7f-823b-5d0d55f5817e	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	b518dcef-1181-48f0-9364-f9d856314641	Drink Special	"$3 Wells, Beer, House Wine and Margs"		2010-08-23T23:00:00-0500	2010-08-24T02:00:00-0500	weekly	Mondays	Iron Cactus
+	e35cfd99-a319-4028-aaec-0f01a43f1368	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	b518dcef-1181-48f0-9364-f9d856314641	Drink Special	"$3 Wells, Beer, House Wine and Margs"		2010-08-24T23:00:00-0500	2010-08-25T02:00:00-0500	weekly	Tuesdays
+	d70cd761-e09d-4809-bfed-38518f0037c3	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	b518dcef-1181-48f0-9364-f9d856314641	Drink Special	"$3 Wells, Beer, House Wine and Margs"		2010-08-25T23:00:00-0500	2010-08-26T02:00:00-0500	weekly	Wednesdays
+	6daaa646-e3a1-4560-8c4d-d5a9d09dbd1d	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	b518dcef-1181-48f0-9364-f9d856314641	Drink Special	"$3 Wells, Beer, House Wine and Margs"		2010-08-26T23:00:00-0500	2010-08-27T02:00:00-0500	weekly	Thursdays
+	c0a4be3d-efbf-4681-8051-c16363760e86	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	b518dcef-1181-48f0-9364-f9d856314641	Drink Special	"$3 Wells, Beer, House Wine and Margs"		2010-08-27T23:00:00-0500	2010-08-28T02:00:00-0500	weekly	Fridays
+	4c78d4d0-5ccf-4e19-95fb-99639f703e07	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	b518dcef-1181-48f0-9364-f9d856314641	Drink Special	"$3 Wells, Beer, House Wine and Margs"		2010-08-28T23:00:00-0500	2010-08-29T02:00:00-0500	weekly	Saturdays
+	85984b22-ecf6-4bf8-85ab-c39c4e82cece	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	38dddc91-8c81-40cd-b04e-0c110ba954eb	Drink Special	"$1 Domestics, $2 Wells, $3 Bombs"		2010-08-23T21:00:00-0500	2010-08-24T02:00:00-0500	weekly	Mondays	Malaia
+	c35d93f6-b001-4d0b-b24e-cc2aba77f1b9	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	38dddc91-8c81-40cd-b04e-0c110ba954eb	Drink Special	"$2 Wells, $2 Domestics"		2010-08-24T21:00:00-0500	2010-08-25T02:00:00-0500	weekly	Tuesdays
+	fd3b0978-8def-4c8f-9404-eca7351febd7	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	38dddc91-8c81-40cd-b04e-0c110ba954eb	Drink Special	$1 Wells		2010-08-25T21:00:00-0500	2010-08-26T02:00:00-0500	weekly	Wednesdays
+	f03f4455-2eb6-4f94-9107-76024a804143	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	38dddc91-8c81-40cd-b04e-0c110ba954eb	Drink Special	"$2 Domestics, $2 Wells"		2010-08-26T21:00:00-0500	2010-08-26T23:00:00-0500	weekly	Thursdays
+	54a46ebf-7ee4-42c2-b379-b918e7ffb0a0	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	38dddc91-8c81-40cd-b04e-0c110ba954eb	Drink Special	"$2 Domestics, $2 Wells"		2010-08-27T21:00:00-0500	2010-08-27T23:00:00-0500	weekly	Fridays
+	5338423b-3f2c-4934-86e9-cb189a954e74	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	38dddc91-8c81-40cd-b04e-0c110ba954eb	Drink Special	"$2 Domestics, $2 Wells"		2010-08-28T21:00:00-0500	2010-08-28T23:00:00-0500	weekly	Saturdays
+	3f6d0571-5bae-4bf7-83f9-870c8a80c787	15f90e44-17e1-49a5-bb26-c2d0ba3a38ec	38dddc91-8c81-40cd-b04e-0c110ba954eb	Drink Special	$2 You Call It		2010-08-29T21:00:00-0500	2010-08-30T02:00:00-0500	weekly	Sundays
+	deb30fea-4815-4788-b64f-e9a526e130d1	93db2a4c-64d4-466d-bc8d-d1706f362c50	2c94c146-a860-460d-b8c4-25caec6d0967	Food and Drink	$15 Buffet	w/ Make your own Bloody Marys and Mimosas	2010-08-29T10:00:00-0500	2010-08-29T18:00:00-0500	weekly	Sundays
+
+
+
+[1] The neighborhood UUID of the place if there is one (this is used to build the path) --ziggythehamster Tue Jul 06 2010 22:30:28 GMT-0500 (CDT)
+[2] The parent place UUID. Might be blank. --ziggythehamster Tue Jul 06 2010 22:29:34 GMT-0500 (CDT)
+[3] My proposed types:
+
+special - A special.
+
+event - A general event.
+
+featured - A featured event.
+
+entertainment - A live band, comedy, etc.
+
+Leave more comments if you have any more ideas.
+ --ziggythehamster Tue Jul 06 2010 22:35:34 GMT-0500 (CDT)
+[4] This is any of the following (taken from the old MD platform):
+
+weekly - Occurs on same day every week
+
+monthly - Occurs on same day every month
+
+none - Doesn't recur.
+
+yearly - Same day every year (e.g. July 4)
+
+monthly_nth_nday - Same day of the week every month. Every 3rd Friday, every 1st Tuesday, etc.
+
+ --ziggythehamster Tue Jul 06 2010 22:31:12 GMT-0500 (CDT)
