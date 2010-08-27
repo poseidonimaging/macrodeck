@@ -8,3 +8,4 @@ rake macrodeck:import:neighborhoods NEIGHBORHOODS="db/data/tulsa_neighborhoods.t
 rake macrodeck:import:neighborhoods NEIGHBORHOODS="db/data/austin_neighborhoods.tsv"
 rake macrodeck:import:places PLACES="db/data/tulsa_places.tsv"
 rake macrodeck:import:places PLACES="db/data/austin_places.tsv"
+rake macrodeck:import:events EVENTS="db/data/austin_events.tsv"
