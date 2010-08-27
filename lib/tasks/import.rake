@@ -1,3 +1,5 @@
+require "time"
+
 def read_file(file_name)
 	file = File.new(file_name, "r")
 	line_number = 0
@@ -243,6 +245,52 @@ namespace :macrodeck do
 				place.credit_cards_accepted = credit_cards_accepted
 				place.reservations = reservations
 				place.save
+			end
+		end
+
+		desc "Imports events from EVENTS=path file (no default)"
+		task :events => :environment do
+			raise "Please specify EVENTS file path on command line" if ENV['EVENTS'].nil?
+			parsed = read_file(ENV['EVENTS'])
+			parsed[:lines].each do |line|
+				id = line["_id"]
+				parent_neighborhood = line["parent_neighborhood"]
+				parent_place = line["parent_place"]
+				root = parsed[:root].dup
+				path = root << id
+
+				path.push(parent_neighborhood) if !parent_neighborhood.nil? && parent_neighborhood != ""
+				path.push(parent_place) if !parent_place.nil? && parent_place != ""
+
+				title = line["title"]
+				event_type = line["event_type"]
+				description = line["description"]
+				start_time = line["start_time"]
+				end_time = line["end_time"]
+				recurrence = line["recurrence"]
+
+				start_time = Time.parse(start_time).utc.iso8601 if !start_time.nil? && start_time != ""
+				end_time = Time.parse(end_time).utc.iso8601 if !end_time.nil? && end_time != ""
+
+				puts "id: #{id}"
+				puts "path: #{path.inspect}"
+				puts "type: #{event_type}"
+				puts "title: #{title}"
+
+				event = Event.get(id) || Event.new
+				event["_id"] = id
+				event.created_by = "_system"
+				event.updated_by = "_system"
+				event.owned_by = "_system"
+				event.tags = []
+				event.path = path
+				event.title = title
+				event.event_type = event_type
+				event.description = description
+				event.start_time = start_time
+				event.end_time = end_time
+				event.recurrence = recurrence
+				event.save
 			end
 		end
 	end
