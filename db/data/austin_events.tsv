@@ -1,5 +1,5 @@
 "[""875de01b-edb9-47a4-aabc-7acd97ecde43"", ""ea46e21f-889c-4960-b0eb-3cf65a093a1c"", ""bfff92eb-d35c-4df3-ae8f-01e68c3f8fc6""]"
-timestamp	_id	parent neighborhood[1]	parent place[2]	event_type[3]	title	description	start_time	end_time	recurrence (*)[4]	recurrence_note	place_note
+timestamp	_id	parent_neighborhood[1]	parent_place[2]	event_type[3]	title	description	start_time	end_time	recurrence (*)[4]	recurrence_note	place_note
 	a8f2d157-f6e7-4329-96aa-da8c4626cb3a	274a82d0-9d01-43ee-a239-02dd28d726f0	0b26e65b-f1a2-4ee4-9a03-00cc4e526376	Drink Special	$2 off Pitchers and Buckets of Beer		2010-08-23T11:00:00-0500		weekly	Mondays	Black Sheep Lodge
 	53f1f7fa-6de0-492b-80c4-5ff7686ccfdf	274a82d0-9d01-43ee-a239-02dd28d726f0	0b26e65b-f1a2-4ee4-9a03-00cc4e526376	Drink Special	"$2 MexiCans, $7 Domestic Pitchers"		2010-08-24T11:00:00-0500		weekly	Tuesdays
 	0d45a9b1-b6f3-4dcd-8739-7ba0bbdc0397	274a82d0-9d01-43ee-a239-02dd28d726f0	0b26e65b-f1a2-4ee4-9a03-00cc4e526376	Drink Special	"$1 White Trash Cans, $4 Deep Eddy Sweet Tea Vodka"		2010-08-25T11:00:00-0500		weekly	Wednesdays
