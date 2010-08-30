@@ -9,6 +9,7 @@ class EventsController < ApplicationController
 
     # List events
     def index
+	@start_item = 0
 	if !@locality.nil? && @place.nil?
 	    startkey = @locality.path.dup.push(0)
 	    endkey = @locality.path.dup.push({})
