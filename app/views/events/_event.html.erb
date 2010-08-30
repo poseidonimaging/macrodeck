@@ -10,15 +10,24 @@
 	<span class="summary">
 	    <%= h(truncate(event.title)) %>
 	</span>
-	<span class="location">
-	    <% parent = DataObject.view("by_path", :startkey => event.parent, :limit => 1, :reduce => false, :include_docs => true) %>
-	    <% if parent.length == 1 %>
-		<% if parent[0]["couchrest-type"] == "Place" %>
-		    <%= link_to h(parent[0]["title"]), country_region_locality_place_path(country.id, region.id, locality.id, parent[0].id) %>
-		<% else %>
-		    <%= h(parent[0]["title"]) %>
+	<span class="timeloc">
+	    <span class="location">
+		<% parent = DataObject.view("by_path", :startkey => event.parent, :limit => 1, :reduce => false, :include_docs => true) %>
+		<% if parent.length == 1 %>
+		    <% if parent[0]["couchrest-type"] == "Place" %>
+			<%= link_to h(parent[0]["title"]), country_region_locality_place_path(country.id, region.id, locality.id, parent[0].id) %>
+		    <% else %>
+			<%= h(parent[0]["title"]) %>
+		    <% end %>
 		<% end %>
-	    <% end %>
+	    </span>
+	    <span class="time">
+		<%=h Time.parse(event.start_time).getlocal.strftime("%a @ %I:%M%P") %>
+		<% unless event.end_time.nil? %>
+		    &ndash;
+		    <%= Time.parse(event.end_time).getlocal.strftime("%I:%M%P") %>
+		<% end %>
+	    </span>
 	</span>
     </li>
 <% elsif viewmode == :full %>
