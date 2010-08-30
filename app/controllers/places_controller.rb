@@ -10,7 +10,7 @@ class PlacesController < ApplicationController
     def index
 	@start_item = params[:start_item].nil? ? 0 : params[:start_item].to_i
 	@page_title = @locality.title
-	@button = ["Happenings", "#"]
+	@button = ["Happenings", country_region_locality_events_path(@country.id, @region.id, @locality.id)]
 	if params[:fare].nil? && params[:neighborhood].nil?
 	    startkey = @locality.path.dup.push(0)
 	    endkey = @locality.path.dup.push({})
