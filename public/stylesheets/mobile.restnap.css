@@ -119,7 +119,7 @@
 	color: #3b3b3b;
 }
 .feed .adr, .feed .adr a, .feed .location, .feed .location a { color: #727E8A; }
-.feed .adr, .feed .location {
+.feed .adr, .feed .timeloc {
 	left: 20px;
 	top: 46px;
 	position: absolute;
