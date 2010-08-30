@@ -1,9 +1,5 @@
-<% if @place %>
-	<h2>Events at <%=h @place.name %></h2>
-<% elsif @city %>
-	<h2>Events in <%=h @city.name %></h2>
-<% end %>
+<% @start_item = 0 if @start_item.nil? %>
 
-<ol class="feed">
-	<%= render :partial => "event", :collection => @events %>
-</ol>
+<ul>
+    <%= render :partial => "event", :collection => @events, :locals => { :view_mode => :compact, :country => @country, :region => @region, :locality => @locality, :place => @place } %>
+</ul>
