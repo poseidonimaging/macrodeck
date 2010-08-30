@@ -118,8 +118,8 @@
 	text-align: right;
 	color: #3b3b3b;
 }
-.feed .adr, .feed .adr a { color: #727E8A; }
-.feed .adr {
+.feed .adr, .feed .adr a, .feed .location, .feed .location a { color: #727E8A; }
+.feed .adr, .feed .location {
 	left: 20px;
 	top: 46px;
 	position: absolute;
