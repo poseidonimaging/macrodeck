@@ -9,11 +9,16 @@ class EventsController < ApplicationController
 
     # List events
     def index
-	@start_item = 0
-	if !@locality.nil? && @place.nil?
+	@start_item = params[:start_item].nil? ? 0 : params[:start_item].to_i
+	@page_title = @locality.title
+	@button = ["Places", country_region_locality_places_path(@country.id, @region.id, @locality.id)]
+
+	if params[:event_type].nil? && params[:neighborhood].nil?
 	    startkey = @locality.path.dup.push(0)
 	    endkey = @locality.path.dup.push({})
 	    @events = Event.view("by_path_alpha", :reduce => false, :startkey => startkey, :endkey => endkey, :limit => 10, :skip => @start_item)
+	    @events_count = Event.view("by_path_alpha", :reduce => true, :startkey => startkey, :endkey => endkey)["rows"][0]["value"]
+	    @back_button = [@region.title, country_region_localities_path(@country.id, @region.id)]
 	end
 	respond_to do |format|
 	    format.html # index.html.erb
