@@ -22,10 +22,15 @@
 		<% end %>
 	    </span>
 	    <span class="time">
-		<%=h Time.parse(event.start_time).getlocal.strftime("%a @ %I:%M%P") %>
+		<% start_time = Time.parse(event.start_time).getlocal %>
+		<% if start_time < 1.week.from_now %>
+		    <%= content_tag :span, h(start_time.strftime("%a @ %l:%M%P")), :class => "dtstart" %>
+		<% else %>
+		    <%= content_tag :span, h(start_time.strftime("%b %e @ %l:%M%P")), :class => "dtstart" %>
+		<% end %>
 		<% unless event.end_time.nil? %>
 		    &ndash;
-		    <%= Time.parse(event.end_time).getlocal.strftime("%I:%M%P") %>
+		    <%= content_tag :span, h(Time.parse(event.end_time).getlocal.strftime("%l:%M%P")), :class => "dtend" %>
 		<% end %>
 	    </span>
 	</span>
