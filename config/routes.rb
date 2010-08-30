@@ -5,18 +5,9 @@ ActionController::Routing::Routes.draw do |map|
 	map.resources :countries do |countries|
 		countries.resources :regions do |regions|
 			regions.resources :localities do |localities|
-				localities.resources :events do |events|
-					events.resource :wall do |wall|
-						wall.resources :comments
-					end
-				end
+				localities.resources :events
 				localities.resources :places do |places|
-					places.resource :wall do |wall|
-						wall.resources :comments
-					end
-				end
-				localities.resource :wall do |wall|
-					wall.resources :comments
+					places.resources :events
 				end
 			end
 		end
