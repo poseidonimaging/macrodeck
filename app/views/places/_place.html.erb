@@ -5,9 +5,12 @@
 <% elsif viewmode == :compact %>
     <li class="vcard <%= cycle("odd", "even") %>">
 	<span class="comment">
-	    <% place.fare.each do |fare| %>
-		<%= link_to fare, country_region_locality_places_path(country.id, region.id, locality.id, :fare => fare, :neighborhood => params[:neighborhood]) %>
-	    <% end %>
+	    <%
+		fare_links = place.fare.sort.collect do |fare|
+		    link_to fare, country_region_locality_places_path(country.id, region.id, locality.id, :fare => fare, :neighborhood => params[:neighborhood])
+		end
+	    %>
+	    <%= fare_links.join(", ") %>
 	</span>
 	<% link_to(country_region_locality_place_path(country.id, region.id, locality.id, place.id, :fare => params[:fare], :neighborhood => params[:neighborhood])) do %>
 	    <span class="fn org">
