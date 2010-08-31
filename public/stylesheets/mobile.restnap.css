@@ -145,12 +145,18 @@
 	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#414041), color-stop(3%, rgba(0,0,0,0.3)), to(rgba(20,20,20,0.3)));
 }
 .feed li.alt a, .feed li.alt .name, .feed li.alt a .name { color: #E7902B !important; }
+.feed #content li.small { height: 38px; }
+.feed #content li.small .name,
+.feed #content li.small .fn,
+.feed #content li.small .summary {
+    top: 10px;
+    font-size: 15px;
+}
+.feed #content li.small .arrow { top: 12px; }
 .feed #content li {
 	list-style: none;
 	width: auto;
 	position: relative;
-}
-.feed #content li {
 	height: 75px;
 }
 .feed #content {
