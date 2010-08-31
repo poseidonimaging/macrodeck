@@ -1,4 +1,5 @@
 <% viewmode = :compact if local_assigns[:viewmode].nil? %>
+<% events = [] if local_assigns[:events].nil? %>
 
 <% if viewmode == :micro %>
     <li class="vcard<%= " #{css_class}" if local_assigns[:css_class] %>"><%= link_to h(place.name), country_state_city_place_path(params[:country_id], params[:state_id], place.parent.url_part, place.uuid), :class => "fn org" %></li>
@@ -70,5 +71,6 @@
 	<li id="info" style="display: none;">
 	    <%=h place.description %>
 	</li>
+	<%= render :partial => "events/event", :collection => events, :locals => { :country => country, :region => region, :locality => locality, :place => place, :place_page => true } %>
     </ul>
 <% end %>
