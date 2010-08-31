@@ -52,6 +52,12 @@ class PlacesController < ApplicationController
 	else
 	    @page_title = ""
 	    @back_button = [@locality.title, country_region_locality_places_path(params[:country_id], params[:region_id], params[:locality_id], :fare => params[:fare], :neighborhood => params[:neighborhood])]
+
+	    # Get events for this place.
+	    earliest_event_time = Time.new - 6.hours
+	    startkey = @place.path.dup.push(earliest_event_time.getutc.iso8601)
+	    endkey = @place.path.dup.push({})
+	    @events = Event.view("by_path_and_start_time", :reduce => false, :startkey => startkey, :endkey => endkey)
 	    respond_to do |format|
 		format.html # show.html.erb
 	    end
