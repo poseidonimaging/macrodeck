@@ -23,14 +23,16 @@
 	    </span>
 	    <span class="time">
 		<% start_time = Time.parse(event.start_time).getlocal %>
-		<% if start_time < 1.week.from_now %>
-		    <%= content_tag :span, h(start_time.strftime("%a @ %l:%M%P")), :class => "dtstart" %>
+		<% if start_time.day == Time.new.day %>
+		    <%= content_tag :abbr, h(start_time.strftime("%l:%M%P")), :class => "dtstart", :title => start_time.iso8601 %>
+		<% elsif start_time < 1.week.from_now %>
+		    <%= content_tag :abbr, h(start_time.strftime("%a @ %l:%M%P")), :class => "dtstart", :title => start_time.iso8601 %>
 		<% else %>
-		    <%= content_tag :span, h(start_time.strftime("%b %e @ %l:%M%P")), :class => "dtstart" %>
+		    <%= content_tag :abbr, h(start_time.strftime("%b %e @ %l:%M%P")), :class => "dtstart", :title => start_time.iso8601 %>
 		<% end %>
 		<% unless event.end_time.nil? %>
 		    &ndash;
-		    <%= content_tag :span, h(Time.parse(event.end_time).getlocal.strftime("%l:%M%P")), :class => "dtend" %>
+		    <%= content_tag :abbr, h(Time.parse(event.end_time).getlocal.strftime("%l:%M%P")), :class => "dtend", :title => Time.parse(event.end_time).getlocal.iso8601 %>
 		<% end %>
 	    </span>
 	</span>
