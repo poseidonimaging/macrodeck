@@ -24,7 +24,11 @@ class EventsController < ApplicationController
 		@events_count = 0
 	    end
 	    #@back_button = [@region.title, country_region_localities_path(@country.id, @region.id)]
-	    @back_button = [@locality.title, country_region_locality_path(@country.id, @region.id, @locality.id)]
+	    if @start_item == 0
+		@back_button = [@locality.title, country_region_locality_path(@country.id, @region.id, @locality.id)]
+	    else
+		@back_button = [@locality.title, country_region_locality_events_path(@country.id, @region.id, @locality.id)]
+	    end
 	end
 	respond_to do |format|
 	    format.html # index.html.erb
