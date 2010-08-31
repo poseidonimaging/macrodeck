@@ -11,19 +11,19 @@
 	    <% end %>
 	</li>
     <% end %>
+    <% if @start_item > 0 %>
+	<li class="alt">
+	    <% link_to country_region_locality_places_path(@country.id, @region.id, @locality.id, :start_item => (@start_item - 10), :fare => params[:fare], :neighborhood => params[:neighborhood]) do %>
+		<span class="name">Previous Page</span>
+		<span class="arrow"></span>
+	    <% end %>
+	</li>
+    <% end %>
     <%= render :partial => "place", :collection => @places, :locals => { :view_mode => :compact, :country => @country, :region => @region, :locality => @locality } %>
     <% if @places_count > (@start_item + 10) %>
 	<li class="alt">
 	    <% link_to country_region_locality_places_path(@country.id, @region.id, @locality.id, :start_item => (@start_item + 10), :fare => params[:fare], :neighborhood => params[:neighborhood]) do %>
 		<span class="name">Next Page</span>
-		<span class="arrow"></span>
-	    <% end %>
-	</li>
-    <% end %>
-    <% if @start_item > 0 %>
-	<li class="alt">
-	    <% link_to country_region_locality_places_path(@country.id, @region.id, @locality.id, :start_item => (@start_item - 10), :fare => params[:fare], :neighborhood => params[:neighborhood]) do %>
-		<span class="name">Previous Page</span>
 		<span class="arrow"></span>
 	    <% end %>
 	</li>
