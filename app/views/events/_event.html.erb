@@ -11,16 +11,18 @@
 	    <%= h(truncate(event.title)) %>
 	</span>
 	<span class="timeloc">
-	    <span class="location">
-		<% parent = DataObject.view("by_path", :startkey => event.parent, :limit => 1, :reduce => false, :include_docs => true) %>
-		<% if parent.length == 1 %>
-		    <% if parent[0]["couchrest-type"] == "Place" %>
-			<%= link_to h(parent[0]["title"]), country_region_locality_place_path(country.id, region.id, locality.id, parent[0].id) %>
-		    <% else %>
-			<%= h(parent[0]["title"]) %>
+	    <% if local_assigns[:place_page].nil? %>
+		<span class="location">
+		    <% parent = DataObject.view("by_path", :startkey => event.parent, :limit => 1, :reduce => false, :include_docs => true) %>
+		    <% if parent.length == 1 %>
+			<% if parent[0]["couchrest-type"] == "Place" %>
+			    <%= link_to h(parent[0]["title"]), country_region_locality_place_path(country.id, region.id, locality.id, parent[0].id) %>
+			<% else %>
+			    <%= h(parent[0]["title"]) %>
+			<% end %>
 		    <% end %>
-		<% end %>
-	    </span>
+		</span>
+	    <% end %>
 	    <span class="time">
 		<% start_time = Time.parse(event.start_time).getlocal %>
 		<% if start_time.day == Time.new.day || start_time.day == (Time.new - 6.hours).day %>
