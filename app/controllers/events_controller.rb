@@ -14,10 +14,15 @@ class EventsController < ApplicationController
 	@button = ["Places", country_region_locality_places_path(@country.id, @region.id, @locality.id)]
 
 	if params[:event_type].nil? && params[:neighborhood].nil?
-	    startkey = @locality.path.dup.push(0)
+	    earliest_event_time = Time.new - 1.hour
+	    startkey = @locality.path.dup.push(earliest_event_time.getutc.iso8601)
 	    endkey = @locality.path.dup.push({})
-	    @events = Event.view("by_path_alpha", :reduce => false, :startkey => startkey, :endkey => endkey, :limit => 10, :skip => @start_item)
-	    @events_count = Event.view("by_path_alpha", :reduce => true, :startkey => startkey, :endkey => endkey)["rows"][0]["value"]
+	    @events = Event.view("by_path_without_place_or_neighborhood_with_time", :reduce => false, :startkey => startkey, :endkey => endkey, :limit => 10, :skip => @start_item)
+	    begin
+		@events_count = Event.view("by_path_without_place_or_neighborhood_with_time", :reduce => true, :startkey => startkey, :endkey => endkey)["rows"][0]["value"]
+	    rescue
+		@events_count = 0
+	    end
 	    @back_button = [@region.title, country_region_localities_path(@country.id, @region.id)]
 	end
 	respond_to do |format|
