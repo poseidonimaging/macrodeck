@@ -47,7 +47,7 @@ class PlacesController < ApplicationController
 	if @place.nil?
 	    raise ActiveRecord::RecordNotFound
 	else
-	    @page_title = @place.title
+	    @page_title = ""
 	    @back_button = [@locality.title, country_region_locality_places_path(params[:country_id], params[:region_id], params[:locality_id], :fare => params[:fare], :neighborhood => params[:neighborhood])]
 	    respond_to do |format|
 		format.html # show.html.erb
