@@ -12,6 +12,7 @@
 		end
 	    %>
 	    <%= fare_links.join(", ") %>
+	    <span class="filtericon"></span>
 	</span>
 	<% link_to(country_region_locality_place_path(country.id, region.id, locality.id, place.id, :fare => params[:fare], :neighborhood => params[:neighborhood])) do %>
 	    <span class="fn org">
@@ -25,6 +26,7 @@
 	    <% else %>
 		<%= h locality.title %>
 	    <% end %>
+	    <span class="filtericon"></span>
 	</span>
     </li>
 <% elsif viewmode == :full %>
