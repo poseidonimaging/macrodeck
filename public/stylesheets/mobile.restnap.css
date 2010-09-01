@@ -201,6 +201,13 @@
     font-weight: bold;
     font-size: 12px;
 }
+.filtericon {
+    display: inline-block;
+    vertical-align: middle;
+    width: 16px;
+    height: 14px;
+    background: transparent url("/images/icons/restnap/filter_indicator.png") no-repeat;
+}
 
 /* Actions */
 .actions	    { width: 100%; }
