@@ -1,32 +1,32 @@
 require "time"
+require "fastercsv"
 
 def read_file(file_name)
-    file = File.new(file_name, "r")
     line_number = 0
     root = ""
     done = false
     fields = []
     lines = []
 
-    while (line = file.gets)
+    FasterCSV.foreach(file_name, :col_sep => "\t") do |line|
 	line_number = line_number + 1
 	if line_number == 1
-	    root = line.strip.gsub(/^"/, "").gsub(/"$/, "").gsub('""', '"')
+	    root = line[0]
 	    root = eval(root.to_s)
 	elsif line_number == 2
-	    fields = line.split("\t")
+	    fields = line.dup
 	    fields.each_index do |field_id|
 		fields[field_id] = fields[field_id].split(" ")[0].split("[")[0]
 	    end
 	elsif line_number > 2 && !done
-	    line_arr = line.split("\t")
+	    line_arr = line.dup
 	    line_hsh = {}
 	    if line_arr == [] || line_arr == ["\n"]
 		done = true
 	    else
 		line_arr.each_index do |item_id|
-		    line_hsh[fields[item_id]] = line_arr[item_id].gsub(/^"/, "").gsub(/"$/, "").gsub('""', '"').strip
-		    line_hsh[fields[item_id]] = nil if line_hsh[fields[item_id]].empty?
+		    line_hsh[fields[item_id]] = line_arr[item_id]
+		    line_hsh[fields[item_id]] = nil if line_hsh[fields[item_id]].nil? || line_hsh[fields[item_id]].empty?
 		end
 		lines << line_hsh
 	    end
@@ -73,7 +73,7 @@ namespace :macrodeck do
 		country.path = path
 		country.title = title
 		country.abbreviation = abbreviation
-		country.save
+		country.save if country.valid?
 	    end
 	end
 
@@ -102,7 +102,7 @@ namespace :macrodeck do
 		region.path = path
 		region.title = title
 		region.abbreviation = abbreviation
-		region.save
+		region.save if region.valid?
 	    end
 	end
 
@@ -128,7 +128,7 @@ namespace :macrodeck do
 		locality.tags = []
 		locality.path = path
 		locality.title = title
-		locality.save
+		locality.save if locality.valid?
 	    end
 	end
 
@@ -154,13 +154,14 @@ namespace :macrodeck do
 		neighborhood.tags = []
 		neighborhood.path = path
 		neighborhood.title = title
-		neighborhood.save
+		neighborhood.save if neighborhood.valid?
 	    end
 	end
 
 	desc "Imports places from PLACES=path file (no default)"
 	task :places => :environment do
 	    raise "Please specify PLACES file path on command line" if ENV['PLACES'].nil?
+	    num_places = 0
 	    parsed = read_file(ENV['PLACES'])
 	    parsed[:lines].each do |line|
 		id = line["_id"]
@@ -241,8 +242,18 @@ namespace :macrodeck do
 		place.alcohol = alcohol
 		place.credit_cards_accepted = credit_cards_accepted
 		place.reservations = reservations
-		place.save
+
+		if place.valid?
+		    place.save
+		    num_places = num_places + 1
+		else
+		    place.errors.full_messages.each do |msg|
+			puts "!!! ERROR: #{msg}"
+		    end
+		    raise "Bad place!"
+		end
 	    end
+	    puts " * - * - * - * PLACES IMPORTED: #{num_places}"
 	end
 
 	desc "Imports events from EVENTS=path file (no default)"
