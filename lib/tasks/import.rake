@@ -204,6 +204,10 @@ namespace :macrodeck do
 		    features = nil
 		else
 		    features = strip_array_items(line["features"].split(","))
+		    if features.include?("BYOB")
+			alcohol.nil? ? alcohol = ["BYOB"] : alcohol << "BYOB"
+			features.delete("BYOB")
+		    end
 		end
 
 		puts "id: #{id}"
