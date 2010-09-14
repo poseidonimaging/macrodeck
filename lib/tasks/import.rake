@@ -208,6 +208,10 @@ namespace :macrodeck do
 			alcohol.nil? ? alcohol = ["BYO"] : alcohol << "BYO"
 			features.delete("BYOB")
 		    end
+		    if features.include?("Sports Bar")
+			alcohol.nil? ? alcohol = ["Sports Bar"] : alcohol << "Sports Bar"
+			features.delete("Sports Bar")
+		    end
 		end
 
 		puts "id: #{id}"
