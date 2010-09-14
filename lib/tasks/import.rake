@@ -205,7 +205,7 @@ namespace :macrodeck do
 		else
 		    features = strip_array_items(line["features"].split(","))
 		    if features.include?("BYOB")
-			alcohol.nil? ? alcohol = ["BYOB"] : alcohol << "BYOB"
+			alcohol.nil? ? alcohol = ["BYO"] : alcohol << "BYO"
 			features.delete("BYOB")
 		    end
 		end
