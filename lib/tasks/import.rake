@@ -207,6 +207,10 @@ namespace :macrodeck do
 			reservations = "Required"
 			fare.delete("Reservation Only")
 		    end
+		    if fare.include?("Sports Bar")
+			alcohol.nil? ? alcohol = ["Sports Bar"] : alcohol << "Sports Bar"
+			fare.delete("Sports Bar")
+		    end
 		end
 		if line["features"].nil?
 		    features = nil
