@@ -199,6 +199,10 @@ namespace :macrodeck do
 		    fare = nil
 		else
 		    fare = strip_array_items(line["fare"].split(","))
+		    if fare.include?("Wine Bar")
+			alcohol.nil? ? alcohol = ["Wine"] : alcohol << "Wine"
+			fare.delete("Wine Bar")
+		    end
 		end
 		if line["features"].nil?
 		    features = nil
