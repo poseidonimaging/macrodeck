@@ -203,9 +203,9 @@ namespace :macrodeck do
 			alcohol.nil? ? alcohol = ["Wine"] : alcohol << "Wine"
 			fare.delete("Wine Bar")
 		    end
-		    if fare.include?("Reservations Only")
+		    if fare.include?("Reservation Only")
 			reservations = "Required"
-			fare.delete("Reservations Only")
+			fare.delete("Reservation Only")
 		    end
 		end
 		if line["features"].nil?
