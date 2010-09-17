@@ -16,7 +16,13 @@
 	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
 	<script type="text/javascript"> google.load("jquery", "1.4.2"); </script>
 	<%= javascript_include_tag "mobile" %>
-	<title>restless napkin</title>
+	<title>
+	    <% if @page_title.nil? %>
+		restless napkin
+	    <% else %>
+		<%=h @page_title %>
+	    <% end %>
+	</title>
     </head>
 
     <body class="feed">
