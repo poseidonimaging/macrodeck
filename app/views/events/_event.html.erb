@@ -25,7 +25,7 @@
 	    <% end %>
 	    <span class="time">
 		<% start_time = Time.parse(event.start_time).getlocal %>
-		<% if start_time.day == Time.new.day || start_time.day == (Time.new - 6.hours).day %>
+		<% if start_time.day == Time.new.day || start_time.day == (Time.new - 4.hours).day %>
 		    <%= content_tag :abbr, h(start_time.min == 0 ? start_time.strftime("%l%P") : start_time.strftime("%l:%M%P")), :class => "dtstart", :title => start_time.iso8601 %>
 		<% elsif start_time < 1.week.from_now %>
 		    <%= content_tag :abbr, h(start_time.min == 0 ? start_time.strftime("%a @ %l%P") : start_time.strftime("%a @ %l:%M%P")), :class => "dtstart", :title => start_time.iso8601 %>
