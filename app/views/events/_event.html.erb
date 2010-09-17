@@ -3,43 +3,51 @@
 <% if viewmode == :micro %>
 	<li class="vevent<%= " #{css_class}" if local_assigns[:css_class] %>"><%= link_to h(event.summary), "#", :class => "summary" %></li>
 <% elsif viewmode == :compact %>
-    <li class="vevent <%= cycle("odd", "even") %>">
-	<span class="comment">
-	    <%= h(event.event_type) %>
-	</span>
-	<span class="summary">
-	    <%= h(truncate(event.title)) %>
-	</span>
-	<span class="timeloc">
-	    <% if local_assigns[:place_page].nil? %>
-		<span class="location">
-		    <% parent = DataObject.view("by_path", :startkey => event.parent, :limit => 1, :reduce => false, :include_docs => true) %>
-		    <% if parent.length == 1 %>
-			<% if parent[0]["couchrest-type"] == "Place" %>
-			    <%= link_to h(parent[0]["title"]), country_region_locality_place_path(country.id, region.id, locality.id, parent[0].id) %>
-			<% else %>
-			    <%= h(parent[0]["title"]) %>
+    <%
+	start_time = Time.parse(event.start_time).getlocal
+	if event.end_time.nil?
+	    end_time = nil
+	else
+	    end_time = Time.parse(event.end_time).getlocal
+	end
+    %>
+    <% if (!end_time.nil? && end_time > Time.now) || end_time.nil? %>
+	<li class="vevent <%= cycle("odd", "even") %>">
+	    <span class="comment">
+		<%= h(event.event_type) %>
+	    </span>
+	    <span class="summary">
+		<%= h(truncate(event.title)) %>
+	    </span>
+	    <span class="timeloc">
+		<% if local_assigns[:place_page].nil? %>
+		    <span class="location">
+			<% parent = DataObject.view("by_path", :startkey => event.parent, :limit => 1, :reduce => false, :include_docs => true) %>
+			<% if parent.length == 1 %>
+			    <% if parent[0]["couchrest-type"] == "Place" %>
+				<%= link_to h(parent[0]["title"]), country_region_locality_place_path(country.id, region.id, locality.id, parent[0].id) %>
+			    <% else %>
+				<%= h(parent[0]["title"]) %>
+			    <% end %>
 			<% end %>
+		    </span>
+		<% end %>
+		<span class="time">
+		    <% if start_time.day == Time.new.day || start_time.day == (Time.new - 4.hours).day %>
+			<%= content_tag :abbr, h(start_time.min == 0 ? start_time.strftime("%l%P") : start_time.strftime("%l:%M%P")), :class => "dtstart", :title => start_time.iso8601 %>
+		    <% elsif start_time < 1.week.from_now %>
+			<%= content_tag :abbr, h(start_time.min == 0 ? start_time.strftime("%a @ %l%P") : start_time.strftime("%a @ %l:%M%P")), :class => "dtstart", :title => start_time.iso8601 %>
+		    <% else %>
+			<%= content_tag :abbr, h(start_time.min == 0 ? start_time.strftime("%b %e @ %l%P") : start_time.strftime("%b %e @ %l:%M%P")), :class => "dtstart", :title => start_time.iso8601 %>
+		    <% end %>
+		    <% unless end_time.nil? %>
+			&ndash;
+			<%= content_tag :abbr, h(end_time.min == 0 ? end_time.strftime("%l%P") : end_time.strftime("%l:%M%P")), :class => "dtend", :title => end_time.iso8601 %>
 		    <% end %>
 		</span>
-	    <% end %>
-	    <span class="time">
-		<% start_time = Time.parse(event.start_time).getlocal %>
-		<% if start_time.day == Time.new.day || start_time.day == (Time.new - 4.hours).day %>
-		    <%= content_tag :abbr, h(start_time.min == 0 ? start_time.strftime("%l%P") : start_time.strftime("%l:%M%P")), :class => "dtstart", :title => start_time.iso8601 %>
-		<% elsif start_time < 1.week.from_now %>
-		    <%= content_tag :abbr, h(start_time.min == 0 ? start_time.strftime("%a @ %l%P") : start_time.strftime("%a @ %l:%M%P")), :class => "dtstart", :title => start_time.iso8601 %>
-		<% else %>
-		    <%= content_tag :abbr, h(start_time.min == 0 ? start_time.strftime("%b %e @ %l%P") : start_time.strftime("%b %e @ %l:%M%P")), :class => "dtstart", :title => start_time.iso8601 %>
-		<% end %>
-		<% unless event.end_time.nil? %>
-		    &ndash;
-		    <% end_time = Time.parse(event.end_time).getlocal %>
-		    <%= content_tag :abbr, h(end_time.min == 0 ? end_time.strftime("%l%P") : end_time.strftime("%l:%M%P")), :class => "dtend", :title => end_time.iso8601 %>
-		<% end %>
 	    </span>
-	</span>
-    </li>
+	</li>
+    <% end %>
 <% elsif viewmode == :full %>
     <div class="vevent">
 	<div style="width: 75%; float: left;">
