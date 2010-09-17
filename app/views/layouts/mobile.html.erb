@@ -19,7 +19,7 @@
 	<title>
 	    <% if @page_title.nil? && @page_title_long.nil? %>
 		restless napkin
-	    <% elsif @page_title.nil? && !@page_title_long.nil? %>
+	    <% elsif !@page_title_long.nil? %>
 		<%=h @page_title_long %>
 	    <% else %>
 		<%=h @page_title %>
