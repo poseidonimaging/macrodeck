@@ -1,4 +1,5 @@
 html { background: #020202 url("/images/mobile_desktop_bg.jpg") repeat-x top center; }
+html.locality-bfff92eb-d35c-4df3-ae8f-01e68c3f8fc6 { background: #010103 url("/images/austin_skyline.jpg") repeat-x top center; }
 body {
     width: 320px;
     margin: 1% auto;
