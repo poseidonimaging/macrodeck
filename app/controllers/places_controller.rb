@@ -10,6 +10,7 @@ class PlacesController < ApplicationController
     def index
 	@start_item = params[:start_item].nil? ? 0 : params[:start_item].to_i
 	@page_title = @locality.title
+	@page_title_long = "#{@locality.title} Places"
 	@button = ["Happenings", country_region_locality_events_path(@country.id, @region.id, @locality.id)]
 	if @start_item > 0
 	    @back_button = [@locality.title, country_region_locality_places_path(params[:country_id], params[:region_id], params[:id])]
