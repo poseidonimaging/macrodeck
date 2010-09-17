@@ -11,6 +11,7 @@ class EventsController < ApplicationController
     def index
 	@start_item = params[:start_item].nil? ? 0 : params[:start_item].to_i
 	@page_title = @locality.title
+	@page_title_long = "#{@locality.title} Happenings"
 	@button = ["Places", country_region_locality_places_path(@country.id, @region.id, @locality.id)]
 
 	if params[:event_type].nil? && params[:neighborhood].nil?
