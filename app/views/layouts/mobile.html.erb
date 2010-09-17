@@ -17,7 +17,7 @@
 	<script type="text/javascript"> google.load("jquery", "1.4.2"); </script>
 	<%= javascript_include_tag "mobile" %>
 	<title>
-	    <% if @page_title.nil? && @page_title_long.nil? %>
+	    <% if (@page_title.nil? || @page_title.blank?) && (@page_title_long.nil? || @page_title_long.blank?) %>
 		restless napkin
 	    <% elsif !@page_title_long.nil? %>
 		<%=h @page_title_long %>
