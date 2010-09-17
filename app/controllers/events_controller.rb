@@ -15,7 +15,7 @@ class EventsController < ApplicationController
 	@button = ["Places", country_region_locality_places_path(@country.id, @region.id, @locality.id)]
 
 	if params[:event_type].nil? && params[:neighborhood].nil?
-	    earliest_event_time = Time.new - 4.hours
+	    earliest_event_time = Time.new - 6.hours
 	    startkey = @locality.path.dup.push(earliest_event_time.getutc.iso8601)
 	    endkey = @locality.path.dup.push({})
 	    @events = Event.view("by_path_without_place_or_neighborhood_with_time", :reduce => false, :startkey => startkey, :endkey => endkey, :limit => 10, :skip => @start_item)
