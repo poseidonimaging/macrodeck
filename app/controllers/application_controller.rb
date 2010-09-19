@@ -3,7 +3,11 @@ class ApplicationController < ActionController::Base
 
     # Stub. Returns true for now to activate the mobile layout.
     def mobile?
-	true
+	if @desktop_override.nil? || @desktop_override == false
+	    return true
+	else
+	    return false
+	end
     end
     
     def select_layout
