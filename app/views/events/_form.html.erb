@@ -6,3 +6,34 @@
     <%= label_tag "event[title]", "Happening" %>
     <%= text_field_tag "event[title]", @event.title, :size => 40 %>
 </p>
+<p>
+    <%= label_tag "event[description]", "Description" %>
+    <%= text_field_tag "event[description]", @event.description, :size => 60 %>
+</p>
+<p>
+    <%= label_tag "event[event_type]", "Event type" %>
+    <%= select_tag "event[event_type]", options_for_select([	"Drink Special",
+								"Food and Drink Special",
+								"Food Special",
+								"Entertainment",
+								"Featured",
+								"Event"
+    ].sort) %>
+</p>
+<p>
+    <%= label_tag "event[start_time]", "Start time" %>
+    <%= text_field_tag "event[start_time]", @event.start_time %>
+    (please enter in ISO8601 format - <em>YYYY</em>-<em>MM</em>-<em>DD</em>T<em>HH</em>:<em>MM</em>:<em>SS</em>TZ - TZ is "Z" for GMT or "-0600" for Central, etc.)
+</p>
+<p>
+    <%= label_tag "event[end_time]", "End time" %>
+    <%= text_field_tag "event[end_time]", @event.end_time %>
+    optional (please enter in ISO8601 format)
+</p>
+<p>
+    <%= label_tag "event[recurrence]", "Recurrence" %>
+    <%= select_tag "event[recurrence]", options_for_select([ ["None", "none"], ["Weekly", "weekly"], ["Monthly (Same Date)", "monthly"], ["Monthly (1st Xday, 2nd Xday, etc.)", "monthly_nth_nday" ], ["Yearly", "yearly"]]) %>
+</p>
+<p>
+    <%= submit_tag "Submit" %>
+</p>
