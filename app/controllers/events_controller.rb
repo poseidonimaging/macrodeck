@@ -34,6 +34,21 @@ class EventsController < ApplicationController
 	end
     end
 
+    # Renders the HTML to create an event.
+    def new
+	@desktop_override = true
+	startkey = @locality.path.dup.push(0)
+	endkey = @locality.path.dup.push({})
+	@places = Place.view("by_path_without_neighborhood_alpha", :reduce => false, :startkey => startkey, :endkey => endkey)
+	@event = Event.new
+
+	respond_to do |format|
+	    format.html do
+		render :layout => "restlessnapkin" # new.html.erb
+	    end
+	end
+    end
+
     private
  	# Finds the country associated with the request.
 	def find_country
