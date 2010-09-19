@@ -1,2 +1,8 @@
-<%= label_tag "event[place_id]", "Place" %>
-<%= select_tag "event[place_id]", options_for_select(@places.collect { |p| ["#{p.title} (#{p.address})", p.id] }) %>
+<p>
+    <%= label_tag "event[place_id]", "Place" %>
+    <%= select_tag "event[place_id]", options_for_select(@places.collect { |p| ["#{p.title} (#{p.address})", p.id] }) %>
+</p>
+<p>
+    <%= label_tag "event[title]", "Happening" %>
+    <%= text_field_tag "event[title]", @event.title, :size => 40 %>
+</p>
