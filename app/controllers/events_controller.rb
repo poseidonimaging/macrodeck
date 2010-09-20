@@ -53,8 +53,10 @@ class EventsController < ApplicationController
     def create
 	@desktop_override = true
 	@place = Place.get(nilify(params[:event][:place_id]))
-	path = @place.path.dup.push(Guid.new)
+	id = Guid.new
+	path = @place.path.dup.push(id)
 	@event = Event.new
+	@event.id = id
 	@event.path = path
 	@event.title = nilify(params[:event][:title])
 	@event.description = nilify(params[:event][:description])
