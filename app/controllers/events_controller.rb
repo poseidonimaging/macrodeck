@@ -49,6 +49,35 @@ class EventsController < ApplicationController
 	end
     end
 
+    # Saves an event.
+    def create
+	@desktop_override = true
+	@place = Place.get(nilify(params[:event][:place_id]))
+	path = @place.path.dup.push(Guid.new)
+	@event = Event.new
+	@event.path = path
+	@event.title = nilify(params[:event][:title])
+	@event.description = nilify(params[:event][:description])
+	@event.start_time = nilify(params[:event][:start_time])
+	@event.end_time = nilify(params[:event][:end_time])
+	@event.recurrence = nilify(params[:event][:recurrence])
+	@event.event_type = nilify(params[:event][:event_type])
+
+	if @event.valid?
+	    @event.save
+	    redirect_to country_region_locality_event_path(@country, @region, @locality, @event)
+	else
+	    startkey = @locality.path.dup.push(0)
+	    endkey = @locality.path.dup.push({})
+	    @places = Place.view("by_path_without_neighborhood_alpha", :reduce => false, :startkey => startkey, :endkey => endkey)
+	    respond_to do |format|
+		format.html do
+		    render :layout => "restlessnapkin", :action => :new
+		end
+	    end
+	end
+    end
+
     private
  	# Finds the country associated with the request.
 	def find_country
