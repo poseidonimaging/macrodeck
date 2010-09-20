@@ -1,5 +1,17 @@
 class ApplicationController < ActionController::Base
     helper_method :"mobile?"
+    helper_method :nilify
+
+    # Returns nil if blank.
+    def nilify(str)
+	if str.nil?
+	    return nil
+	elsif str.empty?
+	    return nil
+	else
+	    return str
+	end
+    end
 
     # Stub. Returns true for now to activate the mobile layout.
     def mobile?
