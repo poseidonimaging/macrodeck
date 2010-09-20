@@ -33,13 +33,11 @@
 </p>
 <p>
     <%= label_tag "event[start_time]", "Start time" %>
-    <%= text_field_tag "event[start_time]", @event.start_time %>
-    (please enter in ISO8601 format - <em>YYYY</em>-<em>MM</em>-<em>DD</em>T<em>HH</em>:<em>MM</em>:<em>SS</em>TZ - TZ is "Z" for GMT or "-0600" for Central, etc.)
+    <%= calendar_date_select_tag "event[start_time]", @event.start_time, :time => true %>
 </p>
 <p>
     <%= label_tag "event[end_time]", "End time" %>
-    <%= text_field_tag "event[end_time]", @event.end_time %>
-    optional (please enter in ISO8601 format)
+    <%= calendar_date_select_tag "event[end_time]", @event.end_time, :time => true %> optional
 </p>
 <p>
     <%= label_tag "event[recurrence]", "Recurrence" %>
