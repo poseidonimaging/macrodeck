@@ -60,8 +60,8 @@ class EventsController < ApplicationController
 	@event.path = path
 	@event.title = nilify(params[:event][:title])
 	@event.description = nilify(params[:event][:description])
-	@event.start_time = nilify(params[:event][:start_time])
-	@event.end_time = nilify(params[:event][:end_time])
+	@event.start_time = nilify(params[:event][:start_time]).nil? ? nil : Time.parse(nilify(params[:event][:start_time])).getutc.iso8601
+	@event.end_time = nilify(params[:event][:end_time]).nil? ? nil : Time.parse(nilify(params[:event][:end_time])).getutc.iso8601
 	@event.recurrence = nilify(params[:event][:recurrence])
 	@event.event_type = nilify(params[:event][:event_type])
 	@event.created_by = "RestNapForm"
