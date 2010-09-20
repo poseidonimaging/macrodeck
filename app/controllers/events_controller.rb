@@ -54,9 +54,9 @@ class EventsController < ApplicationController
 	@desktop_override = true
 	@place = Place.get(nilify(params[:event][:place_id]))
 	id = Guid.new
-	path = @place.path.dup.push(id)
+	path = @place.path.dup.push(id.to_s)
 	@event = Event.new
-	@event.id = id
+	@event["_id"] = id.to_s
 	@event.path = path
 	@event.title = nilify(params[:event][:title])
 	@event.description = nilify(params[:event][:description])
@@ -70,7 +70,8 @@ class EventsController < ApplicationController
 
 	if @event.valid?
 	    @event.save
-	    redirect_to country_region_locality_event_path(@country, @region, @locality, @event)
+	    #redirect_to country_region_locality_event_path(@country, @region, @locality, @event)
+	    redirect_to country_region_locality_place_path(@country, @region, @locality, @place)
 	else
 	    startkey = @locality.path.dup.push(0)
 	    endkey = @locality.path.dup.push({})
