@@ -62,6 +62,9 @@ class EventsController < ApplicationController
 	@event.end_time = nilify(params[:event][:end_time])
 	@event.recurrence = nilify(params[:event][:recurrence])
 	@event.event_type = nilify(params[:event][:event_type])
+	@event.created_by = "RestNapForm"
+	@event.updated_by = "RestNapForm"
+	@event.owned_by = "RestNapForm"
 
 	if @event.valid?
 	    @event.save
