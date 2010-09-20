@@ -73,6 +73,7 @@ class EventsController < ApplicationController
 	    startkey = @locality.path.dup.push(0)
 	    endkey = @locality.path.dup.push({})
 	    @places = Place.view("by_path_without_neighborhood_alpha", :reduce => false, :startkey => startkey, :endkey => endkey)
+	    @errors = true
 	    respond_to do |format|
 		format.html do
 		    render :layout => "restlessnapkin", :action => :new
