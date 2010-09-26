@@ -1,18 +1,20 @@
 <% if @errors %>
-<div class="msg msg-error">
-    <strong>Errors were found with your entry:</strong>
-    <ul>
-	<% @event.errors.full_messages.each do |e| %>
-	    <li><%=h e %></li>
-	<% end %>
-    </ul>
-</div>
+    <div class="msg msg-error">
+	<strong>Errors were found with your entry:</strong>
+	<ul>
+	    <% @event.errors.full_messages.each do |e| %>
+		<li><%=h e %></li>
+	    <% end %>
+	</ul>
+    </div>
 <% end %>
 
-<p>
-    <%= label_tag "event[place_id]", "Place" %>
-    <%= select_tag "event[place_id]", options_for_select(@places.collect { |p| ["#{p.title} (#{p.address})", p.id] }) %>
-</p>
+<% if [:new, :create].include?(params[:action]) %>
+    <p>
+	<%= label_tag "event[place_id]", "Place" %>
+	<%= select_tag "event[place_id]", options_for_select(@places.collect { |p| ["#{p.title} (#{p.address})", p.id] }) %>
+    </p>
+<% end %>
 <p>
     <%= label_tag "event[title]", "Happening" %>
     <%= text_field_tag "event[title]", @event.title, :size => 40 %>
