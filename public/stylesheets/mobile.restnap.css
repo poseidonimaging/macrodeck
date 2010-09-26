@@ -223,3 +223,5 @@
 
 /* The info box */
 #info		    { color: #eee; font-size: 14px; font-weight: bold; padding: 25px 20px 0 20px; }
+
+#desktopsidebar	    { display: none; }
