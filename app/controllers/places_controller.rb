@@ -15,6 +15,11 @@ class PlacesController < ApplicationController
 	if @start_item > 0
 	    @back_button = [@locality.title, country_region_locality_places_path(params[:country_id], params[:region_id], params[:id])]
 	end
+
+	nstartkey = @locality.path.dup.push(0)
+	nendkey = @locality.path.dup.push({})
+	@neighborhoods = Neighborhood.view("by_path_alpha", :reduce => false, :startkey => nstartkey, :endkey => nendkey)
+
 	if params[:fare].nil? && params[:neighborhood].nil?
 	    startkey = @locality.path.dup.push(0)
 	    endkey = @locality.path.dup.push({})
