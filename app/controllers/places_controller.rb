@@ -59,6 +59,10 @@ class PlacesController < ApplicationController
 	    @page_title = ""
 	    @back_button = [@locality.title, country_region_locality_places_path(params[:country_id], params[:region_id], params[:locality_id], :fare => params[:fare], :neighborhood => params[:neighborhood])]
 
+	    nstartkey = @locality.path.dup.push(0)
+	    nendkey = @locality.path.dup.push({})
+	    @neighborhoods = Neighborhood.view("by_path_alpha", :reduce => false, :startkey => nstartkey, :endkey => nendkey)
+
 	    # Get events for this place.
 	    earliest_event_time = Time.new - 6.hours
 	    startkey = @place.path.dup.push(earliest_event_time.getutc.iso8601)
