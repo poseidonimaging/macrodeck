@@ -1,3 +1,5 @@
-<% content_module "Editing #{h(@event.summary)}", { :box_size => 100, :altbox => true } do %>
-    <%= render :partial => "form" %>
+<% content_module "Edit Happening", { :box_size => 100, :altbox => true } do %>
+    <% form_tag(country_region_locality_events_path(@country, @region, @locality), :method => :put) do %>
+	<%= render :partial => "form" %>
+    <% end %>
 <% end %>
