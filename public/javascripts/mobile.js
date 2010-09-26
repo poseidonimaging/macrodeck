@@ -9,4 +9,13 @@ jQuery(document).ready(function() {
 	jQuery("#info").slideToggle();
 	return false;
     });
+
+    // Check for desktop
+    if (jQuery(document).width() > 960) {
+	jQuery("span.action a.tel").click(function(e) {
+	   e.preventDefault();
+	   alert(jQuery("span.action a.tel span").first().text());
+	   return false;
+	});
+    }
 });
