@@ -96,6 +96,31 @@ class EventsController < ApplicationController
 	end
     end
 
+    # Saves an updated event.
+    def update
+	@desktop_override = true
+	@event.title = nilify(params[:event][:title])
+	@event.description = nilify(params[:event][:description])
+	@event.start_time = nilify(params[:event][:start_time]).nil? ? nil : Time.parse(nilify(params[:event][:start_time])).getutc.iso8601
+	@event.end_time = nilify(params[:event][:end_time]).nil? ? nil : Time.parse(nilify(params[:event][:end_time])).getutc.iso8601
+	@event.recurrence = nilify(params[:event][:recurrence])
+	@event.event_type = nilify(params[:event][:event_type])
+	@event.updated_by = "RestNapForm"
+
+	if @event.valid?
+	    @event.save
+	    #redirect_to country_region_locality_event_path(@country, @region, @locality, @event)
+	    redirect_to country_region_locality_events_path(@country, @region, @locality)
+	else
+	    @errors = true
+	    respond_to do |format|
+		format.html do
+		    render :layout => "restlessnapkin", :action => :edit
+		end
+	    end
+	end
+    end
+
     # Deletes a happening.
     def destroy
 	@event.destroy
