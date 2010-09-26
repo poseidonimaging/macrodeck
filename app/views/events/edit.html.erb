@@ -1,5 +1,6 @@
 <% content_module "Edit Happening", { :box_size => 100, :altbox => true } do %>
-    <% form_tag(country_region_locality_events_path(@country, @region, @locality), :method => :put) do %>
+    <% form_tag(country_region_locality_event_path(@country, @region, @locality, @event), :method => :put) do %>
 	<%= render :partial => "form" %>
     <% end %>
+    <%= link_to "Delete", country_region_locality_event_path(@country, @region, @locality, @event), :method => :delete, :confirm => "Really delete?" %>
 <% end %>
