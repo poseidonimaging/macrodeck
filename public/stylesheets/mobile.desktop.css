@@ -12,7 +12,7 @@ body {
     display: block;
     position: absolute;
     width: 200px;
-    left: -210px;
+    left: -220px;
     color: #fff;
     top: 0;
 }
@@ -21,6 +21,14 @@ body {
     background-color: rgba(0,0,0,0.5);
     border-radius: 3px;
     width: 200px;
+    margin-top: 1em;
+    padding: 5px;
 }
+#desktopsidebar div:first-child { margin-top: 0; }
 
-#desktopsidebar div.logo { background: rgba(0,0,0,0.7) url("/images/desktop_logo.png") no-repeat top left; width: 200px; height: 62px; }
+#desktopsidebar div.logo { background: rgba(0,0,0,0.7) url("/images/desktop_logo.png") no-repeat center center; width: 200px; height: 62px; }
+
+#desktopsidebar h1 { font-size: 12pt; font-weight: bold; color: #fff; margin: 0; padding: 0; }
+#desktopsidebar ul, #desktopsidebar li { list-style: none; }
+#desktopsidebar li { padding: 0.2em 0; font-size: 8pt; }
+#desktopsidebar a { color: #fff; }
