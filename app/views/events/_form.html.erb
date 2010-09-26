@@ -43,7 +43,7 @@
 </p>
 <p>
     <%= label_tag "event[recurrence]", "Recurrence" %>
-    <%= select_tag "event[recurrence]", options_for_select([ ["None", "none"], ["Weekly", "weekly"], ["Monthly (Same Date)", "monthly"], ["Monthly (1st Xday, 2nd Xday, etc.)", "monthly_nth_nday" ], ["Yearly", "yearly"]]) %>
+    <%= select_tag "event[recurrence]", options_for_select([ ["None", "none"], ["Weekly", "weekly"], ["Monthly (Same Date)", "monthly"], ["Monthly (1st Xday, 2nd Xday, etc.)", "monthly_nth_nday" ], ["Yearly", "yearly"]], @event.recurrence) %>
 </p>
 <p>
     <%= submit_tag "Submit" %>
