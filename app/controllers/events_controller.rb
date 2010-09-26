@@ -49,6 +49,17 @@ class EventsController < ApplicationController
 	end
     end
 
+    # Renders the HTML to edit an event.
+    def edit
+	@desktop_override = true
+
+	respond_to do |format|
+	    format.html do
+		render :layout => "restlessnapkin" # new.html.erb
+	    end
+	end
+    end
+
     # Saves an event.
     def create
 	@desktop_override = true
@@ -83,6 +94,12 @@ class EventsController < ApplicationController
 		end
 	    end
 	end
+    end
+
+    # Deletes a happening.
+    def destroy
+	@event.destroy
+	redirect_to country_region_locality_events_path(@country.id, @region.id, @locality.id)
     end
 
     private
