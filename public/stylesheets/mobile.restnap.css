@@ -27,6 +27,7 @@
 	top: 25px;
 	left: 20px;
 }
+.feed .summary a { color: #fff; }
 .feed .comment, .feed .comment a { color: #7f7f7f; }
 .feed .comment {
 	position: absolute;
