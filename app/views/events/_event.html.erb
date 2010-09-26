@@ -17,7 +17,11 @@
 		<%= h(event.event_type) %>
 	    </span>
 	    <span class="summary">
-		<%= h(truncate(event.title)) %>
+		<% if params[:upupdowndownleftrightleftrightbastart] %>
+		    <%= link_to h(truncate(event.title)), edit_country_region_locality_event_path(country.id, region.id, locality.id, event.id) %>
+		<% else %>
+		    <%= h(truncate(event.title)) %>
+		<% end %>
 	    </span>
 	    <span class="timeloc">
 		<% if local_assigns[:place_page].nil? %>
