@@ -1,6 +1,21 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"<%= @locality.nil? ? nil : " class='locality-#{@locality.id}'" %>>
     <head>
+	<meta name="DC.title" content="RestlessNapkin" />
+	<meta name="DC.creator" content="RestlessNapkin" />
+	<meta name="DC.language" content="en-US" />
+
+	<!-- OpenGraph Metadata -->
+	<meta property="og:title" content="<%=
+	    if (@page_title.nil? || @page_title.blank?) && (@page_title_long.nil? || @page_title_long.blank?)
+		"RestlessNapkin"
+	    elsif !@page_title_long.nil?
+		h(@page_title_long)
+	    else
+		h(@page_title)
+	    end
+	%>" />
+	<meta property="og:image" content="<%= image_path "desktop_logo.png" %>" />
 	<meta name="apple-mobile-web-app-capable" content="yes" />
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="minimum-scale=1.0, width=device-width, maximum-scale=0.6667, user-scalable=no" />
@@ -18,7 +33,7 @@
 	<%= javascript_include_tag "mobile" %>
 	<title>
 	    <% if (@page_title.nil? || @page_title.blank?) && (@page_title_long.nil? || @page_title_long.blank?) %>
-		restless napkin
+		RestlessNapkin
 	    <% elsif !@page_title_long.nil? %>
 		<%=h @page_title_long %>
 	    <% else %>
