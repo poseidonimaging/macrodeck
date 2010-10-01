@@ -8,16 +8,17 @@ body {
     box-shadow: 5px 5px 5px rgba(10,10,10,0.50);
 }
 
-#desktopsidebar {
+.desktop-sidebar {
     display: block;
     position: absolute;
     width: 200px;
-    left: -220px;
     color: #fff;
     top: 0;
 }
+#desktop-sidebar-left	{ left: -220px; }
+#desktop-sidebar-right	{ left: 340px; }
 
-#desktopsidebar div {
+.desktop-sidebar div {
     background-color: rgba(0,0,0,0.5);
     border-radius: 3px;
     width: 200px;
@@ -27,9 +28,9 @@ body {
     -webkit-box-shadow: 2px 2px 2px rgba(10,10,10,0.25);
     box-shadow: 2px 2px 2px rgba(10,10,10,0.25);
 }
-#desktopsidebar div:first-child { margin-top: 0; }
+.desktop-sidebar div:first-child { margin-top: 0; }
 
-#desktopsidebar div.logo {
+.desktop-sidebar div.logo {
     background: rgba(178,223,218,0.9) url("/images/desktop_logo.png") no-repeat center center;
     width: 200px;
     height: 62px;
@@ -38,7 +39,7 @@ body {
     box-shadow: 2px 2px 2px rgba(10,10,10,0.5);
 }
 
-#desktopsidebar h1 { font-size: 12pt; font-weight: bold; color: #fff; margin: 0 0 0.25em 0; padding: 0; }
-#desktopsidebar ul, #desktopsidebar li { list-style: none; }
-#desktopsidebar li { padding: 0.2em 0; font-size: 8pt; }
-#desktopsidebar a { color: #fff; }
+.desktop-sidebar h1 { font-size: 12pt; font-weight: bold; color: #fff; margin: 0 0 0.25em 0; padding: 0; }
+.desktop-sidebar ul, .desktop-sidebar li { list-style: none; }
+.desktop-sidebar li { padding: 0.2em 0; font-size: 8pt; }
+.desktop-sidebar a { color: #fff; }
