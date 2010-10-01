@@ -68,7 +68,7 @@
 	    <em>Report issues with the beta to <%= mail_to "keith@restlessnapkin.com" %>.</em>
 	</div>
 
-	<div id="desktopsidebar">
+	<div id="desktop-sidebar-left" class="desktop-sidebar">
 	    <div class="logo"></div>
 	    <% if @country && @region && @locality && @neighborhoods %>
 		<div>
@@ -81,6 +81,18 @@
 		</div>
 	    <% end %>
 	    <div class="newsletter"><a href="http://eepurl.com/Qj0H" target="_blank"><span>Sign up for our newsletter!</span></a></div>
+	</div>
+	<div id="desktop-sidebar-right" class="desktop-sidebar">
+	    <% if @country && @region && @locality && @fares %>
+		<div>
+		    <h1>Fares</h1>
+		    <ul>
+			<% @fares.each do |f| %>
+			    <li><%= link_to h(f), country_region_locality_places_path(@country, @region, @locality, :neighborhood => params[:neighborhood], :fare => f) %></li>
+			<% end %>
+		    </ul>
+		</div>
+	    <% end %>
 	</div>
 
 <script type="text/javascript" src="http://include.reinvigorate.net/re_.js"></script>
