@@ -16,7 +16,7 @@ body {
     top: 0;
 }
 #desktop-sidebar-left	{ left: -220px; }
-#desktop-sidebar-right	{ left: 340px; }
+#desktop-sidebar-right	{ left: 330px; }
 
 .desktop-sidebar div {
     background-color: rgba(0,0,0,0.5);
