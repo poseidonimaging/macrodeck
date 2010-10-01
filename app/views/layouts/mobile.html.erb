@@ -93,7 +93,7 @@
 				    <%= link_to h(f['key'][-1]),
 					country_region_locality_places_path(@country, @region, @locality, :neighborhood => params[:neighborhood], :fare => f['key'][-1])
 				    %>
-				    (<%= h(f['value']) %>)
+				    <span class="dim">(<%= h(f['value']) %>)</span>
 				</li>
 			    <% end %>
 			<% end %>
