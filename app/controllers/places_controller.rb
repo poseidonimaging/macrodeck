@@ -19,7 +19,8 @@ class PlacesController < ApplicationController
 	nstartkey = @locality.path.dup.push(0)
 	nendkey = @locality.path.dup.push({})
 	@neighborhoods = Neighborhood.view("by_path_alpha", :reduce => false, :startkey => nstartkey, :endkey => nendkey)
-
+	@fares = Place.view("by_fare", :reduce => true, :group => true, :group_level => 4, :startkey => nstartkey, :endkey => nendkey)["rows"]
+	
 	if params[:fare].nil? && params[:neighborhood].nil?
 	    startkey = @locality.path.dup.push(0)
 	    endkey = @locality.path.dup.push({})
