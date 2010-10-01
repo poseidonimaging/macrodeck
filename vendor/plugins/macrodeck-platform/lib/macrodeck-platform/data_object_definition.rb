@@ -11,6 +11,7 @@ module MacroDeck
 				base.property :fields
 				base.property :validations
 				base.property :views
+				base.property :fulltext
 
 				base.view_by :object_type
 
@@ -31,6 +32,7 @@ module MacroDeck
 				properties = ""
 				validations = ""
 				views = ""
+				fulltext = ""
 				class_body = ""
 
 				@defined = false if @defined.nil?
@@ -74,6 +76,14 @@ module MacroDeck
 							end
 						end
 
+						# Iterate the fulltext search indexes.
+						unless self.fulltext.nil?
+							self.fulltext.each do |ft|
+								symbol = ft[0].to_sym.inspect
+								fulltext << "search_by #{symbol}, #{ft[1].inspect}\n"
+							end
+						end
+
 						# Define the class.
 						klass = self.object_type.split(" ")[0]
 						class_body =
@@ -82,6 +92,7 @@ module MacroDeck
 								#{properties}
 								#{validations}
 								#{views}
+								#{fulltext}
 							end"
 						Kernel.eval(class_body)
 					else
