@@ -43,3 +43,4 @@ body {
 .desktop-sidebar ul, .desktop-sidebar li { list-style: none; }
 .desktop-sidebar li { padding: 0.2em 0; font-size: 8pt; }
 .desktop-sidebar a { color: #fff; }
+.desktop-sidebar .dim { font-weight: normal; font-size: 8pt; color: rgba(255,255,255,0.5); }
