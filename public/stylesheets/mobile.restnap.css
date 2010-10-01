@@ -224,4 +224,9 @@
 /* The info box */
 #info		    { color: #eee; font-size: 14px; font-weight: bold; padding: 25px 20px 0 20px; }
 
-#desktopsidebar	    { display: none; }
+/* Hide the sidebar */
+.desktop-sidebar    { display: none; }
+
+/* The macrodeck logo in the footer */
+#footer #macrodeck-logo		{ display: block; background: transparent url('/images/macrodeck_logo_color_small.png') no-repeat 0 0; height: 19px; width: 100px; margin: 3px auto; padding: 0; }
+#footer #macrodeck-logo span	{ display: none; }
