@@ -29,6 +29,8 @@ class PlacesController < ApplicationController
 	    @places_count = count_query["rows"].length == 0 ? 0 : count_query["rows"][0]["value"]
 	    #@back_button = [@region.title, country_region_localities_path(params[:country_id], params[:region_id])]
 	elsif params[:fare].nil? && !params[:neighborhood].nil?
+	    @page_title_long = "#{@locality.title} > #{Neighborhood.get(params[:neighborhood]).title}"
+
 	    startkey = @locality.path.dup.push(params[:neighborhood]).push(0)
 	    endkey = @locality.path.dup.push(params[:neighborhood]).push({})
 	    @places = Place.view("by_path_alpha", :reduce => false, :startkey => startkey, :endkey => endkey, :limit => 10, :skip => @start_item)
@@ -36,6 +38,8 @@ class PlacesController < ApplicationController
 	    @places_count = count_query["rows"].length == 0 ? 0 : count_query["rows"][0]["value"]
 	    @back_button = [@locality.title, country_region_locality_places_path(params[:country_id], params[:region_id], params[:id])]
 	elsif !params[:fare].nil? && params[:neighborhood].nil?
+	    @page_title_long = "#{@locality.title} > #{params[:fare]}"
+
 	    startkey = @locality.path.dup.push(params[:fare]).push(0)
 	    endkey = @locality.path.dup.push(params[:fare]).push({})
 	    @places = Place.view("by_fare_alpha", :reduce => false, :startkey => startkey, :endkey => endkey, :limit => 10, :skip => @start_item)
@@ -43,6 +47,8 @@ class PlacesController < ApplicationController
 	    @places_count = count_query["rows"].length == 0 ? 0 : count_query["rows"][0]["value"]
 	    @back_button = [@locality.title, country_region_locality_places_path(params[:country_id], params[:region_id], params[:id])]
 	elsif !params[:fare].nil? && !params[:neighborhood].nil?
+	    @page_title_long = "#{@locality.title} > #{Neighborhood.get(params[:neighborhood]).title} > #{params[:fare]}"
+
 	    startkey = @locality.path.dup.push(params[:neighborhood]).push(params[:fare]).push(0)
 	    endkey = @locality.path.dup.push(params[:neighborhood]).push(params[:fare]).push({})
 	    @places = Place.view("by_fare_alpha", :reduce => false, :startkey => startkey, :endkey => endkey, :limit => 10, :skip => @start_item)
