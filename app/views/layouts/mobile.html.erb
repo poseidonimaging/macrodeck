@@ -88,7 +88,14 @@
 		    <h1>Fares</h1>
 		    <ul>
 			<% @fares.each do |f| %>
-			    <li><%= link_to h(f), country_region_locality_places_path(@country, @region, @locality, :neighborhood => params[:neighborhood], :fare => f) %></li>
+			    <% unless (f['key'][-1] =~ /^[A-Za-z0-9]{8}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}-[A-Za-z0-9]{12}$/) %>
+				<li>
+				    <%= link_to h(f['key'][-1]),
+					country_region_locality_places_path(@country, @region, @locality, :neighborhood => params[:neighborhood], :fare => f['key'][-1])
+				    %>
+				    (<%= h(f['value']) %>)
+				</li>
+			    <% end %>
 			<% end %>
 		    </ul>
 		</div>
