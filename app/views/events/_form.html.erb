@@ -9,7 +9,7 @@
     </div>
 <% end %>
 
-<% if [:new, :create].include?(params[:action]) %>
+<% if [:new, :create].include?(params[:action].to_sym) %>
     <p>
 	<%= label_tag "event[place_id]", "Place" %>
 	<%= select_tag "event[place_id]", options_for_select(@places.collect { |p| ["#{p.title} (#{p.address})", p.id] }) %>
