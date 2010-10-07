@@ -82,7 +82,7 @@ module MacroDeck
 						["event_type", "String", false]
 					],
 					"fulltext" => [
-						["title_or_description",
+						["by_title_or_description",
 							{ "index" =>
 							  "function(doc) {
 								var res = new Document();
@@ -391,9 +391,22 @@ module MacroDeck
 						raise "Duplicate definition exists for #{definition['object_type']}"
 					end
 
-					new_definition = ::DataObjectDefinition.new(definition)
+					new_definition = ::DataObjectDefinition.new(definition.dup)
 					new_definition.save
 					new_definition.define!
+
+					db = CouchRest.database!(MacroDeck::Platform.database_name)
+					# Get the design doc.
+					if definition["fulltext"]
+						doc = db.get("_design/#{definition["object_type"]}")
+						if doc
+							doc["fulltext"] ||= {}
+							definition["fulltext"].each do |ft|
+								doc["fulltext"][ft[0]] = ft[1]
+							end
+						end
+						doc.save
+					end
 				end
 			end
 		end
