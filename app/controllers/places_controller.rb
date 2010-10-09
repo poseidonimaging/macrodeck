@@ -74,6 +74,7 @@ class PlacesController < ApplicationController
 	    nstartkey = @locality.path.dup.push(0)
 	    nendkey = @locality.path.dup.push({})
 	    @neighborhoods = Neighborhood.view("by_path_alpha", :reduce => false, :startkey => nstartkey, :endkey => nendkey)
+	    @fares = Place.view("by_fare", ActiveSupport::OrderedHash[:reduce, true, :group, true, :group_level, 4, :startkey, nstartkey, :endkey, nendkey])["rows"]
 
 	    # Get events for this place.
 	    earliest_event_time = Time.new - 6.hours
