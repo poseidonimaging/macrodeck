@@ -20,8 +20,14 @@ class PlacesController < ApplicationController
 	nendkey = @locality.path.dup.push({})
 	@neighborhoods = Neighborhood.view("by_path_alpha", :reduce => false, :startkey => nstartkey, :endkey => nendkey)
 	@fares = Place.view("by_fare", ActiveSupport::OrderedHash[:reduce, true, :group, true, :group_level, 4, :startkey, nstartkey, :endkey, nendkey])["rows"]
-	
-	if params[:fare].nil? && params[:neighborhood].nil?
+
+	if !params[:q].nil?
+	    @page_title_log = "#{@locality.title} > Places > Search"
+	    query = "path:#{@locality.path.join("/")}/* AND (#{CGI.escape(params[:q])})"
+	    place_search = Place.search("by_title_or_description", query, :limit => 10, :skip => @start_item)
+	    @places = place_search["rows"]
+	    @places_count = place_search["rows"].length == 0 ? 0 : place_search["total_rows"]
+	elsif params[:fare].nil? && params[:neighborhood].nil?
 	    startkey = @locality.path.dup.push(0)
 	    endkey = @locality.path.dup.push({})
 	    @places = Place.view("by_path_without_neighborhood_alpha", :reduce => false, :startkey => startkey, :endkey => endkey, :limit => 10, :skip => @start_item)
