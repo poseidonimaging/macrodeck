@@ -14,7 +14,14 @@ class EventsController < ApplicationController
 	@page_title_long = "#{@locality.title} Happenings"
 	@button = ["Places", country_region_locality_places_path(@country.id, @region.id, @locality.id)]
 
-	if params[:event_type].nil? && params[:neighborhood].nil?
+	if !params[:q].nil?
+	    @page_title_log = "#{@locality.title} > Happenings > Search"
+	    query = "path:#{@locality.path.join("/")}/* AND (#{params[:q]})"
+	    event_search = Event.search("by_title_or_description", query, :limit => 10, :skip => @start_item)
+	    @events = event_search["rows"]
+	    @events_count = event_search["rows"].length == 0 ? 0 : event_search["total_rows"]
+	    @back_button = [@locality.title, country_region_locality_events_path(@country.id, @region.id, @locality.id)]
+	elsif params[:event_type].nil? && params[:neighborhood].nil?
 	    earliest_event_time = Time.new - 6.hours
 	    startkey = @locality.path.dup.push(earliest_event_time.getutc.iso8601)
 	    endkey = @locality.path.dup.push({})
