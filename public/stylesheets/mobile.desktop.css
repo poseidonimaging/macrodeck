@@ -7,7 +7,14 @@ body {
     -webkit-box-shadow: 5px 5px 5px rgba(10,10,10,0.50);
     box-shadow: 5px 5px 5px rgba(10,10,10,0.50);
 }
+.searchbox form {
+    width: 278px; /* 320 - left padding - right padding - some spacing */
+}
+.searchbox input[type="text"] {
+    width: 278px;
+}
 
+/* sidebar stuff */
 .desktop-sidebar {
     display: block;
     position: absolute;
