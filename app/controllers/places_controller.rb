@@ -19,7 +19,7 @@ class PlacesController < ApplicationController
 	nstartkey = @locality.path.dup.push(0)
 	nendkey = @locality.path.dup.push({})
 	@neighborhoods = Neighborhood.view("by_path_alpha", :reduce => false, :startkey => nstartkey, :endkey => nendkey)
-	@fares = Place.view("by_fare", ActiveSupport::OrderedHash[:reduce, true, :group, true, :group_level, 4, :startkey, nstartkey, :endkey, nendkey])["rows"]
+	@fares = Place.view("by_fare", :reduce, true, :group, true, :group_level, 4, :startkey, nstartkey, :endkey, nendkey)["rows"]
 
 	if !params[:q].nil?
 	    @page_title_log = "#{@locality.title} > Places > Search"
