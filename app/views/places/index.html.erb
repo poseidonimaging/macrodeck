@@ -1,3 +1,16 @@
+<% if params[:q].nil? %>
+    <% content_for :before_content do %>
+	<div class="searchbox">
+		<% form_tag country_region_locality_places_path(@country, @region, @locality), :method => :get do %>
+			<fieldset>
+			    <input id="q" name="q" placeholder="search" type="text" />
+			    <input id="submit" type="hidden" />
+			</fieldset>
+		<% end %>
+	</div>
+    <% end %>
+<% end %>
+
 <% @start_item = 0 if @start_item.nil? %>
 
 <ul>
