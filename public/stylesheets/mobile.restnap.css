@@ -230,3 +230,11 @@
 /* The macrodeck logo in the footer */
 #footer #macrodeck-logo		{ display: block; background: transparent url('/images/macrodeck_logo_color_small.png') no-repeat 0 0; height: 19px; width: 100px; margin: 3px auto; padding: 0; }
 #footer #macrodeck-logo span	{ display: none; }
+
+/* searchbox color... grayscale of default */
+.searchbox {
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#f3f3f3), color-stop(3%, #e3e3e3), color-stop(50%, #cecece), color-stop(51%, #c6c6c6), color-stop(97%, #bcbcbc), to(#969696));
+}
+.searchbox form {
+	-webkit-border-image: url('/images/iwebkit/searchfield_gray.png') 4 14 1 24;
+}
