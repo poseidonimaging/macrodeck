@@ -24,7 +24,7 @@ class PlacesController < ApplicationController
 	if !params[:q].nil?
 	    @page_title_log = "#{@locality.title} > Places > Search"
 	    query = "path:#{@locality.path.join("/")}/* AND (#{params[:q]})"
-	    place_search = Place.search("by_title_or_description", query, :limit => 10, :skip => @start_item)
+	    place_search = Place.search("common_fields", query, :limit => 10, :skip => @start_item)
 	    @places = place_search["rows"]
 	    @places_count = place_search["rows"].length == 0 ? 0 : place_search["total_rows"]
 	elsif params[:fare].nil? && params[:neighborhood].nil?
