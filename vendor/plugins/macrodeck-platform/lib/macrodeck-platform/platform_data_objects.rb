@@ -82,16 +82,19 @@ module MacroDeck
 						["event_type", "String", false]
 					],
 					"fulltext" => [
-						["by_title_or_description",
+						["common_fields",
 							{ "index" =>
 							  "function(doc) {
 								if (doc['couchrest-type'] == 'Event') {
+									/*! include iso8601.js */
+									var dtstart = parseISO8601(doc.start_time);
+									log.info('dtstart=' + dtstart.toUTCString());
 									var res = new Document();
-									res.add(doc.title);
-									res.add(doc.description);
+									res.add(doc.title, { \"boost\":2.0 });
+									res.add(doc.description, { \"boost\":1.5 });
 									res.add(new Date(), { \"field\":\"indexed_at\", \"store\":\"yes\" });
+									res.add(new Date(dtstart.toUTCString()), { \"field\":\"start_time\", \"store\":\"yes\" });
 									res.add(doc.path.join('/'), { \"field\":\"path\", \"store\":\"yes\", \"index\":\"not_analyzed\" });
-									res.add(doc.start_time, { \"field\":\"start_time\", \"type\":\"date\" });
 									return res;
 								}
 							  }"
@@ -179,16 +182,19 @@ module MacroDeck
 						["reservations", "String", false]
 					],
 					"fulltext" => [
-						["by_title_or_description",
+						["common_fields",
 							{ "index" =>
 							  "function(doc) {
 								if (doc['couchrest-type'] == 'Place') {
+									var fares = '';
+									fares = doc.fare.join(', ');
 									var res = new Document();
-									res.add(doc.title);
-									res.add(doc.description);
+									res.add(doc.title, { \"boost\":2.0 });
+									res.add(doc.description, { \"boost\":1.5 });
+									res.add(fares);
+									res.add(fares, { \"field\":\"fare\", \"store\":\"yes\" });
 									res.add(new Date(), { \"field\":\"indexed_at\", \"store\":\"yes\" });
 									res.add(doc.path.join('/'), { \"field\":\"path\", \"store\":\"yes\", \"index\":\"not_analyzed\" });
-									res.add(doc.fare, { \"field\":\"fare\" });
 									return res;
 								}
 							  }"
@@ -425,7 +431,9 @@ module MacroDeck
 						if doc
 							doc["fulltext"] ||= {}
 							definition["fulltext"].each do |ft|
-								doc["fulltext"][ft[0]] = ft[1]
+								ftdef = ft[1]
+								ftdef["index"] = MacroDeck::Platform.process_includes(ftdef["index"])
+								doc["fulltext"][ft[0]] = ftdef
 							end
 						end
 						doc.save
