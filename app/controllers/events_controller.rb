@@ -17,7 +17,7 @@ class EventsController < ApplicationController
 	if !params[:q].nil?
 	    @page_title_log = "#{@locality.title} > Happenings > Search"
 	    query = "path:#{@locality.path.join("/")}/* AND (#{params[:q]})"
-	    event_search = Event.search("common_fields", query, :limit => 10, :skip => @start_item)
+	    event_search = Event.search("common_fields", query, :limit => 10, :skip => @start_item, :sort => "/start_time<date>")
 	    @events = event_search["rows"]
 	    @events_count = event_search["rows"].length == 0 ? 0 : event_search["total_rows"]
 	    @back_button = [@locality.title, country_region_locality_events_path(@country.id, @region.id, @locality.id)]
