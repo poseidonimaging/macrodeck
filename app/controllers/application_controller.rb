@@ -49,4 +49,9 @@ class ApplicationController < ActionController::Base
 	    format.any  { head :not_found }
 	end
     end
+
+    # Make a query AND
+    def query_to_boolean_and(query)
+	return query.downcase.gsub(" and ", " ").gsub(" or ", " ").gsub(" ", " AND ")
+    end
 end
