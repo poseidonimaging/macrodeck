@@ -14,6 +14,11 @@ class EventsController < ApplicationController
 	@page_title_long = "#{@locality.title} Happenings"
 	@button = ["Places", country_region_locality_places_path(@country.id, @region.id, @locality.id)]
 
+	nstartkey = @locality.path.dup.push(0)
+	nendkey = @locality.path.dup.push({})
+	@neighborhoods = Neighborhood.view("by_path_alpha", :reduce => false, :startkey => nstartkey, :endkey => nendkey)
+	@event_types = Event.view("by_event_type", :reduce => true, :group => true, :group_level => 4, :startkey => nstartkey, :endkey => nendkey)["rows"]
+
 	if !params[:q].nil?
 	    @page_title_log = "#{@locality.title} > Happenings > Search"
 	    query = "path:#{@locality.path.join("/")}/* AND (#{query_to_boolean_and(params[:q])})"
@@ -21,6 +26,15 @@ class EventsController < ApplicationController
 	    @events = event_search["rows"]
 	    @events_count = event_search["rows"].length == 0 ? 0 : event_search["total_rows"]
 	    @back_button = [@locality.title, country_region_locality_events_path(@country.id, @region.id, @locality.id)]
+	elsif params[:event_type].nil? && !params[:neighborhood].nil?
+	    @page_title_long = "#{@locality.title} Happenings > #{Neighborhood.get(params[:neighborhood]).title}"
+
+	    startkey = @locality.path.dup.push(params[:neighborhood]).push(0)
+	    endkey = @locality.path.dup.push(params[:neighborhood]).push({})
+	    @events = Event.view("by_path_alpha", :reduce => false, :startkey => startkey, :endkey => endkey, :limit => 10, :skip => @start_item)
+	    count_query = Event.view("by_path_alpha", :reduce => true, :startkey => startkey, :endkey => endkey)
+	    @events_count = count_query["rows"].length == 0 ? 0 : count_query["rows"][0]["value"]
+	    @back_button = [@locality.title, country_region_locality_events_path(params[:country_id], params[:region_id], params[:id])]
 	elsif params[:event_type].nil? && params[:neighborhood].nil?
 	    earliest_event_time = Time.new - 6.hours
 	    startkey = @locality.path.dup.push(earliest_event_time.getutc.iso8601)
