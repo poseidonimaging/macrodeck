@@ -15,6 +15,7 @@
 	<li class="vevent <%= cycle("odd", "even") %>">
 	    <span class="comment">
 		<%= link_to h(event.event_type), country_region_locality_events_path(@country, @region, @locality, :neighborhood => params[:neighborhood], :event_type => h(event.event_type)) %>
+		<span class="filtericon"></span>
 	    </span>
 	    <span class="summary">
 		<% if params[:upupdowndownleftrightleftrightbastart] %>
