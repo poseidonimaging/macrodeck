@@ -44,12 +44,12 @@ class EventsController < ApplicationController
 	    @events_count = count_query["rows"].length == 0 ? 0 : count_query["rows"][0]["value"]
 	    @back_button = [@locality.title, country_region_locality_events_path(params[:country_id], params[:region_id], params[:id])]
 	elsif params[:event_type].nil? && params[:neighborhood].nil?
-	    earliest_event_time = Time.new - 6.hours
-	    startkey = @locality.path.dup.push(earliest_event_time.getutc.iso8601)
+	    earliest_event_end_time = Time.new
+	    startkey = @locality.path.dup.push(earliest_event_end_time.getutc.iso8601)
 	    endkey = @locality.path.dup.push({})
-	    @events = Event.view("by_path_without_place_or_neighborhood_with_time", :reduce => false, :startkey => startkey, :endkey => endkey, :limit => 10, :skip => @start_item)
+	    @events = Event.view("by_path_without_place_or_neighborhood_with_end_time", :reduce => false, :startkey => startkey, :endkey => endkey, :limit => 10, :skip => @start_item)
 	    begin
-		@events_count = Event.view("by_path_without_place_or_neighborhood_with_time", :reduce => true, :startkey => startkey, :endkey => endkey)["rows"][0]["value"]
+		@events_count = Event.view("by_path_without_place_or_neighborhood_with_end_time", :reduce => true, :startkey => startkey, :endkey => endkey)["rows"][0]["value"]
 	    rescue
 		@events_count = 0
 	    end
