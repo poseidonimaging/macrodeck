@@ -55,6 +55,11 @@
 		</span>
 	    </span>
 	</li>
+    <% else %>
+	<!--
+	    not rendering event. end time in the past
+	    <%= event.inspect %>
+	-->
     <% end %>
 <% elsif viewmode == :full %>
     <div class="vevent">
