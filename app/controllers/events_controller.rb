@@ -16,7 +16,14 @@ class EventsController < ApplicationController
 
 	nstartkey = @locality.path.dup.push(0)
 	nendkey = @locality.path.dup.push({})
-	@neighborhoods = Neighborhood.view("by_path_alpha", :reduce => false, :startkey => nstartkey, :endkey => nendkey)
+	hood_ids = Event.view("by_path", :reduce => true, :group => true, :group_level => 4, :startkey => nstartkey, :endkey => nendkey)["rows"].collect do |event|
+	    [event["key"][-1], event["value"]]
+	end
+	@neighborhoods = []
+	hood_ids.each do |hood_id|
+	    hood = Neighborhood.get(hood_id[0])
+	    @neighborhoods << [hood["title"], hood_id[0], hood_id[1]] unless hood.nil?
+	end
 	@event_types = Event.view("by_event_type", :reduce => true, :group => true, :group_level => 4, :startkey => nstartkey, :endkey => nendkey)["rows"]
 
 	if !params[:q].nil?
