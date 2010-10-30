@@ -14,7 +14,7 @@
     <% if (!end_time.nil? && end_time > Time.now) || end_time.nil? %>
 	<li class="vevent <%= cycle("odd", "even") %>">
 	    <span class="comment">
-		<%= h(event.event_type) %>
+		<%= link_to h(event.event_type), country_region_locality_events_path(@country, @region, @locality, :neighborhood => params[:neighborhood], :event_type => h(event.event_type)) %>
 	    </span>
 	    <span class="summary">
 		<% if params[:upupdowndownleftrightleftrightbastart] %>
@@ -31,7 +31,10 @@
 			    <% if parent[0]["couchrest-type"] == "Place" %>
 				<%= link_to h(parent[0]["title"]), country_region_locality_place_path(country.id, region.id, locality.id, parent[0].id) %>
 			    <% else %>
-				<%= h(parent[0]["title"]) %>
+				<!--
+				    PARENT FOR <%= h(event.id) %> IS NOT A PLACE
+				    <%= parent.inspect %>
+				-->
 			    <% end %>
 			<% end %>
 		    </span>
