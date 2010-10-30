@@ -24,6 +24,7 @@ class EventsController < ApplicationController
 	    hood = Neighborhood.get(hood_id[0])
 	    @neighborhoods << [hood["title"], hood_id[0], hood_id[1]] unless hood.nil?
 	end
+	@neighborhoods.sort!
 	@event_types = Event.view("by_event_type", :reduce => true, :group => true, :group_level => 4, :startkey => nstartkey, :endkey => nendkey)["rows"]
 
 	if !params[:q].nil?
