@@ -95,7 +95,10 @@
 			    <% if params[:controller] == "places" %>
 				<li><%= link_to h(n.title), country_region_locality_places_path(@country, @region, @locality, :neighborhood => n.id, :fare => params[:fare]) %></li>
 			    <% elsif params[:controller] == "events" %>
-				<li><%= link_to h(n.title), country_region_locality_events_path(@country, @region, @locality, :neighborhood => n.id, :event_type => params[:event_type]) %></li>
+				<li>
+				    <%= link_to h(n[0]), country_region_locality_events_path(@country, @region, @locality, :neighborhood => n[1], :event_type => params[:event_type]) %>
+				    <span class="dim">(<%= h(n[2]) %>)</span>
+				</li>
 			    <% end %>
 			<% end %>
 		    </ul>
