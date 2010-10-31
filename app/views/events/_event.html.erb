@@ -19,9 +19,9 @@
 	    </span>
 	    <span class="summary">
 		<% if params[:upupdowndownleftrightleftrightbastart] %>
-		    <%= link_to h(truncate(event.title)), edit_country_region_locality_event_path(country.id, region.id, locality.id, event.id) %>
+		    <%= link_to h(event.title), edit_country_region_locality_event_path(country.id, region.id, locality.id, event.id) %>
 		<% else %>
-		    <%= h(truncate(event.title)) %>
+		    <%= h(event.title) %>
 		<% end %>
 	    </span>
 	    <span class="timeloc">
