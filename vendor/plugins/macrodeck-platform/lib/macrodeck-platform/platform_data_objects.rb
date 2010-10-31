@@ -92,6 +92,7 @@ module MacroDeck
 									var res = new Document();
 									res.add(doc.title, { \"boost\":2.0 });
 									res.add(doc.description, { \"boost\":1.5 });
+									res.add(doc.event_type);
 									res.add(new Date(), { \"field\":\"indexed_at\", \"store\":\"yes\" });
 									res.add(new Date(dtstart.toUTCString()), { \"field\":\"start_time\", \"store\":\"yes\" });
 									res.add(doc.path.join('/'), { \"field\":\"path\", \"store\":\"yes\", \"index\":\"not_analyzed\" });
@@ -145,6 +146,55 @@ module MacroDeck
 						  }",
 						  "reduce" => "_count"
 						},
+						# Same as above but end time.
+						{ "view_by" => "path_without_place_or_neighborhood_with_end_time",
+						  "map" =>
+						  "function(doc) {
+							if (doc['couchrest-type'] == 'Event' && doc['end_time']) {
+								if (doc.path.length == 6 || doc.path.length == 5 || doc.path.length == 4) {
+									var new_path = [doc.path[0], doc.path[1], doc.path[2], doc.end_time];
+									emit(new_path, 1);
+								}
+							} else if (doc['couchrest-type'] == 'Event' && !doc['end_time']) {
+								if (doc.path.length == 6 || doc.path.length == 5 || doc.path.length == 4) {
+									var new_path = [doc.path[0], doc.path[1], doc.path[2], doc.start_time];
+									emit(new_path, 1);
+								}
+							}
+						  }",
+						  "reduce" => "_count"
+						},
+						# Same as above, but leave the hood and add the title instead of the time.
+						{ "view_by" => "path_without_place_alpha",
+						  "map" =>
+						  "function(doc) {
+							if (doc['couchrest-type'] == 'Event') {
+								if (doc.path.length == 6 || doc.path.length == 5 || doc.path.length == 4) {
+									var new_path = [doc.path[0], doc.path[1], doc.path[2], doc.path[3], doc.title];
+									emit(new_path, 1);
+								}
+							}
+						  }",
+						  "reduce" => "_count"
+						},
+						# Same as above but with end time at the end.
+						{ "view_by" => "path_without_place_with_end_time",
+						  "map" =>
+						  "function(doc) {
+							if (doc['couchrest-type'] == 'Event' && doc['end_time']) {
+								if (doc.path.length == 6 || doc.path.length == 5 || doc.path.length == 4) {
+									var new_path = [doc.path[0], doc.path[1], doc.path[2], doc.path[3], doc['end_time']];
+									emit(new_path, 1);
+								}
+							} else if (doc['couchrest-type'] == 'Event' && !doc['end_time']) {
+								if (doc.path.length == 6 || doc.path.length == 5 || doc.path.length == 4) {
+									var new_path = [doc.path[0], doc.path[1],  doc.path[2], doc.path[3], doc['start_time']];
+									emit(new_path, 1);
+								}
+							}
+						  }",
+						  "reduce" => "_count"
+						},
 						# Take the full path but make the last item be the start time.
 						{ "view_by" => "path_and_start_time",
 						  "map" =>
@@ -153,6 +203,35 @@ module MacroDeck
 								var new_path = eval(doc.path.toSource());
 								new_path[new_path.length - 1] = doc.start_time;
 								emit(new_path, 1);
+							}
+						  }",
+						  "reduce" => "_count"
+						},
+						# Emits the event type just like tags are emitted.
+						{ "view_by" => "event_type",
+						  "map" =>
+						  "function(doc) {
+							if (doc['couchrest-type'] == 'Event' && doc['event_type']) {
+								for (i = 0; i <= doc.path.length; i++) {
+									var path_and_event_type = doc.path.slice(0, i);
+									path_and_event_type.push(doc['event_type']);
+									emit(path_and_event_type, 1);
+								}
+							}
+						  }",
+						  "reduce" => "_count"
+						},
+						# Same as above but also emits the document title for sorting alphabetically. (maybe we want to do it by start_time?)
+						{ "view_by" => "event_type_alpha",
+						  "map" =>
+						  "function(doc) {
+							if (doc['couchrest-type'] == 'Event' && doc['event_type']) {
+								for (i = 0; i <= doc.path.length; i++) {
+									var path_and_event_type = doc.path.slice(0, i);
+									path_and_event_type.push(doc['event_type']);
+									path_and_event_type.push(doc['title']);
+									emit(path_and_event_type, 1);
+								}
 							}
 						  }",
 						  "reduce" => "_count"
@@ -192,6 +271,7 @@ module MacroDeck
 									res.add(doc.title, { \"boost\":2.0 });
 									res.add(doc.description, { \"boost\":1.5 });
 									res.add(fares);
+									res.add(doc.address);
 									res.add(fares, { \"field\":\"fare\", \"store\":\"yes\" });
 									res.add(new Date(), { \"field\":\"indexed_at\", \"store\":\"yes\" });
 									res.add(doc.path.join('/'), { \"field\":\"path\", \"store\":\"yes\", \"index\":\"not_analyzed\" });
