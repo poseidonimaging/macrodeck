@@ -27,7 +27,7 @@
 	    <% end %>
 	</li>
     <% end %>
-    <% if @start_item > 0 %>
+    <% if params[:event_type].nil? && @start_item > 0 %>
 	<li class="alt small">
 	    <% link_to country_region_locality_events_path(@country.id, @region.id, @locality.id, :start_item => (@start_item - 10), :neighborhood => params[:neighborhood], :upupdowndownleftrightleftrightbastart => params[:upupdowndownleftrightleftrightbastart]) do %>
 		<span class="name">Previous Page</span>
@@ -36,7 +36,7 @@
 	</li>
     <% end %>
     <%= render :partial => "event", :collection => @events, :locals => { :view_mode => :compact, :country => @country, :region => @region, :locality => @locality, :place => @place } %>
-    <% if @events_count > (@start_item + 10) %>
+    <% if params[:event_type].nil? && @events_count > (@start_item + 10) %>
 	<li class="alt small">
 	    <% link_to country_region_locality_events_path(@country.id, @region.id, @locality.id, :start_item => (@start_item + 10), :neighborhood => params[:neighborhood], :upupdowndownleftrightleftrightbastart => params[:upupdowndownleftrightleftrightbastart]) do %>
 		<span class="name">Next Page</span>
