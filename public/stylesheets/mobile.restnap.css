@@ -21,18 +21,169 @@
 	-webkit-background-size: 57px;
 }
 .feed .fn, .feed .summary, .feed .name {
+	display: block;
 	color: #fff;
-	position: absolute;
 	font-size: 18px;
-	top: 25px;
-	left: 20px;
+	padding: 0 20px;
 }
 .feed .summary a { color: #fff; }
 .feed .comment, .feed .comment a { color: #7f7f7f; }
 .feed .comment {
+	display: block;
+	padding: 10px 20px 0 20px;
+}
+.feed .comment, .feed .price {
+	font-size: 14px;
+	color: #7f7f7f;
+	display: block;
+	width: 100%;
+	font-weight: bold;
+}
+.feed .adr, .feed .adr a, .feed .location, .feed .location a { color: #727E8A; }
+.feed .adr, .feed .timeloc {
+	display: block;
+	padding: 0 20px 10px 20px;
+	font-weight: bold;
+	font-size: 14px;
+}
+.feed .time {
+	color: #E7902B;
+}
+.feed ul {
+	margin: 0;
+}
+.feed li:nth-child(even) {
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#414041), color-stop(3%, rgba(45,45,45,0.2)), to(rgba(45,45,45,0.2)));
+}
+.feed li:nth-child(odd) {
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#414041), color-stop(3%, rgba(50,50,50,0.4)), to(rgba(50,50,50,0.4)));
+}
+.feed li.alt:nth-child(even) {
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#414041), color-stop(3%, rgba(0,0,0,0.5)), to(rgba(20,20,20,0.5)));
+}
+.feed li.alt:nth-child(odd) {
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#414041), color-stop(3%, rgba(0,0,0,0.3)), to(rgba(20,20,20,0.3)));
+}
+.feed li.alt a, .feed li.alt .name, .feed li.alt a .name { color: #E7902B !important; }
+.feed #content li.small { min-height: 38px; max-height: 38px; height: 38px; }
+.feed #content li.small .name,
+.feed #content li.small .fn,
+.feed #content li.small .summary {
+    position: relative;
+    top: 10px;
+    font-size: 15px;
+}
+.feed #content li.small .arrow { top: 12px; }
+.feed #content li {
+	list-style: none;
+	width: auto;
+	position: relative;
+	min-height: 75px;
+}
+.feed #content {
+	background: -webkit-gradient(radial, 50% -70, 0, 50% 0, 200, from(#444444), to(rgb(13, 13, 13)));
+	top: 16px;
+}
+.feed #content li a {
+	text-decoration: none;
+	width: 100% !important;
+	height: 100%;
+}
+.feed {
+	background-image: none!important;
+	background-color: black;
+}
+.feed span {
+	font-weight: bold;
+	font-size: 14px;
+}
+.feed #footer {
+	margin-top: 48px!important;
+}
+.feed #content {
+	margin-top: -29px!important;
+}
+
+/* filters */
+.filters {
+    display: block;
+    padding: 10px;
+    min-height: 20px !important;
+    max-height: 20px !important;
+    height: 20px !important;
+    background: rgba(0,0,0,0.5) !important;
+}
+.filters a {
+    padding: 3px 6% 3px 3px;
+    border: 1px solid #E7902B;
+    background: rgba(231,144,43,0.1) url("/images/cancel_item.png") no-repeat 94% 50%;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    color: #E7902B;
+    font-weight: bold;
+    font-size: 12px;
+}
+.filtericon {
+    display: inline-block;
+    vertical-align: middle;
+    width: 16px;
+    height: 14px;
+    background: transparent url("/images/icons/restnap/filter_indicator.png") no-repeat;
+}
+
+/* Actions */
+.actions	    { width: 100%; }
+.actions .action    { display: block; width: 25%; height: 42px; float: left; margin: 16px 0 0 0; }
+.actions a	    { display: block; height: 42px; }
+.actions a span	    { display: none; }
+.actions a.info	    { background: transparent url("/images/icons/restnap/light/info_small@2x.png") no-repeat center center; }
+.actions a.infochad { background: transparent url("/images/icons/restnap/light/clipboard_small@2x.png") no-repeat center center; }
+.actions a.tel	    { background: transparent url("/images/icons/restnap/light/phone_2_small@2x.png") no-repeat center center; }
+.actions a.map	    { background: transparent url("/images/icons/restnap/light/street_sign_small@2x.png") no-repeat center center; }
+.actions a.url	    { background: transparent url("/images/icons/restnap/light/chain_small@2x.png") no-repeat center center; }
+
+/* The info box */
+#info		    { color: #eee; font-size: 14px; font-weight: bold; padding: 25px 20px 0 20px; }
+
+/* Hide the sidebar */
+.desktop-sidebar    { display: none; }
+
+/* The macrodeck logo in the footer */
+#footer #macrodeck-logo		{ display: block; background: transparent url('/images/macrodeck_logo_color_small.png') no-repeat 0 0; height: 19px; width: 100px; margin: 3px auto; padding: 0; }
+#footer #macrodeck-logo span	{ display: none; }
+
+/* searchbox color... grayscale of default */
+.searchbox {
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#f3f3f3), color-stop(3%, #e3e3e3), color-stop(50%, #cecece), color-stop(51%, #c6c6c6), color-stop(97%, #bcbcbc), to(#969696));
+}
+.searchbox form {
+	-webkit-border-image: url('/images/iwebkit/searchfield_gray.png') 4 14 1 24;
+}
+
+/* not yet used */
+.feed .foursqtitle {
 	position: absolute;
-	top: 10px;
+	top: 165px;
 	left: 20px;
+	color: #7f7f7f;
+}
+.feed .tips {
+	position: relative;
+	color:white;
+	top: 5px;
+	left: 5px;
+}
+.feed .tipgiver {
+	color: #727E8A;
+}
+.feed .price {
+	position: absolute;
+	top: 29px;
+	right: 26px;
+	text-shadow: #eeeeee 0 1px 0;
+	text-align: right;
+	color: #3b3b3b;
 }
 .feed .number {
 	width: 23px;
@@ -85,156 +236,4 @@
 	height: 42px;
 	text-align: center;
 	line-height: 60px;
-}
-.feed .comment, .feed .price {
-	font-size: 14px;
-	color: #7f7f7f;
-	display: block;
-	width: 60%;
-	font-weight: bold;
-	white-space: nowrap;
-	text-overflow: ellipsis;
-	overflow: hidden;
-}
-.feed .foursqtitle {
-	position: absolute;
-	top: 165px;
-	left: 20px;
-	color: #7f7f7f;
-}
-.feed .tips {
-	position: relative;
-	color:white;
-	top: 5px;
-	left: 5px;
-}
-.feed .tipgiver {
-	color: #727E8A;
-}
-.feed .price {
-	position: absolute;
-	top: 29px;
-	right: 26px;
-	text-shadow: #eeeeee 0 1px 0;
-	text-align: right;
-	color: #3b3b3b;
-}
-.feed .adr, .feed .adr a, .feed .location, .feed .location a { color: #727E8A; }
-.feed .adr, .feed .timeloc {
-	left: 20px;
-	top: 46px;
-	position: absolute;
-	font-weight: bold;
-	font-size: 14px;
-}
-.feed .time {
-	color: #E7902B;
-}
-.feed ul {
-	margin: 0;
-}
-.feed li:nth-child(even) {
-	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#414041), color-stop(3%, rgba(45,45,45,0.2)), to(rgba(45,45,45,0.2)));
-}
-.feed li:nth-child(odd) {
-	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#414041), color-stop(3%, rgba(50,50,50,0.4)), to(rgba(50,50,50,0.4)));
-}
-.feed li.alt:nth-child(even) {
-	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#414041), color-stop(3%, rgba(0,0,0,0.5)), to(rgba(20,20,20,0.5)));
-}
-.feed li.alt:nth-child(odd) {
-	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#414041), color-stop(3%, rgba(0,0,0,0.3)), to(rgba(20,20,20,0.3)));
-}
-.feed li.alt a, .feed li.alt .name, .feed li.alt a .name { color: #E7902B !important; }
-.feed #content li.small { height: 38px; }
-.feed #content li.small .name,
-.feed #content li.small .fn,
-.feed #content li.small .summary {
-    top: 10px;
-    font-size: 15px;
-}
-.feed #content li.small .arrow { top: 12px; }
-.feed #content li {
-	list-style: none;
-	width: auto;
-	position: relative;
-	height: 75px;
-}
-.feed #content {
-	background: -webkit-gradient(radial, 50% -70, 0, 50% 0, 200, from(#444444), to(rgb(13, 13, 13)));
-	top: 16px;
-}
-.feed #content li a {
-	text-decoration: none;
-	width: 100% !important;
-	height: 100%;
-}
-.feed {
-	background-image: none!important;
-	background-color: black;
-}
-.feed span {
-	font-weight: bold;
-	font-size: 14px;
-}
-.feed #footer {
-	margin-top: 48px!important;
-}
-.feed #content {
-	margin-top: -29px!important;
-}
-
-/* filters */
-.filters {
-    display: block;
-    padding: 10px;
-    height: 20px !important;
-    background: rgba(0,0,0,0.5) !important;
-}
-.filters a {
-    padding: 3px 6% 3px 3px;
-    border: 1px solid #E7902B;
-    background: rgba(231,144,43,0.1) url("/images/cancel_item.png") no-repeat 94% 50%;
-    border-radius: 5px;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    color: #E7902B;
-    font-weight: bold;
-    font-size: 12px;
-}
-.filtericon {
-    display: inline-block;
-    vertical-align: middle;
-    width: 16px;
-    height: 14px;
-    background: transparent url("/images/icons/restnap/filter_indicator.png") no-repeat;
-}
-
-/* Actions */
-.actions	    { width: 100%; }
-.actions .action    { display: block; width: 25%; height: 42px; float: left; margin: 16px 0 0 0; }
-.actions a	    { display: block; height: 42px; }
-.actions a span	    { display: none; }
-.actions a.info	    { background: transparent url("/images/icons/restnap/light/info_small@2x.png") no-repeat center center; }
-.actions a.infochad { background: transparent url("/images/icons/restnap/light/clipboard_small@2x.png") no-repeat center center; }
-.actions a.tel	    { background: transparent url("/images/icons/restnap/light/phone_2_small@2x.png") no-repeat center center; }
-.actions a.map	    { background: transparent url("/images/icons/restnap/light/street_sign_small@2x.png") no-repeat center center; }
-.actions a.url	    { background: transparent url("/images/icons/restnap/light/chain_small@2x.png") no-repeat center center; }
-
-/* The info box */
-#info		    { color: #eee; font-size: 14px; font-weight: bold; padding: 25px 20px 0 20px; }
-
-/* Hide the sidebar */
-.desktop-sidebar    { display: none; }
-
-/* The macrodeck logo in the footer */
-#footer #macrodeck-logo		{ display: block; background: transparent url('/images/macrodeck_logo_color_small.png') no-repeat 0 0; height: 19px; width: 100px; margin: 3px auto; padding: 0; }
-#footer #macrodeck-logo span	{ display: none; }
-
-/* searchbox color... grayscale of default */
-.searchbox {
-	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#f3f3f3), color-stop(3%, #e3e3e3), color-stop(50%, #cecece), color-stop(51%, #c6c6c6), color-stop(97%, #bcbcbc), to(#969696));
-}
-.searchbox form {
-	-webkit-border-image: url('/images/iwebkit/searchfield_gray.png') 4 14 1 24;
 }
