@@ -22,6 +22,9 @@
 	    <% unless params[:neighborhood].nil? %>
 		<%= link_to h(Neighborhood.get(params[:neighborhood])["title"]), country_region_locality_events_path(@country.id, @region.id, @locality.id, :start_item => nil, :event_type => params[:event_type], :neighborhood => nil) %>
 	    <% end %>
+	    <% unless params[:event_type].nil? %>
+		<%= link_to h(params[:event_type]), country_region_locality_events_path(@country.id, @region.id, @locality.id, :start_item => nil, :event_type => nil, :neighborhood => params[:neighborhood]) %>
+	    <% end %>
 	</li>
     <% end %>
     <% if @start_item > 0 %>
