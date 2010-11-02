@@ -107,9 +107,23 @@
 		</span>
 	    </span>
 	</li>
-	<li class="actions">
-	    
-	</li>
+	<% unless @place.nil? %>
+	    <li class="actions">
+		<% if @place.phone_number.nil? %>
+		    <span class="action"><a href="tel:<%= h(@place.phone_number) %>" class="tel noeffect"><span><%= h(@place.phone_number) %></span></a></span>
+		<% end %>
+		<span class="action">
+		    <% link_to "http://maps.google.com/maps?t=m&q=#{@place.address}, #{@locality.title}, #{@region.abbreviation}, #{@country.abbreviation} (#{@place.title})", :class => "map noeffect", :target => "_blank" do %>
+			<span><%= h("#{@place.address}, #{@locality.title}, #{@region.abbreviation}, #{@country.abbreviation} (#{@place.title})") %></span>
+		    <% end %>
+		</span>
+		<span class="action">
+		    <% link_to country_region_locality_place_path(@country.id, @region.id, @locality.id, @place.id, :class => "calendar") do %>
+			<span>Calendar</span>
+		    <% end %>
+		</span>
+	    </li>
+	<% end %>
 	<li id="info">
 	    <%= event.description.nil? ? "<em>No description</em>" : h(event.description) %>
 	</li>
