@@ -137,6 +137,7 @@
 .actions .action    { display: block; width: 25%; height: 42px; float: left; margin: 16px 0 0 0; }
 .actions a	    { display: block; height: 42px; }
 .actions a span	    { display: none; }
+.actions a.calendar { background: transparent url("/images/icons/restnap/light/calendar_small@2x.png") no-repeat center center; }
 .actions a.info	    { background: transparent url("/images/icons/restnap/light/info_small@2x.png") no-repeat center center; }
 .actions a.infochad { background: transparent url("/images/icons/restnap/light/clipboard_small@2x.png") no-repeat center center; }
 .actions a.tel	    { background: transparent url("/images/icons/restnap/light/phone_2_small@2x.png") no-repeat center center; }
