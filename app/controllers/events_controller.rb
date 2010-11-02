@@ -82,6 +82,26 @@ class EventsController < ApplicationController
 	end
     end
 
+    # Shows an event.
+    def show
+        @page_title = ""
+	@page_title_long = "#{@locality.title} > #{@event.title}"
+	@back_button = [@locality.title, country_region_locality_events_path(params[:country_id], params[:region_id], params[:locality_id], :event_type => params[:event_type], :neighborhood => params[:neighborhood])]
+
+	nstartkey = @locality.path.dup.push(0)
+	nendkey = @locality.path.dup.push({})
+	hood_ids = Event.view("by_path", :reduce => true, :group => true, :group_level => 4, :startkey => nstartkey, :endkey => nendkey)["rows"].collect do |event|
+	    [event["key"][-1], event["value"]]
+	end
+	@neighborhoods = []
+	hood_ids.each do |hood_id|
+	    hood = Neighborhood.get(hood_id[0])
+	    @neighborhoods << [hood["title"], hood_id[0], hood_id[1]] unless hood.nil?
+	end
+	@neighborhoods.sort!
+	@event_types = Event.view("by_event_type", :reduce => true, :group => true, :group_level => 4, :startkey => nstartkey, :endkey => nendkey)["rows"]
+    end
+
     # Renders the HTML to create an event.
     def new
 	@desktop_override = true
