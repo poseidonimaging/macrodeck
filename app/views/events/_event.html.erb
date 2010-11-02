@@ -21,7 +21,7 @@
 		<% if params[:upupdowndownleftrightleftrightbastart] %>
 		    <%= link_to h(event.title), edit_country_region_locality_event_path(country.id, region.id, locality.id, event.id) %>
 		<% else %>
-		    <%= h(event.title) %>
+		    <%= link_to h(event.title), country_region_locality_event_path(country.id, region.id, locality.id, event.id) %>
 		<% end %>
 	    </span>
 	    <span class="timeloc">
@@ -62,66 +62,56 @@
 	-->
     <% end %>
 <% elsif viewmode == :full %>
-    <div class="vevent">
-	<div style="width: 75%; float: left;">
-	    <div>
-		<% content_module h(event.summary), { :box_size => 75, :altbox => true, :class_name => "summary", :text => true, :buttons => [["edit", "#"]] } do %>
-		    <% if event.description.empty? %>
-			<p class="nodescription">There is no description for this event. <%= link_to "Please add one.", "#" %></p>
-		    <% else %>
-		        <%= auto_link(simple_format(h(event.description), :class => "description"),
-			    :href_options => { :target => "_blank" }) %>
-		    <% end %>
-
-		    <dl>
-			<dt>Start Time</dt>
-			<dd>
-			    <abbr class="dtstart" title="<%= event.start_time.getlocal.strftime("%Y-%m-%d %H:%M:%S") %>">
-				    <%= event.start_time.strftime("%b %d, %Y") %>
-				    <%= event.start_time.strftime("%I:%M%p").downcase %>
-			    </abbr>
-			</dd>
-
-			<% if !event.no_end_time && !event.end_time.nil? %>
-			    <dt>End Time</dt>
-			    <dd>
-				<abbr class="dtend" title="<%= event.end_time.getlocal.strftime("%Y-%m-%d %H:%M:%S") %>">
-				    <%= event.end_time.strftime("%b %d, %Y") %>
-				    <%= event.end_time.strftime("%I:%M%p").downcase %>
-				</abbr>
-				<span class="approximation">(<%= distance_of_time_in_words(event.start_time.getlocal, event.end_time.getlocal, false) %> later)</span>
-			    </dd>
+    <%
+	start_time = Time.parse(event.start_time).getlocal
+	if event.end_time.nil?
+	    end_time = nil
+	else
+	    end_time = Time.parse(event.end_time).getlocal
+	end
+    %>
+    <ul class="vevent">
+        <li>
+	    <span class="comment">
+		<%= h(event.event_type) %>
+	    </span>
+	    <span class="summary">
+		<%= h(event.title) %>
+	    </span>
+	    <span class="timeloc">
+		<span class="location">
+		    <% parent = DataObject.view("by_path", :startkey => event.parent, :limit => 1, :reduce => false, :include_docs => true) %>
+		    <% if parent.length == 1 %>
+			<% if parent[0]["couchrest-type"] == "Place" %>
+			    <%= link_to h(parent[0]["title"]), country_region_locality_place_path(@country.id, @region.id, @locality.id, parent[0].id) %>
+			<% else %>
+			    <!--
+				PARENT FOR <%= h(event.id) %> IS NOT A PLACE
+				<%= parent.inspect %>
+			    -->
 			<% end %>
-		    </dl>
-		<% end %>
-	    </div>
-	    <% content_module "Wall", { :box_size => 75 } do %>
-		<p>Wall goes here</p>
-	    <% end %>
-	</div>
-	<div style="width: 25%; float: left;">
-	    <% content_module "Location", { :box_size => 25, :altbox => true, :text => true } do %>
-		<div class="location">
-		    <% if @place %>
-			<%= render :partial => "places/place", :object => @place %>
 		    <% end %>
-		</div>
-	    <% end %>
-	    <% content_module "Attendees", { :box_size => 25 } do %>
-		<p>Placeholder.</p>
-		<p>Placeholder.</p>
-		<p>Placeholder.</p>
-		<p>Placeholder.</p>
-		<p>Placeholder.</p>
-		<p>Placeholder.</p>
-		<p>Placeholder.</p>
-		<p>Placeholder.</p>
-		<p>Placeholder.</p>
-		<p>Placeholder.</p>
-		<p>Placeholder.</p>
-		<p>Placeholder.</p>
-		<p>Placeholder.</p>
-	    <% end %>
-	</div>
-    </div>
+		</span>
+		<span class="time">
+		    <% if start_time.day == Time.new.day || start_time.day == (Time.new - 4.hours).day %>
+			<%= content_tag :abbr, h(start_time.min == 0 ? start_time.strftime("%l%P") : start_time.strftime("%l:%M%P")), :class => "dtstart", :title => start_time.iso8601 %>
+		    <% elsif start_time < 1.week.from_now %>
+			<%= content_tag :abbr, h(start_time.min == 0 ? start_time.strftime("%a @ %l%P") : start_time.strftime("%a @ %l:%M%P")), :class => "dtstart", :title => start_time.iso8601 %>
+		    <% else %>
+			<%= content_tag :abbr, h(start_time.min == 0 ? start_time.strftime("%b %e @ %l%P") : start_time.strftime("%b %e @ %l:%M%P")), :class => "dtstart", :title => start_time.iso8601 %>
+		    <% end %>
+		    <% unless end_time.nil? %>
+			&ndash;
+			<%= content_tag :abbr, h(end_time.min == 0 ? end_time.strftime("%l%P") : end_time.strftime("%l:%M%P")), :class => "dtend", :title => end_time.iso8601 %>
+		    <% end %>
+		</span>
+	    </span>
+	</li>
+	<li class="actions">
+	    
+	</li>
+	<li id="info">
+	    <%= event.description.nil? ? "<em>No description</em>" : h(event.description) %>
+	</li>
+    </ul>
 <% end %>
