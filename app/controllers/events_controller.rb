@@ -87,6 +87,12 @@ class EventsController < ApplicationController
         @page_title = ""
 	@page_title_long = "#{@locality.title} > #{@event.title}"
 	@back_button = [@locality.title, country_region_locality_events_path(params[:country_id], params[:region_id], params[:locality_id], :event_type => params[:event_type], :neighborhood => params[:neighborhood])]
+	place_query = Place.view("by_path", :reduce => false, :startkey => @event.parent, :limit => 1)
+	if place_query.nil? || place_query.length != 1
+	    @place = nil
+	else
+	    @place = place_query[0]
+	end
 
 	nstartkey = @locality.path.dup.push(0)
 	nendkey = @locality.path.dup.push({})
