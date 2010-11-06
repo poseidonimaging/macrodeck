@@ -156,7 +156,7 @@
 #footer #macrodeck-logo span	{ display: none; }
 
 /* The restnap logo in the footer */
-#footer #restlessnapkin-logo		{ display: block; background: transparent url('/images/restless_napkin_feed_logo.png') no-repeat 0 0; height: 27px; width: 100px; margin: 3px auto; padding: 0; }
+#footer #restlessnapkin-logo		{ display: block; background: transparent url('/images/restless_napkin_feed_logo.png') no-repeat 0 0; height: 43px; width: 160px; margin: 3px auto; padding: 0; }
 #footer #restlessnapkin-logo span	{ display: none; }
 
 /* searchbox color... grayscale of default */
