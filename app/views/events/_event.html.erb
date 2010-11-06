@@ -117,11 +117,6 @@
 			<span><%= h("#{@place.address}, #{@locality.title}, #{@region.abbreviation}, #{@country.abbreviation} (#{@place.title})") %></span>
 		    <% end %>
 		</span>
-		<span class="action">
-		    <% link_to country_region_locality_place_path(@country.id, @region.id, @locality.id, @place.id), :class => "calendar", :title => "Calendar" do %>
-			<span>Calendar</span>
-		    <% end %>
-		</span>
 		<% unless event.bitly_hash.nil? %>
 		    <span class="action">
 			<%= mail_to "", "<span>Share</span>", :subject => "Check out this happening", :body => "#{event.title} at #{@place.title} - http://rnapk.in/#{event.bitly_hash}", :class => "share" %>
