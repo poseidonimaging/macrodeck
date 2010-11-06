@@ -8,10 +8,16 @@ namespace :macrodeck do
     namespace :bitly do
 	desc "Creates bitly links for events"
 	task :events => :environment do
-	    events = Event.all
+	    Bitly.use_api_version_3
+	    bitly = Bitly.new(BITLY_USERNAME, BITLY_API_KEY)
+
+	    events = Event.view("by_missing_bitly_hash", :reduce => false, :include_docs => true)
 	    events.each do |event|
 		longurl = "http://www.restlessnapkin.com/countries/#{event.path[0]}/regions/#{event.path[1]}/localities/#{event.path[2]}/events/#{event.path[-1]}"
-		puts longurl
+		bitly_url = bitly.shorten(longurl)
+		event.bitly_hash = bitly_url.user_hash
+		event.save
+		puts "#{longurl} -> http://rnapk.in/#{bitly_url.user_hash}"
 	    end
 	end
     end
