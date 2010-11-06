@@ -43,11 +43,6 @@
 	    </span>
 	</li>
 	<li class="actions">
-	    <% unless place.description.nil? %>
-		<span class="action">
-		    <a href="#info" class="info noeffect"><span>Information</span></a>
-		</span>
-	    <% end %>
 	    <% unless place.phone_number.nil? %>
 		<span class="action"><a href="tel:<%= h(place.phone_number) %>" class="tel noeffect"><span><%= h(place.phone_number) %></span></a></span>
 	    <% end %>
@@ -69,6 +64,11 @@
 		    <span><%= h("#{place.address}, #{locality.title}, #{region.abbreviation}, #{country.abbreviation} (#{place.title})") %></span>
 		<% end %>
 	    </span>
+	    <% unless place.bitly_hash.nil? %>
+		<span class="action">
+		    <%= mail_to "", "<span>Share</span>", :subject => "Check out this place", :body => "#{place.title} at #{place.address}, #{locality.title}, #{region.abbreviation}, #{country.abbreviation} - http://rnapk.in/#{place.bitly_hash}", :class => "share" %>
+		</span>
+	    <% end %>
 	</li>
 	<li id="info" style="display: none;">
 	    <%=h place.description %>
