@@ -124,7 +124,7 @@
 		</span>
 		<% unless event.bitly_hash.nil? %>
 		    <span class="action">
-			<%= mail_to "", "<span>Share</span>", :subject => "Check out this happening", :body => "#{h(event.title)} at #{@place.title} - http://rnapk.in/#{event.bitly_hash}", :class => "share" %>
+			<%= mail_to "", "<span>Share</span>", :subject => "Check out this happening", :body => "#{event.title} at #{@place.title} - http://rnapk.in/#{event.bitly_hash}", :class => "share" %>
 		    </span>
 		<% end %>
 	    </li>
