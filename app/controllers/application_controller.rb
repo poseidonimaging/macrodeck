@@ -51,7 +51,7 @@ class ApplicationController < ActionController::Base
     end
 
     # Handle search processing.
-    def query_processing(query)
+    def process_query(query)
 	syns = [
 	    [ "beer", "domestics", "pitchers", "buckets", "pints", "cans", "longnecks", "lone star", "high life", "bud", "miller", "bottles", "imports", "drafts" ],
 	    [ "margaritas", "margs", "ritas", "marg", "rita" ],
