@@ -50,8 +50,33 @@ class ApplicationController < ActionController::Base
 	end
     end
 
-    # Make a query AND
-    def query_to_boolean_and(query)
-	return query.downcase.gsub(" and ", " ").gsub(" or ", " ").gsub(" ", " AND ")
+    # Handle search processing.
+    def process_query(query)
+	syns = [
+	    [ "beer", "domestics", "pitchers", "buckets", "pints", "cans", "longnecks", "lone star", "high life", "bud", "miller", "bottles", "imports", "drafts" ],
+	    [ "margaritas", "margs", "ritas", "marg", "rita" ],
+	    [ "wells", "vodka", "whisky", "tequila", "you call it", "you call its", "liquor", "whiskey", "crown" ],
+	    [ "appetizers", "apps", "appz", "tapas" ],
+	    [ "shots", "bombs", "yeah babys" ]
+	]
+
+	result_query = []
+	split_query = query.split(" ")
+	split_query.each do |term|
+	    # if term is AND or OR, skip
+	    if term.downcase != "and" && term.downcase != "or"
+		syns.each do |syn|
+		    # The thought is only one synonym list would contain the term...
+		    if syn.include? term.downcase
+			# term is in the list of synonyms.
+			term = '( "' + syn.join('" OR "') + '" )'
+		    end
+		end
+
+		result_query << term
+	    end
+	end
+
+	return result_query.join(" AND ")
     end
 end

@@ -31,7 +31,8 @@ class EventsController < ApplicationController
 
 	if !params[:q].nil?
 	    @page_title_log = "#{@locality.title} > Happenings > Search"
-	    query = "path:#{@locality.path.join("/")}/* AND (#{query_to_boolean_and(params[:q])})"
+	    query = "path:#{@locality.path.join("/")}/* AND ( #{process_query(params[:q])} )"
+	    RAILS_DEFAULT_LOGGER.info "Querying: #{query}"
 	    event_search = Event.search("common_fields", query, :limit => 10, :skip => @start_item, :sort => "/start_time<date>")
 	    @events = event_search["rows"]
 	    @events_count = event_search["rows"].length == 0 ? 0 : event_search["total_rows"]
