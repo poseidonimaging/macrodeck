@@ -33,7 +33,7 @@ class EventsController < ApplicationController
 	    @page_title_log = "#{@locality.title} > Happenings > Search"
 	    query = "path:#{@locality.path.join("/")}/* AND ( #{process_query(params[:q])} )"
 	    RAILS_DEFAULT_LOGGER.info "Querying: #{query}"
-	    event_search = Event.search("common_fields", query, :limit => 10, :skip => @start_item, :sort => "/start_time<date>")
+	    event_search = Event.search("common_fields", query, :sort => "/start_time<date>")
 	    @events = event_search["rows"]
 	    @events_count = event_search["rows"].length == 0 ? 0 : event_search["total_rows"]
 	    @back_button = [@locality.title, country_region_locality_events_path(@country.id, @region.id, @locality.id)]
