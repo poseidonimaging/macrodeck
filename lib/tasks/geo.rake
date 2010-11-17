@@ -8,8 +8,7 @@ namespace :macrodeck do
     task :clear_geocode => :environment do
 	places = Place.all
 	places.each do |p|
-	    p.geo = nil
-	    p.save
+	    p.update_attributes "geo" => nil
 	end
     end
 
