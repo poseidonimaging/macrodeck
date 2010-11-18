@@ -27,6 +27,7 @@ namespace :macrodeck do
 	    if georesult.lat && georesult.lng
 		puts "--- Geocoded #{address} to #{georesult.lat}, #{georesult.lng}"
 		p.geo = [georesult.lat, georesult.lng]
+		p.updated_by = "_system/geocode"
 		p.save
 	    else
 		puts "!!! Could not geocode #{address}."
