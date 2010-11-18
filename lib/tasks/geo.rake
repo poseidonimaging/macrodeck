@@ -26,7 +26,7 @@ namespace :macrodeck do
 	    georesult = Geokit::Geocoders::YahooGeocoder.geocode address
 	    if georesult.lat && georesult.lng
 		puts "--- Geocoded #{address} to #{georesult.lat}, #{georesult.lng}"
-		p.geo = { "type" => "Point", "coordinates" => [georesult.lat, georesult.lng] }
+		p.geo = [georesult.lat, georesult.lng]
 		p.save
 	    else
 		puts "!!! Could not geocode #{address}."
