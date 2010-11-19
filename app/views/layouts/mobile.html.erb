@@ -31,6 +31,8 @@
 	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
 	<script type="text/javascript"> google.load("jquery", "1.4.2"); </script>
 	<%= javascript_include_tag "mobile" %>
+	<%= javascript_include_tag "jquery.geolocation" %>
+	
 	<title>
 	    <% if (@page_title.nil? || @page_title.blank?) && (@page_title_long.nil? || @page_title_long.blank?) %>
 		RestlessNapkin
