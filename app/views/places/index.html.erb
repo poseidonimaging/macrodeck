@@ -12,6 +12,20 @@
 <% end %>
 
 <% @start_item = 0 if @start_item.nil? %>
+<% if params[:fare].nil? && params[:neighborhood].nil? && params[:q].nil? && params[:geo].nil? && params[:nogeo].nil? %>
+    <script type="text/javascript">
+	//<![CDATA[
+	    jQuery.geolocation.find(function(location) {
+		var latlng = location.latitude + "," + location.longitude;
+		window.location = window.location + "?geo=" + latlng;
+	    },
+	    // error function
+	    function() {
+		window.location = window.location + "?nogeo=true";
+	    })
+	//]]>
+    </script>
+<% end %>
 
 <ul>
     <% if !params[:fare].nil? || !params[:neighborhood].nil? || !params[:q].nil? %>
