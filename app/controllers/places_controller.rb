@@ -5,6 +5,7 @@ class PlacesController < ApplicationController
     before_filter :find_region
     before_filter :find_locality
     before_filter :find_place
+    before_filter :process_geo
 
     # List places
     def index
@@ -113,5 +114,15 @@ class PlacesController < ApplicationController
 	# Finds the place associated with the request.
 	def find_place
 	    @place = Place.get(params[:id]) unless params[:id].nil?
+	end
+
+	# Figures out the bbox and such from the params[:geo]
+	def process_geo
+	    unless params[:geo].nil?
+		@lat = params[:geo].split(",")[0].to_f
+		@lng = params[:geo].split(",")[1].to_f
+
+		@bbox = get_bbox(@lat, @lng, 1.0)
+	    end
 	end
 end
