@@ -50,6 +50,27 @@ class ApplicationController < ActionController::Base
 	end
     end
 
+    # Converts degrees to radians.
+    def degrees_to_radians(degrees)
+	return degrees / (360 / (2 * Math::PI))
+    end
+
+    # Converts from radians to degrees
+    def radians_to_degrees(radians)
+	return radians * (360 / (2 * Math::PI))
+    end
+
+    # Determine the bounding box
+    def get_bbox(lat, lng, radius)
+	earth_radius = 3963.1676
+	x1 = lat - radians_to_degrees(radius / earth_radius)
+	x2 = lat + radians_to_degrees(radius / earth_radius)
+	y1 = lng - radians_to_degrees((radius / earth_radius) / Math::cos(degrees_to_radians(lat)) )
+	y2 = lng + radians_to_degrees((radius / earth_radius) / Math::cos(degrees_to_radians(lat)) )
+
+	return [x1, y1, x2, y2]
+    end
+
     # Handle search processing.
     def process_query(query)
 	syns = [
