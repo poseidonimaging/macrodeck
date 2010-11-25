@@ -23,12 +23,16 @@ class PlacesController < ApplicationController
 	@fares = Place.view("by_fare", :reduce => true, :group => true, :group_level => 4, :startkey => nstartkey, :endkey => nendkey)["rows"]
 
 	if !params[:q].nil?
-	    @page_title_log = "#{@locality.title} > Places > Search"
+	    @page_title_long = "#{@locality.title} > Places > Search"
 	    query = "path:#{@locality.path.join("/")}/* AND ( #{process_query(params[:q])} )"
 	    RAILS_DEFAULT_LOGGER.info "Querying: #{query}"
 	    place_search = Place.search("common_fields", query, :limit => 10, :skip => @start_item)
 	    @places = place_search["rows"]
 	    @places_count = place_search["rows"].length == 0 ? 0 : place_search["total_rows"]
+	elsif !params[:geo].nil?
+		@page_title_log = "#{@locality.title} > Places > Geolocation"
+		@places = Place.spatial_search("geocode", @bbox)
+		@places_count = @places.length
 	elsif params[:fare].nil? && params[:neighborhood].nil?
 	    startkey = @locality.path.dup.push(0)
 	    endkey = @locality.path.dup.push({})
