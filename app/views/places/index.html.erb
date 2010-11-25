@@ -1,4 +1,4 @@
-<% if params[:q].nil? %>
+<% if params[:q].nil? && params[:geo].nil? %>
     <% content_for :before_content do %>
 	<div class="searchbox">
 		<% form_tag country_region_locality_places_path(@country, @region, @locality), :method => :get do %>
@@ -12,7 +12,7 @@
 <% end %>
 
 <% @start_item = 0 if @start_item.nil? %>
-<% if params[:fare].nil? && params[:neighborhood].nil? && params[:q].nil? && params[:geo].nil? && params[:nogeo].nil? %>
+<% if params[:fare].nil? && params[:neighborhood].nil? && params[:start_item].nil? && params[:q].nil? && params[:geo].nil? && params[:nogeo].nil? %>
     <script type="text/javascript">
 	//<![CDATA[
 	    jQuery.geolocation.find(function(location) {
@@ -28,8 +28,11 @@
 <% end %>
 
 <ul>
-    <% if !params[:fare].nil? || !params[:neighborhood].nil? || !params[:q].nil? %>
+    <% if !params[:fare].nil? || !params[:neighborhood].nil? || !params[:q].nil? || !params[:geo].nil? %>
 	<li class="filters">
+		<% unless params[:geo].nil? %>
+			<%= link_to "Geolocation", country_region_locality_places_path(@country.id, @region.id, @locality.id, :start_item => nil, :fare => nil, :neighborhood => nil, :geo => nil, :nogeo => "true") %>
+		<% end %>
 	    <% unless params[:fare].nil? %>
 		<%= link_to h(params[:fare]), country_region_locality_places_path(@country.id, @region.id, @locality.id, :start_item => params[:start_item], :fare => nil, :neighborhood => params[:neighborhood]) %>
 	    <% end %>
@@ -41,7 +44,7 @@
 	    <% end %>
 	</li>
     <% end %>
-    <% if @start_item > 0 %>
+    <% if @start_item > 0 && params[:geo].nil? %>
 	<li class="alt small">
 	    <% link_to country_region_locality_places_path(@country.id, @region.id, @locality.id, :start_item => (@start_item - 10), :fare => params[:fare], :neighborhood => params[:neighborhood], :q => params[:q]) do %>
 		<span class="name">Previous Page</span>
@@ -50,7 +53,7 @@
 	</li>
     <% end %>
     <%= render :partial => "place", :collection => @places, :locals => { :view_mode => :compact, :country => @country, :region => @region, :locality => @locality } %>
-    <% if @places_count > (@start_item + 10) %>
+    <% if @places_count > (@start_item + 10) && params[:geo].nil? %>
 	<li class="alt small">
 	    <% link_to country_region_locality_places_path(@country.id, @region.id, @locality.id, :start_item => (@start_item + 10), :fare => params[:fare], :neighborhood => params[:neighborhood], :q => params[:q]) do %>
 		<span class="name">Next Page</span>
