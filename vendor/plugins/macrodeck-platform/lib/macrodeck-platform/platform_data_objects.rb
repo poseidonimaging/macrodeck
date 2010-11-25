@@ -260,7 +260,7 @@ module MacroDeck
 						["postal_code", "String", false],
 						["phone_number", "String", false],
 						["url", "String", false],
-						["geo", ["Float"], false], # [lat,lng]
+						["geo", ["Float"], false], 
 						["fare", ["String"], false],
 						["features", ["String"], false],
 						["parking", "String", false],
@@ -291,6 +291,18 @@ module MacroDeck
 							  }"
 							}
 						]
+					],
+					"spatial" => [
+						["geocode", "function(doc) {
+								if (doc['couchrest-type'] == 'Place') {
+									if (doc['geo'] && doc['geo'].length == 2) {
+										log('geo on ' + doc['_id'] + ' = ' + doc['geo'][0] + ',' + doc['geo'][1] );
+										emit({ type: \"Point\", coordinates: [ doc['geo'][0], doc['geo'][1] ] }, doc['_id']);
+									} else {
+										log('no geo on ' + doc['_id']);
+									}
+								}
+							    }"]
 					],
 					"validations" => [
 						["validates_list_items_in_list", "features",
@@ -497,7 +509,7 @@ module MacroDeck
 						{ "view_by" => "missing_geo",
 						  "map" =>
 						  "function(doc) {
-							if (doc['couchrest-type'] == 'Place' && (!doc.geo || doc.geo.length != 2)) {
+							if (doc['couchrest-type'] == 'Place' && (!doc['geo'] || doc['geo'].length != 2) ) {
 								emit(doc['_id'], 1);
 							}
 						  }",
@@ -537,14 +549,24 @@ module MacroDeck
 
 					db = CouchRest.database!(MacroDeck::Platform.database_name)
 					# Get the design doc.
-					if definition["fulltext"]
+					if definition["fulltext"] || definition["spatial"]
 						doc = db.get("_design/#{definition["object_type"]}")
 						if doc
 							doc["fulltext"] ||= {}
-							definition["fulltext"].each do |ft|
-								ftdef = ft[1]
-								ftdef["index"] = MacroDeck::Platform.process_includes(ftdef["index"])
-								doc["fulltext"][ft[0]] = ftdef
+							doc["spatial"] ||= {}
+							if definition["fulltext"]
+								definition["fulltext"].each do |ft|
+									ftdef = ft[1]
+									ftdef["index"] = MacroDeck::Platform.process_includes(ftdef["index"])
+									doc["fulltext"][ft[0]] = ftdef
+								end
+							end
+							if definition["spatial"]
+								definition["spatial"].each do |sp|
+									spdef = sp[1]
+									spdef = MacroDeck::Platform.process_includes(spdef)
+									doc["spatial"][sp[0]] = spdef
+								end
 							end
 						end
 						doc.save
