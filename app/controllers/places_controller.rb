@@ -81,7 +81,7 @@ class PlacesController < ApplicationController
 	else
 	    @page_title = ""
 	    @page_title_long = "#{@locality.title} > #{@place.title}"
-	    @back_button = [@locality.title, country_region_locality_places_path(params[:country_id], params[:region_id], params[:locality_id], :fare => params[:fare], :neighborhood => params[:neighborhood])]
+	    @back_button = [@locality.title, country_region_locality_places_path(params[:country_id], params[:region_id], params[:locality_id], :fare => params[:fare], :neighborhood => params[:neighborhood], :q => params[:q])]
 
 	    nstartkey = @locality.path.dup.push(0)
 	    nendkey = @locality.path.dup.push({})
