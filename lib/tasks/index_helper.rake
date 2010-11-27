@@ -13,6 +13,7 @@ namespace :macrodeck do
 		e['place']['geo'] = place.geo
 		e['place']['fare'] = place.fare
 		e['place']['features'] = place.features
+		e.updated_by = "_system/event_place_info"
 
 		if e.valid?
 		    e.save
