@@ -6,13 +6,13 @@ namespace :macrodeck do
 	events.each do |e|
 	    place = Place.get(e.path[-2])
 	    unless place.nil?
-		e['_place'] ||= {}
-		e['_place']['title'] = place.title
-		e['_place']['description'] = place.description
-		e['_place']['address'] = place.address
-		e['_place']['geo'] = place.geo
-		e['_place']['fare'] = place.fare
-		e['_place']['features'] = place.features
+		e['place'] ||= {}
+		e['place']['title'] = place.title
+		e['place']['description'] = place.description
+		e['place']['address'] = place.address
+		e['place']['geo'] = place.geo
+		e['place']['fare'] = place.fare
+		e['place']['features'] = place.features
 
 		if e.valid?
 		    e.save
