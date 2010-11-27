@@ -13,7 +13,7 @@ class PlacesController < ApplicationController
 	@page_title = @locality.title
 	@page_title_long = "#{@locality.title} Places"
 	@button = ["Happenings", country_region_locality_events_path(@country.id, @region.id, @locality.id)]
-	if @start_item > 0
+	if @start_item > 0 || !params[:q].nil?
 	    @back_button = [@locality.title, country_region_locality_places_path(params[:country_id], params[:region_id], params[:id])]
 	end
 
@@ -30,9 +30,9 @@ class PlacesController < ApplicationController
 	    @places = place_search["rows"]
 	    @places_count = place_search["rows"].length == 0 ? 0 : place_search["total_rows"]
 	elsif !params[:geo].nil?
-		@page_title_log = "#{@locality.title} > Places > Geolocation"
-		@places = Place.spatial_search("geocode", @bbox)
-		@places_count = @places.length
+	    @page_title_log = "#{@locality.title} > Places > Geolocation"
+	    @places = Place.spatial_search("geocode", @bbox)
+	    @places_count = @places.length
 	elsif params[:fare].nil? && params[:neighborhood].nil?
 	    startkey = @locality.path.dup.push(0)
 	    endkey = @locality.path.dup.push({})
