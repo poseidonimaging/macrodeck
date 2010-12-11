@@ -80,7 +80,8 @@ module MacroDeck
 						["end_time", "Time", false],
 						["recurrence", "String", false],
 						["event_type", "String", false],
-						["bitly_hash", "String", false]
+						["bitly_hash", "String", false],
+						["place", "Hash", false]
 					],
 					"fulltext" => [
 						["common_fields",
@@ -93,6 +94,11 @@ module MacroDeck
 									res.add(doc.title, { \"boost\":2.0 });
 									res.add(doc.description, { \"boost\":1.5 });
 									res.add(doc.event_type);
+									if (doc.place) {
+										res.add(doc.place.title);
+										res.add(doc.place.address);
+
+									}
 									res.add(new Date(), { \"field\":\"indexed_at\", \"store\":\"yes\" });
 									res.add(new Date(dtstart.getTime()), { \"field\":\"start_time\", \"store\":\"yes\" });
 									res.add(doc.path.join('/'), { \"field\":\"path\", \"store\":\"yes\", \"index\":\"not_analyzed\" });
@@ -236,11 +242,21 @@ module MacroDeck
 						  }",
 						  "reduce" => "_count"
 						},
-						# Return places that have a blank bitly_hash.
+						# Return events that have a blank bitly_hash.
 						{ "view_by" => "missing_bitly_hash",
 						  "map" =>
 						  "function(doc) {
 							if (doc['couchrest-type'] == 'Event' && !doc['bitly_hash']) {
+								emit(doc['_id'], 1);
+							}
+						  }",
+						  "reduce" => "_count"
+						},
+						# Return events that have a blank place.
+						{ "view_by" => "missing_place_info",
+						  "map" =>
+						  "function(doc) {
+							if (doc['couchrest-type'] == 'Event' && !doc['place']) {
 								emit(doc['_id'], 1);
 							}
 						  }",
