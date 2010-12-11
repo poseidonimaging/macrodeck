@@ -31,7 +31,7 @@ class PlacesController < ApplicationController
 	    @places_count = place_search["rows"].length == 0 ? 0 : place_search["total_rows"]
 	elsif !params[:geo].nil?
 	    @page_title_log = "#{@locality.title} > Places > Geolocation"
-	    @places = Place.spatial_search("geocode", @bbox)
+	    @places = Place.proximity_search("geocode", @lat, @lng, 1.0)
 	    @places_count = @places.length
 	elsif params[:fare].nil? && params[:neighborhood].nil?
 	    startkey = @locality.path.dup.push(0)
@@ -120,13 +120,11 @@ class PlacesController < ApplicationController
 	    @place = Place.get(params[:id]) unless params[:id].nil?
 	end
 
-	# Figures out the bbox and such from the params[:geo]
+	# Gets the lat/lng from the supplied geo.
 	def process_geo
 	    unless params[:geo].nil?
 		@lat = params[:geo].split(",")[0].to_f
 		@lng = params[:geo].split(",")[1].to_f
-
-		@bbox = get_bbox(@lat, @lng, 1.0)
 	    end
 	end
 end
