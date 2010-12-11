@@ -52,7 +52,15 @@
 	    <% end %>
 	</li>
     <% end %>
-    <%= render :partial => "place", :collection => @places, :locals => { :view_mode => :compact, :country => @country, :region => @region, :locality => @locality } %>
+    <% if params[:geo].nil? %>
+	<%= render :partial => "place", :collection => @places, :locals => { :view_mode => :compact, :country => @country, :region => @region, :locality => @locality } %>
+    <% else %>
+	<!-- geo requires iterating the array since it's sorted by distance away -->
+	<% @places.each do |place_and_distance| %>
+	    <!-- <%= place_and_distance.inspect %> -->
+	    <%= render :partial => "place", :object => place_and_distance[1], :locals => { :view_mode => :compact, :country => @country, :region => @region, :locality => @locality } %>
+	<% end %>
+    <% end %>
     <% if @places_count > (@start_item + 10) && params[:geo].nil? %>
 	<li class="alt small">
 	    <% link_to country_region_locality_places_path(@country.id, @region.id, @locality.id, :start_item => (@start_item + 10), :fare => params[:fare], :neighborhood => params[:neighborhood], :q => params[:q]) do %>
