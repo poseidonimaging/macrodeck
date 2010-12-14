@@ -89,7 +89,7 @@
 
 	<div id="desktop-sidebar-left" class="desktop-sidebar">
 	    <a href="/" class="logo"><span>RestlessNapkin</span></a>
-	    <% if @country && @region && @locality && @neighborhoods %>
+	    <% if @country && @region && @locality && @neighborhoods && !params[:q] %>
 		<div>
 		    <h1>Neighborhoods</h1>
 		    <ul>
@@ -114,7 +114,7 @@
 	    <% end %>
 	</div>
 	<div id="desktop-sidebar-right" class="desktop-sidebar">
-	    <% if @country && @region && @locality && @fares %>
+	    <% if @country && @region && @locality && @fares && !params[:q] %>
 		<div>
 		    <h1>Fares</h1>
 		    <ul>
@@ -131,7 +131,7 @@
 		    </ul>
 		</div>
 	    <% end %>
-	    <% if @country && @region && @locality && @event_types %>
+	    <% if @country && @region && @locality && @event_types && !params[:q] %>
 		<div>
 		    <h1>Happening Types</h1>
 		    <ul>
