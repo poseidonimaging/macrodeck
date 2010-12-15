@@ -14,7 +14,7 @@
 <% @start_item = 0 if @start_item.nil? %>
 
 <ul>
-    <% if !params[:q].nil? || !params[:neighborhood].nil? %>
+    <% if !params[:q].nil? || !params[:neighborhood].nil? || !params[:event_type].nil? %>
 	<li class="filters">
 	    <% unless params[:q].nil? %>
 		<%= link_to h(params[:q]), country_region_locality_events_path(@country.id, @region.id, @locality.id, :start_item => nil, :q => nil) %>
