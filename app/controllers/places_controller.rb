@@ -70,7 +70,13 @@ class PlacesController < ApplicationController
 	end
 
 	respond_to do |format|
-	    format.html
+	    format.html do
+		if request.xhr?
+		    render :layout => false
+		else
+		    render
+		end
+	    end
 	end
     end
 
