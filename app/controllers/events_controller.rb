@@ -80,7 +80,13 @@ class EventsController < ApplicationController
 	    end
 	end
 	respond_to do |format|
-	    format.html # index.html.erb
+	    format.html do
+		if request.xhr?
+		    render :layout => false
+		else
+		    render
+		end
+	    end
 	end
     end
 
