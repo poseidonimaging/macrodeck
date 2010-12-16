@@ -1,57 +1,57 @@
-<% if params[:q].nil? && params[:geo].nil? %>
-    <% content_for :before_content do %>
-	<div class="searchbox">
-		<% form_tag country_region_locality_places_path(@country, @region, @locality), :method => :get do %>
-			<fieldset>
-			    <input id="q" name="q" placeholder="search" type="text" />
-			    <input id="submit" type="hidden" />
-			</fieldset>
-		<% end %>
-	</div>
-    <% end %>
-<% end %>
-
 <% @start_item = 0 if @start_item.nil? %>
-<% if params[:fare].nil? && params[:neighborhood].nil? && params[:start_item].nil? && params[:q].nil? && params[:geo].nil? && params[:nogeo].nil? %>
-    <script type="text/javascript">
-	//<![CDATA[
-	    jQuery.geolocation.find(function(location) {
-		var latlng = location.latitude + "," + location.longitude;
-		window.location = window.location + "?geo=" + latlng;
-	    },
-	    // error function
-	    function() {
-		window.location = window.location + "?nogeo=true";
-	    })
-	//]]>
-    </script>
+
+<% unless request.xhr? %>
+    <% if params[:q].nil? && params[:geo].nil? %>
+	<% content_for :before_content do %>
+	    <div class="searchbox">
+		    <% form_tag country_region_locality_places_path(@country, @region, @locality), :method => :get do %>
+			    <fieldset>
+				<input id="q" name="q" placeholder="search" type="text" />
+				<input id="submit" type="hidden" />
+			    </fieldset>
+		    <% end %>
+	    </div>
+	<% end %>
+    <% end %>
 <% end %>
 
-<ul>
-    <% if !params[:fare].nil? || !params[:neighborhood].nil? || !params[:q].nil? || !params[:geo].nil? %>
-	<li class="filters">
-		<% unless params[:geo].nil? %>
-			<%= link_to "Geolocation", country_region_locality_places_path(@country.id, @region.id, @locality.id, :start_item => nil, :fare => nil, :neighborhood => nil, :geo => nil, :nogeo => "true") %>
+<% unless request.xhr? %>
+    <% if params[:fare].nil? && params[:neighborhood].nil? && params[:start_item].nil? && params[:q].nil? && params[:geo].nil? && params[:nogeo].nil? %>
+	<script type="text/javascript">
+	    //<![CDATA[
+		jQuery.geolocation.find(function(location) {
+		    var latlng = location.latitude + "," + location.longitude;
+		    window.location = window.location + "?geo=" + latlng;
+		},
+		// error function
+		function() {
+		    window.location = window.location + "?nogeo=true";
+		})
+	    //]]>
+	</script>
+    <% end %>
+<% end %>
+
+<% unless request.xhr? %><ul><% end %>
+    <% unless request.xhr? %>
+	<% if !params[:fare].nil? || !params[:neighborhood].nil? || !params[:q].nil? || !params[:geo].nil? %>
+	    <li class="filters">
+		    <% unless params[:geo].nil? %>
+			    <%= link_to "Geolocation", country_region_locality_places_path(@country.id, @region.id, @locality.id, :start_item => nil, :fare => nil, :neighborhood => nil, :geo => nil, :nogeo => "true") %>
+		    <% end %>
+		<% unless params[:fare].nil? %>
+		    <%= link_to h(params[:fare]), country_region_locality_places_path(@country.id, @region.id, @locality.id, :start_item => params[:start_item], :fare => nil, :neighborhood => params[:neighborhood]) %>
 		<% end %>
-	    <% unless params[:fare].nil? %>
-		<%= link_to h(params[:fare]), country_region_locality_places_path(@country.id, @region.id, @locality.id, :start_item => params[:start_item], :fare => nil, :neighborhood => params[:neighborhood]) %>
-	    <% end %>
-	    <% unless params[:neighborhood].nil? %>
-		<%= link_to h(Neighborhood.get(params[:neighborhood])["title"]), country_region_locality_places_path(@country.id, @region.id, @locality.id, :start_item => params[:start_item], :fare => params[:fare], :neighborhood => nil) %>
-	    <% end %>
-	    <% unless params[:q].nil? %>
-		<%= link_to h(params[:q]), country_region_locality_places_path(@country.id, @region.id, @locality.id, :start_item => nil, :q => nil) %>
-	    <% end %>
-	</li>
+		<% unless params[:neighborhood].nil? %>
+		    <%= link_to h(Neighborhood.get(params[:neighborhood])["title"]), country_region_locality_places_path(@country.id, @region.id, @locality.id, :start_item => params[:start_item], :fare => params[:fare], :neighborhood => nil) %>
+		<% end %>
+		<% unless params[:q].nil? %>
+		    <%= link_to h(params[:q]), country_region_locality_places_path(@country.id, @region.id, @locality.id, :start_item => nil, :q => nil) %>
+		<% end %>
+	    </li>
+	<% end %>
     <% end %>
-    <% if @start_item > 0 && params[:geo].nil? %>
-	<li class="alt small">
-	    <% link_to country_region_locality_places_path(@country.id, @region.id, @locality.id, :start_item => (@start_item - 10), :fare => params[:fare], :neighborhood => params[:neighborhood], :q => params[:q]) do %>
-		<span class="name">Previous Page</span>
-		<span class="arrow"></span>
-	    <% end %>
-	</li>
-    <% end %>
+
     <% if params[:geo].nil? %>
 	<%= render :partial => "place", :collection => @places, :locals => { :view_mode => :compact, :country => @country, :region => @region, :locality => @locality } %>
     <% else %>
@@ -61,12 +61,13 @@
 	    <%= render :partial => "place", :object => place_and_distance[1], :locals => { :view_mode => :compact, :country => @country, :region => @region, :locality => @locality } %>
 	<% end %>
     <% end %>
+
     <% if @places_count > (@start_item + 10) && params[:geo].nil? %>
-	<li class="alt small">
-	    <% link_to country_region_locality_places_path(@country.id, @region.id, @locality.id, :start_item => (@start_item + 10), :fare => params[:fare], :neighborhood => params[:neighborhood], :q => params[:q]) do %>
+	<li class="alt small nextbtn">
+	    <% link_to country_region_locality_places_path(@country.id, @region.id, @locality.id, :start_item => (@start_item + 10), :fare => params[:fare], :neighborhood => params[:neighborhood], :q => params[:q]), :class => "noeffect" do %>
 		<span class="name">Next Page</span>
 		<span class="arrow"></span>
 	    <% end %>
 	</li>
     <% end %>
-</ul>
+<% unless request.xhr? %></ul><% end %>
