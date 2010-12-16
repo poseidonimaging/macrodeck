@@ -1,19 +1,21 @@
-<% if params[:q].nil? %>
-    <% content_for :before_content do %>
-	<div class="searchbox">
-		<% form_tag country_region_locality_events_path(@country, @region, @locality), :method => :get do %>
-			<fieldset>
-			    <input id="q" name="q" placeholder="search" type="text" />
-			    <input id="submit" type="hidden" />
-			</fieldset>
-		<% end %>
-	</div>
+<% @start_item = 0 if @start_item.nil? %>
+
+<% unless request.xhr? %>
+    <% if params[:q].nil? %>
+	<% content_for :before_content do %>
+	    <div class="searchbox">
+		    <% form_tag country_region_locality_events_path(@country, @region, @locality), :method => :get do %>
+			    <fieldset>
+				<input id="q" name="q" placeholder="search" type="text" />
+				<input id="submit" type="hidden" />
+			    </fieldset>
+		    <% end %>
+	    </div>
+	<% end %>
     <% end %>
 <% end %>
 
-<% @start_item = 0 if @start_item.nil? %>
-
-<ul>
+<% unless request.xhr? %><ul><% end %>
     <% if !params[:q].nil? || !params[:neighborhood].nil? || !params[:event_type].nil? %>
 	<li class="filters">
 	    <% unless params[:q].nil? %>
@@ -27,21 +29,13 @@
 	    <% end %>
 	</li>
     <% end %>
-    <% if params[:event_type].nil? && @start_item > 0 %>
-	<li class="alt small">
-	    <% link_to country_region_locality_events_path(@country.id, @region.id, @locality.id, :start_item => (@start_item - 10), :neighborhood => params[:neighborhood], :upupdowndownleftrightleftrightbastart => params[:upupdowndownleftrightleftrightbastart]) do %>
-		<span class="name">Previous Page</span>
-		<span class="arrow"></span>
-	    <% end %>
-	</li>
-    <% end %>
     <%= render :partial => "event", :collection => @events, :locals => { :view_mode => :compact, :country => @country, :region => @region, :locality => @locality, :place => @place } %>
     <% if params[:event_type].nil? && params[:q].nil? && @events_count > (@start_item + 10) %>
-	<li class="alt small">
-	    <% link_to country_region_locality_events_path(@country.id, @region.id, @locality.id, :start_item => (@start_item + 10), :neighborhood => params[:neighborhood], :upupdowndownleftrightleftrightbastart => params[:upupdowndownleftrightleftrightbastart]) do %>
+	<li class="alt small nextbtn">
+	    <% link_to country_region_locality_events_path(@country.id, @region.id, @locality.id, :start_item => (@start_item + 10), :neighborhood => params[:neighborhood], :upupdowndownleftrightleftrightbastart => params[:upupdowndownleftrightleftrightbastart]), :class => "noeffect" do %>
 		<span class="name">Next Page</span>
 		<span class="arrow"></span>
 	    <% end %>
 	</li>
     <% end %>
-</ul>
+<% unless request.xhr? %></ul><% end %>
