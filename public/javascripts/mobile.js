@@ -20,7 +20,7 @@ jQuery(document).ready(function() {
     }
 
     // Hook the next button if possible
-    jQuery(".nextbtn a").click(function(e) {
+    jQuery(".nextbtn a").live('click', function(e) {
 	e.preventDefault();
 
 	jQuery.get(jQuery(".nextbtn a").attr("href"), function(data) {
