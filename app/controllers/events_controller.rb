@@ -14,6 +14,7 @@ class EventsController < ApplicationController
 	@page_title_long = "#{@locality.title} Happenings"
 	@button = ["Places", country_region_locality_places_path(@country.id, @region.id, @locality.id)]
 
+	earliest_event_begin_time = Time.new - 4.hours
 	earliest_event_end_time = Time.new
 	
 	nstartkey = @locality.path.dup.push(0)
@@ -40,10 +41,10 @@ class EventsController < ApplicationController
 	elsif params[:event_type].nil? && !params[:neighborhood].nil?
 	    @page_title_long = "#{@locality.title} Happenings > #{Neighborhood.get(params[:neighborhood]).title}"
 
-	    startkey = @locality.path.dup.push(params[:neighborhood]).push(earliest_event_end_time.getutc.iso8601)
+	    startkey = @locality.path.dup.push(params[:neighborhood]).push(earliest_event_begin_time.getutc.iso8601)
 	    endkey = @locality.path.dup.push(params[:neighborhood]).push({})
-	    @events = Event.view("by_path_without_place_with_end_time", :reduce => false, :startkey => startkey, :endkey => endkey, :limit => 10, :skip => @start_item)
-	    count_query = Event.view("by_path_without_place_with_end_time", :reduce => true, :group => true, :group_level => 4, :startkey => startkey, :endkey => endkey)
+	    @events = Event.view("by_path_without_place_with_time", :reduce => false, :startkey => startkey, :endkey => endkey, :limit => 10, :skip => @start_item)
+	    count_query = Event.view("by_path_without_place_with_time", :reduce => true, :group => true, :group_level => 4, :startkey => startkey, :endkey => endkey)
 	    @events_count = count_query["rows"].length == 0 ? 0 : count_query["rows"][0]["value"]
 	    @back_button = [@locality.title, country_region_locality_events_path(params[:country_id], params[:region_id], params[:id])]
 	elsif !params[:event_type].nil? && params[:neighborhood].nil?
@@ -65,11 +66,11 @@ class EventsController < ApplicationController
 	    @events_count = count_query["rows"].length == 0 ? 0 : count_query["rows"][0]["value"]
 	    @back_button = [@locality.title, country_region_locality_events_path(params[:country_id], params[:region_id], params[:id])]
 	elsif params[:event_type].nil? && params[:neighborhood].nil?
-	    startkey = @locality.path.dup.push(earliest_event_end_time.getutc.iso8601)
+	    startkey = @locality.path.dup.push(earliest_event_begin_time.getutc.iso8601)
 	    endkey = @locality.path.dup.push({})
-	    @events = Event.view("by_path_without_place_or_neighborhood_with_end_time", :reduce => false, :startkey => startkey, :endkey => endkey, :limit => 10, :skip => @start_item)
+	    @events = Event.view("by_path_without_place_or_neighborhood_with_time", :reduce => false, :startkey => startkey, :endkey => endkey, :limit => 10, :skip => @start_item)
 	    begin
-		@events_count = Event.view("by_path_without_place_or_neighborhood_with_end_time", :reduce => true, :startkey => startkey, :endkey => endkey)["rows"][0]["value"]
+		@events_count = Event.view("by_path_without_place_or_neighborhood_with_time", :reduce => true, :startkey => startkey, :endkey => endkey)["rows"][0]["value"]
 	    rescue
 		@events_count = 0
 	    end
@@ -79,7 +80,13 @@ class EventsController < ApplicationController
 	    end
 	end
 	respond_to do |format|
-	    format.html # index.html.erb
+	    format.html do
+		if request.xhr?
+		    render :layout => false
+		else
+		    render
+		end
+	    end
 	end
     end
 

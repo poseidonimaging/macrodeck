@@ -18,4 +18,15 @@ jQuery(document).ready(function() {
 	   return false;
 	});
     }
+
+    // Hook the next button if possible
+    jQuery(".nextbtn a").live('click', function(e) {
+	e.preventDefault();
+
+	jQuery.get(jQuery(".nextbtn a").attr("href"), function(data) {
+	    jQuery(".nextbtn").replaceWith(data);
+	});
+
+	return false;
+    });
 });

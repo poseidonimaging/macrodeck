@@ -31,6 +31,8 @@
 	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
 	<script type="text/javascript"> google.load("jquery", "1.4.2"); </script>
 	<%= javascript_include_tag "mobile" %>
+	<%= javascript_include_tag "jquery.geolocation" %>
+	
 	<title>
 	    <% if (@page_title.nil? || @page_title.blank?) && (@page_title_long.nil? || @page_title_long.blank?) %>
 		RestlessNapkin
@@ -81,13 +83,13 @@
 	</div>
 
 	<div id="footer">
-	    RestlessNapkin Nov 2010 "What's Happening?"
+	    RestlessNapkin Dec 2010 "There You Are"
 	    <a id="restlessnapkin-logo" href="http://www.restlessnapkin.com/"><span>RestlessNapkin</span></a>
 	</div>
 
 	<div id="desktop-sidebar-left" class="desktop-sidebar">
 	    <a href="/" class="logo"><span>RestlessNapkin</span></a>
-	    <% if @country && @region && @locality && @neighborhoods %>
+	    <% if @country && @region && @locality && @neighborhoods && !params[:q] %>
 		<div>
 		    <h1>Neighborhoods</h1>
 		    <ul>
@@ -112,7 +114,7 @@
 	    <% end %>
 	</div>
 	<div id="desktop-sidebar-right" class="desktop-sidebar">
-	    <% if @country && @region && @locality && @fares %>
+	    <% if @country && @region && @locality && @fares && !params[:q] %>
 		<div>
 		    <h1>Fares</h1>
 		    <ul>
@@ -129,7 +131,7 @@
 		    </ul>
 		</div>
 	    <% end %>
-	    <% if @country && @region && @locality && @event_types %>
+	    <% if @country && @region && @locality && @event_types && !params[:q] %>
 		<div>
 		    <h1>Happening Types</h1>
 		    <ul>

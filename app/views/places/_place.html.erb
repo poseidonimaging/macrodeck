@@ -14,7 +14,7 @@
 	    <%= fare_links.join(", ") %>
 	    <span class="filtericon"></span>
 	</span>
-	<% link_to(country_region_locality_place_path(country.id, region.id, locality.id, place.id, :fare => params[:fare], :neighborhood => params[:neighborhood])) do %>
+	<% link_to(country_region_locality_place_path(country.id, region.id, locality.id, place.id, :fare => params[:fare], :neighborhood => params[:neighborhood], :q => params[:q])) do %>
 	    <span class="fn org">
 		<%= h(place.title) %>
 	    </span>

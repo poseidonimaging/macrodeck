@@ -5,6 +5,7 @@ class PlacesController < ApplicationController
     before_filter :find_region
     before_filter :find_locality
     before_filter :find_place
+    before_filter :process_geo
 
     # List places
     def index
@@ -12,7 +13,7 @@ class PlacesController < ApplicationController
 	@page_title = @locality.title
 	@page_title_long = "#{@locality.title} Places"
 	@button = ["Happenings", country_region_locality_events_path(@country.id, @region.id, @locality.id)]
-	if @start_item > 0
+	if @start_item > 0 || !params[:q].nil?
 	    @back_button = [@locality.title, country_region_locality_places_path(params[:country_id], params[:region_id], params[:id])]
 	end
 
@@ -22,12 +23,16 @@ class PlacesController < ApplicationController
 	@fares = Place.view("by_fare", :reduce => true, :group => true, :group_level => 4, :startkey => nstartkey, :endkey => nendkey)["rows"]
 
 	if !params[:q].nil?
-	    @page_title_log = "#{@locality.title} > Places > Search"
+	    @page_title_long = "#{@locality.title} > Places > Search"
 	    query = "path:#{@locality.path.join("/")}/* AND ( #{process_query(params[:q])} )"
 	    RAILS_DEFAULT_LOGGER.info "Querying: #{query}"
 	    place_search = Place.search("common_fields", query, :limit => 10, :skip => @start_item)
 	    @places = place_search["rows"]
 	    @places_count = place_search["rows"].length == 0 ? 0 : place_search["total_rows"]
+	elsif !params[:geo].nil?
+	    @page_title_log = "#{@locality.title} > Places > Geolocation"
+	    @places = Place.proximity_search("geocode", @lat, @lng, 1.0)
+	    @places_count = @places.length
 	elsif params[:fare].nil? && params[:neighborhood].nil?
 	    startkey = @locality.path.dup.push(0)
 	    endkey = @locality.path.dup.push({})
@@ -65,7 +70,13 @@ class PlacesController < ApplicationController
 	end
 
 	respond_to do |format|
-	    format.html
+	    format.html do
+		if request.xhr?
+		    render :layout => false
+		else
+		    render
+		end
+	    end
 	end
     end
 
@@ -76,7 +87,7 @@ class PlacesController < ApplicationController
 	else
 	    @page_title = ""
 	    @page_title_long = "#{@locality.title} > #{@place.title}"
-	    @back_button = [@locality.title, country_region_locality_places_path(params[:country_id], params[:region_id], params[:locality_id], :fare => params[:fare], :neighborhood => params[:neighborhood])]
+	    @back_button = [@locality.title, country_region_locality_places_path(params[:country_id], params[:region_id], params[:locality_id], :fare => params[:fare], :neighborhood => params[:neighborhood], :q => params[:q])]
 
 	    nstartkey = @locality.path.dup.push(0)
 	    nendkey = @locality.path.dup.push({})
@@ -113,5 +124,13 @@ class PlacesController < ApplicationController
 	# Finds the place associated with the request.
 	def find_place
 	    @place = Place.get(params[:id]) unless params[:id].nil?
+	end
+
+	# Gets the lat/lng from the supplied geo.
+	def process_geo
+	    unless params[:geo].nil?
+		@lat = params[:geo].split(",")[0].to_f
+		@lng = params[:geo].split(",")[1].to_f
+	    end
 	end
 end

@@ -80,7 +80,8 @@ module MacroDeck
 						["end_time", "Time", false],
 						["recurrence", "String", false],
 						["event_type", "String", false],
-						["bitly_hash", "String", false]
+						["bitly_hash", "String", false],
+						["place", "Hash", false]
 					],
 					"fulltext" => [
 						["common_fields",
@@ -93,6 +94,11 @@ module MacroDeck
 									res.add(doc.title, { \"boost\":2.0 });
 									res.add(doc.description, { \"boost\":1.5 });
 									res.add(doc.event_type);
+									if (doc.place) {
+										res.add(doc.place.title);
+										res.add(doc.place.address);
+
+									}
 									res.add(new Date(), { \"field\":\"indexed_at\", \"store\":\"yes\" });
 									res.add(new Date(dtstart.getTime()), { \"field\":\"start_time\", \"store\":\"yes\" });
 									res.add(doc.path.join('/'), { \"field\":\"path\", \"store\":\"yes\", \"index\":\"not_analyzed\" });
@@ -137,9 +143,14 @@ module MacroDeck
 						{ "view_by" => "path_without_place_or_neighborhood_with_time",
 						  "map" =>
 						  "function(doc) {
-							if (doc['couchrest-type'] == 'Event' && doc['start_time']) {
+							if (doc['couchrest-type'] == 'Event' && doc['start_time'] && !doc['end_time']) {
 								if (doc.path.length == 6 || doc.path.length == 5 || doc.path.length == 4) {
 									var new_path = [doc.path[0], doc.path[1], doc.path[2], doc.start_time];
+									emit(new_path, 1);
+								}
+							} else if (doc['couchrest-type'] == 'Event' && doc['start_time'] && doc['end_time']) {
+								if (doc.path.length == 6 || doc.path.length == 5 || doc.path.length == 4) {
+									var new_path = [doc.path[0], doc.path[1], doc.path[2], doc.start_time, doc.end_time];
 									emit(new_path, 1);
 								}
 							}
@@ -171,6 +182,24 @@ module MacroDeck
 							if (doc['couchrest-type'] == 'Event') {
 								if (doc.path.length == 6 || doc.path.length == 5 || doc.path.length == 4) {
 									var new_path = [doc.path[0], doc.path[1], doc.path[2], doc.path[3], doc.title];
+									emit(new_path, 1);
+								}
+							}
+						  }",
+						  "reduce" => "_count"
+						},
+						# Same as above but with the time at the end (start and end, or just start)
+						{ "view_by" => "path_without_place_with_time",
+						  "map" =>
+						  "function(doc) {
+							if (doc['couchrest-type'] == 'Event' && doc['start_time'] && !doc['end_time']) {
+								if (doc.path.length == 6 || doc.path.length == 5 || doc.path.length == 4) {
+									var new_path = [doc.path[0], doc.path[1], doc.path[2], doc.path[3], doc['start_time']];
+									emit(new_path, 1);
+								}
+							} else if (doc['couchrest-type'] == 'Event' && doc['start_time'] && doc['end_time']) {
+								if (doc.path.length == 6 || doc.path.length == 5 || doc.path.length == 4) {
+									var new_path = [doc.path[0], doc.path[1], doc.path[2], doc.path[3], doc['start_time'], doc['end_time']];
 									emit(new_path, 1);
 								}
 							}
@@ -230,17 +259,45 @@ module MacroDeck
 									var path_and_event_type = doc.path.slice(0, i);
 									path_and_event_type.push(doc['event_type']);
 									path_and_event_type.push(doc['title']);
+
+									// FIXME: Implement this better
+									if (doc['event_type'] == 'Food and Drink Special') {
+										var key1 = path_and_event_type.slice(0); // dup the array
+										var key2 = path_and_event_type.slice(0); // dup the array
+										key1[key1.length - 2] = 'Food Special';
+										key2[key2.length - 2] = 'Drink Special';
+										emit(key1, 1);
+										emit(key2, 1);
+									} else if (doc['event_type'] == 'Drink Special and Entertainment') {
+										var key1 = path_and_event_type.slice(0); // dup the array
+										var key2 = path_and_event_type.slice(0); // dup the array
+										key1[key1.length - 2] = 'Entertainment';
+										key2[key2.length - 2] = 'Drink Special';
+										emit(key1, 1);
+										emit(key2, 1);
+									}
+
 									emit(path_and_event_type, 1);
 								}
 							}
 						  }",
 						  "reduce" => "_count"
 						},
-						# Return places that have a blank bitly_hash.
+						# Return events that have a blank bitly_hash.
 						{ "view_by" => "missing_bitly_hash",
 						  "map" =>
 						  "function(doc) {
 							if (doc['couchrest-type'] == 'Event' && !doc['bitly_hash']) {
+								emit(doc['_id'], 1);
+							}
+						  }",
+						  "reduce" => "_count"
+						},
+						# Return events that have a blank place.
+						{ "view_by" => "missing_place_info",
+						  "map" =>
+						  "function(doc) {
+							if (doc['couchrest-type'] == 'Event' && !doc['place']) {
 								emit(doc['_id'], 1);
 							}
 						  }",
@@ -260,7 +317,7 @@ module MacroDeck
 						["postal_code", "String", false],
 						["phone_number", "String", false],
 						["url", "String", false],
-						["geo", ["Float"], false], # [lat,lng]
+						["geo", ["Float"], false], 
 						["fare", ["String"], false],
 						["features", ["String"], false],
 						["parking", "String", false],
@@ -291,6 +348,18 @@ module MacroDeck
 							  }"
 							}
 						]
+					],
+					"spatial" => [
+						["geocode", "function(doc) {
+								if (doc['couchrest-type'] == 'Place') {
+									if (doc['geo'] && doc['geo'].length == 2) {
+										log('geo on ' + doc['_id'] + ' = ' + doc['geo'][0] + ',' + doc['geo'][1] );
+										emit({ type: \"Point\", coordinates: [ doc['geo'][0], doc['geo'][1] ] }, doc['_id']);
+									} else {
+										log('no geo on ' + doc['_id']);
+									}
+								}
+							    }"]
 					],
 					"validations" => [
 						["validates_list_items_in_list", "features",
@@ -497,7 +566,7 @@ module MacroDeck
 						{ "view_by" => "missing_geo",
 						  "map" =>
 						  "function(doc) {
-							if (doc['couchrest-type'] == 'Place' && (!doc.geo || doc.geo.length != 2)) {
+							if (doc['couchrest-type'] == 'Place' && (!doc['geo'] || doc['geo'].length != 2) ) {
 								emit(doc['_id'], 1);
 							}
 						  }",
@@ -537,14 +606,24 @@ module MacroDeck
 
 					db = CouchRest.database!(MacroDeck::Platform.database_name)
 					# Get the design doc.
-					if definition["fulltext"]
+					if definition["fulltext"] || definition["spatial"]
 						doc = db.get("_design/#{definition["object_type"]}")
 						if doc
 							doc["fulltext"] ||= {}
-							definition["fulltext"].each do |ft|
-								ftdef = ft[1]
-								ftdef["index"] = MacroDeck::Platform.process_includes(ftdef["index"])
-								doc["fulltext"][ft[0]] = ftdef
+							doc["spatial"] ||= {}
+							if definition["fulltext"]
+								definition["fulltext"].each do |ft|
+									ftdef = ft[1]
+									ftdef["index"] = MacroDeck::Platform.process_includes(ftdef["index"])
+									doc["fulltext"][ft[0]] = ftdef
+								end
+							end
+							if definition["spatial"]
+								definition["spatial"].each do |sp|
+									spdef = sp[1]
+									spdef = MacroDeck::Platform.process_includes(spdef)
+									doc["spatial"][sp[0]] = spdef
+								end
 							end
 						end
 						doc.save

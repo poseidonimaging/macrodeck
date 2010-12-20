@@ -119,7 +119,11 @@
 		</span>
 		<% unless event.bitly_hash.nil? %>
 		    <span class="action">
-			<%= mail_to "", "<span>Share</span>", :subject => "Check out this happening", :body => "#{event.title} at #{@place.title} - http://rnapk.in/#{event.bitly_hash}", :class => "share" %>
+			<% if end_time.nil? %>
+			    <%= mail_to "", "<span>Share</span>", :subject => "Check out this happening", :body => "#{event.title} at #{@place.title} on #{start_time.min == 0 ? start_time.strftime("%b %e at %l%P") : start_time.strftime("%b %e at %l:%M%P")} - http://rnapk.in/#{event.bitly_hash}", :class => "share" %>
+			<% else %>
+			    <%= mail_to "", "<span>Share</span>", :subject => "Check out this happening", :body => "#{event.title} at #{@place.title} on #{start_time.min == 0 ? start_time.strftime("%b %e at %l%P") : start_time.strftime("%b %e at %l:%M%P")} until #{end_time.min == 0 ? end_time.strftime("%l%P") : end_time.strftime("%l:%M%P")} - http://rnapk.in/#{event.bitly_hash}", :class => "share" %>
+			<% end %>
 		    </span>
 		<% end %>
 	    </li>
