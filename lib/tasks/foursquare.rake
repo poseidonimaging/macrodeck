@@ -1,0 +1,93 @@
+gem "foursquare"
+require "foursquare2"
+
+FSQ_CLIENT_ID	    = "OYKYCGLQROAYWN4WYURTJVCNBVNRNY2VONHJG3QLRMBCZ3DE"
+FSQ_CLIENT_SECRET   = "O4JHI3SHNKHO4IRISUIFVJFFFFKB3XYOM2EBETZQA2INDJOP"
+FSQ_REDIRECT_URI    = "http://intranet.ignition-project.com:3000/"
+
+POSTAL_SUFFIXES = [ "aly", "anx", "arc", "ave",
+		    "byu", "bch", "bnd", "blf", "blfs", "btm", "blvd", "br", "brg", "brk", "brks", "bg", "bgs", "byp",
+		    "cp", "cyn", "cpe", "cswy", "ctr", "ctrs", "cir", "cirs", "clf", "clfs", "clb", "cmn", "cmns", "cor", "cors", "crse", "ct", "cts", "cv", "cvs", "crk", "cres", "crst", "xing", "xrd", "xrds", "curv",
+		    "dl", "dm", "dv", "dr", "drs",
+		    "est", "ests", "expy", "ext", "exts",
+		    "fall", "fls", "fry", "fld", "flds", "flt", "flts", "frd", "frds", "frst", "frg", "frgs", "frk", "frks", "ft", "fwy",
+		    "gdn", "gdns", "gtwy", "gln", "glns", "grn", "grns", "grv", "grvs",
+		    "hbr", "hbrs", "hvn", "hts", "hwy", "hl", "hls", "holw",
+		    "inlt", "is", "iss", "isle",
+		    "jct", "jcts",
+		    "ky", "kys", "knl", "knls",
+		    "lk", "lks", "land", "lndg", "ln", "lgt", "lgts", "lf", "lck", "lcks", "ldg", "loop",
+		    "mall", "mnr", "mnrs", "mdw", "mdws", "mews", "ml", "mls", "msn", "mtwy", "mt", "mtn", "mtns",
+		    "nck",
+		    "orch", "oval", "opas",
+		    "park", "pkwy", "pass", "psge", "path", "pike", "pne", "pnes", "pl", "pln", "plns", "plz", "pt", "pts", "prt", "prts", "pr",
+		    "radl", "ramp", "rnch", "rpd", "rpds", "rst", "rdg", "rdgs", "riv", "rd", "rds", "rte", "row", "rue", "run",
+		    "shl", "shls", "shr", "shrs", "skwy", "spg", "spgs", "spur", "sq", "sqs", "sta", "stra", "strm", "st", "sts", "smt",
+		    "ter", "trwy", "trce", "trak", "trfy", "trl", "trlr", "trlr", "tunl", "tpke",
+		    "upas", "un", "uns",
+		    "vly", "vlys", "via", "vw", "vws", "vlg", "vlgs", "vl", "vis",
+		    "walk", "wall", "way", "ways", "wl", "wls"
+		  ]
+
+namespace :macrodeck do
+    namespace :foursquare do
+	desc "Clears venue IDs"
+	task :clear_venue_ids => :environment do
+	    places = Place.all
+	    places.each do |p|
+		p.update_attributes "foursquare_venue_id" => nil
+	    end
+	end
+
+	desc "Goes through places and sets their Foursquare venue IDs"
+	task :venue_ids => :environment do
+	    # Doing this anonymously means we don't need to redirect or get any tokens.
+	    oauth = Foursquare2::OAuth2.new(FSQ_CLIENT_ID, FSQ_CLIENT_SECRET, FSQ_REDIRECT_URI)
+	    fsq = Foursquare2::Base.new(oauth)
+
+	    places = Place.all
+	    places.each do |p|
+		if p.geo && p.foursquare_venue_id.nil?
+		    result = fsq.venues_search(:ll => p.geo.join(","), :query => p.title, :limit => 10)
+		    if result["groups"] && result["groups"].length > 0 && result["groups"][0]["name"] == "Matching Places"
+			result["groups"][0]["items"].each do |fsq_place|
+			    if fsq_place["location"] && fsq_place["location"]["address"]
+				# clean up the addresses by removing all non-alphanumeric characters and postal abbreviations.
+				place_address = p.address.dup
+				fsq_address = fsq_place["location"]["address"].dup
+
+				place_address.gsub!(/[^ A-Za-z0-9]/, "")
+				fsq_address.gsub!(/[^ A-Za-z0-9]/, "")
+
+				place_address = place_address.split(" ")
+				fsq_address = fsq_address.split(" ")
+
+				place_address.collect! do |p_addrpart|
+				    if POSTAL_SUFFIXES.include?(p_addrpart.downcase)
+					nil
+				    else
+					p_addrpart
+				    end
+				end
+
+				fsq_address.collect! do |fsq_addrpart|
+				    if POSTAL_SUFFIXES.include?(fsq_addrpart.downcase)
+					nil
+				    else
+					fsq_addrpart
+				    end
+				end
+
+				if place_address.compact.join(" ") == fsq_address.compact.join(" ")
+				    puts "[#{p.id}] #{p.title} 4sq venueid = #{fsq_place["id"]}"
+				    p.foursquare_venue_id = fsq_place["id"]
+				    p.save
+				end
+			    end
+			end
+		    end
+		end
+	    end
+	end
+    end
+end
