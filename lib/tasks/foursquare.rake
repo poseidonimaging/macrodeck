@@ -42,12 +42,15 @@ namespace :macrodeck do
 	desc "Goes through places and sets their Foursquare venue IDs"
 	task :venue_ids => :environment do
 	    # Doing this anonymously means we don't need to redirect or get any tokens.
+	    puts "Initializing OAuth..."
 	    oauth = Foursquare2::OAuth2.new(FSQ_CLIENT_ID, FSQ_CLIENT_SECRET, FSQ_REDIRECT_URI)
+	    puts "Initializing Foursquare2..."
 	    fsq = Foursquare2::Base.new(oauth)
 
-	    places = Place.all
+	    places = Place.view("by_missing_foursquare_venue_id", :reduce => false, :include_docs => true)
 	    places.each do |p|
 		if p.geo && p.foursquare_venue_id.nil?
+		    puts "Looking up #{p.title} on Foursquare..."
 		    result = fsq.venues_search(:ll => p.geo.join(","), :query => p.title, :limit => 10)
 		    if result["groups"] && result["groups"].length > 0 && result["groups"][0]["name"] == "Matching Places"
 			result["groups"][0]["items"].each do |fsq_place|
