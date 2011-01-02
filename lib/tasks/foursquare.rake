@@ -72,6 +72,7 @@ namespace :macrodeck do
 
 		    place_obj = Place.get(doc_id)
 		    place_obj.tips = place_tips
+		    place_obj.updated_by = "_system/FoursquareTips"
 		    place_obj.save
 
 		end
@@ -131,6 +132,7 @@ namespace :macrodeck do
 				if place_address.compact.join(" ").downcase == fsq_address.compact.join(" ").downcase
 				    puts "[#{p.id}] #{p.title} 4sq venueid = #{fsq_place["id"]}"
 				    p.foursquare_venue_id = fsq_place["id"]
+				    p.updated_by = "_system/FoursquareVenueIds"
 				    p.save
 				else
 				    puts "  #{place_address.compact.join(' ')} || #{fsq_address.compact.join(' ')}"
