@@ -85,7 +85,7 @@ namespace :macrodeck do
 				    end
 				end
 
-				if place_address.compact.join(" ") == fsq_address.compact.join(" ")
+				if place_address.compact.join(" ").downcase == fsq_address.compact.join(" ").downcase
 				    puts "[#{p.id}] #{p.title} 4sq venueid = #{fsq_place["id"]}"
 				    p.foursquare_venue_id = fsq_place["id"]
 				    p.save
