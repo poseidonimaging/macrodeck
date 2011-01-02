@@ -30,7 +30,7 @@ POSTAL_SUFFIXES = [ "aly", "anx", "arc", "ave",
 		    "apt", "bsmt", "bldg", "dept", "fl", "frnt", "hngr", "key", "lbby", "lot", "lowr", "ofc", "ph", "pier", "rear", "rm", "side", "slip", "spc", "stop", "ste", "trlr", "unit", "uppr",
 		    "n", "s", "e", "w", "ne", "nw", "se", "sw",
 		    "north", "south", "east", "west", "northeast", "northwest", "southeast", "southwest",
-		    "suite", "street", "circle"
+		    "suite", "street", "circle", "drive"
 		  ]
 
 namespace :macrodeck do
