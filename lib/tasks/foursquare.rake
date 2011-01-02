@@ -26,7 +26,11 @@ POSTAL_SUFFIXES = [ "aly", "anx", "arc", "ave",
 		    "ter", "trwy", "trce", "trak", "trfy", "trl", "trlr", "trlr", "tunl", "tpke",
 		    "upas", "un", "uns",
 		    "vly", "vlys", "via", "vw", "vws", "vlg", "vlgs", "vl", "vis",
-		    "walk", "wall", "way", "ways", "wl", "wls"
+		    "walk", "wall", "way", "ways", "wl", "wls",
+		    "apt", "bsmt", "bldg", "dept", "fl", "frnt", "hngr", "key", "lbby", "lot", "lowr", "ofc", "ph", "pier", "rear", "rm", "side", "slip", "spc", "stop", "ste", "trlr", "unit", "uppr",
+		    "n", "s", "e", "w", "ne", "nw", "se", "sw",
+		    "north", "south", "east", "west", "northeast", "northwest", "southeast", "southwest",
+		    "suite"
 		  ]
 
 namespace :macrodeck do
@@ -85,6 +89,8 @@ namespace :macrodeck do
 				    puts "[#{p.id}] #{p.title} 4sq venueid = #{fsq_place["id"]}"
 				    p.foursquare_venue_id = fsq_place["id"]
 				    p.save
+				else
+				    puts "  #{place_address.compact.join(' ')} || #{fsq_address.compact.join(' ')}"
 				end
 			    end
 			end
