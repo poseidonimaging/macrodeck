@@ -35,6 +35,30 @@ POSTAL_SUFFIXES = [ "aly", "anx", "arc", "ave",
 
 namespace :macrodeck do
     namespace :foursquare do
+	desc "Get tips from Foursquare"
+	task :tips => :environment do
+	    # Doing this anonymously means we don't need to redirect or get any tokens.
+	    puts "Initializing OAuth..."
+	    oauth = Foursquare2::OAuth2.new(FSQ_CLIENT_ID, FSQ_CLIENT_SECRET, FSQ_REDIRECT_URI)
+	    puts "Initializing Foursquare2..."
+	    fsq = Foursquare2::Base.new(oauth)
+
+	    places = Place.view("by_foursquare_venue_id", :reduce => false, :include_docs => false)
+	    if places["rows"]
+		places["rows"].each do |p|
+		    fsq_id = p["key"]
+		    doc_id = p["id"]
+		    tips = fsq.venues_tips(:id => fsq_id)
+		    puts fsq_id
+		    if tips["tips"] && tips["tips"]["items"] && tips["tips"]["items"].length > 0
+			tips["tips"]["items"].each do |t|
+			    puts "  #{t["user"]["firstName"]} #{t["user"]["lastName"]}: #{t["text"]}"
+			end
+		    end
+		end
+	    end
+	end
+
 	desc "Clears venue IDs"
 	task :clear_venue_ids => :environment do
 	    places = Place.all
