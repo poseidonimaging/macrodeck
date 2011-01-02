@@ -48,13 +48,32 @@ namespace :macrodeck do
 		places["rows"].each do |p|
 		    fsq_id = p["key"]
 		    doc_id = p["id"]
+		    
+		    # Format: [text, { :foursquare_user_id => xxx, :name => xxx, :photo_url => xxx }]
+		    place_tips = []
+
 		    tips = fsq.venues_tips(:id => fsq_id)
-		    puts fsq_id
+		    puts "#{fsq_id} #{doc_id}"
+
+		    # Get tips from Foursquare.
 		    if tips["tips"] && tips["tips"]["items"] && tips["tips"]["items"].length > 0
 			tips["tips"]["items"].each do |t|
+			    place_tips << [ t["text"].strip,
+					    {
+						:foursquare_tip_id => t["id"],
+						:foursquare_user_id => t["user"]["id"],
+						:name => "#{t["user"]["firstName"]} #{t["user"]["lastName"]}".strip,
+						:photo_url => t["user"]["photo"]
+					    }
+					  ]
 			    puts "  #{t["user"]["firstName"]} #{t["user"]["lastName"]}: #{t["text"]}"
 			end
 		    end
+
+		    place_obj = Place.get(doc_id)
+		    place_obj.tips = place_tips
+		    place_obj.save
+
 		end
 	    end
 	end
