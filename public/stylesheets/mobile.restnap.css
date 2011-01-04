@@ -48,7 +48,8 @@
 }
 .feed .time		{ color: #E7902B; }
 .feed .tip		{ color: #fff; font-size: 80%; font-weight: normal; display: block; padding: 10px 20px; }
-.feed .tipgiver		{ color: #727E8A; }
+.feed .tipgiver,
+.feed .tipgiver a	{ color: #727E8A; }
 
 .feed ul {
 	margin: 0;
