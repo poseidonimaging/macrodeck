@@ -63,7 +63,8 @@ namespace :macrodeck do
 						:foursquare_tip_id => t["id"],
 						:foursquare_user_id => t["user"]["id"],
 						:name => "#{t["user"]["firstName"]} #{t["user"]["lastName"]}".strip,
-						:photo_url => t["user"]["photo"]
+						:photo_url => t["user"]["photo"],
+						:created_at => Time.at(t["createdAt"]).getutc.iso8601
 					    }
 					  ]
 			    puts "  #{t["user"]["firstName"]} #{t["user"]["lastName"]}: #{t["text"]}"
