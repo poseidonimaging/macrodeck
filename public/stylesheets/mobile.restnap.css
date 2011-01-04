@@ -46,9 +46,10 @@
 	font-weight: bold;
 	font-size: 14px;
 }
-.feed .time {
-	color: #E7902B;
-}
+.feed .time		{ color: #E7902B; }
+.feed .tip		{ color: #fff; font-size: 80%; font-weight: normal; display: block; padding: 10px 20px; }
+.feed .tipgiver		{ color: #727E8A; }
+
 .feed ul {
 	margin: 0;
 }
@@ -66,9 +67,11 @@
 }
 .feed li.alt a, .feed li.alt .name, .feed li.alt a .name { color: #E7902B !important; }
 .feed #content li.small { min-height: 38px; max-height: 38px; height: 38px; }
+.feed #content li.small-variable { min-height: 38px; }
 .feed #content li.small .name,
 .feed #content li.small .fn,
-.feed #content li.small .summary {
+.feed #content li.small .summary,
+.feed #content li.small .tip {
     position: relative;
     top: 10px;
     font-size: 15px;
@@ -173,15 +176,6 @@
 	top: 165px;
 	left: 20px;
 	color: #7f7f7f;
-}
-.feed .tips {
-	position: relative;
-	color:white;
-	top: 5px;
-	left: 5px;
-}
-.feed .tipgiver {
-	color: #727E8A;
 }
 .feed .price {
 	position: absolute;
