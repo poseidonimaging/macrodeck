@@ -73,6 +73,25 @@
 	<li id="info" style="display: none;">
 	    <%=h place.description %>
 	</li>
+	<% if place.tips && place.tips.length > 0 %>
+		<% place.tips.each do |tip| %>
+			<li class="small-variable">
+				<span class="tip">
+					<% if tip[1] && tip[1]["name"] %>
+						<span class="tipgiver">
+							<% if tip[1]["foursquare_user_id"] %>
+								<%= link_to h(tip[1]["name"]), "http://www.foursquare.com/user/#{tip[1]["foursquare_user_id"]}", :target => "_blank", :class => "noeffect" %>:
+							<% else %>
+								<%=h tip[1]["name"] %>:
+							<% end %>
+						</span>
+					<% end %>
+
+					<%=h tip[0] %>
+				</span>
+			</li>
+		<% end %>
+	<% end %>
 	<%= render :partial => "events/event", :collection => events, :locals => { :country => country, :region => region, :locality => locality, :place => place, :place_page => true } %>
     </ul>
 <% end %>
