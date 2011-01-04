@@ -327,7 +327,8 @@ module MacroDeck
 						["credit_cards_accepted", ["String"], false],
 						["reservations", "String", false],
 						["bitly_hash", "String", false],
-						["foursquare_venue_id", "String", false]
+						["foursquare_venue_id", "String", false],
+						["tips", nil, false]
 					],
 					"fulltext" => [
 						["common_fields",
@@ -579,6 +580,26 @@ module MacroDeck
 						  "function(doc) {
 							if (doc['couchrest-type'] == 'Place' && !doc['bitly_hash']) {
 								emit(doc['_id'], 1);
+							}
+						  }",
+						  "reduce" => "_count"
+						},
+						# Return places that have a blank foursquare_venue_id (and not blank geo)
+						{ "view_by" => "missing_foursquare_venue_id",
+						  "map" =>
+						  "function(doc) {
+							if (doc['couchrest-type'] == 'Place' && !doc['foursquare_venue_id'] && doc['geo']) {
+								emit(doc['_id'], 1);
+							}
+						  }",
+						  "reduce" => "_count"
+						},
+						# Return places with a foursquare_venue_id
+						{ "view_by" => "foursquare_venue_id",
+						  "map" =>
+						  "function(doc) {
+							if (doc['couchrest-type'] == 'Place' && doc['foursquare_venue_id']) {
+								emit(doc['foursquare_venue_id'], 1);
 							}
 						  }",
 						  "reduce" => "_count"
