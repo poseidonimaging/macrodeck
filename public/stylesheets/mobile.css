@@ -394,12 +394,6 @@ li:last-child.store .image, .store:last-child a {
 .store .comment, .list .withimage .comment {
 	margin: 16px 0 0 95px;
 }
-.tipwrapper {
-	position: absolute;
-	font-color:white;
-	top: 180px;
-	left: 25px;
-}
 .store .arrow, .list .withimage .arrow {
 	top: 39px!important;
 }
