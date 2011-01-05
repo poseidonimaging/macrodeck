@@ -102,7 +102,7 @@ class PlacesController < ApplicationController
 
 	    @duobuttons = [
 		["Tips", country_region_locality_place_path(params[:country_id], params[:region_id], params[:locality_id], params[:id], :fare => params[:fare], :neighborhood => params[:neighborhood], :q => params[:q]), "pressed"],
-		["Happenings", country_region_locality_place_path(params[:country_id], params[:region_id], params[:locality_id], params[:id], :fare => params[:fare], :neighborhood => params[:neighborhood], :q => params[:q])]
+		["Happenings", country_region_locality_place_events_path(params[:country_id], params[:region_id], params[:locality_id], params[:id], :fare => params[:fare], :neighborhood => params[:neighborhood], :q => params[:q])]
 	    ]
 
 	    respond_to do |format|
