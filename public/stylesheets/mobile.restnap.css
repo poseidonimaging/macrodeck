@@ -171,6 +171,24 @@
 	-webkit-border-image: url('/images/iwebkit/searchfield_gray.png') 4 14 1 24;
 }
 
+/* change the colors of duobuttons/tributtons */
+.feed #tributton, .feed #duobutton	{ background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#d3d3d3), color-stop(3%, #c8c8c8), color-stop(97%, #b5b5b5),to(#8f8f8f)); }
+.feed #tributton a:hover,
+.feed #tributton a#pressed,
+.feed #duobutton a:hover,
+.feed #duobutton a#pressed {
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#898989), color-stop(3%, #999999), to(#757575));
+}
+.feed #tributton .links,
+.feed #duobutton .links			{ -webkit-border-image: url("/images/iwebkit/tributton_gray.png") 0 4 0 4; }
+.feed #tributton a,
+.feed #duobutton a			{ color: #595959; }
+.feed #tributton a:first-child,
+.feed #duobutton a:first-child		{ border-right: 1px solid #7c7c7c; }
+.feed #tributton a:last-child		{ border-left: 1px solid #7c7c7c; }
+.feed #tributton a:hover,
+.feed #duobutton a:hover		{ color: #fff; }
+
 /* not yet used */
 .feed .foursqtitle {
 	position: absolute;
