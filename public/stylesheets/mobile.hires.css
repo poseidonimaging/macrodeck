@@ -8,9 +8,11 @@
 }
 .menu .name {
     max-width: 85%;
-}.checkbox .name {
+}
+.checkbox .name {
     max-width: 75%;
-}.radiobutton .name {
+}
+.radiobutton .name {
     max-width: 75%;
 }
 #leftnav a, #rightnav a, #leftbutton a, #rightbutton a, #blueleftbutton a, #bluerightbutton a {
