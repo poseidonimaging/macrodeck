@@ -98,7 +98,7 @@ namespace :macrodeck do
 
 	    places = Place.view("by_missing_foursquare_venue_id", :reduce => false, :include_docs => true)
 	    places.each do |p|
-		if p.geo && p.foursquare_venue_id.nil?
+		if p.geo && p.geo.length == 2 && p.foursquare_venue_id.nil?
 		    puts "Looking up #{p.title} on Foursquare..."
 		    result = fsq.venues_search(:ll => p.geo.join(","), :query => p.title, :limit => 10)
 		    if result["groups"] && result["groups"].length > 0 && result["groups"][0]["name"] == "Matching Places"
