@@ -76,6 +76,24 @@
 	    <% end %>
 	</div>
 
+	<% if @duobuttons %>
+	    <div id="duobutton">
+		<div class="links">
+		    <% @duobuttons.each do |btn| %>
+			<%= link_to btn[0], btn[1] %>
+		    <% end %>
+		</div>
+	    </div>
+	<% elsif @tributtons %>
+	    <div id="tributton">
+		<div class="links">
+		    <% @tributtons.each do |btn| %>
+			<%= link_to btn[0], btn[1] %>
+		    <% end %>
+		</div>
+	    </div>
+	<% end %>
+
 	<%= yield :before_content %>
 
 	<div id="content">
