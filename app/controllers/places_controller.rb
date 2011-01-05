@@ -99,6 +99,12 @@ class PlacesController < ApplicationController
 	    startkey = @place.path.dup.push(earliest_event_time.getutc.iso8601)
 	    endkey = @place.path.dup.push({})
 	    @events = Event.view("by_path_and_start_time", :reduce => false, :startkey => startkey, :endkey => endkey)
+
+	    @duobuttons = [
+		["Tips", country_region_locality_place_path(params[:country_id], params[:region_id], params[:locality_id], params[:id], :fare => params[:fare], :neighborhood => params[:neighborhood], :q => params[:q]), "pressed"],
+		["Happenings", country_region_locality_place_path(params[:country_id], params[:region_id], params[:locality_id], params[:id], :fare => params[:fare], :neighborhood => params[:neighborhood], :q => params[:q])]
+	    ]
+
 	    respond_to do |format|
 		format.html # show.html.erb
 	    end
