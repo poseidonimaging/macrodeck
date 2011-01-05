@@ -80,7 +80,7 @@
 	    <div id="duobutton">
 		<div class="links">
 		    <% @duobuttons.each do |btn| %>
-			<%= link_to btn[0], btn[1] %>
+			<%= link_to btn[0], btn[1], :id => btn[2].nil? ? nil : btn[2] %>
 		    <% end %>
 		</div>
 	    </div>
@@ -88,7 +88,7 @@
 	    <div id="tributton">
 		<div class="links">
 		    <% @tributtons.each do |btn| %>
-			<%= link_to btn[0], btn[1] %>
+			<%= link_to btn[0], btn[1], :id => btn[2].nil? ? nil : btn[2] %>
 		    <% end %>
 		</div>
 	    </div>
