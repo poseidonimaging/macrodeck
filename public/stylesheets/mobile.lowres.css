@@ -7,10 +7,10 @@
     font-size: 16pt;
 }
 #tributton a:first-child, #duobutton a:first-child {
-    width: 101px;
+    width: 99px;
 }
 #tributton a:last-child, #duobutton a:last-child {
-    width: 101px;
+    width: 99px;
 }
 #tributton a {
     width: 106px;
