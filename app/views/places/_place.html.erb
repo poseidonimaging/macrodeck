@@ -99,11 +99,22 @@
 				</span>
 			</li>
 		<% end %>
+	<% elsif @events.nil? && ((place.tips && place.tips.length == 0) || !place.tips) %>
+	    <li class="small-variable">
+		<span class="stdtext">
+		    <% if place.foursquare_venue_id.nil? %>
+			This place is not associated with Foursquare and has no tips.
+		    <% else %>
+			This place has no tips on its
+			<%= link_to "Foursquare page", "http://www.foursquare.com/venue/#{place.foursquare_venue_id}" %>.
+		    <% end %>
+		</span>
+	    </li>
 	<% end %>
-	<% unless @events.nil? %>
+	<% if !@events.nil? %>
 	    <% if @events.length == 0 %>
 		<li class="small-variable">
-		    <span class="comment">There are no happenings at this place.</span>
+		    <span class="stdtext">There are no happenings at this place.</span>
 		</li>
 	    <% else %>
 		<%= render :partial => "events/event", :collection => events, :locals => { :country => country, :region => region, :locality => locality, :place => place, :place_page => true } %>
