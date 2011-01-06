@@ -30,8 +30,23 @@ class EventsController < ApplicationController
 	@neighborhoods.sort!
 	@event_types = Event.view("by_event_type", :reduce => true, :group => true, :group_level => 4, :startkey => nstartkey, :endkey => nendkey)["rows"]
 
-	if !params[:q].nil?
-	    @page_title_log = "#{@locality.title} > Happenings > Search"
+	if !@place.nil?
+	    # This will exist when the controller is being called under a place.
+	    @page_title = ""
+	    @page_title_long = "#{@locality.title} > #{@place.title}"
+	    @back_button = [@locality.title, country_region_locality_places_path(params[:country_id], params[:region_id], params[:locality_id], :fare => params[:fare], :neighborhood => params[:neighborhood], :q => params[:q])]
+
+	    nstartkey = @locality.path.dup.push(0)
+	    nendkey = @locality.path.dup.push({})
+	    @neighborhoods = Neighborhood.view("by_path_alpha", :reduce => false, :startkey => nstartkey, :endkey => nendkey)
+	    @fares = Place.view("by_fare", ActiveSupport::OrderedHash[:reduce, true, :group, true, :group_level, 4, :startkey, nstartkey, :endkey, nendkey])["rows"]
+
+	    earliest_event_time = Time.new - 6.hours
+	    startkey = @place.path.dup.push(earliest_event_time.getutc.iso8601)
+	    endkey = @place.path.dup.push({})
+	    @events = Event.view("by_path_and_start_time", :reduce => false, :startkey => startkey, :endkey => endkey)
+	elsif !params[:q].nil?
+	    @page_title_long = "#{@locality.title} > Happenings > Search"
 	    query = "path:#{@locality.path.join("/")}/* AND ( #{process_query(params[:q])} )"
 	    RAILS_DEFAULT_LOGGER.info "Querying: #{query}"
 	    event_search = Event.search("common_fields", query, :sort => "/start_time<date>")
@@ -81,10 +96,14 @@ class EventsController < ApplicationController
 	end
 	respond_to do |format|
 	    format.html do
-		if request.xhr?
-		    render :layout => false
+		if @place
+		    render :partial => "places/place", :layout => true, :locals => { :viewmode => :full, :country => @country, :region => @region, :locality => @locality, :place => @place, :events => @events }
 		else
-		    render
+		    if request.xhr?
+			render :layout => false
+		    else
+			render
+		    end
 		end
 	    end
 	end
