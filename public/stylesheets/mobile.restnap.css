@@ -198,8 +198,8 @@ li.tab-buttons a {
 .feed #tributton a,
 .feed #duobutton a			{ color: #595959; }
 .feed #tributton a:first-child,
-.feed #duobutton a:first-child		{ border-right: 1px solid #7c7c7c; }
-.feed #tributton a:last-child		{ border-left: 1px solid #7c7c7c; }
+.feed #duobutton a:first-child		{ border-right: none; }
+.feed #tributton a:last-child		{ border-left: none; }
 .feed #tributton a:hover,
 .feed #duobutton a:hover		{ color: #fff; }
 
