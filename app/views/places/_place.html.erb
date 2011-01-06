@@ -73,7 +73,15 @@
 	<li id="info" style="display: none;">
 	    <%=h place.description %>
 	</li>
-	<% if place.tips && place.tips.length > 0 %>
+	<li class="tab-buttons">
+	    <div id="duobutton">
+		<div class="links">
+		    <%= link_to "Tips", country_region_locality_place_path(params[:country_id], params[:region_id], params[:locality_id], params[:id].nil? ? params[:place_id] : params[:id], :fare => params[:fare], :neighborhood => params[:neighborhood], :q => params[:q]), :id => @events.nil? ? "pressed" : nil %>
+		    <%= link_to "Happenings", country_region_locality_place_events_path(params[:country_id], params[:region_id], params[:locality_id], params[:id].nil? ? params[:place_id] : params[:id], :fare => params[:fare], :neighborhood => params[:neighborhood], :q => params[:q]), :id => @events.nil? ? nil : "pressed"  %>
+		</div>
+	    </div>
+	</li>
+	<% if @events.nil? && place.tips && place.tips.length > 0 %>
 		<% place.tips.each do |tip| %>
 			<li class="small-variable">
 				<span class="tip">
@@ -92,6 +100,8 @@
 			</li>
 		<% end %>
 	<% end %>
-	<%= render :partial => "events/event", :collection => events, :locals => { :country => country, :region => region, :locality => locality, :place => place, :place_page => true } %>
+	<% unless @events.nil? %>
+	    <%= render :partial => "events/event", :collection => events, :locals => { :country => country, :region => region, :locality => locality, :place => place, :place_page => true } %>
+	<% end %>
     </ul>
 <% end %>
