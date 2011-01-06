@@ -149,7 +149,7 @@ li.tab-buttons a {
 }
 
 /* Actions */
-.actions	    { width: 100%; }
+.actions	    { width: 100%; height: 85px; }
 .actions .action    { display: block; width: 25%; height: 42px; float: left; margin: 16px 0 0 0; }
 .actions a	    { display: block; height: 42px; }
 .actions a span	    { display: none; }
