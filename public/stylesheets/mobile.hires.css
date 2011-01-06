@@ -35,11 +35,21 @@
 .textbox textarea {
     width: 440px;
 }
-#tributton a:first-child, #duobutton a:first-child {
+#tributton a:first-child,
+#duobutton a:first-child {
     width: 150px;
 }
-#tributton a:last-child, #duobutton a:last-child {
+li.tab-buttons #tributton a:first-child,
+li.tab-buttons #duobutton a:first-child {
+    width: 150px !important;
+}
+#tributton a:last-child,
+#duobutton a:last-child {
     width: 150px;
+}
+li.tab-buttons #tributton a:last-child,
+li.tab-buttons #duobutton a:last-child {
+    width: 150px !important;
 }
 #tributton a {
     width: 154px;
@@ -50,6 +60,10 @@
 #duobutton .links {
     width: 298px;
 }
+li.tab-buttons #tributton a		{ width: 154px !important; }
+li.tab-buttons #tributton .links	{ width: 452px !important; }
+li.tab-buttons #duobutton .links	{ width: 298px !important; }
+
 #doublead {
     width: 350px!important;
 }
