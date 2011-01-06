@@ -47,7 +47,8 @@
 	font-size: 14px;
 }
 .feed .time		{ color: #E7902B; }
-.feed .tip		{ color: #fff; font-size: 80%; font-weight: normal; display: block; padding: 10px 20px; }
+.feed .tip,
+.feed .stdtext		{ color: #fff; font-size: 80%; font-weight: normal; display: block; padding: 10px 20px; }
 .feed .tipgiver,
 .feed .tipgiver a	{ color: #727E8A; }
 
@@ -72,7 +73,8 @@
 .feed #content li.small .name,
 .feed #content li.small .fn,
 .feed #content li.small .summary,
-.feed #content li.small .tip {
+.feed #content li.small .tip,
+.feed #content li.small .stdtext {
     position: relative;
     top: 10px;
     font-size: 15px;
