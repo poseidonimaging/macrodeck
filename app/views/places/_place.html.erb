@@ -101,7 +101,13 @@
 		<% end %>
 	<% end %>
 	<% unless @events.nil? %>
-	    <%= render :partial => "events/event", :collection => events, :locals => { :country => country, :region => region, :locality => locality, :place => place, :place_page => true } %>
+	    <% if @events.length == 0 %>
+		<li class="small-variable">
+		    <span class="comment">There are no happenings at this place.</span>
+		</li>
+	    <% else %>
+		<%= render :partial => "events/event", :collection => events, :locals => { :country => country, :region => region, :locality => locality, :place => place, :place_page => true } %>
+	    <% end %>
 	<% end %>
     </ul>
 <% end %>
