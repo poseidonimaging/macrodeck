@@ -94,7 +94,7 @@ li.tab-buttons {
 }
 li.tab-buttons a {
     width: auto;
-    height: auto;
+    height: 28px !important;
 }
 .feed #content {
 	background: -webkit-gradient(radial, 50% -70, 0, 50% 0, 200, from(#444444), to(rgb(13, 13, 13)));
