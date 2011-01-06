@@ -6,11 +6,21 @@
     height: 44px;
     font-size: 16pt;
 }
-#tributton a:first-child, #duobutton a:first-child {
+#tributton a:first-child,
+#duobutton a:first-child {
     width: 99px;
 }
-#tributton a:last-child, #duobutton a:last-child {
+li.tab-buttons #tributton a:first-child,
+li.tab-buttons #duobutton a:first-child {
+    width: 99px !important;
+}
+#tributton a:last-child,
+#duobutton a:last-child {
     width: 99px;
+}
+li.tab-buttons #tributton a:last-child,
+li.tab-buttons #duobutton a:last-child {
+    width: 99px !important;
 }
 #tributton a {
     width: 106px;
@@ -21,6 +31,10 @@
 #tributton .links {
     width: 302px;
 }
+li.tab-buttons #tributton a	    { width: 106px !important; }
+li.tab-buttons #duobutton .links    { width: 195px !important; }
+li.tab-buttons #tributton .links    { width: 302px !important; }
+
 #doublead {
     width: 300px!important;
 }
