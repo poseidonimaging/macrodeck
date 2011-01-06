@@ -84,6 +84,18 @@
 	position: relative;
 	min-height: 75px;
 }
+li.tab-buttons {
+    list-style: none;
+    width: auto;
+    position: static;
+    display: block;
+    min-height: 44px !important;
+    height: 44px !important;
+}
+li.tab-buttons a {
+    width: auto;
+    height: auto;
+}
 .feed #content {
 	background: -webkit-gradient(radial, 50% -70, 0, 50% 0, 200, from(#444444), to(rgb(13, 13, 13)));
 	top: 16px;
