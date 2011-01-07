@@ -222,12 +222,18 @@ li.tab-buttons a {
 /* the black style for in the list */
 li.tab-buttons #tributton,
 li.tab-buttons #duobutton {
-    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#2c2c2c), color-stop(3%, #373737), color-stop(97%, #4a4a4a),to(#707070));
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#6a6a6a), color-stop(3%, #646464), color-stop(97%, #5b5b5b),to(#484848));
 }
 li.tab-buttons #tributton .links,
 li.tab-buttons #duobutton .links	{ -webkit-border-image: url("/images/iwebkit/tributton_black.png") 0 4 0 4; }
 li.tab-buttons #tributton a,
 li.tab-buttons #duobutton a		{ color: #fff; text-shadow: #595959 0 1px 0;}
+li.tab-buttons #tributton a:hover,
+li.tab-buttons #tributton a#pressed,
+li.tab-buttons #duobutton a:hover,
+li.tab-buttons #duobutton a#pressed {
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#454545), color-stop(3%, #4d4d4d), to(#3b3b3b));
+}
 
 /* not yet used */
 .feed .foursqtitle {
