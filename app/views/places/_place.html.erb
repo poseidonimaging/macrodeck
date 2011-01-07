@@ -5,6 +5,9 @@
     <li class="vcard<%= " #{css_class}" if local_assigns[:css_class] %>"><%= link_to h(place.name), country_state_city_place_path(params[:country_id], params[:state_id], place.parent.url_part, place.uuid), :class => "fn org" %></li>
 <% elsif viewmode == :compact %>
     <li class="vcard <%= cycle("odd", "even") %>">
+	<% unless place.foursquare_venue_id.nil? %>
+	    <span class="count"><%= place.tips.length %></span>
+	<% end %>
 	<span class="comment">
 	    <%
 		fare_links = place.fare.sort.collect do |fare|
