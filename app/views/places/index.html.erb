@@ -63,10 +63,9 @@
     <% end %>
 
     <% if @places_count > (@start_item + 10) && params[:geo].nil? %>
-	<li class="alt small nextbtn">
+	<li class="alt nextbtn">
 	    <% link_to country_region_locality_places_path(@country.id, @region.id, @locality.id, :start_item => (@start_item + 10), :fare => params[:fare], :neighborhood => params[:neighborhood], :q => params[:q]), :class => "noeffect" do %>
 		<span class="name">More</span>
-		<span class="arrow"></span>
 	    <% end %>
 	</li>
     <% end %>
