@@ -35,10 +35,9 @@
     <%= render :partial => "event", :collection => @events, :locals => { :view_mode => :compact, :country => @country, :region => @region, :locality => @locality, :place => @place } %>
 
     <% if params[:event_type].nil? && params[:q].nil? && @events_count > (@start_item + 10) %>
-	<li class="alt small nextbtn">
+	<li class="alt nextbtn">
 	    <% link_to country_region_locality_events_path(@country.id, @region.id, @locality.id, :start_item => (@start_item + 10), :neighborhood => params[:neighborhood], :upupdowndownleftrightleftrightbastart => params[:upupdowndownleftrightleftrightbastart]), :class => "noeffect" do %>
 		<span class="name">More</span>
-		<span class="arrow"></span>
 	    <% end %>
 	</li>
     <% end %>
