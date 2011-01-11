@@ -35,27 +35,31 @@
 .textbox textarea {
     width: 440px;
 }
-#tributton a:first-child,
 #duobutton a:first-child {
     width: 150px;
+}
+#tributton a:first-child {
+    width: 99px;
 }
 li.tab-buttons #tributton a:first-child,
 li.tab-buttons #duobutton a:first-child {
     width: 150px !important;
 }
-#tributton a:last-child,
 #duobutton a:last-child {
     width: 150px;
+}
+#tributton a:last-child {
+    width: 99px;
 }
 li.tab-buttons #tributton a:last-child,
 li.tab-buttons #duobutton a:last-child {
     width: 150px !important;
 }
 #tributton a {
-    width: 154px;
+    width: 99px;
 }
 #tributton .links {
-    width: 452px;
+    width: 298px;
 }
 #duobutton .links {
     width: 298px;
