@@ -93,13 +93,14 @@
     top: 10px;
     font-size: 15px;
 }
-.feed #content li.small .arrow { top: 12px; }
+.feed #content li.small .arrow	{ top: 12px; }
 .feed #content li {
 	list-style: none;
 	width: auto;
 	position: relative;
 	min-height: 75px;
 }
+.feed #content li.nextbtn a	{ display: block; padding: 25px 0; text-align: center; }
 li.tab-buttons {
     list-style: none;
     width: auto;
