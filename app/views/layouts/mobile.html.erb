@@ -76,18 +76,18 @@
 	    <% end %>
 	</div>
 
-	<% if @duobuttons %>
+	<% if @tab_buttons && @tab_buttons.length == 2 %>
 	    <div id="duobutton">
 		<div class="links">
-		    <% @duobuttons.each do |btn| %>
+		    <% @tab_buttons.each do |btn| %>
 			<%= link_to btn[0], btn[1], :id => btn[2].nil? ? nil : btn[2] %>
 		    <% end %>
 		</div>
 	    </div>
-	<% elsif @tributtons %>
+	<% elsif @tab_buttons && @tab_buttons.length == 3 %>
 	    <div id="tributton">
 		<div class="links">
-		    <% @tributtons.each do |btn| %>
+		    <% @tab_buttons.each do |btn| %>
 			<%= link_to btn[0], btn[1], :id => btn[2].nil? ? nil : btn[2] %>
 		    <% end %>
 		</div>
