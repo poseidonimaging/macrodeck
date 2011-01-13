@@ -39,7 +39,7 @@
     width: 150px;
 }
 #tributton a:first-child {
-    width: 99px;
+    width: 101px;
 }
 li.tab-buttons #tributton a:first-child,
 li.tab-buttons #duobutton a:first-child {
@@ -49,14 +49,15 @@ li.tab-buttons #duobutton a:first-child {
     width: 150px;
 }
 #tributton a:last-child {
-    width: 99px;
+    width: 101px;
 }
 li.tab-buttons #tributton a:last-child,
 li.tab-buttons #duobutton a:last-child {
     width: 150px !important;
 }
 #tributton a {
-    width: 99px;
+    float: left;
+    width: 101px;
 }
 #tributton .links {
     width: 298px;
