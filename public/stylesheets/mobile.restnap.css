@@ -225,6 +225,7 @@ li.tab-buttons #tributton,
 li.tab-buttons #duobutton {
     background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#6a6a6a), color-stop(3%, #646464), color-stop(97%, #5b5b5b),to(#484848));
 }
+li.tab-buttons #duobutton a:first-child	{ border-right: 1px solid #454545; }
 li.tab-buttons #tributton .links,
 li.tab-buttons #duobutton .links	{ -webkit-border-image: url("/images/iwebkit/tributton_black.png") 0 4 0 4; }
 li.tab-buttons #tributton a,
