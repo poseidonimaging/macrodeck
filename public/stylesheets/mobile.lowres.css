@@ -6,18 +6,18 @@
     height: 44px;
     font-size: 16pt;
 }
-#duobutton a:first-child {
-    float: left;
-    width: 152px;
-}
-#tributton a:first-child {
-    width: 101px;
-}
 li.tab-buttons #tributton a:first-child {
+    float: left;
+    width: 101px !important;
+}
+li.tab-buttons #duobutton a:first-child {
     float: left;
     width: 152px !important;
 }
-li.tab-buttons #duobutton a:first-child {
+li.tab-buttons #tributton a:last-child {
+    width: 101px !important;
+}
+li.tab-buttons #duobutton a:last-child {
     float: left;
     width: 152px !important;
 }
@@ -27,10 +27,6 @@ li.tab-buttons #duobutton a:first-child {
 }
 #tributton a:last-child {
     width: 101px;
-}
-li.tab-buttons #tributton a:last-child,
-li.tab-buttons #duobutton a:last-child {
-    width: 152px !important;
 }
 #tributton a {
     float: left;
@@ -42,8 +38,9 @@ li.tab-buttons #duobutton a:last-child {
 #duobutton .links {
     width: 298px;
 }
-li.tab-buttons #tributton a		{ width: 154px !important; }
-li.tab-buttons #tributton .links	{ width: 452px !important; }
+li.tab-buttons #tributton a		{ width: 101px !important; }
+/*li.tab-buttons #tributton .links	{ width: 452px !important; }*/
+li.tab-buttons #tributton .links	{ width: 298px !important; }
 li.tab-buttons #duobutton .links	{ width: 298px !important; }
 
 #doublead {
