@@ -7,37 +7,38 @@
     font-size: 16pt;
 }
 #duobutton a:first-child {
-    width: 99px;
+    width: 150px;
 }
 #tributton a:first-child {
-    width: 95px;
+    width: 101px;
 }
 li.tab-buttons #tributton a:first-child,
 li.tab-buttons #duobutton a:first-child {
-    width: 99px !important;
+    width: 150px !important;
 }
 #duobutton a:last-child {
-    width: 99px;
+    width: 150px;
 }
 #tributton a:last-child {
-    width: 95px;
+    width: 101px;
 }
 li.tab-buttons #tributton a:last-child,
 li.tab-buttons #duobutton a:last-child {
-    width: 99px !important;
+    width: 150px !important;
 }
 #tributton a {
-    width: 95px;
-}
-#duobutton .links {
-    width: 195px;
+    float: left;
+    width: 101px;
 }
 #tributton .links {
-    width: 285px;
+    width: 298px;
 }
-li.tab-buttons #tributton a	    { width: 106px !important; }
-li.tab-buttons #duobutton .links    { width: 195px !important; }
-li.tab-buttons #tributton .links    { width: 302px !important; }
+#duobutton .links {
+    width: 298px;
+}
+li.tab-buttons #tributton a		{ width: 154px !important; }
+li.tab-buttons #tributton .links	{ width: 452px !important; }
+li.tab-buttons #duobutton .links	{ width: 298px !important; }
 
 #doublead {
     width: 300px!important;
