@@ -36,24 +36,30 @@
     width: 440px;
 }
 #duobutton a:first-child {
-    width: 150px;
+    float: left;
+    width: 152px;
 }
 #tributton a:first-child {
     width: 101px;
 }
-li.tab-buttons #tributton a:first-child,
+li.tab-buttons #tributton a:first-child {
+    float: left;
+    width: 152px !important;
+}
 li.tab-buttons #duobutton a:first-child {
-    width: 150px !important;
+    float: left;
+    width: 152px !important;
 }
 #duobutton a:last-child {
-    width: 150px;
+    float: left;
+    width: 152px;
 }
 #tributton a:last-child {
     width: 101px;
 }
 li.tab-buttons #tributton a:last-child,
 li.tab-buttons #duobutton a:last-child {
-    width: 150px !important;
+    width: 152px !important;
 }
 #tributton a {
     float: left;
