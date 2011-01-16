@@ -1,6 +1,16 @@
 class ApplicationController < ActionController::Base
     helper_method :"mobile?"
     helper_method :nilify
+    helper_method :current_tab
+
+    # Returns the current tab
+    def current_tab
+	if params[:tab].nil? || params[:tab].empty?
+	    return nil
+	else
+	    return params[:tab].to_sym
+	end
+    end
 
     # Returns nil if blank.
     def nilify(str)
