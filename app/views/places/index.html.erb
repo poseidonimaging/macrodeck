@@ -68,10 +68,18 @@
 	<li class="small-variable" id="geostatus"><span class="stdtext">Finding your location, please wait...</span></li>
     <% end %>
 
-    <% if !@places_count.nil? && @places_count > (@start_item + 10) && params[:geo].nil? %>
+    <% if !@places_count.nil? && @places_count > (@start_item + 10) && @lat.nil? && @lng.nil? %>
 	<li class="alt nextbtn">
 	    <% link_to country_region_locality_places_path(@country.id, @region.id, @locality.id, :start_item => (@start_item + 10), :fare => params[:fare], :neighborhood => params[:neighborhood], :q => params[:q]), :class => "noeffect" do %>
 		<span class="name">More</span>
+	    <% end %>
+	</li>
+    <% elsif !@lat.nil? && !@lng.nil? %>
+	<li class="alt nextbtn">
+	    <% link_to country_region_locality_places_path(@country, @region, @locality, :tab => "location", :geo => "#{@lat},#{@lng}", :radius => (@radius * 2.0)) do %>
+		<span class="name">
+		    Increase search radius to <%= (@radius * 2.0).to_i %>mi
+		</span>
 	    <% end %>
 	</li>
     <% end %>
