@@ -45,7 +45,7 @@ class PlacesController < ApplicationController
 		["Location", country_region_locality_places_path(@country, @region, @locality, :tab => "location"), "pressed"]
 	    ]
 
-	    if !@lat.nil? && !@lng.nil? && !@radius.nil
+	    if !@lat.nil? && !@lng.nil? && !@radius.nil?
 		@places = Place.proximity_search("geocode", @lat, @lng, @radius)
 		@places_count = @places.length
 	    end
