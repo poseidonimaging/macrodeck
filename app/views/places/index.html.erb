@@ -1,7 +1,7 @@
 <% @start_item = 0 if @start_item.nil? %>
 
 <% unless request.xhr? %>
-    <% if params[:q].nil? && params[:geo].nil? %>
+    <% if current_tab == :search && params[:q].nil? %>
 	<% content_for :before_content do %>
 	    <div class="searchbox">
 		    <% form_tag country_region_locality_places_path(@country, @region, @locality), :method => :get do %>
@@ -16,7 +16,7 @@
 <% end %>
 
 <% unless request.xhr? %>
-    <% if params[:fare].nil? && params[:neighborhood].nil? && params[:start_item].nil? && params[:q].nil? && params[:geo].nil? && params[:nogeo].nil? %>
+    <% if current_tab == :location %>
 	<script type="text/javascript">
 	    //<![CDATA[
 		jQuery.geolocation.find(function(location) {
@@ -57,12 +57,10 @@
     <% else %>
 	<!-- geo requires iterating the array since it's sorted by distance away -->
 	<% @places.each do |place_and_distance| %>
-	    <!-- <%= place_and_distance.inspect %> -->
 	    <%= render :partial => "place", :object => place_and_distance[1], :locals => { :view_mode => :compact, :country => @country, :region => @region, :locality => @locality } %>
 	<% end %>
     <% end %>
-
-    <% if @places_count > (@start_item + 10) && params[:geo].nil? %>
+    <% if !@places_count.nil? && @places_count > (@start_item + 10) && params[:geo].nil? %>
 	<li class="alt nextbtn">
 	    <% link_to country_region_locality_places_path(@country.id, @region.id, @locality.id, :start_item => (@start_item + 10), :fare => params[:fare], :neighborhood => params[:neighborhood], :q => params[:q]), :class => "noeffect" do %>
 		<span class="name">More</span>
