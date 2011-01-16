@@ -139,7 +139,7 @@ class PlacesController < ApplicationController
 
 	# Gets the lat/lng from the supplied geo.
 	def process_geo
-	    if !params[:geo].nil? && params[:geo].split.length == 2
+	    if !params[:geo].nil? && params[:geo].split(",").length == 2
 		@lat = params[:geo].split(",")[0].to_f
 		@lng = params[:geo].split(",")[1].to_f
 	    end
