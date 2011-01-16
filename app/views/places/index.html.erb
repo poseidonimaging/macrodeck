@@ -23,7 +23,7 @@
 		    // Detect location.
 		    jQuery.geolocation.find(function(location) {
 			var latlng = location.latitude + "," + location.longitude;
-			jQuery("#geostatus span").html("Location acquired, please wait.")
+			jQuery("#geostatus span").html("Location acquired, getting places...")
 			window.location = window.location + "&geo=" + latlng;
 		    },
 		    // error function
