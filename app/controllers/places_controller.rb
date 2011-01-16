@@ -22,6 +22,7 @@ class PlacesController < ApplicationController
 	@neighborhoods = Neighborhood.view("by_path_alpha", :reduce => false, :startkey => nstartkey, :endkey => nendkey)
 	@fares = Place.view("by_fare", :reduce => true, :group => true, :group_level => 4, :startkey => nstartkey, :endkey => nendkey)["rows"]
 
+	# Search.
 	if !params[:q].nil? || current_tab == :search
 	    @page_title_long = "#{@locality.title} > Places > Search"
 	    @tab_buttons = [
@@ -37,6 +38,7 @@ class PlacesController < ApplicationController
 		@places = place_search["rows"]
 		@places_count = place_search["rows"].length == 0 ? 0 : place_search["total_rows"]
 	    end
+	# Geolocation.
 	elsif !params[:geo].nil? || current_tab == :location
 	    @page_title_long = "#{@locality.title} > Places > Location"
 	    @tab_buttons = [
@@ -49,13 +51,22 @@ class PlacesController < ApplicationController
 		@places = Place.proximity_search("geocode", @lat, @lng, @radius)
 		@places_count = @places.length
 	    end
+	# Tips.
 	elsif params[:fare].nil? && params[:neighborhood].nil?
+	    @page_title_long = "#{@locality.title} > Places"
+	    @tab_buttons = [
+		["Tips", country_region_locality_places_path(@country, @region, @locality, :tab => "tips" ), "pressed"],
+		["Search", country_region_locality_places_path(@country, @region, @locality, :tab => "search")],
+		["Location", country_region_locality_places_path(@country, @region, @locality, :tab => "location")]
+	    ]
+	    # commented out because we don't do anything besides Austin yet.
+	    #@back_button = [@region.title, country_region_localities_path(params[:country_id], params[:region_id])]
+
 	    startkey = @locality.path.dup.push(0)
 	    endkey = @locality.path.dup.push({})
 	    @places = Place.view("by_path_without_neighborhood_alpha", :reduce => false, :startkey => startkey, :endkey => endkey, :limit => 10, :skip => @start_item)
 	    count_query = Place.view("by_path_without_neighborhood_alpha", :reduce => true, :startkey => startkey, :endkey => endkey)
 	    @places_count = count_query["rows"].length == 0 ? 0 : count_query["rows"][0]["value"]
-	    #@back_button = [@region.title, country_region_localities_path(params[:country_id], params[:region_id])]
 	elsif params[:fare].nil? && !params[:neighborhood].nil?
 	    @page_title_long = "#{@locality.title} > #{Neighborhood.get(params[:neighborhood]).title}"
 
