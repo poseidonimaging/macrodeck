@@ -16,17 +16,21 @@
 <% end %>
 
 <% unless request.xhr? %>
-    <% if current_tab == :location %>
+    <% if current_tab == :location && @lat.nil? && @lng.nil? %>
 	<script type="text/javascript">
 	    //<![CDATA[
-		jQuery.geolocation.find(function(location) {
-		    var latlng = location.latitude + "," + location.longitude;
-		    window.location = window.location + "?geo=" + latlng;
-		},
-		// error function
-		function() {
-		    window.location = window.location + "?nogeo=true";
-		})
+		jQuery(document).ready(function() {
+		    // Detect location.
+		    jQuery.geolocation.find(function(location) {
+			var latlng = location.latitude + "," + location.longitude;
+			jQuery("#geostatus span").html("Location acquired, please wait.")
+			window.location = window.location + "&geo=" + latlng;
+		    },
+		    // error function
+		    function() {
+			jQuery("#geostatus span").html("Error getting your location.")
+		    })
+		});
 	    //]]>
 	</script>
     <% end %>
@@ -34,11 +38,8 @@
 
 <% unless request.xhr? %><ul><% end %>
     <% unless request.xhr? %>
-	<% if !params[:fare].nil? || !params[:neighborhood].nil? || !params[:q].nil? || !params[:geo].nil? %>
+	<% if !params[:fare].nil? || !params[:neighborhood].nil? || !params[:q].nil? %>
 	    <li class="filters">
-		    <% unless params[:geo].nil? %>
-			    <%= link_to "Geolocation", country_region_locality_places_path(@country.id, @region.id, @locality.id, :start_item => nil, :fare => nil, :neighborhood => nil, :geo => nil, :nogeo => "true") %>
-		    <% end %>
 		<% unless params[:fare].nil? %>
 		    <%= link_to h(params[:fare]), country_region_locality_places_path(@country.id, @region.id, @locality.id, :start_item => params[:start_item], :fare => nil, :neighborhood => params[:neighborhood]) %>
 		<% end %>
@@ -56,10 +57,17 @@
 	<%= render :partial => "place", :collection => @places, :locals => { :view_mode => :compact, :country => @country, :region => @region, :locality => @locality } %>
     <% else %>
 	<!-- geo requires iterating the array since it's sorted by distance away -->
-	<% @places.each do |place_and_distance| %>
-	    <%= render :partial => "place", :object => place_and_distance[1], :locals => { :view_mode => :compact, :country => @country, :region => @region, :locality => @locality } %>
+	<% if !@places.nil? %>
+	    <% @places.each do |place_and_distance| %>
+		<%= render :partial => "place", :object => place_and_distance[1], :locals => { :view_mode => :compact, :country => @country, :region => @region, :locality => @locality } %>
+	    <% end %>
 	<% end %>
     <% end %>
+
+    <% if current_tab == :location && @lat.nil? && @lng.nil? %>
+	<li class="small-variable" id="geostatus"><span class="stdtext">Finding your location, please wait...</span></li>
+    <% end %>
+
     <% if !@places_count.nil? && @places_count > (@start_item + 10) && params[:geo].nil? %>
 	<li class="alt nextbtn">
 	    <% link_to country_region_locality_places_path(@country.id, @region.id, @locality.id, :start_item => (@start_item + 10), :fare => params[:fare], :neighborhood => params[:neighborhood], :q => params[:q]), :class => "noeffect" do %>
