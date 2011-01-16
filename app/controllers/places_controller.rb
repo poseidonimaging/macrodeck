@@ -37,10 +37,18 @@ class PlacesController < ApplicationController
 		@places = place_search["rows"]
 		@places_count = place_search["rows"].length == 0 ? 0 : place_search["total_rows"]
 	    end
-	elsif !params[:geo].nil?
-	    @page_title_log = "#{@locality.title} > Places > Geolocation"
-	    @places = Place.proximity_search("geocode", @lat, @lng, 1.0)
-	    @places_count = @places.length
+	elsif !params[:geo].nil? || current_tab == :location
+	    @page_title_long = "#{@locality.title} > Places > Location"
+	    @tab_buttons = [
+		["Tips", country_region_locality_places_path(@country, @region, @locality, :tab => "tips" )],
+		["Search", country_region_locality_places_path(@country, @region, @locality, :tab => "search")],
+		["Location", country_region_locality_places_path(@country, @region, @locality, :tab => "location"), "pressed"]
+	    ]
+
+	    if !@lat.nil? && !@lng.nil? && !@radius.nil
+		@places = Place.proximity_search("geocode", @lat, @lng, @radius)
+		@places_count = @places.length
+	    end
 	elsif params[:fare].nil? && params[:neighborhood].nil?
 	    startkey = @locality.path.dup.push(0)
 	    endkey = @locality.path.dup.push({})
@@ -131,9 +139,14 @@ class PlacesController < ApplicationController
 
 	# Gets the lat/lng from the supplied geo.
 	def process_geo
-	    unless params[:geo].nil?
+	    if !params[:geo].nil? && params[:geo].split.length == 2
 		@lat = params[:geo].split(",")[0].to_f
 		@lng = params[:geo].split(",")[1].to_f
+	    end
+	    if params[:radius].nil?
+		@radius = 1.0
+	    else
+		@radius = params[:radius].to_f
 	    end
 	end
 end
