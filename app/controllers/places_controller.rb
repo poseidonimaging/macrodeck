@@ -22,13 +22,21 @@ class PlacesController < ApplicationController
 	@neighborhoods = Neighborhood.view("by_path_alpha", :reduce => false, :startkey => nstartkey, :endkey => nendkey)
 	@fares = Place.view("by_fare", :reduce => true, :group => true, :group_level => 4, :startkey => nstartkey, :endkey => nendkey)["rows"]
 
-	if !params[:q].nil?
+	if !params[:q].nil? || current_tab == :search
 	    @page_title_long = "#{@locality.title} > Places > Search"
-	    query = "path:#{@locality.path.join("/")}/* AND ( #{process_query(params[:q])} )"
-	    RAILS_DEFAULT_LOGGER.info "Querying: #{query}"
-	    place_search = Place.search("common_fields", query, :limit => 10, :skip => @start_item)
-	    @places = place_search["rows"]
-	    @places_count = place_search["rows"].length == 0 ? 0 : place_search["total_rows"]
+	    @tab_buttons = [
+		["Tips", country_region_locality_places_path(@country, @region, @locality, :tab => "tips" )],
+		["Search", country_region_locality_places_path(@country, @region, @locality, :tab => "search"), "pressed"],
+		["Location", country_region_locality_places_path(@country, @region, @locality, :tab => "location")]
+	    ]
+
+	    if !params[:q].nil?
+		query = "path:#{@locality.path.join("/")}/* AND ( #{process_query(params[:q])} )"
+		RAILS_DEFAULT_LOGGER.info "Querying: #{query}"
+		place_search = Place.search("common_fields", query, :limit => 10, :skip => @start_item)
+		@places = place_search["rows"]
+		@places_count = place_search["rows"].length == 0 ? 0 : place_search["total_rows"]
+	    end
 	elsif !params[:geo].nil?
 	    @page_title_log = "#{@locality.title} > Places > Geolocation"
 	    @places = Place.proximity_search("geocode", @lat, @lng, 1.0)
