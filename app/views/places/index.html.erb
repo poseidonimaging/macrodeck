@@ -75,7 +75,7 @@
 	    <% end %>
 	</li>
     <% elsif !@lat.nil? && !@lng.nil? %>
-	<li class="alt nextbtn">
+	<li class="alt nextbtn-noajax">
 	    <% link_to country_region_locality_places_path(@country, @region, @locality, :tab => "location", :geo => "#{@lat},#{@lng}", :radius => (@radius * 2.0)) do %>
 		<span class="name">
 		    Increase search radius to <%= (@radius * 2.0).to_i %>mi
