@@ -535,17 +535,28 @@ module MacroDeck
 						{ "view_by" => "path_without_neighborhood_tips",
 						  "map" =>
 						  "function(doc) {
-							if (doc['couchrest-type'] == 'Place' && doc['path'] && doc['tips']) {
+							/*! include numbers.js */
+							if (doc.path && doc['couchrest-type'] && doc['couchrest-type'] == 'Place' && doc.tips) {
 								if (doc.path.length == 4) {
-									var path = eval(doc.path.toSource());
-									path[3] = doc.tips.length + '/' + path[3];
-									emit(path, 1);
+									var new_path = [doc.path[0], doc.path[1], doc.path[2], zeroPad(doc.tips.length, 3) + '/' + doc.path[3]];
+									emit(new_path, doc.tips.length);
 								} else if (doc.path.length == 5) {
-									var path = eval(doc.path.toSource());
-									path[4] = doc.tips.length + '/' + path[4];
-								} else {
-									emit(doc.path, 'ERROR');
+									var new_path = [doc.path[0], doc.path[1], doc.path[2], zeroPad(doc.tips.length, 3) + '/' + doc.path[4]];
+									emit(new_path, doc.tips.length);
 								}
+							}
+						  }",
+						  "reduce" => "_count"
+						},
+						# Emits the path but adds the number of tips to the last component.
+						{ "view_by" => "path_and_tips",
+						  "map" =>
+						  "function(doc) {
+							/*! include numbers.js */
+							if (doc.path && doc['couchrest-type'] && doc['couchrest-type'] == 'Place' && doc.tips) {
+								var new_path = doc.path.slice(0); // make a copy using .slice(0) trick
+								new_path[new_path.length - 1] = zeroPad(doc.tips.length, 3) + '/' + new_path[new_path.length - 1];
+								emit(new_path, doc.tips.length);
 							}
 						  }",
 						  "reduce" => "_count"
@@ -576,6 +587,24 @@ module MacroDeck
 										var path_and_fare = doc.path.slice(0, i);
 										path_and_fare.push(fare);
 										path_and_fare.push(doc.title);
+										emit(path_and_fare, 1);
+									}
+								});
+							}
+						  }",
+						  "reduce" => "_count"
+						},
+						# Same as above but by number of tips.
+						{ "view_by" => "fare_tips",
+						  "map" =>
+						  "function(doc) {
+							/*! include numbers.js */
+							if (doc.fare && doc['couchrest-type'] == 'Place' && doc.tips) {
+								doc.fare.map(function(fare) {
+									for(i = 0; i <= doc.path.length; i++) {
+										var path_and_fare = doc.path.slice(0, i);
+										path_and_fare.push(fare);
+										path_and_fare.push(zeroPad(doc.tips.length, 3) + '/' + doc.title);
 										emit(path_and_fare, 1);
 									}
 								});
