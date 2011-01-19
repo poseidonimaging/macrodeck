@@ -69,13 +69,18 @@ class PlacesController < ApplicationController
 	    @places_count = count_query["rows"].length == 0 ? 0 : count_query["rows"][0]["value"]
 	elsif params[:fare].nil? && !params[:neighborhood].nil?
 	    @page_title_long = "#{@locality.title} > #{Neighborhood.get(params[:neighborhood]).title}"
+	    @tab_buttons = [
+		["Tips", country_region_locality_places_path(@country, @region, @locality, :tab => "tips"), "pressed"],
+		["Search", country_region_locality_places_path(@country, @region, @locality, :tab => "search")],
+		["Location", country_region_locality_places_path(@country, @region, @locality, :tab => "location")]
+	    ]
 
-	    startkey = @locality.path.dup.push(params[:neighborhood]).push(0)
-	    endkey = @locality.path.dup.push(params[:neighborhood]).push({})
-	    @places = Place.view("by_path_alpha", :reduce => false, :startkey => startkey, :endkey => endkey, :limit => 10, :skip => @start_item)
-	    count_query = Place.view("by_path_alpha", :reduce => true, :startkey => startkey, :endkey => endkey)
+	    startkey = @locality.path.dup.push(params[:neighborhood]).push({})
+	    endkey = @locality.path.dup.push(params[:neighborhood]).push(0)
+	    @places = Place.view("by_path_and_tips", :reduce => false, :startkey => startkey, :endkey => endkey, :limit => 10, :skip => @start_item, :descending => true)
+	    count_query = Place.view("by_path_and_tips", :reduce => true, :startkey => startkey, :endkey => endkey, :descending => true)
 	    @places_count = count_query["rows"].length == 0 ? 0 : count_query["rows"][0]["value"]
-	    @back_button = [@locality.title, country_region_locality_places_path(params[:country_id], params[:region_id], params[:id])]
+	    @back_button = [@locality.title, country_region_locality_places_path(@country, @region, @locality, :tab => "tips")]
 	elsif !params[:fare].nil? && params[:neighborhood].nil?
 	    @page_title_long = "#{@locality.title} > #{params[:fare]}"
 
