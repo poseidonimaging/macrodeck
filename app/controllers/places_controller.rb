@@ -22,8 +22,20 @@ class PlacesController < ApplicationController
 	@neighborhoods = Neighborhood.view("by_path_alpha", :reduce => false, :startkey => nstartkey, :endkey => nendkey)
 	@fares = Place.view("by_fare", :reduce => true, :group => true, :group_level => 4, :startkey => nstartkey, :endkey => nendkey)["rows"]
 
+	# Missing foursquare venue ID
+	if !params[:unmatched].nil? && current_tab == :tips
+	    @page_title_long = "#{@locality.title} > Places > Places Not Matched to Foursquare"
+	    @tab_buttons = [
+		["Tips", country_region_locality_places_path(@country, @region, @locality, :tab => "tips" ), "pressed"],
+		["Search", country_region_locality_places_path(@country, @region, @locality, :tab => "search")],
+		["Location", country_region_locality_places_path(@country, @region, @locality, :tab => "location")]
+	    ]
+
+	    @places = Place.view("by_missing_foursquare_venue_id", :reduce => false, :limit => 10, :skip => @start_item)
+	    count_query = Place.view("by_missing_foursquare_venue_id", :reduce => false, :limit => 0, :include_docs => false)
+	    @places_count = count_query["total_rows"]
 	# Search.
-	if !params[:q].nil? || current_tab == :search
+	elsif !params[:q].nil? || current_tab == :search
 	    @page_title_long = "#{@locality.title} > Places > Search"
 	    @tab_buttons = [
 		["Tips", country_region_locality_places_path(@country, @region, @locality, :tab => "tips" )],
