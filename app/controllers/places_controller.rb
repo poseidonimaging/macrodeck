@@ -148,6 +148,12 @@ class PlacesController < ApplicationController
 	    @neighborhoods = Neighborhood.view("by_path_alpha", :reduce => false, :startkey => nstartkey, :endkey => nendkey)
 	    @fares = Place.view("by_fare", ActiveSupport::OrderedHash[:reduce, true, :group, true, :group_level, 4, :startkey, nstartkey, :endkey, nendkey])["rows"]
 
+	    # UGLY HACK
+	    if params[:foursquare_venue_id]
+		@place.foursquare_venue_id = params[:foursquare_venue_id]
+		@place.save
+	    end
+
 	    respond_to do |format|
 		format.html # show.html.erb
 	    end
