@@ -63,6 +63,7 @@
 .feed .time		{ color: #E7902B; }
 .feed .tip,
 .feed .stdtext		{ color: #fff; font-size: 80%; font-weight: normal; display: block; padding: 10px 20px; }
+.feed .stdtext a	{ color: #fff; text-decoration: underline !important; }
 .feed .tipgiver,
 .feed .tipgiver a	{ color: #727E8A; }
 
