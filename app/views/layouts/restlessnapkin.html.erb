@@ -6,9 +6,9 @@
     <% if (@page_title.nil? || @page_title.blank?) && (@page_title_long.nil? || @page_title_long.blank?) %>
 	RestlessNapkin
     <% elsif !@page_title_long.nil? %>
-	<%=h @page_title_long %>
+	<%=h @page_title_long %> : RestlessNapkin
     <% else %>
-	<%=h @page_title %>
+	<%=h @page_title %> : RestlessNapkin
     <% end %>
 </title>
 <!-- We need to emulate IE7 only when we are to use excanvas -->
