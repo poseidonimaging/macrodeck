@@ -3,6 +3,10 @@ class HomeController < ApplicationController
 
 	def index
 		# static content
+		@tab_buttons = [
+		    ["Home", "/", "current"]
+		]
+		@page_title = "Home"
 	end
 	
 	# SXSW 08 Austin Events page
