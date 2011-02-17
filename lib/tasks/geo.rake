@@ -34,4 +34,9 @@ namespace :macrodeck do
 	    end
 	end
     end
+
+    desc "Rebuilds the Place geospatial index."
+    task :rebuild_place_index => :environment do
+	Place.proximity_search("geocode", 30.2650, -97.7406, 10)
+    end
 end
