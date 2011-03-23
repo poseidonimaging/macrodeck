@@ -58,7 +58,7 @@
     <% else %>
 	<!-- geo requires iterating the array since it's sorted by distance away -->
 	<% if !@places.nil? %>
-		<%= render :partial => "place", :collection => @places[0..50], :locals => { :view_mode => :compact, :country => @country, :region => @region, :locality => @locality } %>
+		<%= render :partial => "place", :collection => @places, :locals => { :view_mode => :compact, :country => @country, :region => @region, :locality => @locality } %>
 	<% end %>
     <% end %>
 
