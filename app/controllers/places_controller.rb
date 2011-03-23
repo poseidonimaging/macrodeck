@@ -60,7 +60,7 @@ class PlacesController < ApplicationController
 	    ]
 
 	    if !@lat.nil? && !@lng.nil? && !@radius.nil?
-		@places = Place.proximity_search("geocode", @lat, @lng, @radius, :stale => "ok")
+		@places = Place.proximity_search("geocode", @lat, @lng, @radius, :stale => "ok", :limit => 50)
 		@places_count = @places.length
 	    end
 	# Tips.
