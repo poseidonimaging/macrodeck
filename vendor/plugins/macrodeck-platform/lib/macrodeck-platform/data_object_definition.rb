@@ -12,6 +12,7 @@ module MacroDeck
 				base.property :validations
 				base.property :views
 				base.property :fulltext
+				base.property :title	# Used with introspection
 
 				base.view_by :object_type
 
@@ -46,11 +47,21 @@ module MacroDeck
 							symbol = field[0].to_sym.inspect
 							klass = field[1].inspect
 							if field[1].nil?
-								properties << "property #{symbol}"
+								properties << "property #{symbol}\n"
 							else
 								properties << "property #{symbol}, :type => #{klass}\n"
 							end
 							properties << "validates_presence_of #{symbol}\n" if field[2] == true
+
+							if field[3] && field[3].is_a?(String)
+								properties << "introspect #{symbol}, :title => #{field[3].inspect}\n"
+							elsif field[3] && field[3].is_a?(Hash)
+								title = field[3]["title"]
+								priority = field[3]["priority"]
+								internal = field[3]["internal"]
+								desc = field[3]["description"]
+								properties << "introspect #{symbol}, :title => #{title.inspect}, :description => #{desc.inspect}, :priority => #{priority.inspect}, :internal => #{internal.inspect}\n"
+							end
 						end
 
 						# Iterate the validations and define them.
@@ -84,6 +95,8 @@ module MacroDeck
 						class_body =
 							"class ::#{klass} < ::DataObject
 								include ::MacroDeck::PlatformSupport::DataObject
+								include ::MacroDeck::Introspection
+
 								#{properties}
 								#{validations}
 								#{views}
@@ -133,7 +146,7 @@ module MacroDeck
 						else
 							valid = false
 							self.fields.each do |field|
-								if field.is_a?(Array) && field.length == 3 && field[0].is_a?(String) && (field[1].is_a?(String) || field[1].is_a?(Array) || field[1].is_a?(NilClass)) && (field[2].is_a?(TrueClass) || field[2].is_a?(FalseClass))
+								if field.is_a?(Array) && (field.length == 3 || field.length == 4) && field[0].is_a?(String) && (field[1].is_a?(String) || field[1].is_a?(Array) || field[1].is_a?(NilClass)) && (field[2].is_a?(TrueClass) || field[2].is_a?(FalseClass))
 									valid = true
 								else
 									valid = false

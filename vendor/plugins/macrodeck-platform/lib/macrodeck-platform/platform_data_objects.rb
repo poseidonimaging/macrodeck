@@ -15,9 +15,10 @@ module MacroDeck
 			# a geographic polygon describing the country.
 			def country
 				{
+					"title" => "Country",
 					"object_type" => "Country",
 					"fields" => [
-						["abbreviation", "String", true]
+						["abbreviation", "String", true, "Abbreviation"]
 					],
 					"validations" => [
 						["validates_length_of", "abbreviation", { "is" => 2 }]
@@ -35,9 +36,10 @@ module MacroDeck
 			# value might be a polygon that represents the region.
 			def region
 				{
+					"title" => "State",
 					"object_type" => "Region",
 					"fields" => [
-						["abbreviation", "String", false]
+						["abbreviation", "String", false, "Abbreviation"]
 					],
 					"validations" => []
 				}.freeze
@@ -48,6 +50,7 @@ module MacroDeck
 			# is stored in the title, so we require a title.
 			def locality
 				{
+					"title" => "City",
 					"object_type" => "Locality",
 					"fields" => [],
 					"validations" => [
@@ -61,6 +64,7 @@ module MacroDeck
 			# Tulsa Hills, etc.
 			def neighborhood
 				{
+					"title" => "Neighborhood",
 					"object_type" => "Neighborhood",
 					"fields" => [],
 					"validations" => [
@@ -74,14 +78,15 @@ module MacroDeck
 			# self explanitory.
 			def event
 				{
+					"title" => "Happening",
 					"object_type" => "Event",
 					"fields" => [
-						["start_time", "Time", true],
-						["end_time", "Time", false],
-						["recurrence", "String", false],
-						["event_type", "String", false],
-						["bitly_hash", "String", false],
-						["place", "Hash", false]
+						["start_time", "Time", true, "Start time"],
+						["end_time", "Time", false, "End time"],
+						["recurrence", "String", false, { "title" => "Recurrence", "internal" => true }],
+						["event_type", "String", false, "Event type"],
+						["bitly_hash", "String", false, { "title" => "Bit.ly hash", "internal" => true }],
+						["place", "Hash", false, { "title" => "Place information", "internal" => true }]
 					],
 					"fulltext" => [
 						["common_fields",
@@ -311,24 +316,25 @@ module MacroDeck
 			# fields of anything.. see below for more info.
 			def place
 				{
+					"title" => "Place",
 					"object_type" => "Place",
 					"fields" => [
-						["address", "String", false],
-						["postal_code", "String", false],
-						["phone_number", "String", false],
-						["url", "String", false],
-						["geo", ["Float"], false], 
-						["fare", ["String"], false],
-						["features", ["String"], false],
-						["parking", "String", false],
-						["hours", "Hash", false],
-						["atmosphere", "String", false],
-						["alcohol", ["String"], false],
-						["credit_cards_accepted", ["String"], false],
-						["reservations", "String", false],
-						["bitly_hash", "String", false],
-						["foursquare_venue_id", "String", false],
-						["tips", nil, false]
+						["address", "String", false, { "title" => "Address", "priority" => 10 }],
+						["postal_code", "String", false, { "title" => "Postal code", "priority" => 10 }],
+						["phone_number", "String", false, { "title" => "Phone number", "priority" => 10 }],
+						["url", "String", false, "URL"],
+						["geo", ["Float"], false, "Geolocation"], 
+						["fare", ["String"], false, "Fare"],
+						["features", ["String"], false, "Features"],
+						["parking", "String", false, "Parking"],
+						["hours", "Hash", false, "Hours"],
+						["atmosphere", "String", false, "Atmosphere"],
+						["alcohol", ["String"], false, "Alcohol"],
+						["credit_cards_accepted", ["String"], false, "Credit cards accepted"],
+						["reservations", "String", false, "Reservations"],
+						["bitly_hash", "String", false, { "title" => "Bit.ly hash", "internal" => true }],
+						["foursquare_venue_id", "String", false, { "title" => "Foursquare venue ID", "internal" => true }],
+						["tips", nil, false, "Tips"]
 					],
 					"fulltext" => [
 						["common_fields",
