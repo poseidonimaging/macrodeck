@@ -1,3 +1,4 @@
+<% return if place.nil? %>
 <% viewmode = :compact if local_assigns[:viewmode].nil? %>
 <% events = [] if local_assigns[:events].nil? %>
 
@@ -6,9 +7,7 @@
 <% elsif viewmode == :compact %>
     <li class="vcard <%= cycle("odd", "even") %>">
 	<% if !place.foursquare_venue_id.nil? && !place.tips.nil? %>
-		<span class="count">
-	   		<%= place.tips.length %>
-		</span>
+	    <span class="count"><%= place.tips.length %></span>
 	<% end %>
 	<span class="comment">
 	    <%
