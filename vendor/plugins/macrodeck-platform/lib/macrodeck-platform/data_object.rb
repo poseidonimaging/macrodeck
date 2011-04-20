@@ -74,6 +74,16 @@ module MacroDeck
 					}",
 					:reduce => "_count"
 				}
+
+				# Add a view on DataObject only that lets you look up an ID and get the type.
+				if base.name.to_s == "DataObject"
+					base.view_by :id, {
+						:map =>
+						"function(doc) {
+							emit(doc['_id'], doc['couchrest-type']);
+						}"
+					}
+				end
 				
 				# Validations that happen on this class.
 				base.validates_presence_of :path
@@ -82,6 +92,34 @@ module MacroDeck
 				base.validates_presence_of :updated_by
 				base.validates_presence_of :owned_by
 				base.validates_length_of :path, :minimum => 1
+			end
+
+			# Returns an array containing types of parent objects.
+			#
+			# An example might be:
+			#
+			#   [ ["Country", "country-id"], ["Region", "region-id"], ["Locality", "locality-id"] ]
+			#
+			# You'd use this to, for example, determine the URL to an object.
+			def expanded_path
+				ids = self.path.dup # CouchRest bug that overwrites path sometimes.
+				ids.pop # Last item will be self, and we can fill that in automagically.
+				exp_path = [] # Init to empty array.
+
+				# Check for ids being longer than 0 (which means this item is a root item)
+				if ids.length > 0
+					# Use ::DataObject explicitly to make things work in subclasses.
+					result = ::DataObject.view("by_id", :include_docs => false, :keys => ids)
+
+					if result["rows"]
+						exp_path = result["rows"].collect { |r| [ r["value"], r["key"] ] }
+					end
+				end
+
+				# Add this item's info.
+				exp_path << [ self["couchrest-type"], self["_id"] ]
+
+				return exp_path
 			end
 
 			# Returns the parent of the object. If the object is at the root, this will return [].
