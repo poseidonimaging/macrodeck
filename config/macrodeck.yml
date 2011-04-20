@@ -1,0 +1,5 @@
+---
+development:
+  layout: layout.html
+  view_dir: lib/macrodeck-app/views
+  path_prefix: /admin/
