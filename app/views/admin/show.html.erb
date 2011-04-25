@@ -39,4 +39,6 @@
 <% end %>
 </p>
 
-<%= erb :'_list.html', :locals => { :objects => @children } %>
+<% if @children && @children.length > 0 %>
+    <%= erb :'_list.html', :locals => { :objects => @children } %>
+<% end %>
