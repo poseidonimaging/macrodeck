@@ -65,7 +65,7 @@
 	</p>
 	<ul>
 	    <% @root_items.each do |i| %>
-		<li><a href="<%= item_path(i) %>"><%=h i.title %></a></li>
+		<li><a href="<%= item_path(i) %>"><%=h i.title %></a> (<%=h i.class.to_s %>)</li>
 	    <% end %>
 	</ul>
     </div>
