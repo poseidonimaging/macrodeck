@@ -1,7 +1,6 @@
-<h1>MacroDeck Platform Test App</h1>
 <%= MacroDeck::TitleBehavior.new(@item).to_html %>
 
-<p><a href="<%= item_path(@item) %>/edit">edit</a></p>
+<p><a href="<%= item_path(@item) %>/edit" class="btn btn-green">edit</a></p>
 
 <%
 	num_fields_printed = 0
@@ -36,7 +35,7 @@
 
 <p>new:
 <% @data_objects.each do |o| %>
-	<a href="<%= item_path(@item) %><%= h o.object_type.underscore.pluralize %>/new"><%= h o.object_type.downcase %></a> 
+	<a href="<%= item_path(@item) %><%= h o.object_type.underscore.pluralize %>/new" class="btn"><%= h o.object_type.downcase %></a>
 <% end %>
 </p>
 
