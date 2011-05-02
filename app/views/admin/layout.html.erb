@@ -97,6 +97,12 @@
 			<h1>
 			    <% if (@page_title.nil? || @page_title.blank?) && (@page_title_long.nil? || @page_title_long.blank?) %>
 				RestlessNapkin
+				<% if @item_path %>
+					<% @item_path[0..-2].each do |item| %>
+						&rarr; <%= item.title %>
+					<% end %>
+					&rarr; <span><%= h @item_path[-1].title %></span>
+				<% end %>
 			    <% elsif !@page_title_long.nil? %>
 				<%=h @page_title_long %>
 			    <% else %>
