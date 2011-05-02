@@ -81,10 +81,34 @@ module MacroDeck
 					return "#{self.configuration.path_prefix.to_s.dup}#{klass}"
 				end
 			end
+
+			# Populates @item_path from the item path (see url_path_to_item_path)
+			def get_item_path(ids)
+				docs = ::DataObject.database.get_bulk(ids)
+				if docs["rows"]
+					@item_path = docs["rows"].collect { |d| ::DataObject.create_from_database(d["doc"]) }
+				else
+					@item_path = nil
+				end
+			end
 		end
 
 		get '/' do
 			@data_objects = DataObjectDefinition.all
+			@root_items = []
+			reduce_root = ::DataObject.view("by_path_alpha", :include_docs => false, :reduce => true, :group => true, :group_level => 1)
+			root_ids = []
+			if reduce_root["rows"]
+				reduce_root["rows"].each do |r|
+					if r["key"][0].include?("/")
+						root_ids << r["key"][0].split("/")[1]
+					end
+				end
+
+				docs = ::DataObject.database.get_bulk(root_ids)
+				@root_items = docs["rows"].collect { |d| ::DataObject.create_from_database(d["doc"]) } if docs["rows"]
+			end
+
 			erb :"home.html", :layout => self.configuration.layout.to_sym
 		end
 
@@ -139,6 +163,8 @@ module MacroDeck
 			@object = get_platform_object(splat[-1])
 
 			if !@object.nil?
+				get_item_path(url_path_to_item_path(params[:splat][0]))
+
 				@item = @object.new
 				@item.id = UUIDTools::UUID.random_create.to_s
 				@item.path = url_path_to_item_path(params[:splat][0]) << @item.id
@@ -163,6 +189,7 @@ module MacroDeck
 
 			if !@object.nil?
 				@item = @object.get(splat[-1])
+				get_item_path(url_path_to_item_path(params[:splat][0]))
 
 				if !@item.nil?
 					erb :"edit.html", :layout => self.configuration.layout.to_sym, :locals => { :item => @item, :object => @object }
@@ -205,6 +232,8 @@ module MacroDeck
 				@object = get_platform_object(splat[-1])
 
 				if !@object.nil?
+					get_item_path(url_path_to_item_path(params[:splat][0]))
+
 					path = url_path_to_item_path(params[:splat][0])
 					startkey = path.dup.push(0)
 					endkey = path.dup.push({})
@@ -229,6 +258,8 @@ module MacroDeck
 					@item = @object.get(splat[-1])
 
 					if !@item.nil?
+						get_item_path(url_path_to_item_path(params[:splat][0]))
+
 						# Get children
 						grouplevel = @item.path.dup.length + 1
 						startkey = @item.path.dup.push(0)
