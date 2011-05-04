@@ -7,3 +7,102 @@ update the template. Simply copy an existing style from style.css to
 this file, and modify it to your liking. 
 
 */
+
+/* fix the images to point at the new location */
+blockquote,q {
+	background-image: url("/images/administry/quote.png");
+}
+label.ok {
+	background-image: url("/images/administry/valid.gif");
+}
+.box-info {
+	background-image: url("/images/administry/information.png");
+}
+.box-warning {
+	background-image: url("/images/administry/error.png");
+}
+.box-error {
+	background-image: url("/images/administry/exclamation.png");
+}
+.box-success {
+	background-image: url("/images/administry/accept.png");
+}
+.sf-sub-indicator {
+	background-image: url('/images/administry/arrows-ffffff.png');
+}
+.sf-shadow ul {
+	background-image: url('/images/administry/shadow.png');
+}
+#pagetitle input {
+	background-image: url("/images/administry/search.gif");
+}
+.btn {
+	background-image: url("/images/administry/btn-overlay.png");
+}
+.icon-add {
+	background-image: url("/images/administry/add.png");
+}
+.icon-ok {
+	background-image: url("/images/administry/accept.png");
+}
+.icon-cancel {
+	background-image: url("/images/administry/cancel.png");
+}
+.content-box-closed  header{
+	background-image: url("/images/administry/toggle.gif");
+}
+span.label {
+	background-image: url("/images/administry/tag-bg.gif");
+}
+div.wysiwyg ul.panel li a {
+	background-image: url('/images/administry/jquery.wysiwyg.gif');
+}
+.paginate_disabled_previous {
+	background-image: url('/images/administry/datatable/back_disabled.png');
+}
+
+.paginate_enabled_previous {
+	background-image: url('/images/administry/datatable/back_enabled.png');
+}
+
+.paginate_disabled_next {
+	background-image: url('/images/administry/datatable/forward_disabled.png');
+}
+
+.paginate_enabled_next {
+	background-image: url('/images/administry/datatable/forward_enabled.png');
+}
+.sorting_asc {
+	background-image: url('/images/administry/datatable/sort_asc.png');
+}
+
+.sorting_desc {
+	background-image: url('/images/administry/datatable/sort_desc.png');
+}
+
+.sorting {
+	background-image: url('/images/administry/datatable/sort_both.png');
+}
+
+.sorting_asc_disabled {
+	background-image: url('/images/administry/datatable/sort_asc_disabled.png');
+}
+
+.sorting_desc_disabled {
+	background-image: url('/images/administry/datatable/sort_desc_disabled.png');
+}
+table.stylized td.title > div {
+	background-image: url("/images/administry/toggle-small-expand.png");
+}
+div#nyroModalFull div#nyroModalLoading {
+	background-image: url(/images/administry/nyro/ajaxLoader.gif);
+}
+div#nyroModalFull div#nyroModalWrapper a#closeBut {
+	background-image: url(/images/administry/nyro/close.gif);
+}
+div#nyroModalFull div#nyroModalWrapper div#nyroModalContent a.nyroModalPrev:hover {
+	background-image: url(/images/administry/nyro/prev.gif);
+}
+div#nyroModalFull div#nyroModalWrapper div#nyroModalContent a.nyroModalNext:hover {
+	background-image: url(/images/administry/nyro/next.gif);
+}
