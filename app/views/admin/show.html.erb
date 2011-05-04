@@ -1,6 +1,4 @@
-<%= MacroDeck::TitleBehavior.new(@item).to_html %>
-
-<p><a href="<%= item_path(@item) %>/edit" class="btn btn-green">edit</a></p>
+<%= MacroDeck::TitleBehavior.new(@item).to_html(:append => " <a href=\"#{item_path(@item)}edit/\" class=\"btn btn-green\">edit</a>") %>
 
 <%
 	num_fields_printed = 0
