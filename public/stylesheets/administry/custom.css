@@ -10,99 +10,92 @@ this file, and modify it to your liking.
 
 /* fix the images to point at the new location */
 blockquote,q {
-	background-image: url("/images/administry/quote.png");
+	background-image: url("/images/administry/quote.png") !important;
 }
 label.ok {
-	background-image: url("/images/administry/valid.gif");
+	background-image: url("/images/administry/valid.gif") !important;
 }
 .box-info {
-	background-image: url("/images/administry/information.png");
+	background-image: url("/images/administry/information.png") !important;
 }
 .box-warning {
-	background-image: url("/images/administry/error.png");
+	background-image: url("/images/administry/error.png") !important;
 }
 .box-error {
-	background-image: url("/images/administry/exclamation.png");
+	background-image: url("/images/administry/exclamation.png") !important;
 }
 .box-success {
-	background-image: url("/images/administry/accept.png");
+	background-image: url("/images/administry/accept.png") !important;
 }
 .sf-sub-indicator {
-	background-image: url('/images/administry/arrows-ffffff.png');
+	background-image: url('/images/administry/arrows-ffffff.png') !important;
 }
 .sf-shadow ul {
-	background-image: url('/images/administry/shadow.png');
+	background-image: url('/images/administry/shadow.png') !important;
 }
 #pagetitle input {
-	background-image: url("/images/administry/search.gif");
+	background-image: url("/images/administry/search.gif") !important;
 }
 .btn {
-	background-image: url("/images/administry/btn-overlay.png");
+	background-image: url("/images/administry/btn-overlay.png") !important;
 }
 .icon-add {
-	background-image: url("/images/administry/add.png");
+	background-image: url("/images/administry/add.png") !important;
 }
 .icon-ok {
-	background-image: url("/images/administry/accept.png");
+	background-image: url("/images/administry/accept.png") !important;
 }
 .icon-cancel {
-	background-image: url("/images/administry/cancel.png");
+	background-image: url("/images/administry/cancel.png") !important;
 }
 .content-box-closed  header{
-	background-image: url("/images/administry/toggle.gif");
+	background-image: url("/images/administry/toggle.gif") !important;
 }
 span.label {
-	background-image: url("/images/administry/tag-bg.gif");
+	background-image: url("/images/administry/tag-bg.gif") !important;
 }
 div.wysiwyg ul.panel li a {
-	background-image: url('/images/administry/jquery.wysiwyg.gif');
+	background-image: url('/images/administry/jquery.wysiwyg.gif') !important;
 }
 .paginate_disabled_previous {
-	background-image: url('/images/administry/datatable/back_disabled.png');
+	background-image: url('/images/administry/datatable/back_disabled.png') !important;
 }
-
 .paginate_enabled_previous {
-	background-image: url('/images/administry/datatable/back_enabled.png');
+	background-image: url('/images/administry/datatable/back_enabled.png') !important;
 }
-
 .paginate_disabled_next {
-	background-image: url('/images/administry/datatable/forward_disabled.png');
+	background-image: url('/images/administry/datatable/forward_disabled.png') !important;
 }
-
 .paginate_enabled_next {
-	background-image: url('/images/administry/datatable/forward_enabled.png');
+	background-image: url('/images/administry/datatable/forward_enabled.png') !important;
 }
 .sorting_asc {
-	background-image: url('/images/administry/datatable/sort_asc.png');
+	background-image: url('/images/administry/datatable/sort_asc.png') !important;
 }
-
 .sorting_desc {
-	background-image: url('/images/administry/datatable/sort_desc.png');
+	background-image: url('/images/administry/datatable/sort_desc.png') !important;
 }
-
 .sorting {
-	background-image: url('/images/administry/datatable/sort_both.png');
+	background-image: url('/images/administry/datatable/sort_both.png') !important;
 }
-
 .sorting_asc_disabled {
-	background-image: url('/images/administry/datatable/sort_asc_disabled.png');
+	background-image: url('/images/administry/datatable/sort_asc_disabled.png') !important;
 }
-
 .sorting_desc_disabled {
-	background-image: url('/images/administry/datatable/sort_desc_disabled.png');
+	background-image: url('/images/administry/datatable/sort_desc_disabled.png') !important;
 }
 table.stylized td.title > div {
-	background-image: url("/images/administry/toggle-small-expand.png");
+	background-image: url("/images/administry/toggle-small-expand.png") !important;
 }
 div#nyroModalFull div#nyroModalLoading {
-	background-image: url(/images/administry/nyro/ajaxLoader.gif);
+	background-image: url(/images/administry/nyro/ajaxLoader.gif) !important;
 }
 div#nyroModalFull div#nyroModalWrapper a#closeBut {
-	background-image: url(/images/administry/nyro/close.gif);
+	background-image: url(/images/administry/nyro/close.gif) !important;
 }
 div#nyroModalFull div#nyroModalWrapper div#nyroModalContent a.nyroModalPrev:hover {
-	background-image: url(/images/administry/nyro/prev.gif);
+	background-image: url(/images/administry/nyro/prev.gif) !important;
 }
 div#nyroModalFull div#nyroModalWrapper div#nyroModalContent a.nyroModalNext:hover {
-	background-image: url(/images/administry/nyro/next.gif);
+	background-image: url(/images/administry/nyro/next.gif) !important;
 }
