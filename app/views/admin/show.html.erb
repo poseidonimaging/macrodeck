@@ -1,14 +1,14 @@
-<%= MacroDeck::TitleBehavior.new(@item).to_html(:append => " <a href=\"#{item_path(@item)}edit/\" class=\"btn btn-green\">edit</a>") %>
-
-<%
-	num_fields_printed = 0
-	if @object.fields_by_priority
-		@object.fields_by_priority.each do |priority_set|
-			if num_fields_printed <= 5
-				priority_set[1].each do |f|
+<div class="colgroup">
+    <div class="column width4 first">
+    <%= MacroDeck::TitleBehavior.new(@item).to_html(:append => " <a href=\"#{item_path(@item)}edit/\" class=\"btn btn-green\">edit</a>") %>
+    <%
+	    if @object.fields_by_priority
+		    @object.fields_by_priority.each do |priority_set|
+			    priority_set[1].each do |f|
+				    unless ["geo"].include?(f.to_s)
 					behavior = "#{f.to_s}_behavior".camelize
 					behavior = "MacroDeck::#{behavior}"
-%>
+	%>
 					<% begin %>
 						<%= behavior.constantize.new(@item).to_html %>
 					<% rescue NameError %>
@@ -21,22 +21,32 @@
 							<% end %>
 						<% end %>
 					<% end %>
-					<% num_fields_printed = num_fields_printed + 1 %>
-<%
-				end
-			end
-		end
-	end
-%>
+    <%
+				    end
+			    end
+		    end
+	    end
+    %>
+    </div>
+    <div class="column width4 ta-right">
+	<% if @item.respond_to?(:geo) %>
+	    <%= MacroDeck::GeoBehavior.new(@item).to_html %>
+	<% end %>
+    </div>
+</div>
+<div class="colgroup">
+    <div class="column width8 first">
+	<h2>Children</h2>
 
-<h2>Children</h2>
+	<p>new:
+	<% @data_objects.each do |o| %>
+		<a href="<%= item_path(@item) %><%= h o.object_type.underscore.pluralize %>/new" class="btn"><%= h o.object_type.downcase %></a>
+	<% end %>
+	</p>
 
-<p>new:
-<% @data_objects.each do |o| %>
-	<a href="<%= item_path(@item) %><%= h o.object_type.underscore.pluralize %>/new" class="btn"><%= h o.object_type.downcase %></a>
-<% end %>
-</p>
-
-<% if @children && @children.length > 0 %>
-    <%= erb :'_list.html', :locals => { :objects => @children } %>
-<% end %>
+	<% if @children && @children.length > 0 %>
+	    <%= erb :'_list.html', :locals => { :objects => @children } %>
+	<% end %>
+    </div>
+</div>
+<p class="ta-right">ID: <code><%= @item.id %></code></p>
