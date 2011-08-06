@@ -104,14 +104,14 @@ div#nyroModalFull div#nyroModalWrapper div#nyroModalContent a.nyroModalNext:hove
 /* jQuery UI tweaks */
 /* turn off the today highlight */
 .ui-datepicker-today .ui-state-highlight {
-	border: 1px solid #ccc;
-	background: #f6f6f6 url(https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/themes/ui-lightness/images/ui-bg_glass_100_f6f6f6_1x400.png);
-	font-weight: bold;
+	border: 1px solid #ccc !important;
+	background: #f6f6f6 url(https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/themes/ui-lightness/images/ui-bg_glass_100_f6f6f6_1x400.png) !important;
+	font-weight: bold !important;
 }
 /* make current day stand out more */
 .ui-datepicker-current-day .ui-state-default {
-	border: 1px solid #fbd850;
-	background: #ffffff url(https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/themes/ui-lightness/images/ui-bg_glass_65_ffffff_1x400.png);
-	font-weight: bold;
-	color: #eb8f00;
+	border: 1px solid #fbd850 !important;
+	background: #ffffff url(https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/themes/ui-lightness/images/ui-bg_glass_65_ffffff_1x400.png) !important;
+	font-weight: bold !important;
+	color: #eb8f00 !important;
 }
