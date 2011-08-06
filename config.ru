@@ -21,6 +21,13 @@ require "behaviors/tips_behavior"
 require "behaviors/title_behavior"
 require "behaviors/url_behavior"
 
+# Configuration to enable Sinatra logging
+Sinatra::Base.set(:raise_errors, true)
+log = File.new(File.join(Rails.root, "log", "sinatra.log"), "a")
+err = File.new(File.join(Rails.root, "log", "sinatra.err"), "a")
+STDOUT.reopen(log)
+STDERR.reopen(err)
+
 # Load MacroDeck configuration.
 cfg = MacroDeck::Config.new(File.join(Rails.root, "config", "macrodeck.yml"))
 
