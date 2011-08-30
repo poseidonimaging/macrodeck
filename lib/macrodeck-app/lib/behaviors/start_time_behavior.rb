@@ -1,14 +1,20 @@
+require "behaviors/time_behavior"
+
 module MacroDeck
 	# Start Time is the time that the event would start.
-	class StartTimeBehavior < Behavior
+	class StartTimeBehavior < TimeBehavior
 		def to_html
 			return "<abbr title=\"#{@data_object.start_time}\" class=\"dtstart\">#{Time.parse(@data_object.start_time).getlocal.strftime("%b %e, %Y @ %l%P")}</abbr>"
 		end
 
 		def to_form_field
 			output = ""
-			output << form_label(:start_time)
-			output << form_input(:start_time, :text)
+			output << "<label for=\"start_time_date\">Start Date</label>"
+			output << date_picker_field("start_time", Time.new.strftime("%F")) if @data_object.start_time.nil?
+			output << date_picker_field("start_time", Time.parse(@data_object.start_time).getlocal.strftime("%F")) unless @data_object.start_time.nil?
+			output << "<label for=\"start_time_time\">Start Time</label>"
+			output << time_picker_field("start_time", Time.new.strftime("%H:%M")) if @data_object.start_time.nil?
+			output << time_picker_field("start_time", Time.parse(@data_object.start_time).getlocal.strftime("%H:%M")) unless @data_object.start_time.nil?
 			return output
 		end
 	end

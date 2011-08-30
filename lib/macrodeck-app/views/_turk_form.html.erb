@@ -1,0 +1,32 @@
+<%
+# item = a turk task
+multi_items = false
+behavior_class = ""
+
+if item["field"]["type"].is_a?(Array)
+	multi_items = true
+	if item["field"]["type"].include?("#")
+		behavior_class = "#{item["field"]["type"][0].split("#")[1]}_behavior".camelize
+		behavior_class = "MacroDeck::#{behavior_class}"
+	else
+		behavior_class = "#{item["field"]["type"][0]}_behavior".camelize
+		behavior_class = "MacroDeck::#{behavior_class}"
+	end
+else
+	if item["field"]["type"].include?("#")
+		behavior_class = "#{item["field"]["type"].split("#")[1]}_behavior".camelize
+		behavior_class = "MacroDeck::#{behavior_class}"
+	else
+		behavior_class = "#{item["field"]["type"]}_behavior".camelize
+		behavior_class = "MacroDeck::#{behavior_class}"
+	end
+end
+
+begin
+	behavior = behavior_class.constantize
+rescue NameError
+	behavior = nil
+end
+%>
+<h3><%= item["title"] %></h3>
+<%= erb :"_field.html", :locals => { :item => item, :field => item["field"]["name"], :behavior => behavior } %>

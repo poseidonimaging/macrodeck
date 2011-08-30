@@ -91,6 +91,43 @@ module MacroDeck
 					@item_path = nil
 				end
 			end
+
+			# Updates item with params.
+			def update_item_properties(item, params)
+				item.class.properties.each do |f|
+					unless params[f.name.to_sym].nil?
+						# Simple types can just be set, but more complicated things
+						# will use the behavior system to parse them.
+						if params[f.name.to_sym].is_a?(Hash)
+							behavior_class = "#{f.to_s}_behavior".camelize
+							behavior_class = "MacroDeck::#{behavior_class}"
+
+							begin
+								behavior = behavior_class.constantize.new(item)
+							rescue NameError
+								behavior = nil
+							end
+
+							if !behavior.nil? && !(item.class.introspections[f.name.to_sym][:internal] == true) && behavior.respond_to?(:parse_result)
+								item[f.name.to_sym] = behavior.parse_result(params[f.name.to_sym])
+							else
+								if params[f.name.to_sym] == ""
+									item[f.name.to_sym] = nil
+								else
+									item[f.name.to_sym] = params[f.name.to_sym]
+								end
+							end
+						else
+							if params[f.name.to_sym] == ""
+								item[f.name.to_sym] = nil
+							else
+								item[f.name.to_sym] = params[f.name.to_sym]
+							end
+						end
+					end
+				end
+				return item
+			end
 		end
 
 		get '/' do
@@ -130,11 +167,7 @@ module MacroDeck
 
 			if !@object.nil?
 				@item = @object.new
-
-				@object.properties.each do |f|
-					@item[f.name.to_sym] = params[f.name.to_sym] unless params[f.name.to_sym].nil?
-				end
-
+				update_item_properties(@item, params)
 				@item.created_by = "_system/MacroDeckApp"
 				@item.updated_by = "_system/MacroDeckApp"
 				@item.owned_by = "_system"
@@ -204,15 +237,7 @@ module MacroDeck
 			@object = get_platform_object(splat[-2])
 			if !@object.nil?
 				@item = @object.get(splat[-1])
-				@object.properties.each do |f|
-					unless params[f.name.to_sym].nil?
-						if @item[f.name.to_sym] == ""
-							@item[f.name.to_sym] = nil
-						else
-							@item[f.name.to_sym] = params[f.name.to_sym]
-						end
-					end
-				end
+				update_item_properties(@item, params)
 
 				# Set update properties, except the user isn't yet known.
 				@item.updated_by = "_system/MacroDeckApp"
@@ -273,10 +298,15 @@ module MacroDeck
 								end
 							end
 						end
-						if children_ids.length > 0
+						if !children_ids.nil? && children_ids.length > 0
 							docs = ::DataObject.database.get_bulk(children_ids)
 							if docs["rows"]
-								@children = docs["rows"].collect { |d| ::DataObject.create_from_database(d["doc"]) }
+								@children = docs["rows"].collect do |d|
+									if d["doc"]
+										::DataObject.create_from_database(d["doc"])
+									end
+								end
+								@children.compact!
 							end
 						else
 							@children = nil
