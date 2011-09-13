@@ -8,6 +8,12 @@ this file, and modify it to your liking.
 
 */
 
+/* force labels to always appear on their own line */
+label		{ display: block; }
+
+/* put a colon after a label */
+label:after	{ content: ":"; }
+
 /* fix the images to point at the new location */
 blockquote,q {
 	background-image: url("/images/administry/quote.png") !important;
