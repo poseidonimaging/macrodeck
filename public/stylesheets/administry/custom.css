@@ -8,6 +8,12 @@ this file, and modify it to your liking.
 
 */
 
+/* force labels to always appear on their own line */
+label		{ display: block; }
+
+/* put a colon after a label */
+label:after	{ content: ":"; }
+
 /* fix the images to point at the new location */
 blockquote,q {
 	background-image: url("/images/administry/quote.png") !important;
@@ -98,13 +104,4 @@ div#nyroModalFull div#nyroModalWrapper div#nyroModalContent a.nyroModalPrev:hove
 }
 div#nyroModalFull div#nyroModalWrapper div#nyroModalContent a.nyroModalNext:hover {
 	background-image: url(/images/administry/nyro/next.gif) !important;
-}
-
-
-/* jQuery UI tweaks */
-.ui-datepicker-current-day .ui-state-default {
-	border: 1px solid #fbd850 !important;
-	background: #ffffff url(https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/themes/ui-lightness/images/ui-bg_glass_65_ffffff_1x400.png) !important;
-	font-weight: bold !important;
-	color: #eb8f00 !important;
 }
