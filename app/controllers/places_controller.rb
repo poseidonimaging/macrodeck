@@ -28,7 +28,7 @@ class PlacesController < ApplicationController
 	    @tab_buttons = [
 		["Tips", country_region_locality_places_path(@country, @region, @locality, :tab => "tips" ), "pressed"],
 		["Search", country_region_locality_places_path(@country, @region, @locality, :tab => "search")],
-		["Location", country_region_locality_places_path(@country, @region, @locality, :tab => "location")]
+		["Nearby", country_region_locality_places_path(@country, @region, @locality, :tab => "location")]
 	    ]
 
 	    @places = Place.view("by_missing_foursquare_venue_id", :reduce => false, :limit => 10, :skip => @start_item)
@@ -40,7 +40,7 @@ class PlacesController < ApplicationController
 	    @tab_buttons = [
 		["Tips", country_region_locality_places_path(@country, @region, @locality, :tab => "tips" )],
 		["Search", country_region_locality_places_path(@country, @region, @locality, :tab => "search"), "pressed"],
-		["Location", country_region_locality_places_path(@country, @region, @locality, :tab => "location")]
+		["Nearby", country_region_locality_places_path(@country, @region, @locality, :tab => "location")]
 	    ]
 
 	    if !params[:q].nil?
@@ -56,7 +56,7 @@ class PlacesController < ApplicationController
 	    @tab_buttons = [
 		["Tips", country_region_locality_places_path(@country, @region, @locality, :tab => "tips" )],
 		["Search", country_region_locality_places_path(@country, @region, @locality, :tab => "search")],
-		["Location", country_region_locality_places_path(@country, @region, @locality, :tab => "location"), "pressed"]
+		["Nearby", country_region_locality_places_path(@country, @region, @locality, :tab => "location"), "pressed"]
 	    ]
 
 	    if !@lat.nil? && !@lng.nil? && !@radius.nil?
@@ -69,7 +69,7 @@ class PlacesController < ApplicationController
 	    @tab_buttons = [
 		["Tips", country_region_locality_places_path(@country, @region, @locality, :tab => "tips" ), "pressed"],
 		["Search", country_region_locality_places_path(@country, @region, @locality, :tab => "search")],
-		["Location", country_region_locality_places_path(@country, @region, @locality, :tab => "location")]
+		["Nearby", country_region_locality_places_path(@country, @region, @locality, :tab => "location")]
 	    ]
 	    # commented out because we don't do anything besides Austin yet.
 	    #@back_button = [@region.title, country_region_localities_path(params[:country_id], params[:region_id])]
@@ -84,7 +84,7 @@ class PlacesController < ApplicationController
 	    @tab_buttons = [
 		["Tips", country_region_locality_places_path(@country, @region, @locality, :tab => "tips"), "pressed"],
 		["Search", country_region_locality_places_path(@country, @region, @locality, :tab => "search")],
-		["Location", country_region_locality_places_path(@country, @region, @locality, :tab => "location")]
+		["Nearby", country_region_locality_places_path(@country, @region, @locality, :tab => "location")]
 	    ]
 
 	    startkey = @locality.path.dup.push(params[:neighborhood]).push({})
@@ -98,7 +98,7 @@ class PlacesController < ApplicationController
 	    @tab_buttons = [
 		["Tips", country_region_locality_places_path(@country, @region, @locality, :tab => "tips"), "pressed"],
 		["Search", country_region_locality_places_path(@country, @region, @locality, :tab => "search")],
-		["Location", country_region_locality_places_path(@country, @region, @locality, :tab => "location")]
+		["Nearby", country_region_locality_places_path(@country, @region, @locality, :tab => "location")]
 	    ]
 
 	    startkey = @locality.path.dup.push(params[:fare]).push({})
@@ -112,7 +112,7 @@ class PlacesController < ApplicationController
 	    @tab_buttons = [
 		["Tips", country_region_locality_places_path(@country, @region, @locality, :tab => "tips"), "pressed"],
 		["Search", country_region_locality_places_path(@country, @region, @locality, :tab => "search")],
-		["Location", country_region_locality_places_path(@country, @region, @locality, :tab => "location")]
+		["Nearby", country_region_locality_places_path(@country, @region, @locality, :tab => "location")]
 	    ]
 
 	    startkey = @locality.path.dup.push(params[:neighborhood]).push(params[:fare]).push({})
