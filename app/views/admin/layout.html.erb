@@ -99,7 +99,7 @@
 				RestlessNapkin
 				<% if @item_path && @item_path.length > 0 %>
 					<% @item_path[0..-2].each do |item| %>
-						&rarr; <%= item.title %>
+						&rarr; <a href="<%= h item_path(item) %>"><%= item.title %></a>
 					<% end %>
 					&rarr; <span><%= h @item_path[-1].title %></span>
 				<% end %>
