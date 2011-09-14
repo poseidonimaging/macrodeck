@@ -96,7 +96,7 @@
 		<div class="wrapper">
 			<h1>
 			    <% if (@page_title.nil? || @page_title.blank?) && (@page_title_long.nil? || @page_title_long.blank?) %>
-				RestlessNapkin
+				<a href="/admin/">RestlessNapkin</a>
 				<% if @item_path && @item_path.length > 0 %>
 					<% @item_path[0..-2].each do |item| %>
 						&rarr; <a href="<%= h item_path(item) %>"><%= item.title %></a>
