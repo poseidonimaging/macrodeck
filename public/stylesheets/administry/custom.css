@@ -9,10 +9,15 @@ this file, and modify it to your liking.
 */
 
 /* force labels to always appear on their own line */
-label		{ display: block; }
+label			{ display: block; }
 
 /* put a colon after a label */
-label:after	{ content: ":"; }
+label:after		{ content: ":"; }
+
+/* change the style of links in the header */
+#pagetitle h1 a:link,
+#pagetitle h1 a:visited	{ color: #fff; text-decoration: underline; }
+#pagetitle h1 a:hover	{ color: #FFE5E3; text-decoration: underline; }
 
 /* fix the images to point at the new location */
 blockquote,q {
