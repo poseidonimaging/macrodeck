@@ -49,4 +49,18 @@
 	<% end %>
     </div>
 </div>
-<p class="ta-right">ID: <code><%= @item.id %></code></p>
+<p class="ta-right">
+	<strong>ID:</strong> <code><%= @item.id %></code>
+	&bull; <strong>Created:</strong>
+	<% if @item.created_at.nil? %>
+		Unknown
+	<% else %>
+		<%= Time.parse(@item.created_at).getlocal.strftime("%a %b %e, %Y at %I:%M %p") %>
+	<% end %>
+	&bull; <strong>Updated:</strong>
+	<% if @item.updated_at.nil? %>
+		Not Updated
+	<% else %>
+		<%= Time.parse(@item.updated_at).getlocal.strftime("%a %b %e, %Y at %I:%M %p") %>
+	<% end %>
+</p>
