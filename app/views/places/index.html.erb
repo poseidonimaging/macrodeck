@@ -1,7 +1,7 @@
 <% @start_item = 0 if @start_item.nil? %>
 
 <% unless request.xhr? %>
-    <% if current_tab == :search && params[:q].nil? %>
+    <% if (current_tab == nil || current_tab == :search) && params[:q].nil? %>
 	<% content_for :before_content do %>
 	    <div class="searchbox">
 		    <% form_tag country_region_locality_places_path(@country, @region, @locality), :method => :get do %>
