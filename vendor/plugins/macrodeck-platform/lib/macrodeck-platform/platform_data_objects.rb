@@ -5,9 +5,61 @@ module MacroDeck
 		class << self
 			# Returns an array of the objects defined here.
 			def objects
-				["country", "region", "locality", "neighborhood", "place", "event"].freeze
+				["country", "region", "locality", "neighborhood", "place", "event", "special_photo"].freeze
 			end
-			
+
+			# A special photo is a photo of a special (duh!). Turks can use a photo
+			# to fill out an Event.
+			def special_photo
+				{
+					"title" => "Special photo",
+					"object_type" => "SpecialPhoto",
+					"fields" => [],
+					"validations" => [],
+					"has_attachment" => true,
+					"turk_fields" => [
+						{ "name" => "DaysOfWeek", "type" => ["Integer#DayOfWeek"] },
+						{ "name" => "StartTime", "type" => "Time" },
+						{ "name" => "EndTime", "type" => "Time" },
+						{ "name" => "Title", "type" => "String", "object_type" => "Event", "object_field" => "title" }
+					],
+					"turk_tasks" => [
+						{
+							"id" => "Task_DaysOfWeek",
+							"prerequisites" => [],
+							"title" => "What days of the week are shown in the photo?",
+							"show_fields" => ["_attachment"],
+							"turk_field" => "DaysOfWeek",
+							"answer_count" => 0
+						},
+						{
+							"id" => "Task_StartTime",
+							"prerequisites" => ["Task_DaysOfWeek"],
+							"title" => "What time does the event on $$DaysOfWeek$$ start?",
+							"show_fields" => ["_attachment"],
+							"turk_field" => "StartTime",
+							"answer_count" => 0
+						},
+						{
+							"id" => "Task_EndTime",
+							"prerequisites" => ["Task_DaysOfWeek"],
+							"title" => "What time does the event on $$DaysOfWeek$$ end?",
+							"show_fields" => ["_attachment"],
+							"turk_field" => "EndTime",
+							"answer_count" => 0
+						},
+						{
+							"id" => "Task_Title",
+							"prerequisites" => ["Task_DaysOfWeek", "Task_StartTime"],
+							"title" => "What is the title for the event on $$DaysOfWeek$$ at $$StartTime$$?",
+							"show_fields" => ["_attachment"],
+							"turk_field" => "Title",
+							"answer_count" => 0
+						}
+					]
+				}
+			end
+
 			# A country is a simple object. The name of the
 			# country is stored in title (provided by DataObject)
 			# and the abbreviation is required and must be two
@@ -83,7 +135,7 @@ module MacroDeck
 					"fields" => [
 						["start_time", "Time", true, "Start time"],
 						["end_time", "Time", false, "End time"],
-						["recurrence", "String", false, { "title" => "Recurrence", "internal" => true }],
+						["recurrence", "String", false, "Recurrence"],
 						["event_type", "String", false, "Event type"],
 						["bitly_hash", "String", false, { "title" => "Bit.ly hash", "internal" => true }],
 						["place", "Hash", false, { "title" => "Place information", "internal" => true }]
@@ -681,29 +733,39 @@ module MacroDeck
 					new_definition.define!
 
 					db = CouchRest.database!(MacroDeck::Platform.database_name)
+
 					# Get the design doc.
-					if definition["fulltext"] || definition["spatial"]
-						doc = db.get("_design/#{definition["object_type"]}")
-						if doc
+					doc = db.get("_design/#{definition["object_type"]}")
+
+					if doc
+						if !definition["has_attachment"].nil?
+							doc["has_attachment"] = definition["has_attachment"]
+						end
+						if definition["turk_fields"]
+							doc["turk_fields"] = definition["turk_fields"]
+						end
+						if definition["turk_tasks"]
+							doc["turk_tasks"] = definition["turk_tasks"]
+						end
+						if definition["fulltext"]
 							doc["fulltext"] ||= {}
-							doc["spatial"] ||= {}
-							if definition["fulltext"]
-								definition["fulltext"].each do |ft|
-									ftdef = ft[1]
-									ftdef["index"] = MacroDeck::Platform.process_includes(ftdef["index"])
-									doc["fulltext"][ft[0]] = ftdef
-								end
-							end
-							if definition["spatial"]
-								definition["spatial"].each do |sp|
-									spdef = sp[1]
-									spdef = MacroDeck::Platform.process_includes(spdef)
-									doc["spatial"][sp[0]] = spdef
-								end
+							definition["fulltext"].each do |ft|
+								ftdef = ft[1]
+								ftdef["index"] = MacroDeck::Platform.process_includes(ftdef["index"])
+								doc["fulltext"][ft[0]] = ftdef
 							end
 						end
-						doc.save
+						if definition["spatial"]
+							doc["spatial"] ||= {}
+							definition["spatial"].each do |sp|
+								spdef = sp[1]
+								spdef = MacroDeck::Platform.process_includes(spdef)
+								doc["spatial"][sp[0]] = spdef
+							end
+						end
 					end
+
+					doc.save
 				end
 			end
 		end
