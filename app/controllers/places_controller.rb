@@ -35,7 +35,7 @@ class PlacesController < ApplicationController
 	    count_query = Place.view("by_missing_foursquare_venue_id", :reduce => false, :limit => 0, :include_docs => false)
 	    @places_count = count_query["total_rows"]
 	# Search.
-	elsif !params[:q].nil? || current_tab == :search || current_tab == nil
+	elsif !params[:q].nil? || current_tab == :search || (current_tab == nil && params[:fare].nil? && params[:neighborhood].nil?)
 	    @page_title_long = "#{@locality.title} > Places > Search"
 	    @tab_buttons = [
 		["Tips", country_region_locality_places_path(@country, @region, @locality, :tab => "tips" )],
@@ -79,7 +79,7 @@ class PlacesController < ApplicationController
 	    @places = Place.view("by_path_without_neighborhood_tips", :reduce => false, :startkey => startkey, :endkey => endkey, :limit => 10, :skip => @start_item, :descending => true)
 	    count_query = Place.view("by_path_without_neighborhood_tips", :reduce => true, :startkey => startkey, :endkey => endkey, :descending => true)
 	    @places_count = count_query["rows"].length == 0 ? 0 : count_query["rows"][0]["value"]
-	elsif current_tab == :tips && params[:fare].nil? && !params[:neighborhood].nil?
+	elsif params[:fare].nil? && !params[:neighborhood].nil?
 	    @page_title_long = "#{@locality.title} > #{Neighborhood.get(params[:neighborhood]).title}"
 	    @tab_buttons = [
 		["Tips", country_region_locality_places_path(@country, @region, @locality, :tab => "tips"), "pressed"],
@@ -93,7 +93,7 @@ class PlacesController < ApplicationController
 	    count_query = Place.view("by_path_and_tips", :reduce => true, :startkey => startkey, :endkey => endkey, :descending => true)
 	    @places_count = count_query["rows"].length == 0 ? 0 : count_query["rows"][0]["value"]
 	    @back_button = [@locality.title, country_region_locality_places_path(@country, @region, @locality, :tab => "tips")]
-	elsif current_tab == :tips && !params[:fare].nil? && params[:neighborhood].nil?
+	elsif !params[:fare].nil? && params[:neighborhood].nil?
 	    @page_title_long = "#{@locality.title} > #{params[:fare]}"
 	    @tab_buttons = [
 		["Tips", country_region_locality_places_path(@country, @region, @locality, :tab => "tips"), "pressed"],
@@ -107,7 +107,7 @@ class PlacesController < ApplicationController
 	    count_query = Place.view("by_fare_tips", :reduce => true, :startkey => startkey, :endkey => endkey, :descending => true)
 	    @places_count = count_query["rows"].length == 0 ? 0 : count_query["rows"][0]["value"]
 	    @back_button = [@locality.title, country_region_locality_places_path(@country, @region, @locality, :tab => "tips")]
-	elsif current_tab == :tips && !params[:fare].nil? && !params[:neighborhood].nil?
+	elsif !params[:fare].nil? && !params[:neighborhood].nil?
 	    @page_title_long = "#{@locality.title} > #{Neighborhood.get(params[:neighborhood]).title} > #{params[:fare]}"
 	    @tab_buttons = [
 		["Tips", country_region_locality_places_path(@country, @region, @locality, :tab => "tips"), "pressed"],
