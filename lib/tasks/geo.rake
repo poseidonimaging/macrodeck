@@ -1,6 +1,7 @@
 require "geokit"
 
 GEOAPI_KEY = "vIAOECQLnv"
+GOOGLE_KEY = "ABQIAAAAEkrY20kNQAIUUM9kEYJ-CBRaS0HJP-Nin8ioq5qRIkQe1HDwFhSfE62lqtb6Dxa6TkMPNr6Czk7Jew"
 YAHOO_KEY = "FO9Li6nV34Ge6YvB_v93jlm06tBKjZIQezN8qp_1YneKZzu1Ts2XiJNTK5Z7EVAsU6iO"
 
 namespace :macrodeck do
@@ -15,6 +16,7 @@ namespace :macrodeck do
     desc "Goes through places and gets their lat/lngs"
     task :geocode => :environment do
 	Geokit::Geocoders::yahoo = YAHOO_KEY
+	Geokit::Geocoders::google = GOOGLE_KEY
 	places = Place.view("by_missing_geo", :reduce => false, :include_docs => true)
 	
 	places.each do |p|
@@ -23,7 +25,7 @@ namespace :macrodeck do
 	    locality = Locality.view("by_path", :startkey => locality_path, :limit => 1, :reduce => false, :include_docs => true)[0]
 	    region = Region.view("by_path", :startkey => region_path, :limit => 1, :reduce => false, :include_docs => true)[0]
 	    address = "#{p.address}, #{locality.title}, #{region.title}"
-	    georesult = Geokit::Geocoders::YahooGeocoder.geocode address
+	    georesult = Geokit::Geocoders::MultiGeocoder.geocode address
 	    if georesult.lat && georesult.lng
 		puts "--- Geocoded #{address} to #{georesult.lat}, #{georesult.lng}"
 		p.geo = [georesult.lat, georesult.lng]
