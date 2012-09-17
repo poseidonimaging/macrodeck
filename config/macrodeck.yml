@@ -1,5 +1,6 @@
 ---
 development:
+  db_url: https://macrodeck-development:C0snCBjFS4sRAW1ImiFLPCb51bOxK4Z1Ai@ec2-23-20-97-69.compute-1.amazonaws.com:6984/macrodeck-development
   layout: layout.html
   view_dir: app/views/admin
   path_prefix: /admin/
