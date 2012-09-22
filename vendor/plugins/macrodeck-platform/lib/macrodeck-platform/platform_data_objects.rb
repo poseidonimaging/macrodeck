@@ -18,10 +18,21 @@ module MacroDeck
 					"validations" => [],
 					"has_attachment" => true,
 					"turk_fields" => [
-						{ "name" => "DaysOfWeek", "type" => ["Integer#DayOfWeek"] },
-						{ "name" => "StartTime", "type" => "Time" },
-						{ "name" => "EndTime", "type" => "Time" },
-						{ "name" => "Title", "type" => "String", "object_type" => "Event", "object_field" => "title" }
+						{ "name" => "DaysOfWeek", "type" => ["Integer#DayOfWeek"], "title" => "Days of week" },
+						{ "name" => "StartTime", "type" => "Time", "title" => "Start time" },
+						{ "name" => "EndTime", "type" => "Time", "title" => "End time" },
+						{ "name" => "Title", "type" => "String#Title", "object_type" => "Event", "object_field" => "title" }
+					],
+					"views" => [
+						{ "view_by" => "turk_unanswered",
+						  "map" =>
+						  "function(doc) {
+							if (doc['couchrest-type'] == 'SpecialPhoto' && (doc['turk_responses'] == undefined || doc['turk_responses'] == null || doc['turk_responses'] == {})) {
+								emit(doc['_id'], 1);
+							}
+						  }",
+						  "reduce" => "_count"
+						}
 					],
 					"turk_tasks" => [
 						{

@@ -1,8 +1,7 @@
-# This monkey patch is needed because for some reason, CouchDB requires
-# reduction parameters to be at the beginning of the query string
-
 module CouchRest
 	class << self
+		# This monkey patch is needed because for some reason, CouchDB requires
+		# reduction parameters to be at the beginning of the query string
 		def paramify_url url, params = {}
 			if params && !params.empty?
 				prequery = []
@@ -24,6 +23,111 @@ module CouchRest
 	end
 end
 
+module CouchRest
+	module RestAPI
+		def put(uri, doc = nil)
+			payload = doc.to_json if doc
+
+			options = {
+				:method => :put,
+				:url => uri,
+				:headers => default_headers,
+				:payload => payload
+			}
+
+			uri_parsed = URI(uri)
+			options[:user] = uri_parsed.user if uri_parsed.user
+			options[:password] = uri_parsed.password if uri_parsed.password
+
+			begin
+				JSON.parse(RestClient::Request.execute(options))
+			rescue Exception => e
+				if $DEBUG
+					raise "Error while sending a PUT request #{uri}\npayload: #{payload.inspect}\n#{e}"
+				else
+					raise e
+				end
+			end
+		end
+
+		def get(uri)
+			options = {
+				:method => :get,
+				:url => uri,
+				:headers => default_headers
+			}
+
+			uri_parsed = URI(uri)
+			options[:user] = uri_parsed.user if uri_parsed.user
+			options[:password] = uri_parsed.password if uri_parsed.password
+
+			begin
+				JSON.parse(RestClient::Request.execute(options), :max_nesting => false)
+			rescue => e
+				if $DEBUG
+					raise "Error while sending a GET request #{uri}\n: #{e}"
+				else
+					raise e
+				end
+			end
+		end
+
+		def post(uri, doc = nil)
+			payload = doc.to_json if doc
+
+			options = {
+				:method => :post,
+				:url => uri,
+				:headers => default_headers,
+				:payload => payload
+			}
+
+			uri_parsed = URI(uri)
+			options[:user] = uri_parsed.user if uri_parsed.user
+			options[:password] = uri_parsed.password if uri_parsed.password
+
+			begin
+				JSON.parse(RestClient::Request.execute(options))
+			rescue Exception => e
+				if $DEBUG
+					raise "Error while sending a POST request #{uri}\npayload: #{payload.inspect}\n#{e}"
+				else
+					raise e
+				end
+			end
+		end
+
+		def delete(uri)
+			options = {
+				:method => :delete,
+				:url => uri,
+				:headers => default_headers
+			}
+
+			uri_parsed = URI(uri)
+			options[:user] = uri_parsed.user if uri_parsed.user
+			options[:password] = uri_parsed.password if uri_parsed.password
+
+			JSON.parse(RestClient::Request.execute(options))
+		end
+
+		def copy(uri, destination)
+			options = {
+				:method => :copy,
+				:url => uri,
+				:headers => default_headers.merge('Destination' => destination)
+			}
+
+			uri_parsed = URI(uri)
+			options[:user] = uri_parsed.user if uri_parsed.user
+			options[:password] = uri_parsed.password if uri_parsed.password
+
+			JSON.parse(RestClient::Request.execute(options).to_s)
+		end
+	end
+
+	CouchRest.extend(::CouchRest::RestAPI)
+end
 
 # Adds functions to Numeric to convert a number to radians/degrees
 class Numeric
