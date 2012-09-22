@@ -4,6 +4,7 @@ development:
   view_dir: app/views/admin
   path_prefix: /admin/
 production:
+  db_url: https://macrodeck-production:J1gxJVr3S7llEI3VJLu2ZkZbC9bVzMyx8@couchdb.poseidonimaging.com:6984/macrodeck-production
   layout: layout.html
   view_dir: app/views/admin
   path_prefix: /admin/
