@@ -1,0 +1,14 @@
+--- 
+applications: 
+  .: 
+    url: ${name}.${target-base}
+    framework: 
+      info: 
+        description: Rails Application
+        exec: 
+        mem: 256M
+      name: rails3
+    instances: 1
+    mem: 256M
+    name: macrodeck-development
+    infra: aws
