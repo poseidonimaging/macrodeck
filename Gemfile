@@ -8,6 +8,8 @@ gem "builder",		"~> 2.1.2"
 gem "tzinfo",		"~> 0.3.33"
 gem "i18n",		"~> 0.4.1"
 
+gem "thin"
+
 # Stuff needed in all environments.
 gem "mislav-will_paginate",		"~> 2.2.3", :require => "will_paginate"
 gem "sparklines"
