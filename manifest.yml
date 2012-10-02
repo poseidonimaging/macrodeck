@@ -4,11 +4,13 @@ applications:
     url: ${name}.${target-base}
     framework: 
       info: 
-        description: Rails Application
+        description: Rack Application
         exec: 
         mem: 256M
-      name: rails3
+      name: rack
     instances: 1
     mem: 256M
     name: macrodeck-development
     infra: aws
+    env:
+      - RAILS_ENV=development
