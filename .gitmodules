@@ -1,0 +1,3 @@
+[submodule "lib/macrodeck-app"]
+	path = lib/macrodeck-app
+	url = git@github.com:ziggythehamster/macrodeck-app.git
