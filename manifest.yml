@@ -10,7 +10,5 @@ applications:
       name: rack
     instances: 1
     mem: 256M
-    name: macrodeck-development
+    name: macrodeck
     infra: aws
-    env:
-      - RAILS_ENV=development
