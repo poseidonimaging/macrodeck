@@ -1,10 +1,14 @@
 ---
 development:
+  admin_username: restnap
+  admin_password: R35+n4p
   db_url: https://macrodeck-development:C0snCBjFS4sRAW1ImiFLPCb51bOxK4Z1A@couchdb.poseidonimaging.com:6984/macrodeck-development
   layout: layout.html
   view_dir: app/views/admin
   path_prefix: /admin/
 production:
+  admin_username: restnap
+  admin_password: R35+n4p
   db_url: https://macrodeck-production:J1gxJVr3S7llEI3VJLu2ZkZbC9bVzMyx8@couchdb.poseidonimaging.com:6984/macrodeck-production
   layout: layout.html
   view_dir: app/views/admin
