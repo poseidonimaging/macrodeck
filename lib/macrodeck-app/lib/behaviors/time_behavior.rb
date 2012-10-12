@@ -8,14 +8,18 @@ module MacroDeck
 			return Rack::Utils.escape_html(@data_object.time)
 		end
 
-		def to_form_field
+		def to_form_field(field_name = :time, params = {})
+			if params[:name].nil?
+				name = field_name
+			else
+				name = params[:name]
+			end
+
 			output = ""
-			output << "<label for=\"time_date\">Date</label>"
-			output << date_picker_field("time", Time.new.strftime("%F")) if @data_object.time.nil?
-			output << date_picker_field("time", Time.parse(@data_object.time).strftime("%F")) unless @data_object.time.nil?
-			output << "<label for=\"time_time\">Time</label>"
-			output << time_picker_field("time", Time.new.strftime("%H:%M")) if @data_object.time.nil?
-			output << time_picker_field("time", Time.parse(@data_object.time).strftime("%H:%M")) unless @data_object.time.nil?
+
+			output << "<label for=\"#{Rack::Utils.escape_html(name.to_s)}\">Time</label>"
+			output << time_picker_field(name, Time.new.strftime("%H:%M"), :time_key => false) if @data_object.send(field_name.to_sym).nil?
+			output << time_picker_field(name, Time.parse(@data_object.send(field_name.to_sym)).strftime("%H:%M"), :time_key => false) unless @data_object.send(field_name.to_sym).nil?
 			return output
 		end
 
@@ -32,8 +36,16 @@ module MacroDeck
 				return Time.parse("#{parse_date_result(result)} #{result["time"]}").utc.iso8601
 			end
 
-			def time_picker_field(name, value)
-				output = "<select id=\"#{Rack::Utils.escape_html(name)}_time\" name=\"#{Rack::Utils.escape_html(name)}[time]\">"
+			# Renders a time picker field. Possible options:
+			# :time_key => bool - specifies whether or not to include a [time] key in the HTML name.
+			#                     this might be needed if you are doing dates and times together, but
+			#                     times on their own do not need a time key.
+			def time_picker_field(name, value, options = { :time_key => true })
+				if options[:time_key]
+					output = "<select id=\"#{Rack::Utils.escape_html(name)}_time\" name=\"#{Rack::Utils.escape_html(name)}[time]\">"
+				else
+					output = "<select id=\"#{Rack::Utils.escape_html(name)}\" name=\"#{Rack::Utils.escape_html(name)}\">"
+				end
 				t = Time.parse("00:00:00")
 				48.times do |x|
 					new_t = (t + (x * 1800))
