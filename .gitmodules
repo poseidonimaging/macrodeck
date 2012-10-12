@@ -1,3 +1,6 @@
 [submodule "lib/macrodeck-app"]
 	path = lib/macrodeck-app
 	url = git@github.com:ziggythehamster/macrodeck-app.git
+[submodule "vendor/plugins/macrodeck-platform"]
+	path = vendor/plugins/macrodeck-platform
+	url = git@github.com:ziggythehamster/macrodeck-platform.git
