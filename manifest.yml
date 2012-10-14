@@ -6,9 +6,9 @@ applications:
       info: 
         description: Rack Application
         exec: 
-        mem: 256M
+        mem: 512M
       name: rack
     instances: 1
-    mem: 256M
+    mem: 512M
     name: macrodeck
     infra: aws
